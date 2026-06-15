@@ -2964,36 +2964,44 @@ function handleOAuthRedirect() {
 
 // ── Drive REST helpers ────────────────────────────
 async function driveRequest(method, url, body, extraHeaders = {}) {
-  // 1. CORRECTION: Intercept malformed, blank, or dot-ended API URLs before sending
+  // 1. Check if the URL is missing completely
   if (!url || typeof url !== 'string' || url.trim() === '') {
     throw new Error('Drive API Request aborted: The target URL is empty or invalid.');
   }
 
-  // Clean trailing spaces and check if the URL ends with a dot/missing ID parameter
   const trimmedUrl = url.trim();
-  if (trimmedUrl.endsWith('/') || trimmedUrl.endsWith('/.') || trimmedUrl.endsWith('files/.')) {
-    throw new Error(`Drive API Request aborted: Malformed URL detected ("${url}"). A valid File or Folder ID was not provided by the calling function.`);
+
+  // 2. Intercept malformed API endpoints ending in "." or a trailing slash with a dot
+  if (
+    trimmedUrl.endsWith('/.') || 
+    trimmedUrl.endsWith('files/.') || 
+    trimmedUrl.endsWith('files/')
+  ) {
+    throw new Error(`Drive API Request aborted: Malformed URL path ("${url}"). The folder or file ID passed to this request is blank or a dot '.'.`);
   }
 
+  // 3. Token authorization check
   const token = getDriveToken();
   if (!token) throw new Error('NO_TOKEN');
   
   const headers = { Authorization: `Bearer ${token}`, ...extraHeaders };
   
+  // 4. Handle JSON body payload formatting
   if (body && typeof body === 'object' && !(body instanceof FormData) && !(body instanceof Blob)) {
     headers['Content-Type'] = 'application/json';
     body = JSON.stringify(body);
   }
   
+  // 5. Execute HTTP Request
   const res = await fetch(trimmedUrl, { method, headers, body });
   
+  // 6. Error handling
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     if (res.status === 401) { 
       clearDriveToken(); 
       throw new Error('TOKEN_EXPIRED'); 
     }
-    // Enhanced error messaging to help you debug database issues quickly
     throw new Error(err?.error?.message || `HTTP ${res.status} on target: ${trimmedUrl}`);
   }
   
