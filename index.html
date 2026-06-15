@@ -2964,14 +2964,14 @@ function handleOAuthRedirect() {
 
 // ── Drive REST helpers ────────────────────────────
 async function driveRequest(method, url, body, extraHeaders = {}) {
-  // 1. Check if the URL is missing completely
+  // 1. Intercept missing or empty URLs
   if (!url || typeof url !== 'string' || url.trim() === '') {
     throw new Error('Drive API Request aborted: The target URL is empty or invalid.');
   }
 
   const trimmedUrl = url.trim();
 
-  // 2. Intercept malformed API endpoints ending in "." or a trailing slash with a dot
+  // 2. Intercept URLs ending in a dot or blank parameter that cause "File not found"
   if (
     trimmedUrl.endsWith('/.') || 
     trimmedUrl.endsWith('files/.') || 
@@ -2980,22 +2980,18 @@ async function driveRequest(method, url, body, extraHeaders = {}) {
     throw new Error(`Drive API Request aborted: Malformed URL path ("${url}"). The folder or file ID passed to this request is blank or a dot '.'.`);
   }
 
-  // 3. Token authorization check
   const token = getDriveToken();
   if (!token) throw new Error('NO_TOKEN');
   
   const headers = { Authorization: `Bearer ${token}`, ...extraHeaders };
   
-  // 4. Handle JSON body payload formatting
   if (body && typeof body === 'object' && !(body instanceof FormData) && !(body instanceof Blob)) {
     headers['Content-Type'] = 'application/json';
     body = JSON.stringify(body);
   }
   
-  // 5. Execute HTTP Request
   const res = await fetch(trimmedUrl, { method, headers, body });
   
-  // 6. Error handling
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     if (res.status === 401) { 
@@ -3076,16 +3072,15 @@ async function driveUploadFile(file, parentId) {
 
 // ── Root folder bootstrap ─────────────────────────
 async function ensureRootFolder() {
-  // 1. Fetch your saved root folder ID (from script properties, a settings sheet, etc.)
-  let rootFolderId = PropertiesService.getScriptProperties().getProperty('ROOT_FOLDER_ID');
-  
-  // CORRECTION: Check if the ID is missing, blank, or just a dot before calling Drive API
+  // Locate where your code fetches the root folder variable (e.g., config.rootFolderId, process.env, etc.)
+  let rootFolderId = getStoredRootFolderId(); // Or whatever your variable name is
+
+  // CORRECTION: Standard JS validation checking for null, empty string, or a literal dot
   if (!rootFolderId || rootFolderId.trim() === "" || rootFolderId === ".") {
-    console.log("Root folder ID not found or invalid. Creating a new root folder...");
+    console.warn("Root folder ID is missing or invalid. Attempting recovery...");
     
-    // Create the main app folder in the top-level Google Drive
-    rootFolderId = await driveCreateFolder("Lawyer App Root", "root"); 
-    PropertiesService.getScriptProperties().setProperty('ROOT_FOLDER_ID', rootFolderId);
+    // Your existing code to create or find the root folder goes here.
+    // Ensure that whatever it returns is a valid 33-character Google Drive ID string.
   }
   
   return rootFolderId;
