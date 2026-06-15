@@ -1999,6 +1999,9 @@ table.data-table {
 // ══════════════════════════════════════════════════
 //  STATE & STORAGE
 // ══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════
+//  STATE & STORAGE
+// ══════════════════════════════════════════════════
 const STORAGE_KEYS = {
   CLIENTS: 'lexdesk_clients',
   PROFILE: 'lexdesk_profile',
@@ -2018,6 +2021,15 @@ let state = {
   currentCaseType: 'cyber',
   detailClientId: null
 };
+
+// CORRECTION: Standard JS handler to read and recover the Google Drive Root folder ID string safely
+function getStoredRootFolderId() {
+  let id = localStorage.getItem(DRIVE.ROOT_ID_KEY);
+  if (!id || id === '.' || id.trim() === '') {
+    return null;
+  }
+  return id;
+}
 
 function load() {
   try {
@@ -3072,15 +3084,30 @@ async function driveUploadFile(file, parentId) {
 
 // ── Root folder bootstrap ─────────────────────────
 async function ensureRootFolder() {
-  // Locate where your code fetches the root folder variable (e.g., config.rootFolderId, process.env, etc.)
-  let rootFolderId = getStoredRootFolderId(); // Or whatever your variable name is
+  // CORRECTION: Use the newly declared browser local storage lookups instead of Apps Script variables
+  let rootFolderId = getStoredRootFolderId();
 
-  // CORRECTION: Standard JS validation checking for null, empty string, or a literal dot
+  // Validate the variable context against strings, spaces, or an accidental dot placeholder
   if (!rootFolderId || rootFolderId.trim() === "" || rootFolderId === ".") {
-    console.warn("Root folder ID is missing or invalid. Attempting recovery...");
+    console.warn("Root folder ID is missing or invalid. Bootstrapping fresh folder structure...");
     
-    // Your existing code to create or find the root folder goes here.
-    // Ensure that whatever it returns is a valid 33-character Google Drive ID string.
+    try {
+      // Call Drive API to verify if the folder already exists online under this name
+      let existingId = await driveFindFolder(DRIVE.ROOT_FOLDER_NAME, 'root');
+      
+      if (!existingId) {
+        // If it doesn't exist, create it cleanly under the main root directory location
+        existingId = await driveCreateFolder(DRIVE.ROOT_FOLDER_NAME, 'root');
+      }
+      
+      // Persist the fixed 33-character ID to clear the "File not found" infinite loop path
+      localStorage.setItem(DRIVE.ROOT_ID_KEY, existingId);
+      rootFolderId = existingId;
+      
+    } catch (e) {
+      console.error("Critical: Failed to generate or locate a valid Google Drive root container.", e);
+      throw new Error(`Sync System Setup Failure: ${e.message}`);
+    }
   }
   
   return rootFolderId;
