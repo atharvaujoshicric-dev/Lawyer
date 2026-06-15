@@ -1430,9 +1430,12 @@ table.data-table {
           <i class="fab fa-google-drive drive-icon"></i>
           <div class="drive-text">
             <div class="drive-label">Google Drive — <span id="drive-status-text">Not connected</span></div>
-            <div class="drive-url" id="drive-url-display">Set up in Settings → Sync</div>
+            <div class="drive-url" id="drive-url-display">Configure in Settings → Google Drive Sync</div>
           </div>
-          <button class="btn btn-outline btn-sm" onclick="triggerSync()"><i class="fas fa-sync-alt"></i> Sync Now</button>
+          <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;">
+            <button class="btn btn-outline btn-sm" id="sync-page-connect-btn" onclick="driveConnect()" style="display:none;"><i class="fab fa-google-drive"></i> Connect</button>
+            <button class="btn btn-gold btn-sm" onclick="triggerSync()"><i class="fas fa-sync-alt"></i> Sync Now</button>
+          </div>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;" class="sync-overview-grid">
@@ -1544,25 +1547,56 @@ table.data-table {
               <div class="card-header"><span class="card-title">Google Drive Sync</span></div>
               <div class="card-body">
                 <div class="settings-section">
-                  <div class="form-group" style="margin-bottom:12px;">
-                    <label class="form-label">Drive Folder URL</label>
-                    <input class="form-control" id="settings-drive-url" type="url" placeholder="https://drive.google.com/drive/folders/..." />
+
+                  <!-- Connection status banner -->
+                  <div id="drive-conn-banner" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;margin-bottom:16px;font-size:13px;background:var(--bg);border:1px solid var(--border);">
+                    <i id="drive-conn-icon" class="fab fa-google-drive" style="font-size:18px;color:#4285f4;"></i>
+                    <div style="flex:1;">
+                      <div id="drive-conn-label" style="font-weight:500;color:var(--text-primary);">Not connected</div>
+                      <div id="drive-conn-sub" style="font-size:11.5px;color:var(--text-muted);">Authorise below to enable real Drive sync</div>
+                    </div>
+                    <button id="drive-disconnect-btn" class="btn btn-danger btn-sm" style="display:none;" onclick="driveDisconnect()"><i class="fas fa-unlink"></i> Disconnect</button>
                   </div>
+
+                  <!-- Step 1: Client ID -->
+                  <div class="form-group" style="margin-bottom:14px;">
+                    <label class="form-label">Google OAuth2 Client ID <span class="required">*</span></label>
+                    <input class="form-control" id="settings-drive-client-id" type="text" placeholder="123456789-abc.apps.googleusercontent.com" />
+                    <span class="form-hint">
+                      Create a Web application credential in <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:#4285f4;">Google Cloud Console</a>.
+                      Add <strong id="redirect-uri-display"></strong> as an Authorised redirect URI.
+                    </span>
+                  </div>
+
                   <div class="settings-row">
                     <div>
-                      <div class="settings-row-label">Auto-sync</div>
-                      <div class="settings-row-desc">Sync changes automatically every 5 minutes</div>
+                      <div class="settings-row-label">Auto-sync every 5 min</div>
+                      <div class="settings-row-desc">Background worker pushes pending changes while online</div>
                     </div>
                     <button class="toggle on" id="toggle-autosync" onclick="toggleSwitch(this)"></button>
                   </div>
                   <div class="settings-row">
                     <div>
                       <div class="settings-row-label">Sync on save</div>
-                      <div class="settings-row-desc">Trigger sync whenever a client is created or updated</div>
+                      <div class="settings-row-desc">Upload immediately whenever a client record is saved</div>
                     </div>
                     <button class="toggle on" id="toggle-sync-save" onclick="toggleSwitch(this)"></button>
                   </div>
-                  <button class="btn btn-primary mt-3" onclick="saveDriveSettings()"><i class="fab fa-google-drive"></i> Save & Connect</button>
+
+                  <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="saveDriveSettings()"><i class="fas fa-save"></i> Save Client ID</button>
+                    <button class="btn btn-gold" onclick="driveConnect()"><i class="fab fa-google-drive"></i> Connect Google Drive</button>
+                  </div>
+
+                  <div style="margin-top:16px;padding:12px 14px;background:#f0f7ff;border:1px solid #bee3f8;border-radius:8px;font-size:12.5px;color:var(--info);line-height:1.7;">
+                    <strong>How to set up (one-time):</strong><br/>
+                    1. Open <a href="https://console.cloud.google.com/" target="_blank" style="color:#2b6cb0;">Google Cloud Console</a> → APIs &amp; Services → Credentials<br/>
+                    2. Click <em>Create Credentials → OAuth client ID → Web application</em><br/>
+                    3. Add <code id="redirect-uri-display-2"></code> under <em>Authorised redirect URIs</em><br/>
+                    4. Enable the <strong>Google Drive API</strong> for your project<br/>
+                    5. Paste the Client ID above and click <em>Save Client ID</em><br/>
+                    6. Click <em>Connect Google Drive</em> — a consent popup will appear
+                  </div>
                 </div>
               </div>
             </div>
@@ -2813,60 +2847,358 @@ function checkAlerts() {
 }
 
 // ══════════════════════════════════════════════════
-//  SYNC SIMULATION
+//  GOOGLE DRIVE — REAL API ENGINE
+//
+//  Flow:
+//  1. User pastes OAuth2 Client ID in Settings (Web app type).
+//  2. On "Connect Drive", we open a popup for Google OAuth2 consent.
+//  3. We extract the access_token from the popup redirect URL.
+//  4. All sync calls use this token against the Drive v3 REST API.
+//  5. We create a LexDesk root folder once, then per-client folders
+//     + client_profile.json on every save.
+//  6. Offline changes stay in the queue (synced=0); a background
+//     ticker retries when the tab is online again.
 // ══════════════════════════════════════════════════
-function queueSync(clientId, clientName) {
+
+const DRIVE = {
+  SCOPE: 'https://www.googleapis.com/auth/drive.file',
+  AUTH_URL: 'https://accounts.google.com/o/oauth2/v2/auth',
+  TOKEN_URL: 'https://oauth2.googleapis.com/token',   // not used for implicit
+  API: 'https://www.googleapis.com/drive/v3',
+  UPLOAD: 'https://www.googleapis.com/upload/drive/v3',
+  ROOT_FOLDER_NAME: 'LexDesk_Data',
+  // Keys stored in localStorage
+  TOKEN_KEY: 'lexdesk_drive_token',
+  TOKEN_EXP_KEY: 'lexdesk_drive_token_exp',
+  ROOT_ID_KEY: 'lexdesk_drive_root_id',
+  CLIENT_ID_KEY: 'lexdesk_drive_client_id',
+};
+
+// ── Token helpers ──────────────────────────────────
+function getDriveToken() {
+  const exp = parseInt(localStorage.getItem(DRIVE.TOKEN_EXP_KEY) || '0');
+  if (Date.now() > exp - 60000) return null;       // expired or < 1 min left
+  return localStorage.getItem(DRIVE.TOKEN_KEY);
+}
+
+function saveDriveToken(token, expiresIn) {
+  localStorage.setItem(DRIVE.TOKEN_KEY, token);
+  localStorage.setItem(DRIVE.TOKEN_EXP_KEY, String(Date.now() + expiresIn * 1000));
+}
+
+function clearDriveToken() {
+  localStorage.removeItem(DRIVE.TOKEN_KEY);
+  localStorage.removeItem(DRIVE.TOKEN_EXP_KEY);
+  localStorage.removeItem(DRIVE.ROOT_ID_KEY);
+}
+
+function getDriveClientId() {
+  return localStorage.getItem(DRIVE.CLIENT_ID_KEY) || state.settings.driveClientId || '';
+}
+
+// ── OAuth2 Implicit Flow (popup) ──────────────────
+function driveConnect() {
+  const clientId = getDriveClientId();
+  if (!clientId) {
+    showToast('Enter your Google OAuth2 Client ID in Settings first.', 'error');
+    return;
+  }
+  const redirect = window.location.origin + window.location.pathname;
+  const params = new URLSearchParams({
+    client_id: clientId,
+    redirect_uri: redirect,
+    response_type: 'token',
+    scope: DRIVE.SCOPE,
+    prompt: 'consent',
+    include_granted_scopes: 'true'
+  });
+  const authUrl = `${DRIVE.AUTH_URL}?${params}`;
+
+  // Open popup; listen for redirect back with token in hash
+  const popup = window.open(authUrl, 'drive_auth', 'width=520,height=620,left=200,top=100');
+  if (!popup) { showToast('Popup blocked — please allow popups and try again.', 'error'); return; }
+
+  updateSyncStatus('syncing', 'Authorising…');
+
+  const timer = setInterval(() => {
+    try {
+      if (!popup || popup.closed) {
+        clearInterval(timer);
+        updateSyncStatus('offline', 'Auth cancelled');
+        return;
+      }
+      const hash = popup.location.hash;
+      if (hash && hash.includes('access_token')) {
+        clearInterval(timer);
+        popup.close();
+        const params = new URLSearchParams(hash.slice(1));
+        const token = params.get('access_token');
+        const exp   = parseInt(params.get('expires_in') || '3600');
+        saveDriveToken(token, exp);
+        showToast('Google Drive connected!', 'success');
+        updateSyncStatus('synced', 'Drive connected');
+        renderSyncView();
+        renderDriveSettingsUI();
+      }
+    } catch(e) {
+      // Cross-origin until redirect comes back — ignore
+    }
+  }, 500);
+}
+
+// Called when app loads at the OAuth redirect URL (token in hash)
+function handleOAuthRedirect() {
+  const hash = window.location.hash;
+  if (!hash.includes('access_token')) return false;
+  const params = new URLSearchParams(hash.slice(1));
+  const token = params.get('access_token');
+  const exp   = parseInt(params.get('expires_in') || '3600');
+  if (token) {
+    saveDriveToken(token, exp);
+    // Clean the hash so it doesn't persist
+    history.replaceState(null, '', window.location.pathname);
+    return true;
+  }
+  return false;
+}
+
+// ── Drive REST helpers ────────────────────────────
+async function driveRequest(method, url, body, extraHeaders = {}) {
+  const token = getDriveToken();
+  if (!token) throw new Error('NO_TOKEN');
+  const headers = { Authorization: `Bearer ${token}`, ...extraHeaders };
+  if (body && typeof body === 'object' && !(body instanceof FormData) && !(body instanceof Blob)) {
+    headers['Content-Type'] = 'application/json';
+    body = JSON.stringify(body);
+  }
+  const res = await fetch(url, { method, headers, body });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    if (res.status === 401) { clearDriveToken(); throw new Error('TOKEN_EXPIRED'); }
+    throw new Error(err?.error?.message || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+// Find a folder by name inside a parent (returns id or null)
+async function driveFindFolder(name, parentId) {
+  const q = `name='${name}' and mimeType='application/vnd.google-apps.folder' and '${parentId}' in parents and trashed=false`;
+  const data = await driveRequest('GET', `${DRIVE.API}/files?q=${encodeURIComponent(q)}&fields=files(id,name)`);
+  return data.files?.[0]?.id || null;
+}
+
+// Create a folder; return its id
+async function driveCreateFolder(name, parentId) {
+  const existing = await driveFindFolder(name, parentId);
+  if (existing) return existing;
+  const data = await driveRequest('POST', `${DRIVE.API}/files`, {
+    name, mimeType: 'application/vnd.google-apps.folder',
+    parents: parentId ? [parentId] : []
+  });
+  return data.id;
+}
+
+// Upload / overwrite a JSON file in a folder; return file id
+async function driveUploadJSON(filename, jsonObj, parentId, existingFileId = null) {
+  const content = JSON.stringify(jsonObj, null, 2);
+  const blob = new Blob([content], { type: 'application/json' });
+
+  if (existingFileId) {
+    // Patch content only (multipart not needed for plain update)
+    const form = new FormData();
+    form.append('metadata', new Blob([JSON.stringify({ name: filename })], { type: 'application/json' }));
+    form.append('file', blob);
+    const token = getDriveToken();
+    const res = await fetch(`${DRIVE.UPLOAD}/files/${existingFileId}?uploadType=multipart`, {
+      method: 'PATCH',
+      headers: { Authorization: `Bearer ${token}` },
+      body: form
+    });
+    if (!res.ok) throw new Error(`Patch failed: ${res.status}`);
+    return (await res.json()).id;
+  } else {
+    const form = new FormData();
+    form.append('metadata', new Blob([JSON.stringify({ name: filename, parents: [parentId] })], { type: 'application/json' }));
+    form.append('file', blob);
+    const token = getDriveToken();
+    const res = await fetch(`${DRIVE.UPLOAD}/files?uploadType=multipart`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: form
+    });
+    if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
+    return (await res.json()).id;
+  }
+}
+
+// Upload an arbitrary Blob/File to a folder; return file id
+async function driveUploadFile(file, parentId) {
+  const form = new FormData();
+  form.append('metadata', new Blob([JSON.stringify({ name: file.name, parents: [parentId] })], { type: 'application/json' }));
+  form.append('file', file);
+  const token = getDriveToken();
+  const res = await fetch(`${DRIVE.UPLOAD}/files?uploadType=multipart`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: form
+  });
+  if (!res.ok) throw new Error(`File upload failed: ${res.status}`);
+  return (await res.json()).id;
+}
+
+// ── Root folder bootstrap ─────────────────────────
+async function ensureRootFolder() {
+  let rootId = localStorage.getItem(DRIVE.ROOT_ID_KEY);
+  if (rootId) return rootId;
+  rootId = await driveCreateFolder(DRIVE.ROOT_FOLDER_NAME, null);
+  localStorage.setItem(DRIVE.ROOT_ID_KEY, rootId);
+  return rootId;
+}
+
+// ── Per-client subfolder name ─────────────────────
+function clientFolderName(client) {
+  return `${client.clientId}_${client.name.replace(/[^a-zA-Z0-9 _-]/g, '').replace(/\s+/g, '_')}`;
+}
+
+function caseSubFolder(caseType) {
+  return { cyber: 'Cyber_Security', rental: 'Rental_Agreements', general: 'General_Practice' }[caseType] || 'Documents';
+}
+
+// ── Main sync function for one client ────────────
+async function syncClientToDrive(client) {
+  const rootId    = await ensureRootFolder();
+  const clientDir = await driveCreateFolder(clientFolderName(client), rootId);
+  await driveCreateFolder(caseSubFolder(client.caseType), clientDir);
+
+  // Build client_profile.json payload
+  const profile = {
+    exported: new Date().toISOString(),
+    clientId: client.clientId,
+    name: client.name,
+    caseType: client.caseType,
+    status: client.status,
+    phone: client.phone,
+    email: client.email,
+    address: client.address,
+    fee: client.fee,
+    ...(client.cyber   && { cyber: client.cyber }),
+    ...(client.rental  && { rental: client.rental }),
+    ...(client.general && { general: client.general }),
+    history: client.history || []
+  };
+
+  // Check if profile already exists in Drive so we can patch vs create
+  const q = `name='client_profile.json' and '${clientDir}' in parents and trashed=false`;
+  const existing = await driveRequest('GET', `${DRIVE.API}/files?q=${encodeURIComponent(q)}&fields=files(id)`);
+  const existingId = existing.files?.[0]?.id || null;
+  await driveUploadJSON('client_profile.json', profile, clientDir, existingId);
+
+  return clientDir;
+}
+
+// ── Queue + Worker ────────────────────────────────
+let syncWorkerRunning = false;
+
+async function queueSync(clientId, clientName) {
   const now = new Date().toISOString();
   state.syncLog.unshift({ clientId, clientName, time: now, status: 'pending' });
   save(STORAGE_KEYS.SYNC_LOG, state.syncLog);
-  updateSyncStatus('syncing', 'Syncing...');
+  renderSyncView();
 
-  setTimeout(() => {
-    const idx = state.clients.findIndex(c => c.clientId === clientId);
-    if (idx !== -1) state.clients[idx].synced = 1;
-    save(STORAGE_KEYS.CLIENTS, state.clients);
-
-    const logIdx = state.syncLog.findIndex(l => l.clientId === clientId && l.status === 'pending');
-    if (logIdx !== -1) state.syncLog[logIdx].status = 'synced';
-    save(STORAGE_KEYS.SYNC_LOG, state.syncLog);
-
-    updateSyncStatus('synced', 'Synced');
-    renderClientTable();
-    renderSyncView();
-    updateStats();
-  }, 3000);
+  if (!getDriveToken()) {
+    // No token yet — leave as pending, worker will retry
+    updateSyncStatus('offline', 'Not connected');
+    return;
+  }
+  runSyncWorker();
 }
 
-function triggerSync() {
-  const unsynced = state.clients.filter(c => !c.synced);
-  if (!unsynced.length) { showToast('All files are already synced!', 'success'); return; }
-  showToast(`Syncing ${unsynced.length} pending items...`);
-  updateSyncStatus('syncing', 'Syncing...');
+async function runSyncWorker() {
+  if (syncWorkerRunning) return;
+  if (!navigator.onLine) { updateSyncStatus('offline', 'Offline'); return; }
+  const token = getDriveToken();
+  if (!token) { updateSyncStatus('offline', 'Not connected'); return; }
 
-  unsynced.forEach((c, i) => {
-    setTimeout(() => {
-      const idx = state.clients.findIndex(cl => cl.clientId === c.clientId);
+  syncWorkerRunning = true;
+  const pending = state.clients.filter(c => !c.synced);
+  if (!pending.length) { syncWorkerRunning = false; return; }
+
+  updateSyncStatus('syncing', `Syncing ${pending.length}…`);
+
+  for (const client of pending) {
+    try {
+      await syncClientToDrive(client);
+
+      // Mark synced in state
+      const idx = state.clients.findIndex(c => c.clientId === client.clientId);
       if (idx !== -1) state.clients[idx].synced = 1;
-      if (i === unsynced.length - 1) {
-        save(STORAGE_KEYS.CLIENTS, state.clients);
-        updateSyncStatus('synced', 'Synced');
-        renderClientTable();
-        renderSyncView();
-        updateStats();
-        showToast('All files synced to Google Drive!', 'success');
+      save(STORAGE_KEYS.CLIENTS, state.clients);
+
+      // Update log entry
+      const logIdx = state.syncLog.findIndex(l => l.clientId === client.clientId && l.status === 'pending');
+      if (logIdx !== -1) { state.syncLog[logIdx].status = 'synced'; state.syncLog[logIdx].time = new Date().toISOString(); }
+      save(STORAGE_KEYS.SYNC_LOG, state.syncLog);
+
+      renderClientTable();
+      renderSyncView();
+      updateStats();
+    } catch(err) {
+      console.error('Sync error for', client.clientId, err);
+      const logIdx = state.syncLog.findIndex(l => l.clientId === client.clientId && l.status === 'pending');
+      if (logIdx !== -1) state.syncLog[logIdx].status = 'failed';
+      save(STORAGE_KEYS.SYNC_LOG, state.syncLog);
+
+      if (err.message === 'TOKEN_EXPIRED' || err.message === 'NO_TOKEN') {
+        clearDriveToken();
+        updateSyncStatus('offline', 'Auth expired — reconnect');
+        showToast('Google Drive session expired. Please reconnect in Settings.', 'error');
+        break;
       }
-    }, (i+1) * 800);
-  });
+      showToast(`Sync failed for ${client.name}: ${err.message}`, 'error');
+    }
+  }
+
+  const remaining = state.clients.filter(c => !c.synced).length;
+  updateSyncStatus(remaining ? 'offline' : 'synced', remaining ? `${remaining} pending` : 'Synced');
+  syncWorkerRunning = false;
 }
 
+async function triggerSync() {
+  if (!getDriveToken()) {
+    showToast('Connect Google Drive first — go to Settings → Google Drive Sync.', 'error');
+    return;
+  }
+  const unsynced = state.clients.filter(c => !c.synced);
+  if (!unsynced.length) { showToast('All records are already synced to Drive!', 'success'); return; }
+
+  // Reset any 'failed' items back to pending so worker picks them up
+  state.clients.forEach(c => { if (!c.synced) c.synced = 0; });
+  state.syncLog.forEach(l => { if (l.status === 'failed') l.status = 'pending'; });
+  save(STORAGE_KEYS.CLIENTS, state.clients);
+  save(STORAGE_KEYS.SYNC_LOG, state.syncLog);
+
+  showToast(`Syncing ${unsynced.length} records to Google Drive…`);
+  await runSyncWorker();
+}
+
+// Background retry ticker — fires every 5 minutes
 function startSyncSimulation() {
-  updateSyncStatus('synced', 'Synced');
+  // Reflect actual Drive connection state on boot
+  const token = getDriveToken();
+  updateSyncStatus(token ? 'synced' : 'offline', token ? 'Drive connected' : 'Not connected');
+
+  // Retry pending items when tab comes online
+  window.addEventListener('online', () => {
+    if (state.clients.some(c => !c.synced)) runSyncWorker();
+  });
+  window.addEventListener('offline', () => updateSyncStatus('offline', 'Offline'));
+
+  // Auto-retry every 5 minutes
   setInterval(() => {
-    const unsynced = state.clients.filter(c => !c.synced).length;
-    if (unsynced > 0) {
-      updateSyncStatus('syncing', `Syncing ${unsynced}...`);
+    if (navigator.onLine && getDriveToken() && state.clients.some(c => !c.synced)) {
+      runSyncWorker();
     }
-  }, 30000);
+  }, 5 * 60 * 1000);
 }
 
 function updateSyncStatus(status, text) {
@@ -2902,18 +3234,26 @@ function renderDashSync() {
 }
 
 function renderSyncView() {
-  // Drive status
-  const driveUrl = state.settings.driveUrl;
+  // Drive status banner on the Sync page
+  const connected = !!getDriveToken();
   const driveText = document.getElementById('drive-status-text');
   const driveUrlEl = document.getElementById('drive-url-display');
-  if (driveText) driveText.textContent = driveUrl ? 'Connected' : 'Not connected';
-  if (driveUrlEl) driveUrlEl.textContent = driveUrl || 'Set up in Settings → Sync';
+  const connectBtn = document.getElementById('sync-page-connect-btn');
+
+  if (driveText) driveText.textContent = connected ? 'Connected' : 'Not connected';
+  if (driveUrlEl) {
+    const rootId = localStorage.getItem(DRIVE.ROOT_ID_KEY);
+    driveUrlEl.textContent = connected
+      ? (rootId ? `Folder ID: ${rootId}` : 'Authenticated — root folder will be created on first sync')
+      : 'Configure in Settings → Google Drive Sync';
+  }
+  if (connectBtn) connectBtn.style.display = connected ? 'none' : 'inline-flex';
 
   // Queue
   const pending = state.clients.filter(c => !c.synced);
   const queueEl = document.getElementById('sync-queue-list');
   if (queueEl) {
-    if (!pending.length) { queueEl.innerHTML = '<p class="text-muted text-sm">All files are synced.</p>'; }
+    if (!pending.length) { queueEl.innerHTML = '<p class="text-muted text-sm">All records are synced to Google Drive.</p>'; }
     else {
       queueEl.innerHTML = pending.map(c => `
         <div class="sync-queue-item">
@@ -2929,12 +3269,12 @@ function renderSyncView() {
   // Backup log
   const logEl = document.getElementById('backup-log');
   if (logEl) {
-    const recent = state.syncLog.slice(0,5);
+    const recent = state.syncLog.slice(0,8);
     if (!recent.length) { logEl.innerHTML = '<p class="text-muted text-sm">No backup records yet.</p>'; }
     else {
       logEl.innerHTML = recent.map(l => `
         <div class="sync-queue-item">
-          <div class="sync-item-icon ${l.status}"><i class="fas fa-${l.status==='synced'?'check':'clock'}"></i></div>
+          <div class="sync-item-icon ${l.status}"><i class="fas fa-${l.status==='synced'?'check-circle':l.status==='failed'?'exclamation-circle':'clock'}"></i></div>
           <div class="sync-item-info">
             <div class="sync-item-name">${l.clientName}</div>
             <div class="sync-item-time">${fmtDateTime(l.time)} · ${capitalize(l.status)}</div>
@@ -2946,17 +3286,15 @@ function renderSyncView() {
   // Folder tree
   const treeEl = document.getElementById('folder-tree');
   if (treeEl) {
-    const lines = ['📂 Google Drive / Local AppData', '│', '├── 📊 master_tracker.db', '│', '└── 📁 Clients/'];
+    const lines = ['📂 Google Drive / Local AppData', '│', '├── 📊 master_tracker.db', '│', '└── 📁 LexDesk_Data/ (auto-created)', '    │'];
     state.clients.slice(0,6).forEach((c,i) => {
       const isLast = i === Math.min(state.clients.length, 6) - 1;
       const pref = isLast ? '    └──' : '    ├──';
-      lines.push(`${pref} 📁 ${c.clientId}_${c.name.replace(/\s+/g,'_')}/`);
-      lines.push(`${isLast?'        ':'    │   '} ├── 📝 client_profile.json`);
-      if (c.caseType === 'cyber') lines.push(`${isLast?'        ':'    │   '} └── 📁 Cyber_Security/`);
-      if (c.caseType === 'rental') lines.push(`${isLast?'        ':'    │   '} └── 📁 Rental_Agreements/`);
-      if (c.caseType === 'general') lines.push(`${isLast?'        ':'    │   '} └── 📁 General_Practice/`);
+      lines.push(`${pref} 📁 ${clientFolderName(c)}/`);
+      lines.push(`${isLast?'        ':'    │   '} ├── 📝 client_profile.json${c.synced ? ' ✓' : ' ⏳'}`);
+      lines.push(`${isLast?'        ':'    │   '} └── 📁 ${caseSubFolder(c.caseType)}/`);
     });
-    if (state.clients.length > 6) lines.push(`    └── ... (${state.clients.length - 6} more clients)`);
+    if (state.clients.length > 6) lines.push(`    └── … (${state.clients.length - 6} more clients)`);
     treeEl.textContent = lines.join('\n');
   }
 }
@@ -3065,7 +3403,17 @@ function loadSettings() {
   if (state.profile.phone) document.getElementById('settings-phone').value = state.profile.phone;
   if (state.profile.email) document.getElementById('settings-email').value = state.profile.email;
   if (state.profile.court) document.getElementById('settings-court').value = state.profile.court;
-  if (state.settings.driveUrl) document.getElementById('settings-drive-url').value = state.settings.driveUrl;
+  // Show redirect URI so user can copy it into Google Cloud Console
+  const redirectUri = window.location.origin + window.location.pathname;
+  ['redirect-uri-display','redirect-uri-display-2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = redirectUri;
+  });
+  // Load stored Client ID
+  const storedClientId = localStorage.getItem(DRIVE.CLIENT_ID_KEY) || '';
+  const clientIdEl = document.getElementById('settings-drive-client-id');
+  if (clientIdEl) clientIdEl.value = storedClientId;
+  renderDriveSettingsUI();
 }
 
 function saveSettings() {
@@ -3083,10 +3431,44 @@ function saveSettings() {
 }
 
 function saveDriveSettings() {
-  state.settings.driveUrl = document.getElementById('settings-drive-url').value;
-  save(STORAGE_KEYS.SETTINGS, state.settings);
-  showToast('Google Drive settings saved!', 'success');
+  const clientId = (document.getElementById('settings-drive-client-id')?.value || '').trim();
+  if (!clientId) { showToast('Please enter your Google OAuth2 Client ID.', 'error'); return; }
+  localStorage.setItem(DRIVE.CLIENT_ID_KEY, clientId);
+  showToast('Client ID saved! Now click "Connect Google Drive".', 'success');
+}
+
+function driveDisconnect() {
+  if (!confirm('Disconnect Google Drive? Pending records will stay queued.')) return;
+  clearDriveToken();
+  renderDriveSettingsUI();
   renderSyncView();
+  updateSyncStatus('offline', 'Not connected');
+  showToast('Google Drive disconnected.', 'warning');
+}
+
+function renderDriveSettingsUI() {
+  const connected = !!getDriveToken();
+  const banner = document.getElementById('drive-conn-banner');
+  const label = document.getElementById('drive-conn-label');
+  const sub = document.getElementById('drive-conn-sub');
+  const icon = document.getElementById('drive-conn-icon');
+  const disconnBtn = document.getElementById('drive-disconnect-btn');
+  if (!banner) return;
+  if (connected) {
+    banner.style.background = '#f0fff4';
+    banner.style.borderColor = '#9ae6b4';
+    if (label) label.textContent = 'Connected to Google Drive';
+    if (sub) sub.textContent = `Token valid · Root folder: ${DRIVE.ROOT_FOLDER_NAME}`;
+    if (icon) icon.style.color = '#38a169';
+    if (disconnBtn) disconnBtn.style.display = 'inline-flex';
+  } else {
+    banner.style.background = '';
+    banner.style.borderColor = '';
+    if (label) label.textContent = 'Not connected';
+    if (sub) sub.textContent = 'Authorise below to enable real Drive sync';
+    if (icon) icon.style.color = '#4285f4';
+    if (disconnBtn) disconnBtn.style.display = 'none';
+  }
 }
 
 function toggleSwitch(btn) {
@@ -3230,6 +3612,11 @@ function fileIcon(name) {
 //  BOOT
 // ══════════════════════════════════════════════════
 (function boot() {
+  // Handle OAuth2 redirect (token in URL hash)
+  if (handleOAuthRedirect()) {
+    showToast('Google Drive authorised! You can now sync records.', 'success');
+  }
+
   const setupDone = localStorage.getItem(STORAGE_KEYS.SETUP_DONE);
   if (setupDone) {
     document.getElementById('setup-screen').style.display = 'none';
