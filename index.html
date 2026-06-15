@@ -2964,19 +2964,39 @@ function handleOAuthRedirect() {
 
 // ── Drive REST helpers ────────────────────────────
 async function driveRequest(method, url, body, extraHeaders = {}) {
+  // 1. CORRECTION: Intercept malformed, blank, or dot-ended API URLs before sending
+  if (!url || typeof url !== 'string' || url.trim() === '') {
+    throw new Error('Drive API Request aborted: The target URL is empty or invalid.');
+  }
+
+  // Clean trailing spaces and check if the URL ends with a dot/missing ID parameter
+  const trimmedUrl = url.trim();
+  if (trimmedUrl.endsWith('/') || trimmedUrl.endsWith('/.') || trimmedUrl.endsWith('files/.')) {
+    throw new Error(`Drive API Request aborted: Malformed URL detected ("${url}"). A valid File or Folder ID was not provided by the calling function.`);
+  }
+
   const token = getDriveToken();
   if (!token) throw new Error('NO_TOKEN');
+  
   const headers = { Authorization: `Bearer ${token}`, ...extraHeaders };
+  
   if (body && typeof body === 'object' && !(body instanceof FormData) && !(body instanceof Blob)) {
     headers['Content-Type'] = 'application/json';
     body = JSON.stringify(body);
   }
-  const res = await fetch(url, { method, headers, body });
+  
+  const res = await fetch(trimmedUrl, { method, headers, body });
+  
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    if (res.status === 401) { clearDriveToken(); throw new Error('TOKEN_EXPIRED'); }
-    throw new Error(err?.error?.message || `HTTP ${res.status}`);
+    if (res.status === 401) { 
+      clearDriveToken(); 
+      throw new Error('TOKEN_EXPIRED'); 
+    }
+    // Enhanced error messaging to help you debug database issues quickly
+    throw new Error(err?.error?.message || `HTTP ${res.status} on target: ${trimmedUrl}`);
   }
+  
   return res.json();
 }
 
@@ -3048,11 +3068,19 @@ async function driveUploadFile(file, parentId) {
 
 // ── Root folder bootstrap ─────────────────────────
 async function ensureRootFolder() {
-  let rootId = localStorage.getItem(DRIVE.ROOT_ID_KEY);
-  if (rootId) return rootId;
-  rootId = await driveCreateFolder(DRIVE.ROOT_FOLDER_NAME, null);
-  localStorage.setItem(DRIVE.ROOT_ID_KEY, rootId);
-  return rootId;
+  // 1. Fetch your saved root folder ID (from script properties, a settings sheet, etc.)
+  let rootFolderId = PropertiesService.getScriptProperties().getProperty('ROOT_FOLDER_ID');
+  
+  // CORRECTION: Check if the ID is missing, blank, or just a dot before calling Drive API
+  if (!rootFolderId || rootFolderId.trim() === "" || rootFolderId === ".") {
+    console.log("Root folder ID not found or invalid. Creating a new root folder...");
+    
+    // Create the main app folder in the top-level Google Drive
+    rootFolderId = await driveCreateFolder("Lawyer App Root", "root"); 
+    PropertiesService.getScriptProperties().setProperty('ROOT_FOLDER_ID', rootFolderId);
+  }
+  
+  return rootFolderId;
 }
 
 // ── Per-client subfolder name ─────────────────────
