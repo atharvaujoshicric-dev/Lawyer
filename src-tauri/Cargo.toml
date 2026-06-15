@@ -1,0 +1,46 @@
+[package]
+name = "legal-practice-manager"
+version = "1.0.0"
+description = "Legal Practice Management & Client Tracker"
+authors = ["you"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "1.5", features = [] }
+
+[dependencies]
+tauri = { version = "1.6", features = [
+  "dialog-all",
+  "fs-all",
+  "http-all",
+  "notification-all",
+  "path-all",
+  "process-relaunch",
+  "shell-open",
+] }
+tauri-plugin-store = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rusqlite = { version = "0.31", features = ["bundled"] }
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4"] }
+tokio = { version = "1", features = ["full"] }
+sha2 = "0.10"
+hex = "0.4"
+dirs = "5"
+open = "5"
+reqwest = { version = "0.11", features = ["json", "blocking"] }
+base64 = "0.21"
+anyhow = "1"
+
+[features]
+custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true
