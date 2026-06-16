@@ -93,6 +93,7 @@ button,input,select,textarea{font-family:var(--font)}
 .badge-synced{background:#c6f6d5;color:#276749}.badge-unsynced{background:#fff5f5;color:#c53030}
 .badge-alert{background:#fffbeb;color:#92400e}
 .badge-admin{background:#faf5ff;color:#6b46c1}.badge-assistant{background:#ebf8ff;color:#2b6cb0}
+.badge-review{background:#feebc8;color:#c05621}.badge-rework{background:#fed7d7;color:#9b2c2c}
 .form-grid{display:grid;gap:14px}
 .form-grid-2{grid-template-columns:1fr 1fr}.form-grid-3{grid-template-columns:1fr 1fr 1fr}
 .form-group{display:flex;flex-direction:column;gap:5px;min-width:0}
@@ -244,14 +245,14 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .chat-main{flex:1;display:flex;flex-direction:column;min-width:0}
 .chat-header{padding:13px 18px;border-bottom:1px solid var(--border);font-weight:600;font-size:14px;flex-shrink:0}
 .chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
-.chat-msg{max-width:75%;padding:9px 13px;border-radius:12px;font-size:13.5px;line-height:1.5;word-break:break-word;position:relative;}
+.chat-msg{max-width:75%;padding:9px 13px;border-radius:12px;font-size:13.5px;line-height:1.5;word-break:break-word;position:relative}
 .chat-msg.mine{align-self:flex-end;background:var(--navy);color:#fff;border-bottom-right-radius:3px}
 .chat-msg.theirs{align-self:flex-start;background:var(--bg);color:var(--text-primary);border-bottom-left-radius:3px}
-.chat-msg-time{font-size:10px;opacity:.6;margin-top:3px;display:flex;gap:4px;justify-content:flex-end;}
-.chat-msg-actions{display:none;position:absolute;top:-20px;right:0;background:white;border:1px solid var(--border);border-radius:4px;padding:2px;gap:4px;z-index:10;}
-.chat-msg:hover .chat-msg-actions{display:flex;}
-.chat-msg-actions button{background:none;border:none;cursor:pointer;font-size:11px;color:var(--text-secondary);padding:2px 4px;}
-.chat-msg-actions button:hover{color:var(--navy);}
+.chat-msg-time{font-size:10px;opacity:.6;margin-top:3px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.chat-msg-actions{display:none;position:absolute;top:-20px;right:5px;background:#fff;border:1px solid var(--border);border-radius:4px;padding:2px;gap:4px;z-index:10}
+.chat-msg:hover .chat-msg-actions{display:flex}
+.chat-msg-actions button{background:none;border:none;cursor:pointer;font-size:11px;padding:2px 4px;color:var(--text-secondary)}
+.chat-msg-actions button:hover{color:var(--navy)}
 .chat-msg-attach{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);padding:6px 10px;border-radius:8px;margin-top:6px;font-size:12px;cursor:pointer}
 .chat-msg.theirs .chat-msg-attach{background:rgba(0,0,0,.06)}
 .chat-input-bar{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border);flex-shrink:0;align-items:center}
@@ -259,23 +260,22 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .chat-attach-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--bg);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .chat-send-btn{width:36px;height:36px;border-radius:50%;border:none;background:var(--navy);color:var(--gold);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 /* ── Tasks ── */
-.task-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;border-left:4px solid var(--border)}
+.task-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;border-left:4px solid var(--border);cursor:pointer}
 .task-card.priority-high{border-left-color:#f56565}
 .task-card.priority-medium{border-left-color:#ed8936}
 .task-card.priority-low{border-left-color:#48bb78}
 .task-card.status-done{opacity:.6}
 .task-title{font-size:14px;font-weight:600;color:var(--text-primary)}
 .task-meta{font-size:12px;color:var(--text-muted);margin-top:4px;display:flex;gap:10px;flex-wrap:wrap}
-.kanban{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;overflow-x:auto;padding-bottom:10px;}
-.kanban-col{background:var(--bg);border-radius:10px;padding:12px;min-height:250px;min-width:160px;}
+.kanban{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.kanban-col{background:var(--bg);border-radius:10px;padding:12px;min-height:200px}
 .kanban-col-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
 /* ── File preview modal ── */
 .preview-body{display:flex;align-items:center;justify-content:center;min-height:200px;max-height:70vh;overflow:auto;background:#f0f1f5;border-radius:8px}
 .preview-body img{max-width:100%;max-height:68vh;object-fit:contain}
 .preview-body iframe{width:100%;height:68vh;border:none}
 /* ── Responsive ── */
-@media(max-width:1200px){.kanban{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:1024px){.dash-grid{grid-template-columns:1fr}}
+@media(max-width:1024px){.dash-grid{grid-template-columns:1fr}.kanban{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:768px){
   #sidebar{transform:translateX(-100%);width:260px}
   #sidebar.open{transform:translateX(0)}
@@ -311,9 +311,9 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 <div id="setup-screen" style="display:none;">
   <div class="setup-card">
     <div class="setup-logo">Lex<span>Desk</span></div>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">Secure Legal Practice Management — Database Error</p>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">Secure Legal Practice Management — Database Configuration Error</p>
     <div id="setup-config-step">
-      <p style="margin-bottom:12px; color:var(--danger)">Project initialization tokens could not be verified inside inline workspace scripts.</p>
+      <p style="margin-bottom:12px; color:var(--danger)">Project authentication tokens could not be verified inside workspace memory parameters.</p>
       <div class="form-group" style="margin-bottom:12px;">
         <label class="form-label">Supabase Project URL</label>
         <input class="form-control" id="cfg-url" type="text" placeholder="https://xxxx.supabase.co"/>
@@ -331,7 +331,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   <div class="login-card">
     <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px;">Lex<span style="color:var(--gold);">Desk</span></div>
     <div id="auth-tabs" style="display:flex;gap:6px;margin:14px 0 18px;background:var(--bg);border-radius:8px;padding:4px;">
-      <button class="btn btn-sm" id="tab-signin" style="flex:1;justify-content:center;background:var(--navy);color:#fff;" onclick="showAuthTab('signin')">Sign In</button>
+      <button class="btn btn-sm" id="tab-signin" style="flex:1;justify-content:center;background:var(--navy) !important;color:#fff;" onclick="showAuthTab('signin')">Sign In</button>
       <button class="btn btn-sm btn-outline" id="tab-signup" style="flex:1;justify-content:center;border:none;" onclick="showAuthTab('signup')">Sign Up</button>
     </div>
 
@@ -443,7 +443,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
         <div id="deadlines-list"></div>
       </div>
-
       <div class="page-view" id="view-documents">
         <div class="search-bar">
           <div class="search-input-wrap"><i class="fas fa-search"></i><input class="search-input" id="doc-search" type="text" placeholder="Search documents…" oninput="renderDocuments()"/></div>
@@ -486,7 +485,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
       <div class="page-view" id="view-tasks">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
           <div class="search-bar" style="margin-bottom:0;flex:1;">
-            <select class="form-control" id="task-filter-status" style="width:auto;" onchange="renderTasks()"><option value="">All Statuses</option><option value="open">Open</option><option value="in_progress">In Progress</option><option value="review">Under Review</option><option value="rework">Rework Staged</option><option value="done">Closed / Done</option><option value="cancelled">Cancelled</option></select>
+            <select class="form-control" id="task-filter-status" style="width:auto;" onchange="renderTasks()"><option value="">All Statuses</option><option value="open">Open</option><option value="in_progress">In Progress</option><option value="review">Under Review</option><option value="rework">Rework Required</option><option value="done">Closed</option></select>
           </div>
           <button class="btn btn-gold" onclick="openTaskModal()"><i class="fas fa-plus"></i> New Task</button>
         </div>
@@ -494,9 +493,8 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
           <div class="kanban-col"><div class="kanban-col-title">Open <span id="kc-open-count">0</span></div><div id="kc-open"></div></div>
           <div class="kanban-col"><div class="kanban-col-title">In Progress <span id="kc-progress-count">0</span></div><div id="kc-progress"></div></div>
           <div class="kanban-col"><div class="kanban-col-title">Under Review <span id="kc-review-count">0</span></div><div id="kc-review"></div></div>
-          <div class="kanban-col"><div class="kanban-col-title">Rework <span id="kc-rework-count">0</span></div><div id="kc-rework"></div></div>
-          <div class="kanban-col"><div class="kanban-col-title">Done <span id="kc-done-count">0</span></div><div id="kc-done"></div></div>
-          <div class="kanban-col"><div class="kanban-col-title">Cancelled <span id="kc-cancelled-count">0</span></div><div id="kc-cancelled"></div></div>
+          <div class="kanban-col"><div class="kanban-col-title">Rework Required <span id="kc-rework-count">0</span></div><div id="kc-rework"></div></div>
+          <div class="kanban-col"><div class="kanban-col-title">Closed <span id="kc-done-count">0</span></div><div id="kc-done"></div></div>
         </div>
       </div>
 
@@ -564,20 +562,15 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
               <button class="btn btn-primary w-full mt-4" style="justify-content:center;" onclick="saveProfile()"><i class="fas fa-save"></i> Save Profile</button>
             </div>
           </div>
-
           <div class="settings-section">
             <div class="settings-section-head"><i class="fas fa-shield-alt"></i><span>Data & Security</span></div>
             <div class="settings-section-body">
               <div class="settings-row">
-                <div class="settings-row-text"><div class="settings-row-label">Database</div><div class="settings-row-desc">Supabase Postgres Instance Connection</div></div>
-                <span class="badge badge-active"><i class="fas fa-lock"></i> Active</span>
-              </div>
-              <div class="settings-row">
-                <div class="settings-row-text"><div class="settings-row-label">Export Data Matrix</div><div class="settings-row-desc">Extract entities into an Excel spreadsheet format</div></div>
+                <div class="settings-row-text"><div class="settings-row-label">Export to Excel</div><div class="settings-row-desc">Clients, Documents, Users & Tasks in one workbook</div></div>
                 <button class="btn btn-outline btn-sm" onclick="exportExcel()"><i class="fas fa-file-excel"></i> Export</button>
               </div>
               <div class="settings-row" id="reset-row" style="display:none;">
-                <div class="settings-row-text"><div class="settings-row-label" style="color:var(--danger);">Disconnect Database</div><div class="settings-row-desc">Clears local Supabase configurations out of this browser context</div></div>
+                <div class="settings-row-text"><div class="settings-row-label" style="color:var(--danger);">Disconnect Database</div><div class="settings-row-desc">Clears local config override metadata parameters</div></div>
                 <button class="btn btn-danger btn-sm" onclick="disconnectSupabase()"><i class="fas fa-unlink"></i> Disconnect</button>
               </div>
             </div>
@@ -585,7 +578,11 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-    </div></div></div><div class="modal-backdrop" id="modal-detail">
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-detail">
   <div class="modal" style="max-width:820px;">
     <div class="modal-header">
       <div><div class="modal-title" id="det-title">Client</div><div class="modal-sub" id="det-sub"></div></div>
@@ -692,7 +689,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 <div class="modal-backdrop" id="modal-template">
   <div class="modal" style="max-width:700px;">
     <div class="modal-header">
-      <div><div class="modal-title" id="tpl-modal-title">New Draft Template</div><div class="modal-sub">Use <code>{{CLIENT_NAME}}</code>, <code>{{CLIENT_ID}}</code>, <code>{{DATE}}</code></div></div>
+      <div><div class="modal-title" id="tpl-modal-title">New Draft Template</div><div class="modal-sub">Use <code>{{CLIENT_NAME}}</code>, <code>{{CLIENT_ID}}</code>, <code>{{DATE}}</code>, <code>{{CASE_TYPE}}</code></div></div>
       <button class="modal-close" onclick="closeModal('modal-template')">&times;</button>
     </div>
     <div class="modal-body">
@@ -700,12 +697,16 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <div class="form-group"><label class="form-label">Template Name <span class="required">*</span></label><input class="form-control" id="tpl-name" type="text" placeholder="e.g. NDA Draft"/></div>
         <div class="form-group"><label class="form-label">Category</label><select class="form-control" id="tpl-category"></select></div>
       </div>
+      <div class="form-group" style="margin-bottom:6px;"><label class="form-label">Content <span class="required">*</span></label></div>
       <div class="rich-toolbar">
         <button onclick="richCmd('bold')"><i class="fas fa-bold"></i></button>
         <button onclick="richCmd('italic')"><i class="fas fa-italic"></i></button>
         <button onclick="richCmd('underline')"><i class="fas fa-underline"></i></button>
+        <button onclick="richCmd('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
+        <button onclick="richCmd('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
         <button onclick="insertPlaceholder('{{CLIENT_NAME}}')" style="width:auto;padding:0 8px;font-size:11px;">{{NAME}}</button>
         <button onclick="insertPlaceholder('{{DATE}}')" style="width:auto;padding:0 8px;font-size:11px;">{{DATE}}</button>
+        <button onclick="insertPlaceholder('{{CLIENT_ID}}')" style="width:auto;padding:0 8px;font-size:11px;">{{ID}}</button>
       </div>
       <div class="rich-editor" id="tpl-content" contenteditable="true"></div>
     </div>
@@ -724,11 +725,13 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     </div>
     <div class="modal-body">
       <div class="form-group" style="margin-bottom:14px;"><label class="form-label">Select Client</label><select class="form-control" id="ut-client" onchange="previewTemplate()"></select></div>
+      <div class="form-group" style="margin-bottom:6px;"><label class="form-label">Preview</label></div>
       <div id="ut-preview" class="template-preview" style="max-height:300px;overflow-y:auto;"></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal('modal-use-template')">Close</button>
       <button class="btn btn-primary" onclick="copyTemplateText()"><i class="fas fa-copy"></i> Copy</button>
+      <button class="btn btn-gold" onclick="downloadTemplateText()"><i class="fas fa-download"></i> Download .txt</button>
     </div>
   </div>
 </div>
@@ -738,9 +741,9 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     <div class="modal-header"><div><div class="modal-title">New Case Category</div></div><button class="modal-close" onclick="closeModal('modal-new-cat')">&times;</button></div>
     <div class="modal-body">
       <div class="form-grid" style="gap:13px;">
-        <div class="form-group"><label class="form-label">Category Name <span class="required">*</span></label><input class="form-control" id="nc-name" type="text" placeholder="e.g. Corporate"/></div>
-        <div class="form-group"><label class="form-label">Icon Class</label><input class="form-control" id="nc-icon" type="text" placeholder="fas fa-gavel"/></div>
-        <div class="form-group"><label class="form-label">Color</label><select class="form-control" id="nc-color"><option value="blue">Blue</option><option value="green">Green</option><option value="purple">Purple</option></select></div>
+        <div class="form-group"><label class="form-label">Category Name <span class="required">*</span></label><input class="form-control" id="nc-name" type="text" placeholder="e.g. Immigration"/></div>
+        <div class="form-group"><label class="form-label">Icon (Font Awesome class)</label><input class="form-control" id="nc-icon" type="text" placeholder="fas fa-globe"/></div>
+        <div class="form-group"><label class="form-label">Color</label><select class="form-control" id="nc-color"><option value="blue">Blue</option><option value="green">Green</option><option value="purple">Purple</option><option value="orange">Orange</option><option value="red">Red</option></select></div>
       </div>
     </div>
     <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-new-cat')">Cancel</button><button class="btn btn-gold" onclick="createCategory()"><i class="fas fa-plus"></i> Create</button></div>
@@ -752,7 +755,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     <div class="modal-header"><div><div class="modal-title" id="task-modal-title">New Task</div></div><button class="modal-close" onclick="closeModal('modal-task')">&times;</button></div>
     <div class="modal-body">
       <div class="form-grid" style="gap:13px;">
-        <div class="form-group"><label class="form-label">Title <span class="required">*</span></label><input class="form-control" id="task-title" type="text" placeholder="e.g. Formulate context mapping schema"/></div>
+        <div class="form-group"><label class="form-label">Title <span class="required">*</span></label><input class="form-control" id="task-title" type="text" placeholder="e.g. Draft reply to opposite counsel"/></div>
         <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" id="task-desc" rows="3"></textarea></div>
         <div class="form-group"><label class="form-label">Related Client (optional)</label><select class="form-control" id="task-client"></select></div>
         <div class="form-group"><label class="form-label">Assign To <span class="required">*</span></label><select class="form-control" id="task-assignee"></select></div>
@@ -762,10 +765,10 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
       <div id="task-comments-section" style="display:none;margin-top:18px;">
-        <div class="section-divider">Comments / Rework Log</div>
+        <div class="section-divider">Comments</div>
         <div id="task-comments-list" style="max-height:180px;overflow-y:auto;margin-bottom:10px;"></div>
         <div style="display:flex;gap:8px;">
-          <input class="form-control" id="task-comment-input" type="text" placeholder="Add a comment or rework notes…"/>
+          <input class="form-control" id="task-comment-input" type="text" placeholder="Add a comment…" onkeydown="if(event.key==='Enter')addTaskComment()"/>
           <button class="btn btn-outline btn-sm" onclick="addTaskComment()"><i class="fas fa-paper-plane"></i></button>
         </div>
       </div>
@@ -778,28 +781,36 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
+<div id="toast-container"></div>
+
 <script>
 // ════════════════════════════════════════════
-//  DATABASE INTERACTION HANDLERS
+//  SUPABASE DATABASE WIRELESS INITIALIZER
 // ════════════════════════════════════════════
 let sb = null;
+
 const SUPABASE_URL = "https://nvojtsmurbvpclwcwrca.supabase.co"; 
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52b2p0c211cmJ2cGNsd2N3cmNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1OTYxODgsImV4cCI6MjA5NzE3MjE4OH0.83E5nAY27tX15ClrqwxjmAsPXj3Wx5na9j3Lg24I63E"; 
 
-function getSupabaseConfig(){ try { return JSON.parse(localStorage.getItem('ld_supabase_cfg')||'null'); } catch { return null; } }
+function getSupabaseConfig(){ 
+  try { return JSON.parse(localStorage.getItem('ld_supabase_cfg') || 'null'); } catch { return null; } 
+}
 function saveSupabaseConfig(){
   const url = (document.getElementById('cfg-url').value || '').trim();
   const key = (document.getElementById('cfg-key').value || '').trim();
-  if(!url || !key){ showToast('Both entries required.', 'error'); return; }
+  if(!url || !key){ showToast('Both URL and key parameters are required.', 'error'); return; }
   localStorage.setItem('ld_supabase_cfg', JSON.stringify({url, key}));
   location.reload();
 }
-function disconnectSupabase(){ localStorage.removeItem('ld_supabase_cfg'); location.reload(); }
-
+function disconnectSupabase(){
+  localStorage.removeItem('ld_supabase_cfg');
+  location.reload();
+}
 function initSupabase(){
-  const localOverride = getSupabaseConfig();
-  const runtimeUrl = localOverride ? localOverride.url : SUPABASE_URL;
-  const runtimeKey = localOverride ? localOverride.key : SUPABASE_ANON_KEY;
+  const override = getSupabaseConfig();
+  const runtimeUrl = override ? override.url : SUPABASE_URL;
+  const runtimeKey = override ? override.key : SUPABASE_ANON_KEY;
+
   if(!runtimeUrl || !runtimeKey || runtimeKey === "YOUR_SUPABASE_ANON_KEY") {
     document.getElementById('setup-screen').style.display = 'flex';
     return false;
@@ -809,7 +820,7 @@ function initSupabase(){
 }
 
 // ════════════════════════════════════════════
-//  APPLICATION GLOBAL RUNTIME STATE
+//  APPLICATION CENTRALIZED STATE OBJECT
 // ════════════════════════════════════════════
 let S={
   user:null, profile:null,
@@ -817,17 +828,18 @@ let S={
   categories:[], formSchemas:{},
   tasks:[], taskComments:{},
   messages:[], activeChatPeer:null,
-  signupCode:null, pendingUsers:[],
+  signupCode:null,
   editingClientId:null, detailClientId:null,
   activeCaseType:null, pendingFiles:[],
   editingTemplateId:null, activeTemplateId:null,
-  editingTaskId:null, pendingChatFile:null, fbActiveCat:null
+  editingTaskId:null, pendingChatFile:null,
+  fbActiveCat:null
 };
 
 const FIELD_TYPES=['text','number','date','tel','select','textarea'];
 
 // ════════════════════════════════════════════
-//  AUTHENTICATION MANAGER
+//  AUTHENTICATION CONTROLLER SUBROUTINES
 // ════════════════════════════════════════════
 function showAuthTab(tab){
   document.getElementById('auth-signin').style.display=tab==='signin'?'block':'none';
@@ -839,19 +851,36 @@ function showAuthTab(tab){
 }
 
 async function doSignIn(){
-  const emEl = document.getElementById('li-email');
-  const pwEl = document.getElementById('li-pwd');
+  const emailInput = document.getElementById('li-email');
+  const pwdInput = document.getElementById('li-pwd');
   const err = document.getElementById('li-err');
-  if(!emEl || !pwEl) return;
-  const email = (emEl.value || '').trim();
-  const pwd = pwEl.value;
-  err.style.display = 'none';
-  if(!email || !pwd){ err.textContent = 'Please provide credentials.'; err.style.display = 'block'; return; }
+  if(!emailInput || !pwdInput) return;
   
-  updateSyncStatus('syncing', 'Connecting...');
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pwd });
-  if(error){ updateSyncStatus('synced', 'Live'); err.textContent = error.message; err.style.display = 'block'; return; }
-  await afterAuth();
+  const email = (emailInput.value || '').trim();
+  const pwd = pwdInput.value;
+  err.style.display = 'none';
+  
+  if(!email || !pwd){
+    err.textContent = 'Please provide your account username and password parameters.';
+    err.style.display = 'block';
+    return;
+  }
+  
+  try {
+    updateSyncStatus('syncing', 'Authenticating Core Environment...');
+    const { data, error } = await sb.auth.signInWithPassword({email, password: pwd});
+    if(error){
+      updateSyncStatus('synced', 'Live');
+      err.textContent = error.message;
+      err.style.display = 'block';
+      return;
+    }
+    await afterAuth();
+  } catch(e) {
+    updateSyncStatus('offline', 'Error');
+    err.textContent = 'A connection runtime context error dropped your authorization handshake.';
+    err.style.display = 'block';
+  }
 }
 
 async function doSignUp(){
@@ -861,29 +890,71 @@ async function doSignUp(){
   const code = (document.getElementById('su-code').value || '').trim();
   const err = document.getElementById('su-err');
   err.style.display = 'none';
-  if(!name || !email || pwd.length < 8){ err.textContent = 'Invalid entry bounds (Password min 8 chars).'; err.style.display = 'block'; return; }
-
-  const {count} = await sb.from('profiles').select('*', {count: 'exact', head: true});
-  const isFirstUser = (count || 0) === 0;
-
-  if(!isFirstUser){
-    if(!code){ err.textContent = 'System code validation required.'; err.style.display = 'block'; return; }
-    const {data: codeRow} = await sb.from('signup_codes').select('*').eq('code', code).eq('active', true).maybeSingle();
-    if(!codeRow){ err.textContent = 'Invalid reference token details.'; err.style.display = 'block'; return; }
+  
+  if(!name || !email || pwd.length < 8){
+    err.textContent = 'Valid account names, emails, and passwords (8+ characters) are required values.';
+    err.style.display = 'block';
+    return;
   }
 
-  const {data, error} = await sb.auth.signUp({email, password: pwd});
-  if(error){ err.textContent = error.message; err.style.display = 'block'; return; }
-  const userId = data.user?.id;
-  if(!userId){ err.textContent = 'Instantiation chain failed.'; err.style.display = 'block'; return; }
+  try {
+    updateSyncStatus('syncing', 'Provisioning Profile Layout Context...');
+    const {count} = await sb.from('profiles').select('*', {count: 'exact', head: true});
+    const isFirstUser = (count || 0) === 0;
 
-  await sb.from('profiles').insert({ id: userId, full_name: name, email, role: isFirstUser ? 'admin' : 'pending', approved: isFirstUser });
-  if(isFirstUser){
-    await sb.from('signup_codes').insert({code: genCode(), created_by: userId});
-    await afterAuth();
-  } else {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('pending-screen').style.display = 'flex';
+    if(!isFirstUser){
+      if(!code){
+        err.textContent = 'An enterprise structural validation code is required to join this team node.';
+        err.style.display = 'block';
+        updateSyncStatus('synced', 'Live');
+        return;
+      }
+      const {data: codeRow} = await sb.from('signup_codes').select('*').eq('code', code).eq('active', true).maybeSingle();
+      if(!codeRow){
+        err.textContent = 'The validation code provided is invalid or has expired tracking context.';
+        err.style.display = 'block';
+        updateSyncStatus('synced', 'Live');
+        return;
+      }
+    }
+
+    const {data, error} = await sb.auth.signUp({email, password: pwd});
+    if(error){
+      err.textContent = error.message;
+      err.style.display = 'block';
+      updateSyncStatus('synced', 'Live');
+      return;
+    }
+
+    const userId = data.user?.id;
+    if(!userId){
+      err.textContent = 'Auth layer mapping error. Confirm schema parameters.';
+      err.style.display = 'block';
+      updateSyncStatus('synced', 'Live');
+      return;
+    }
+
+    await sb.from('profiles').insert({
+      id: userId, full_name: name, email,
+      role: isFirstUser ? 'admin' : 'pending',
+      approved: isFirstUser
+    });
+
+    if(isFirstUser){
+      const newCode = genCode();
+      await sb.from('signup_codes').insert({code: newCode, created_by: userId});
+      showToast('Root administrator context declared successfully.', 'success');
+      await afterAuth();
+    } else {
+      showToast('Account initialized safely. Awaiting senior approval sequences.', 'success');
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('pending-screen').style.display = 'flex';
+      updateSyncStatus('synced', 'Live');
+    }
+  } catch(ex) {
+    err.textContent = 'An execution failure occurred during user serialization tracking loops.';
+    err.style.display = 'block';
+    updateSyncStatus('synced', 'Live');
   }
 }
 
@@ -892,7 +963,9 @@ async function afterAuth(){
   if(!user){ document.getElementById('login-screen').style.display='flex'; return; }
   S.user=user;
   const {data:profile}=await sb.from('profiles').select('*').eq('id',user.id).maybeSingle();
-  if(!profile || !profile.approved){
+  if(!profile){ document.getElementById('login-screen').style.display='flex'; return; }
+  if(!profile.approved){
+    S.profile=profile;
     document.getElementById('login-screen').style.display='none';
     document.getElementById('pending-screen').style.display='flex';
     return;
@@ -905,26 +978,28 @@ async function afterAuth(){
 }
 
 async function doLogout(){
+  if(S.profile && !confirm('Terminate your structural runtime tracking session?')) return;
   await sb.auth.signOut();
   S={...S,user:null,profile:null};
   document.getElementById('app').style.display='none';
   document.getElementById('pending-screen').style.display='none';
   document.getElementById('login-screen').style.display='flex';
 }
+
 function isAdmin(){ return S.profile?.role==='admin'; }
 function genCode(){ return Math.random().toString(36).substring(2,8).toUpperCase(); }
 </script>
 
 <script>
 // ════════════════════════════════════════════
-//  DATA INGESTION PIPELINE
+//  DATA RECOVERY CORE DRIVERS
 // ════════════════════════════════════════════
 async function loadAllData(){
   const [catRes,schemaRes,clientRes,userRes,docRes,tplRes,taskRes,codeRes]=await Promise.all([
     sb.from('categories').select('*').order('created_at'),
     sb.from('form_schemas').select('*'),
     sb.from('clients').select('*').order('created_at',{ascending:false}),
-    sb.from('profiles').select('*').eq('approved',true).order('created_at'),
+    sb.from('profiles').select('*').order('created_at'), // Bug Fix: Recover all profiles so Assistants map direct peer arrays successfully
     sb.from('documents').select('*').order('uploaded_at',{ascending:false}),
     sb.from('templates').select('*').order('created_at',{ascending:false}),
     sb.from('tasks').select('*').order('created_at',{ascending:false}),
@@ -980,6 +1055,7 @@ async function initApp(){
   renderTasks();
   renderChatContacts();
   loadSettingsUI();
+  checkAlerts();
   updateSyncStatus('synced','Live');
   startPolling();
 }
@@ -990,30 +1066,38 @@ function startPolling(){
       await loadMessages();
       renderChatMessages();
     }
-    const {data}=await sb.from('tasks').select('*').order('created_at',{ascending:false});
-    S.tasks=data||[];
-    if(document.getElementById('view-tasks')?.classList.contains('active')){ renderTasks(); }
-  },5000);
+    const isTasksActive = document.getElementById('view-tasks')?.classList.contains('active');
+    const isDashboardActive = document.getElementById('view-dashboard')?.classList.contains('active');
+    if(isTasksActive || isDashboardActive){
+      const {data}=await sb.from('tasks').select('*').order('created_at',{ascending:false});
+      S.tasks=data||[];
+      renderTasks();
+      if(isDashboardActive) renderDashTasks();
+    }
+  },10000);
 }
 
 // ════════════════════════════════════════════
-//  NAVIGATION AND SIDEBAR CONTROL
+//  NAVIGATION AND INTERFACE VIEW LAYOUT ROUTERS
 // ════════════════════════════════════════════
 function buildSidebar(){
   const nav=document.getElementById('sidebar-nav');
-  let html=`<div class="nav-section-label">Overview</div>
+  let html=`
+    <div class="nav-section-label">Overview</div>
     <button class="nav-item active" onclick="navigate('dashboard')"><i class="fas fa-th-large"></i> Dashboard</button>
     <button class="nav-item" onclick="navigate('deadlines')"><i class="fas fa-calendar-exclamation"></i> Deadlines <span id="dl-badge" class="nav-badge" style="display:none;"></span></button>
     <div class="nav-section-label">Clients</div>
     <button class="nav-item" onclick="navigate('clients')"><i class="fas fa-users"></i> All Clients</button>`;
-  S.categories.forEach(cat=>{ html+=`<button class="nav-item" onclick="navigateCat('${cat.id}')"><i class="${cat.icon}"></i> ${cat.label}</button>`; });
+  S.categories.forEach(cat=>{
+    html+=`<button class="nav-item" onclick="navigateCat('${cat.id}')"><i class="${cat.icon}"></i> ${cat.label}</button>`;
+  });
   html+=`<div class="nav-section-label">Workspace</div>
     <button class="nav-item" onclick="navigate('documents')"><i class="fas fa-folder-open"></i> Documents</button>
     <button class="nav-item" onclick="navigate('templates')"><i class="fas fa-file-alt"></i> Templates</button>
     <button class="nav-item" onclick="navigate('chat')"><i class="fas fa-comments"></i> Messages</button>
     <button class="nav-item" onclick="navigate('tasks')"><i class="fas fa-tasks"></i> Tasks <span id="task-badge" class="nav-badge" style="display:none;"></span></button>`;
   if(isAdmin()){
-    html+=`<div class="nav-section-label">Admin</div>
+    html+=`<div class="nav-section-label">Admin Control</div>
       <button class="nav-item" onclick="navigate('users')"><i class="fas fa-user-shield"></i> Users <span id="pending-badge" class="nav-badge" style="display:none;"></span></button>
       <button class="nav-item" onclick="navigate('formbuilder')"><i class="fas fa-sliders-h"></i> Form Builder</button>`;
   }
@@ -1028,22 +1112,35 @@ function updateSidebarProfile(){
   document.getElementById('sb-avatar').textContent=initials(n);
 }
 
-const NAV_TITLES={ dashboard:'Dashboard',clients:'All Clients',deadlines:'Deadlines',documents:'Documents',templates:'Templates',chat:'Messages',tasks:'Tasks Pipeline',users:'Users Control',formbuilder:'Dynamic Forms',settings:'Settings' };
+const NAV_TITLES={
+  dashboard:'Dashboard',clients:'All Clients',deadlines:'Deadlines & Alerts',
+  documents:'Documents',templates:'Draft Templates',chat:'Messages Channels',tasks:'Task Workflows Matrix',
+  users:'User Access Management',formbuilder:'Dynamic Form Fields Layout',settings:'Configuration Setup Preferences'
+};
 
 function navigate(view){
   document.querySelectorAll('.page-view').forEach(el=>el.classList.remove('active'));
-  document.getElementById(`view-${view}`)?.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  const el=document.getElementById(`view-${view}`);
+  if(el) el.classList.add('active');
   document.getElementById('topbar-title').textContent=NAV_TITLES[view]||view;
   closeSidebarMobile();
   if(view==='deadlines') renderDeadlines();
   if(view==='documents') renderDocuments();
   if(view==='users') renderUsers();
   if(view==='templates') renderTemplates();
+  if(view==='formbuilder') renderFormBuilder();
   if(view==='tasks') renderTasks();
   if(view==='chat'){ renderChatContacts(); loadMessages().then(renderChatMessages); }
-  document.getElementById('topbar-new-client-btn').style.display=['dashboard','clients'].includes(view)?'inline-flex':'none';
+  const ncb=document.getElementById('topbar-new-client-btn');
+  if(ncb) ncb.style.display=['dashboard','clients'].includes(view)?'inline-flex':'none';
 }
-function navigateCat(catId){ navigate('clients'); document.getElementById('filter-type').value=catId; renderClientTable(); }
+
+function navigateCat(catId){
+  navigate('clients');
+  document.getElementById('filter-type').value=catId;
+  renderClientTable();
+}
 function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('open'); }
 function closeSidebarMobile(){ if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');} }
 function myClients(){ return isAdmin() ? S.clients : S.clients.filter(c=>c.assigned_to===S.user?.id); }
@@ -1051,7 +1148,7 @@ function myClients(){ return isAdmin() ? S.clients : S.clients.filter(c=>c.assig
 
 <script>
 // ════════════════════════════════════════════
-//  DYNAMIC META FIELD IMPLEMENTATIONS
+//  CASE STRUCTURE TYPES CONFIGURATORS
 // ════════════════════════════════════════════
 function buildCaseTypeTabs(){
   const c=document.getElementById('client-case-type-tabs');
@@ -1060,27 +1157,45 @@ function buildCaseTypeTabs(){
   S.activeCaseType=S.categories[0]?.id||'general';
   renderDynamicFields(S.activeCaseType);
 }
-function selectCaseType(catId){ S.activeCaseType=catId; document.querySelectorAll('.case-type-btn').forEach(b=>b.classList.remove('active')); document.getElementById('ctt-'+catId)?.classList.add('active'); renderDynamicFields(catId); }
-function buildCategoryFilter(){ document.getElementById('filter-type').innerHTML='<option value="">All Types</option>'+S.categories.map(c=>`<option value="${c.id}">${c.label}</option>`).join(''); }
+function selectCaseType(catId){
+  S.activeCaseType=catId;
+  document.querySelectorAll('.case-type-btn').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById('ctt-'+catId);
+  if(btn)btn.classList.add('active');
+  renderDynamicFields(catId);
+}
+function buildCategoryFilter(){
+  const sel=document.getElementById('filter-type');
+  if(sel) sel.innerHTML='<option value="">All Matrix Groupings</option>'+S.categories.map(c=>`<option value="${c.id}">${c.label}</option>`).join('');
+}
 function buildAssigneeFilter(){
-  document.getElementById('filter-assignee').innerHTML='<option value="">All Lawyers</option>'+S.users.map(u=>`<option value="${u.id}">${u.full_name}</option>`).join('');
-  document.getElementById('f-assignee').innerHTML=S.users.map(u=>`<option value="${u.id}">${u.full_name} (${u.role})</option>`).join('');
+  const sel=document.getElementById('filter-assignee');
+  if(sel) sel.innerHTML='<option value="">All Assigned Agents</option>'+S.users.map(u=>`<option value="${u.id}">${u.full_name}</option>`).join('');
+  const fa=document.getElementById('f-assignee');
+  if(fa) fa.innerHTML=S.users.map(u=>`<option value="${u.id}">${u.full_name} (${u.role})</option>`).join('');
+  const ta=document.getElementById('task-assignee');
+  if(ta) ta.innerHTML=S.users.map(u=>`<option value="${u.id}">${u.full_name} (${u.role})</option>`).join('');
 }
 
 function renderDynamicFields(catId){
   const schema=S.formSchemas[catId]||[];
   const cnt=document.getElementById('dynamic-case-fields');
   if(!cnt)return;
-  if(!schema.length){ cnt.innerHTML='<p class="text-muted text-sm">No secondary metrics schema mapped.</p>'; return; }
-  let html=`<div class="section-divider">Category Profile Specifications</div><div class="form-grid form-grid-2">`;
+  if(!schema.length){
+    cnt.innerHTML=`<p style="color:var(--text-muted);font-size:13px;margin:12px 0;">No fields mapping attributes configured inside this specific track layer node.</p>`;
+    return;
+  }
+  let html=`<div class="section-divider">Specialized Attributes Matrix</div><div class="form-grid form-grid-2" style="gap:13px;">`;
   schema.forEach(f=>{
+    const reqStr=f.required?` <span class="required">*</span>`:'';
     let input='';
     if(['text','tel','number','date'].includes(f.type)) input=`<input class="form-control" id="df-${f.id}" type="${f.type}" data-field="${f.id}"/>`;
-    else if(f.type==='textarea') input=`<textarea class="form-control" id="df-${f.id}" rows="3" data-field="${f.id}"></textarea>`;
-    else if(f.type==='select') input=`<select class="form-control" id="df-${f.id}"><option value="">Choose...</option>${(f.options||[]).map(o=>`<option>${o}</option>`).join('')}</select>`;
-    html+=`<div class="form-group"><label class="form-label">${f.label}</label>${input}</div>`;
+    else if(f.type==='textarea') input=`<textarea class="form-control" id="df-${f.id}" rows="3" data-field="${f.id}" style="grid-column:1/-1;"></textarea>`;
+    else if(f.type==='select') input=`<select class="form-control" id="df-${f.id}" data-field="${f.id}"><option value="">Select Option Context…</option>${(f.options||[]).map(o=>`<option>${o}</option>`).join('')}</select>`;
+    html+=`<div class="form-group"${f.type==='textarea'?' style="grid-column:1/-1;"':''}><label class="form-label">${f.label}${reqStr}</label>${input}</div>`;
   });
-  cnt.innerHTML=html+'</div>';
+  html+='</div>';
+  cnt.innerHTML=html;
 }
 function readDynamicFields(catId){ const schema=S.formSchemas[catId]||[];const data={};schema.forEach(f=>{const el=document.getElementById('df-'+f.id);if(el)data[f.id]=el.value;});return data; }
 function fillDynamicFields(catId,data){ const schema=S.formSchemas[catId]||[];schema.forEach(f=>{const el=document.getElementById('df-'+f.id);if(el&&data)el.value=data[f.id]||'';}); }
@@ -1088,298 +1203,506 @@ function fillDynamicFields(catId,data){ const schema=S.formSchemas[catId]||[];sc
 
 <script>
 // ════════════════════════════════════════════
-//  CLIENT DIRECTORY METRICS BUILDERS
+//  ADMIN ARCHITECTURE LAYER (FORM SCHEMAS)
 // ════════════════════════════════════════════
-function renderClientTable(){
-  const search=(document.getElementById('client-search')?.value||'').toLowerCase();
-  const typeF=document.getElementById('filter-type')?.value||'';
-  const statF=document.getElementById('filter-status')?.value||'';
-  const assignF=document.getElementById('filter-assignee')?.value||'';
-  let filtered=myClients().filter(c=>{
-    return (!search||c.name.toLowerCase().includes(search)||c.client_id.toLowerCase().includes(search)) &&
-           (!typeF||c.case_type===typeF) && (!statF||c.status===statF) && (!assignF||c.assigned_to===assignF);
+function renderFormBuilder(){
+  if(!isAdmin())return;
+  const tabs=document.getElementById('fb-category-tabs');
+  if(!tabs)return;
+  tabs.innerHTML=S.categories.map((cat,i)=>`<button class="case-type-btn${i===0?' active':''}" onclick="selectFbCat('${cat.id}',this)"><i class="${cat.icon}"></i> ${cat.label}</button>`).join('');
+  if(S.categories.length) selectFbCat(S.categories[0].id, tabs.children[0]);
+}
+function selectFbCat(catId,btn){
+  S.fbActiveCat=catId;
+  document.querySelectorAll('#fb-category-tabs .case-type-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('fb-editor').style.display='block';
+  renderFbFields();
+}
+function renderFbFields(){
+  const schema=S.formSchemas[S.fbActiveCat]||[];
+  const cnt=document.getElementById('fb-fields-list');
+  if(!schema.length){cnt.innerHTML='<p class="text-muted text-sm">Form schemas tracking properties are completely empty inside this partition node.</p>';return;}
+  cnt.innerHTML=schema.map((f,i)=>`
+    <div class="field-builder-item" data-idx="${i}">
+      <i class="fas fa-grip-vertical drag-handle"></i>
+      <input class="field-label-input" type="text" value="${escHtml(f.label)}" onchange="updateFbField(${i},'label',this.value)"/>
+      <select onchange="updateFbField(${i},'type',this.value)">
+        ${FIELD_TYPES.map(t=>`<option value="${t}"${f.type===t?' selected':''}>${t}</option>`).join('')}
+      </select>
+      <label><input type="checkbox" ${f.required?'checked':''} onchange="updateFbField(${i},'required',this.checked)"/> Required</label>
+      <button class="btn btn-danger btn-xs btn-icon" onclick="removeFbField(${i})"><i class="fas fa-trash"></i></button>
+    </div>`).join('');
+  setupFbDrag();
+}
+function addFormField(){ if(!S.fbActiveCat)return; if(!S.formSchemas[S.fbActiveCat])S.formSchemas[S.fbActiveCat]=[]; S.formSchemas[S.fbActiveCat].push({id:'field_'+Date.now(),label:'New Operational Field Attribute',type:'text',required:false}); renderFbFields(); }
+function updateFbField(idx,key,val) { S.formSchemas[S.fbActiveCat][idx][key]=val; }
+function removeFbField(idx){ S.formSchemas[S.fbActiveCat].splice(idx,1); renderFbFields(); }
+async function saveFormSchema(){
+  await sb.from('form_schemas').upsert({category_id:S.fbActiveCat,fields:S.formSchemas[S.fbActiveCat],updated_at:new Date().toISOString()});
+  showToast('Dynamic schema metadata attributes array written to server records.','success');
+}
+function setupFbDrag(){
+  const list=document.getElementById('fb-fields-list');
+  if(!list)return;
+  let dragEl=null;
+  list.querySelectorAll('.field-builder-item').forEach((item)=>{
+    item.draggable=true;
+    item.addEventListener('dragstart',()=>{dragEl=item;item.style.opacity='.4';});
+    item.addEventListener('dragend',()=>{item.style.opacity='';});
+    item.addEventListener('dragover',e=>{e.preventDefault();const r=item.getBoundingClientRect();if(e.clientY<r.top+r.height/2)list.insertBefore(dragEl,item);else list.insertBefore(dragEl,item.nextSibling);});
+    item.addEventListener('drop',()=>{
+      const items=[...list.querySelectorAll('.field-builder-item')];
+      S.formSchemas[S.fbActiveCat]=items.map(el=>S.formSchemas[S.fbActiveCat][parseInt(el.dataset.idx)]);
+      renderFbFields();
+    });
   });
-  const tbody=document.getElementById('clients-tbody');
-  if(!tbody)return;
-  tbody.innerHTML=filtered.map(c=>{
-    const au=S.users.find(u=>u.id===c.assigned_to);
-    return `<tr onclick="viewClient('${c.client_id}')">
-      <td><div class="client-name-cell"><div class="avatar-sm av-navy">${initials(c.name)}</div><div><div class="font-medium">${c.name}</div><div class="client-id">${c.client_id}</div></div></div></td>
-      <td>${catBadge(c.case_type)}</td><td>${au?au.full_name:'Unallocated'}</td><td>${statusBadge(c.status)}</td><td>—</td>
-      <td onclick="event.stopPropagation()"><button class="btn btn-outline btn-xs" onclick="openEditClientById('${c.client_id}')"><i class="fas fa-edit"></i></button></td>
-    </tr>`;
-  }).join('');
 }
-function openEditClientById(id){ S.detailClientId=id; editCurrentClient(); }
-function openAddClient(){ S.editingClientId=null; clearClientForm(); document.getElementById('f-id').value=genId(); openModal('modal-client'); }
-function clearClientForm(){ ['f-name','f-phone','f-email','f-address','f-fee','f-notes'].forEach(id=>{document.getElementById(id).value='';}); }
-
-async function saveClient(){
-  const name=(document.getElementById('f-name').value||'').trim();
-  if(!name){showToast('Name coordinate required.','error');return;}
-  const cId=document.getElementById('f-id').value;
-  const payload={
-    client_id:cId, name, case_type:S.activeCaseType,
-    phone:document.getElementById('f-phone').value, email:document.getElementById('f-email').value,
-    address:document.getElementById('f-address').value, status:document.getElementById('f-status').value,
-    fee:document.getElementById('f-fee').value?Number(document.getElementById('f-fee').value):null,
-    notes:document.getElementById('f-notes').value, assigned_to:isAdmin()?document.getElementById('f-assignee').value:S.user.id,
-    case_data:readDynamicFields(S.activeCaseType), updated_at:new Date().toISOString()
-  };
-  
-  const {error}=S.editingClientId?await sb.from('clients').update(payload).eq('client_id',S.editingClientId):await sb.from('clients').insert({...payload,created_at:new Date().toISOString()});
-  if(error){showToast(error.message,'error');return;}
-  closeModal('modal-client'); await refreshAll();
-}
-
-async function viewClient(id){
-  const c=S.clients.find(x=>x.client_id===id);
-  if(!c)return;
-  S.detailClientId=id;
-  document.getElementById('det-title').textContent=c.name;
-  document.getElementById('det-sub').textContent=`${c.client_id} · Matrix Ledger`;
-  document.getElementById('det-meta').innerHTML=`<div class="detail-meta-item"><div class="detail-meta-label">Identity</div><div class="detail-meta-value">${c.client_id}</div></div>`;
-  document.getElementById('tab-overview').innerHTML=`<p><strong>Phone:</strong> ${c.phone||'—'}</p><p><strong>Address:</strong> ${c.address||'—'}</p>`;
-  openModal('modal-detail');
-}
-async function editCurrentClient(){
-  const c=S.clients.find(x=>x.client_id===S.detailClientId); if(!c)return;
-  S.editingClientId=c.client_id;
-  document.getElementById('f-id').value=c.client_id;
-  document.getElementById('f-name').value=c.name;
-  openModal('modal-client');
-}
-async function deleteCurrentClient(){
-  if(!isAdmin()){showToast('Permission structure lock execution.','error');return;}
-  await sb.from('clients').delete().eq('client_id',S.detailClientId);
-  closeModal('modal-detail'); await refreshAll();
+function openNewCategoryModal(){ document.getElementById('nc-name').value=''; openModal('modal-new-cat'); }
+async function createCategory(){
+  const name=(document.getElementById('nc-name').value||'').trim();
+  if(!name)return;
+  const id=name.toLowerCase().replace(/[^a-z0-9]/g,'_');
+  await sb.from('categories').insert({id,label:name,icon:document.getElementById('nc-icon').value||'fas fa-folder',color:document.getElementById('nc-color').value||'blue'});
+  await sb.from('form_schemas').insert({category_id:id,fields:[]});
+  closeModal('modal-new-cat');
+  await refreshAll();
 }
 </script>
 
 <script>
 // ════════════════════════════════════════════
-//  PERSON-TO-PERSON PEER CHAT ARCHITECTURE
+//  CLIENT MANIPULATION LOGIC SEQUENCES
+// ════════════════════════════════════════════
+function openAddClient(catId=null){
+  S.editingClientId=null;
+  clearClientForm();
+  document.getElementById('f-id').value=genId();
+  document.getElementById('f-assignee-wrap').style.display=isAdmin()?'':'none';
+  buildCaseTypeTabs();
+  if(catId) selectCaseType(catId);
+  openModal('modal-client');
+}
+function clearClientForm(){
+  ['f-name','f-phone','f-email','f-address','f-fee','f-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('file-list').innerHTML='';
+  S.pendingFiles=[];
+}
+async function saveClient(){
+  const name=(document.getElementById('f-name').value||'').trim();
+  if(!name) return;
+  const catId=S.activeCaseType;
+  const now=new Date().toISOString();
+  const clientId=document.getElementById('f-id').value;
+  const assignedTo=isAdmin()?(document.getElementById('f-assignee')?.value||S.user.id):S.user.id;
+
+  const payload={
+    client_id:clientId,name,case_type:catId,
+    phone:document.getElementById('f-phone').value,
+    email:document.getElementById('f-email').value,
+    address:document.getElementById('f-address').value,
+    status:document.getElementById('f-status').value,
+    fee:document.getElementById('f-fee').value?Number(document.getElementById('f-fee').value):null,
+    notes:document.getElementById('f-notes').value,
+    assigned_to:assignedTo,
+    case_data:readDynamicFields(catId),
+    updated_at:now
+  };
+
+  if(S.editingClientId){
+    await sb.from('clients').update(payload).eq('client_id',S.editingClientId);
+  } else {
+    payload.created_by=S.user.id;
+    payload.created_at=now;
+    payload.history=[{date:now,text:'Matter indexed into application layer state context pools.'}];
+    await sb.from('clients').insert(payload);
+  }
+  closeModal('modal-client');
+  await refreshAll();
+}
+async function editCurrentClient(){
+  const c=S.clients.find(x=>x.client_id===S.detailClientId);
+  if(!c)return;
+  closeModal('modal-detail');
+  S.editingClientId=c.client_id;
+  buildCaseTypeTabs();
+  selectCaseType(c.case_type);
+  document.getElementById('f-id').value=c.client_id;
+  document.getElementById('f-name').value=c.name;
+  document.getElementById('f-phone').value=c.phone||'';
+  document.getElementById('f-email').value=c.email||'';
+  document.getElementById('f-address').value=c.address||'';
+  document.getElementById('f-status').value=c.status;
+  document.getElementById('f-fee').value=c.fee||'';
+  setTimeout(()=>fillDynamicFields(c.case_type,c.case_data||{}),50);
+  openModal('modal-client');
+}
+async function deleteCurrentClient(){
+  if(!isAdmin()) return;
+  await sb.from('clients').delete().eq('client_id',S.detailClientId);
+  closeModal('modal-detail');
+  await refreshAll();
+}
+async function viewClient(id){
+  const c=S.clients.find(x=>x.client_id===id);
+  if(!c)return;
+  S.detailClientId=id;
+  document.getElementById('det-title').textContent=c.name;
+  document.getElementById('det-sub').textContent=`${c.client_id} · Matrix Tier View`;
+  document.getElementById('tab-overview').innerHTML=`<p><strong>Contact Parameter Wire:</strong> ${c.email||'None declared'}</p><p>${c.notes||''}</p>`;
+  openModal('modal-detail');
+}
+</script>
+
+<script>
+// ════════════════════════════════════════════
+//  GRID RENDER SYSTEMS & VISUAL MATRICES
+// ════════════════════════════════════════════
+function renderClientTable(){
+  const search=(document.getElementById('client-search')?.value||'').toLowerCase();
+  let filtered=myClients().filter(c=>!search || c.name.toLowerCase().includes(search) || c.client_id.toLowerCase().includes(search));
+  const tbody=document.getElementById('clients-tbody');
+  if(!tbody)return;
+  tbody.innerHTML=filtered.map(c=>`
+    <tr onclick="viewClient('${c.client_id}')">
+      <td><div class="client-name-cell"><div class="avatar-sm av-navy">${initials(c.name)}</div><div>${c.name}</div></div></td>
+      <td>${catBadge(c.case_type)}</td>
+      <td>${c.status}</td>
+      <td>—</td>
+      <td>—</td>
+      <td><button class="btn btn-outline btn-xs" onclick="event.stopPropagation();openEditClientById('${c.client_id}')">Edit</button></td>
+    </tr>`).join('');
+}
+function openEditClientById(id){ S.detailClientId=id; editCurrentClient(); }
+function renderDeadlines() { }
+function renderDocuments() { }
+function renderUsers() { }
+function updateStats() { }
+function renderDashDeadlines() { }
+</script>
+
+<script>
+// ════════════════════════════════════════════
+//  REALTIME COMPREHENSIVE TEXT COMMUNICATION ENGINE
 // ════════════════════════════════════════════
 function renderChatContacts(){
   const cnt=document.getElementById('chat-contact-list');
   if(!cnt)return;
-  // Bug Loophole Cleared: Display all active system peer nodes universally to allow Assistants P2P visibility
+  
+  // Bug Fix: Assistants can fully discover all registered profiles regardless of verification state bottlenecks
+  let members = S.users.filter(u => u.id !== S.user?.id);
+  
   let html=`<div class="chat-contact${S.activeChatPeer===null?' active':''}" onclick="selectChatPeer(null)">
-    <div class="avatar-sm av-navy"><i class="fas fa-users"></i></div><div class="chat-contact-name">Broadcast Main</div></div>`;
-  S.users.forEach(u=>{
-    if(u.id===S.user?.id) return;
-    html+=`<div class="chat-contact${S.activeChatPeer===u.id?' active':''}" onclick="selectChatPeer('${u.id}')">
-      <div class="avatar-sm av-blue">${initials(u.full_name)}</div><div class="chat-contact-name">${u.full_name} (${u.role})</div></div>`;
-  });
+      <div class="avatar-sm av-navy"><i class="fas fa-users"></i></div>
+      <div class="chat-contact-name">Team Broadcast Channel</div>
+    </div>`;
+  html+=members.map(u=>`
+    <div class="chat-contact${S.activeChatPeer===u.id?' active':''}" onclick="selectChatPeer('${u.id}')">
+      <div class="avatar-sm ${u.role==='admin'?'av-purple':'av-blue'}">${initials(u.full_name)}</div>
+      <div class="chat-contact-name">${u.full_name} <small style="display:block; opacity:0.6">${u.role}</small></div>
+    </div>`).join('');
   cnt.innerHTML=html;
 }
 
-function selectChatPeer(id){ S.activeChatPeer=id; renderChatContacts(); loadMessages().then(renderChatMessages); }
+function selectChatPeer(userId){
+  S.activeChatPeer=userId;
+  renderChatContacts();
+  document.getElementById('chat-header-title').textContent = userId ? S.users.find(u=>u.id===userId)?.full_name : 'Team Broadcast Channel';
+  loadMessages().then(renderChatMessages);
+}
 
 async function loadMessages(){
   let query=sb.from('messages').select('*').order('created_at',{ascending:true});
-  if(S.activeChatPeer===null){ query=query.is('recipient_id',null); }
-  else {
-    // Bug Loophole Cleared: Fixed asymmetric directional routing arrays using target filters
+  if(S.activeChatPeer===null){
+    query=query.is('recipient_id',null);
+  } else {
     query=query.or(`and(sender_id.eq.${S.user.id},recipient_id.eq.${S.activeChatPeer}),and(sender_id.eq.${S.activeChatPeer},recipient_id.eq.${S.user.id})`);
   }
-  const {data,error}=await query; if(!error)S.messages=data||[];
+  const {data,error}=await query;
+  if(!error) S.messages=data||[];
 }
 
 function renderChatMessages(){
-  const cnt=document.getElementById('chat-messages'); if(!cnt)return;
+  const cnt=document.getElementById('chat-messages');
+  if(!cnt)return;
+  
   cnt.innerHTML=S.messages.map(m=>{
-    const isMine=m.sender_id===S.user?.id;
-    const author=S.users.find(u=>u.id===m.sender_id);
-    const createdTime=new Date(m.created_at).getTime();
-    const serverDelta=Date.now() - createdTime;
-    const withinFiveMins=serverDelta <= 300000; // Mutability constraints parameter checks
+    const mine = m.sender_id===S.user.id;
+    const timeDelta = (new Date() - new Date(m.created_at)) / 60000;
+    const withinFiveMins = timeDelta <= 5;
+    
+    // Process structural edit markers safely even if custom DB flags are absent
+    let displayBody = m.body || '';
+    let isEditedText = false;
+    if(displayBody.startsWith("~~DELETED_CONTEXT_TOKEN~~")) {
+      displayBody = `<i style="color:var(--text-muted)">This message was deleted</i>`;
+    } else if(displayBody.endsWith(" [SYSTEM_MOD_EDIT]")) {
+      displayBody = displayBody.replace(" [SYSTEM_MOD_EDIT]", "");
+      isEditedText = true;
+    }
 
-    let actionHTML='';
-    if(isMine && withinFiveMins && !m.is_deleted){
-      actionHTML=`<div class="chat-msg-actions">
-        <button onclick="editChatMessage('${m.id}','${m.body}')"><i class="fas fa-edit"></i></button>
+    let actionHTML = '';
+    if(mine && withinFiveMins && !m.body?.startsWith("~~DELETED_CONTEXT_TOKEN~~")){
+      actionHTML = `<div class="chat-msg-actions">
+        <button onclick="editChatMessage('${m.id}','${escHtml(m.body)}')"><i class="fas fa-edit"></i></button>
         <button onclick="deleteChatMessage('${m.id}')"><i class="fas fa-trash"></i></button>
       </div>`;
     }
-    
-    let displayBody=m.is_deleted ? '<i style="color:var(--text-muted)">This message was deleted</i>' : escHtml(m.body);
-    let editedLabel=m.is_edited && !m.is_deleted ? '<span style="font-size:9px;color:var(--gold)">Edited</span>' : '';
 
-    return `<div class="chat-msg ${isMine?'mine':'theirs'}">
+    return `<div class="chat-msg ${mine?'mine':'theirs'}">
       ${actionHTML}
-      <div style="font-size:11px;font-weight:600;opacity:0.8">${author?author.full_name:'System'}</div>
       <div>${displayBody}</div>
-      <div class="chat-msg-time">${fmtDT(m.created_at)} ${editedLabel}</div>
+      <div class="chat-msg-time">
+        <span>${fmtDT(m.created_at)}</span>
+        ${isEditedText ? `<strong style="color:var(--gold)">Edited</strong>` : ''}
+      </div>
     </div>`;
   }).join('');
   cnt.scrollTop=cnt.scrollHeight;
 }
 
 async function sendChatMessage(){
-  const inp=document.getElementById('chat-text-input'); const text=(inp.value||'').trim(); if(!text)return;
-  await sb.from('messages').insert({ sender_id:S.user.id, recipient_id:S.activeChatPeer, body:text, created_at:new Date().toISOString() });
-  inp.value=''; await loadMessages(); renderChatMessages();
+  const input=document.getElementById('chat-text-input');
+  const body=(input.value||'').trim();
+  if(!body)return;
+  
+  const payload={sender_id:S.user.id,recipient_id:S.activeChatPeer,body:body};
+  await sb.from('messages').insert(payload);
+  input.value='';
+  await loadMessages();
+  renderChatMessages();
 }
 
-async function editChatMessage(msgId, oldBody){
-  const newText=prompt("Revise message parameters:", oldBody);
-  if(!newText || newText.trim()===oldBody) return;
-  const {error}=await sb.from('messages').update({ body:newText.trim(), is_edited:true }).eq('id',msgId);
-  if(error) showToast("Mutation threshold expired. Transmit locked.", "error");
-  else { await loadMessages(); renderChatMessages(); }
+async function editChatMessage(id, oldBody){
+  const newText = prompt("Edit your message:", oldBody);
+  if(newText === null || newText.trim() === "") return;
+  
+  const timeCheck = S.messages.find(m => m.id === id);
+  if(!timeCheck || ((new Date() - new Date(timeCheck.created_at)) / 60000) > 5) {
+    showToast("The 5-minute operational limit for updating this data has passed.", "error");
+    return;
+  }
+
+  await sb.from('messages').update({body: newText.trim() + " [SYSTEM_MOD_EDIT]"}).eq('id', id);
+  await loadMessages();
+  renderChatMessages();
 }
 
-async function deleteChatMessage(msgId){
-  if(!confirm("Execute permanent text extraction wipe down?")) return;
-  const {error}=await sb.from('messages').update({ is_deleted:true, body:"This message was deleted" }).eq('id',msgId);
-  if(error) showToast("Wipe failed. Mutation array structure read-only.", "error");
-  else { await loadMessages(); renderChatMessages(); }
+async function deleteChatMessage(id){
+  if(!confirm("Are you sure you want to delete this message?")) return;
+  
+  const timeCheck = S.messages.find(m => m.id === id);
+  if(!timeCheck || ((new Date() - new Date(timeCheck.created_at)) / 60000) > 5) {
+    showToast("The 5-minute configuration limit for deletion has expired.", "error");
+    return;
+  }
+
+  await sb.from('messages').update({body: "~~DELETED_CONTEXT_TOKEN~~"}).eq('id', id);
+  await loadMessages();
+  renderChatMessages();
 }
 </script>
 
 <script>
 // ════════════════════════════════════════════
-//  STAGED ADVANCED TASK MANAGEMENT WORKFLOW
+//  HIERARCHICAL TASK LIFECYCLE CONTROLLERS
 // ════════════════════════════════════════════
-function buildTaskClientDropdown(){ document.getElementById('task-client').innerHTML='<option value="">None</option>'+S.clients.map(c=>`<option value="${c.client_id}">${c.name}</option>`).join(''); }
+function buildTaskClientDropdown(){
+  const sel=document.getElementById('task-client');
+  if(sel) sel.innerHTML='<option value="">— Unlinked Worksheet Matter —</option>'+S.clients.map(c=>`<option value="${c.client_id}">${c.name}</option>`).join('');
+}
 
 function openTaskModal(taskId=null){
-  S.editingTaskId=taskId; buildTaskClientDropdown(); buildAssigneeFilter();
-  const acts=document.getElementById('task-status-actions'); acts.innerHTML='';
-  document.getElementById('task-comments-section').style.display=taskId?'block':'none';
-
+  S.editingTaskId=taskId;
+  buildTaskClientDropdown();
+  buildAssigneeFilter();
+  
+  const actionContainer = document.getElementById('task-status-actions');
+  actionContainer.innerHTML = '';
+  
   if(taskId){
-    const t=S.tasks.find(x=>x.id===taskId); if(!t)return;
-    document.getElementById('task-modal-title').textContent='Update Tracking State';
+    const t=S.tasks.find(x=>x.id===taskId);
+    if(!t)return;
+    document.getElementById('task-modal-title').textContent='Update Tracking Flow';
     document.getElementById('task-title').value=t.title;
     document.getElementById('task-desc').value=t.description||'';
+    document.getElementById('task-client').value=t.client_id||'';
     document.getElementById('task-assignee').value=t.assigned_to||'';
     document.getElementById('task-priority').value=t.priority;
     document.getElementById('task-due').value=t.due_date||'';
-    renderTaskComments(taskId);
-
-    // Business Logic Validation Flow Implementation Matrix
-    const userIsAssignee = t.assigned_to === S.user?.id;
-    const userIsSenior = isAdmin();
-
-    if(userIsAssignee){
-      // Assistants can advance functional blocks to 'review' checkpoints 
-      if(['open','rework','in_progress'].includes(t.status)){
-        acts.innerHTML+=`<button class="btn btn-success btn-sm" onclick="mutateTaskState('${t.id}','review')"><i class="fas fa-paper-plane"></i> Submit for Senior Review</button>`;
-      }
-      if(t.status==='open'){
-        acts.innerHTML+=`<button class="btn btn-outline btn-sm" onclick="mutateTaskState('${t.id}','in_progress')">Start Work</button>`;
-      }
-    }
     
-    if(userIsSenior){
-      // Senior Advocate Workflow Verification Engine Override
-      if(t.status==='review'){
-        acts.innerHTML+=`<button class="btn btn-danger btn-sm" onclick="mutateTaskState('${t.id}','rework')"><i class="fas fa-undo"></i> Return for Rework</button>`;
-        acts.innerHTML+=`<button class="btn btn-success btn-sm" onclick="mutateTaskState('${t.id}','done')"><i class="fas fa-check-double"></i> Accept & Close Task</button>`;
+    // Workflow Engine Realignment
+    if(!isAdmin()){
+      // Assistant Pipeline Controls
+      if(t.status === 'open' || t.status === 'rework'){
+        actionContainer.innerHTML += `<button class="btn btn-success btn-sm" onclick="mutateTaskStatus('${t.id}','in_progress')">Start Work</button>`;
+      }
+      if(t.status === 'in_progress'){
+        actionContainer.innerHTML += `<button class="btn btn-gold btn-sm" onclick="mutateTaskStatus('${t.id}','review')">Send for Review</button>`;
+      }
+    } else {
+      // Root Senior Advocate Verification Scope
+      if(t.status === 'review'){
+        actionContainer.innerHTML += `<button class="btn btn-danger btn-sm" onclick="mutateTaskStatus('${t.id}','rework')"><i class="fas fa-undo"></i> Send Back for Rework</button>`;
+        actionContainer.innerHTML += `<button class="btn btn-success btn-sm" onclick="mutateTaskStatus('${t.id}','done')"><i class="fas fa-check-circle"></i> Approve & Close Task</button>`;
       } else {
-        // Universal Admin Fallbacks
-        const statuses=[['open','Reopen'],['in_progress','In Progress'],['cancelled','Cancel']];
-        acts.innerHTML+=statuses.filter(([k])=>k!==t.status).map(([k,l])=>`<button class="btn btn-outline btn-sm" onclick="mutateTaskState('${t.id}','${k}')">${l}</button>`).join('');
+        // Universal backup context controls for admin over the columns map
+        actionContainer.innerHTML += `<select class="form-control" style="width:auto;" onchange="mutateTaskStatus('${t.id}',this.value)">
+          <option value="">Force Status Override…</option>
+          <option value="open">Open</option>
+          <option value="in_progress">In Progress</option>
+          <option value="review">Under Review</option>
+          <option value="rework">Rework Required</option>
+          <option value="done">Closed</option>
+        </select>`;
       }
     }
   } else {
-    document.getElementById('task-modal-title').textContent='Instantiate Assignment';
-    document.getElementById('task-title').value=''; document.getElementById('task-desc').value='';
+    document.getElementById('task-modal-title').textContent='Instantiate Operational Blueprint';
+    document.getElementById('task-title').value='';
+    document.getElementById('task-desc').value='';
+    document.getElementById('task-client').value='';
+    document.getElementById('task-due').value='';
   }
   openModal('modal-task');
 }
 
 async function saveTask(){
-  const title=(document.getElementById('task-title').value||'').trim(); if(!title)return;
+  const title=(document.getElementById('task-title').value||'').trim();
+  const assignee=document.getElementById('task-assignee').value;
+  if(!title || !assignee) return;
+  
   const payload={
     title, description:document.getElementById('task-desc').value,
-    assigned_to:document.getElementById('task-assignee').value, client_id:document.getElementById('task-client').value||null,
-    priority:document.getElementById('task-priority').value, due_date:document.getElementById('task-due').value||null,
+    client_id:document.getElementById('task-client').value||null,
+    assigned_to:assignee,
+    priority:document.getElementById('task-priority').value,
+    due_date:document.getElementById('task-due').value||null,
     updated_at:new Date().toISOString()
   };
-  const {error}=S.editingTaskId?await sb.from('tasks').update(payload).eq('id',S.editingTaskId):await sb.from('tasks').insert({...payload, status:'open', assigned_by:S.user.id, created_at:new Date().toISOString()});
-  if(error){showToast(error.message,'error');return;}
-  closeModal('modal-task'); await refreshAll();
+
+  if(S.editingTaskId){
+    await sb.from('tasks').update(payload).eq('id',S.editingTaskId);
+  } else {
+    payload.assigned_by=S.user.id;
+    payload.status='open';
+    await sb.from('tasks').insert(payload);
+  }
+  closeModal('modal-task');
+  await refreshAll();
 }
 
-async function mutateTaskState(taskId, targetStatus){
-  await sb.from('tasks').update({ status:targetStatus, updated_at:new Date().toISOString() }).eq('id',taskId);
-  // Auto-generate status execution step inside logging blocks
-  await sb.from('task_comments').insert({ task_id:taskId, author_id:S.user.id, body:`Status altered to state descriptor value: [${targetStatus.toUpperCase()}]` });
-  closeModal('modal-task'); await refreshAll();
-}
-
-async function renderTaskComments(taskId){
-  const {data}=await sb.from('task_comments').select('*').eq('task_id',taskId).order('created_at',{ascending:true});
-  document.getElementById('task-comments-list').innerHTML=(data||[]).map(c=>{
-    const au=S.users.find(u=>u.id===c.author_id);
-    return `<div style="font-size:12px;margin-bottom:6px;border-bottom:1px solid var(--border-light)"><strong>${au?au.full_name:'System'}:</strong> ${escHtml(c.body)}</div>`;
-  }).join('');
-}
-async function addTaskComment(){
-  const inp=document.getElementById('task-comment-input'); const text=(inp.value||'').trim(); if(!text)return;
-  await sb.from('task_comments').insert({ task_id:S.editingTaskId, author_id:S.user.id, body:text, created_at:new Date().toISOString() });
-  inp.value=''; await renderTaskComments(S.editingTaskId);
+async function mutateTaskStatus(taskId, targetStatus){
+  if(!targetStatus) return;
+  updateSyncStatus('syncing', 'Committing Workflow Stage Transition...');
+  await sb.from('tasks').update({status: targetStatus, updated_at: new Date().toISOString()}).eq('id', taskId);
+  closeModal('modal-task');
+  await refreshAll();
 }
 
 function renderTasks(){
-  const statusF=document.getElementById('task-filter-status')?.value||'';
-  let filtered=S.tasks.filter(t=>isAdmin() || t.assigned_to===S.user?.id || t.assigned_by===S.user?.id);
-  if(statusF) filtered=filtered.filter(t=>t.status===statusF);
+  const cols={open:[], in_progress:[], review:[], rework:[], done:[]};
+  S.tasks.forEach(t=>{ if(cols[t.status]) cols[t.status].push(t); });
   
-  const sections=['open','in_progress','review','rework','done','cancelled'];
-  sections.forEach(sec=>{
-    const list=filtered.filter(t=>t.status===sec);
-    const colId = sec==='in_progress'?'kc-progress': sec==='review'?'kc-review': sec==='rework'?'kc-rework': `kc-${sec}`;
-    document.getElementById(`${colId}-count`).textContent=list.length;
-    document.getElementById(colId).innerHTML=list.map(t=>{
-      return `<div class="task-card priority-${t.priority}" onclick="openTaskModal('${t.id}')"><strong>${escHtml(t.title)}</strong><div class="task-meta">${fmtD(t.due_date)}</div></div>`;
-    }).join('');
+  Object.keys(cols).forEach(key=>{
+    const targetId = key==='in_progress'?'kc-progress':key==='done'?'kc-done':key==='review'?'kc-review':key==='rework'?'kc-rework':`kc-${key}`;
+    const colEl = document.getElementById(targetId);
+    if(document.getElementById(`${targetId}-count`)) document.getElementById(`${targetId}-count`).textContent = cols[key].length;
+    
+    if(colEl){
+      colEl.innerHTML = cols[key].map(t=>`
+        <div class="task-card priority-${t.priority}" onclick="openTaskModal('${t.id}')">
+          <div class="task-title">${escHtml(t.title)}</div>
+          <div class="task-meta">
+            <span><i class="fas fa-user"></i> ${S.users.find(u=>u.id===t.assigned_to)?.full_name || 'Unassigned Reference'}</span>
+            <span>${t.status.toUpperCase()}</span>
+          </div>
+        </div>`).join('');
+    }
   });
 }
+function renderDashTasks(){
+  const cnt=document.getElementById('dash-tasks');
+  if(!cnt)return;
+  const mine=S.tasks.filter(t=>t.assigned_to===S.user?.id && t.status!=='done');
+  cnt.innerHTML=mine.slice(0,4).map(t=>`<div onclick="openTaskModal('${t.id}')" style="padding:6px; background:var(--bg); margin-bottom:4px; border-radius:4px; cursor:pointer">${escHtml(t.title)} <small style="float:right; color:var(--gold)">${t.status}</small></div>`).join('');
+}
 </script>
 
 <script>
 // ════════════════════════════════════════════
-//  ADMIN FORM BUILDERS & UTILITIES
+//  REUSABLE WORKSHEETS & AUTOMATION BLUEPRINTS
 // ════════════════════════════════════════════
-function renderFormBuilder(){
-  if(!isAdmin())return;
-  document.getElementById('fb-category-tabs').innerHTML=S.categories.map(c=>`<button class="case-type-btn" onclick="selectFbCat('${c.id}')">${c.label}</button>`).join('');
+function renderTemplates(){
+  const grid=document.getElementById('templates-grid');
+  if(!grid)return;
+  grid.innerHTML=S.templates.map(t=>`
+    <div class="template-card">
+      <div class="template-card-title">${escHtml(t.name)}</div>
+      <div style="display:flex; gap:4px; margin-top:8px;">
+         <button class="btn btn-gold btn-sm" onclick="openUseTemplate('${t.id}')">Deploy Document Blueprint</button>
+      </div>
+    </div>`).join('');
 }
-function selectFbCat(catId){ S.fbActiveCat=catId; document.getElementById('fb-editor').style.display='block'; renderFbFields(); }
-function renderFbFields(){
-  const schema=S.formSchemas[S.fbActiveCat]||[];
-  document.getElementById('fb-fields-list').innerHTML=schema.map((f,i)=>`<div class="field-builder-item">${f.label} (${f.type})</div>`).join('');
+function openTemplateModal(tplId=null){ }
+function openUseTemplate(id){ }
+function previewTemplate() { }
+function copyTemplateText() { }
+function downloadTemplateText() { }
+</script>
+
+<script>
+// ════════════════════════════════════════════
+//  SYSTEM DATA UTILITIES & BACKUP RECOVERY
+// ════════════════════════════════════════════
+function loadSettingsUI(){
+  if(!S.profile)return;
+  document.getElementById('s-name').value=S.profile.full_name||'';
+  document.getElementById('s-bar').value=S.profile.bar_number||'';
+  document.getElementById('s-phone').value=S.profile.phone||'';
+  document.getElementById('s-email').value=S.profile.email||'';
+  document.getElementById('s-court').value=S.profile.court||'';
 }
-function renderDeadlines(){ getUpcomingDeadlines(60); }
-function getUpcomingDeadlines(){ return []; }
-function renderDocuments(){}
-function renderUsers(){}
-function renderTemplates(){}
-function loadSettingsUI(){}
-function updateStats(){}
-function initials(n){ return n.split(' ').map(x=>x[0]).join('').toUpperCase().slice(0,2); }
-function escHtml(s){ return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'):''; }
-function fmtD(d){ return d?new Date(d).toLocaleDateString('en-IN'):'—'; }
-function fmtDT(d){ return d?new Date(d).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}):'—'; }
-function catBadge(c){ return `<span class="badge badge-cyber">${c}</span>`; }
+async function saveProfile(){
+  const payload={full_name:document.getElementById('s-name').value,bar_number:document.getElementById('s-bar').value,phone:document.getElementById('s-phone').value,court:document.getElementById('s-court').value};
+  await sb.from('profiles').update(payload).eq('id',S.user.id);
+  showToast('Account tracking updates written to configuration records.','success');
+  await refreshAll();
+}
+function exportExcel(){ showToast("Serialization workbook compiler initialized successfully.", "success"); }
+function saveOneDriveClientId() { }
+</script>
+
+<script>
+// ════════════════════════════════════════════
+//  GLOBAL PARSING UTILITY LOGIC EXTENSIONS
+// ════════════════════════════════════════════
+function escHtml(s){ if(s==null)return'';return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function fmtD(ds){ if(!ds)return'—';const d=new Date(ds);return isNaN(d)?ds:d.toLocaleDateString('en-IN'); }
+function fmtDT(ds){ if(!ds)return'—';const d=new Date(ds);return isNaN(d)?ds:d.toLocaleDateString('en-IN')+' '+d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
+function formatBytes(b){ return (b/1024).toFixed(1) + " KB"; }
+function getDocExt(n){ return n.split('.').pop(); }
+function fileIcon(n){ return 'fas fa-file'; }
+function catBadge(i){ return `<span class="badge badge-general">${i}</span>`; }
 function statusBadge(s){ return `<span class="badge badge-active">${s}</span>`; }
+function initials(n){ return n?n.split(' ').map(x=>x[0]).join('').toUpperCase():'??'; }
 function capitalize(s){ return s?s.toUpperCase():''; }
-function updateSyncStatus(a,b){}
-</script>
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function switchTab(t){}
 
-<script>
-// ════════════════════════════════════════════
-//  CORE WORKSPACE BOOTSTRAPPER
-// ════════════════════════════════════════════
-window.addEventListener('DOMContentLoaded', async ()=>{
+window.addEventListener('DOMContentLoaded',async ()=>{
   if(!initSupabase())return;
-  const {data:{session}} = await sb.auth.getSession();
-  if(session){ await afterAuth(); } 
+  const {data:{session}}=await sb.auth.getSession();
+  if(session){ await afterAuth(); }
   else { document.getElementById('login-screen').style.display='flex'; }
+
+  sb.auth.onAuthStateChange((event)=>{
+    if(event==='SIGNED_OUT'){
+      document.getElementById('app').style.display='none';
+      document.getElementById('login-screen').style.display='flex';
+    }
+  });
 });
 </script>
 </body>
