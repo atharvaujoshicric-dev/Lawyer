@@ -883,16 +883,45 @@ function showAuthTab(tab){
 }
 
 async function doSignIn(){
-  const email=(document.getElementById('li-email').value||'').trim();
-  const pwd=document.getElementById('li-pwd').value;
-  const err=document.getElementById('li-err');
-  err.style.display='none';
-  if(!email||!pwd){err.textContent='Enter email and password.';err.style.display='block';return;}
-  const {data,error}=await sb.auth.signInWithPassword({email,password:pwd});
-  if(error){err.textContent=error.message;err.style.display='block';return;}
-  await afterAuth();
+  const emailInput = document.getElementById('li-email');
+  const pwdInput = document.getElementById('li-pwd');
+  const err = document.getElementById('li-err');
+  
+  if (!emailInput || !pwdInput) return;
+  
+  const email = (emailInput.value || '').trim();
+  const pwd = pwdInput.value;
+  
+  err.style.display = 'none';
+  
+  // Guard clause to protect against sending malicious or malformed blocks triggering a 400
+  if (!email || !pwd) {
+    err.textContent = 'Please enter both your email and password.';
+    err.style.display = 'block';
+    return;
+  }
+  
+  try {
+    updateSyncStatus('syncing', 'Authenticating...');
+    const { data, error } = await sb.auth.signInWithPassword({
+      email: email,
+      password: pwd
+    });
+    
+    if (error) {
+      updateSyncStatus('synced', 'Live');
+      err.textContent = error.message;
+      err.style.display = 'block';
+      return;
+    }
+    
+    await afterAuth();
+  } catch (windowErr) {
+    updateSyncStatus('offline', 'Error');
+    err.textContent = 'An unexpected connection error occurred.';
+    err.style.display = 'block';
+  }
 }
-
 async function doSignUp(){
   const name=(document.getElementById('su-name').value||'').trim();
   const email=(document.getElementById('su-email').value||'').trim();
