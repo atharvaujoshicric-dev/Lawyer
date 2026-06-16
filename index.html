@@ -303,12 +303,12 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 </head>
 <body>
 
-<!-- ══ SETUP (first admin) ══ -->
-<div id="setup-screen">
+<div id="setup-screen" style="display:none;">
   <div class="setup-card">
     <div class="setup-logo">Lex<span>Desk</span></div>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">Secure Legal Practice Management — connect your database</p>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">Secure Legal Practice Management — Database Wiring Error</p>
     <div id="setup-config-step">
+      <p style="margin-bottom:12px; color:var(--danger)">Project initialization tokens could not be found or verified inside the inline workspace scripts.</p>
       <div class="form-group" style="margin-bottom:12px;">
         <label class="form-label">Supabase Project URL</label>
         <input class="form-control" id="cfg-url" type="text" placeholder="https://xxxx.supabase.co"/>
@@ -317,13 +317,11 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <label class="form-label">Supabase Anon Key</label>
         <input class="form-control" id="cfg-key" type="text" placeholder="eyJhbGciOi..."/>
       </div>
-      <button class="btn btn-primary w-full" style="justify-content:center;" onclick="saveSupabaseConfig()">Connect <i class="fas fa-arrow-right"></i></button>
-      <p class="form-hint mt-2">Run <code>supabase_schema.sql</code> in your Supabase SQL Editor first (one-time setup).</p>
+      <button class="btn btn-primary w-full" style="justify-content:center;" onclick="saveSupabaseConfig()">Connect Override <i class="fas fa-arrow-right"></i></button>
     </div>
   </div>
 </div>
 
-<!-- ══ LOGIN / SIGNUP ══ -->
 <div id="login-screen" style="display:none;">
   <div class="login-card">
     <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px;">Lex<span style="color:var(--gold);">Desk</span></div>
@@ -355,7 +353,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- ══ PENDING APPROVAL SCREEN ══ -->
 <div id="pending-screen" style="display:none;position:fixed;inset:0;background:var(--navy);z-index:997;align-items:center;justify-content:center;padding:20px;">
   <div class="login-card" style="text-align:center;">
     <div style="width:60px;height:60px;border-radius:50%;background:var(--warning-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:#d69e2e;"><i class="fas fa-clock"></i></div>
@@ -365,7 +362,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- ══ MAIN APP ══ -->
 <div id="app" style="display:none;">
   <button id="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
   <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
@@ -398,7 +394,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     </header>
     <div id="page">
 
-      <!-- DASHBOARD -->
       <div class="page-view active" id="view-dashboard">
         <div class="stats-grid" id="stats-grid"></div>
         <div class="dash-grid">
@@ -421,7 +416,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- CLIENTS -->
       <div class="page-view" id="view-clients">
         <div class="search-bar">
           <div class="search-input-wrap"><i class="fas fa-search"></i><input class="search-input" id="client-search" type="text" placeholder="Search by name, ID…" oninput="renderClientTable()"/></div>
@@ -436,7 +430,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- DEADLINES -->
       <div class="page-view" id="view-deadlines">
         <div class="stats-grid" style="margin-bottom:24px;">
           <div class="stat-card red"><div class="stat-label">Overdue</div><div class="stat-value" id="dl-overdue">0</div><i class="fas fa-exclamation-circle stat-icon"></i></div>
@@ -445,7 +438,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
         <div id="deadlines-list"></div>
       </div>
-      <!-- DOCUMENTS -->
       <div class="page-view" id="view-documents">
         <div class="search-bar">
           <div class="search-input-wrap"><i class="fas fa-search"></i><input class="search-input" id="doc-search" type="text" placeholder="Search documents…" oninput="renderDocuments()"/></div>
@@ -457,7 +449,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- TEMPLATES -->
       <div class="page-view" id="view-templates">
         <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
           <button class="btn btn-gold" onclick="openTemplateModal()"><i class="fas fa-plus"></i> New Template</button>
@@ -466,7 +457,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <div id="templates-empty" class="empty-state" style="display:none;"><i class="fas fa-file-alt"></i><div class="empty-state-title">No templates yet</div><div class="empty-state-desc">Create reusable drafts — visible to your whole team</div></div>
       </div>
 
-      <!-- CHAT -->
       <div class="page-view" id="view-chat">
         <div class="chat-layout">
           <div class="chat-sidebar" id="chat-contact-list"></div>
@@ -487,7 +477,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- TASKS -->
       <div class="page-view" id="view-tasks">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
           <div class="search-bar" style="margin-bottom:0;flex:1;">
@@ -503,7 +492,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- USERS (admin only) -->
       <div class="page-view" id="view-users">
         <div class="card mb-4">
           <div class="card-header"><span class="card-title">Signup Code</span></div>
@@ -528,7 +516,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- FORM BUILDER (admin only) -->
       <div class="page-view" id="view-formbuilder">
         <div class="card mb-4">
           <div class="card-header">
@@ -554,7 +541,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- SETTINGS (rebuilt mobile-first) -->
       <div class="page-view" id="view-settings">
         <div class="settings-wrap">
 
@@ -609,11 +595,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-    </div><!-- /page -->
-  </div><!-- /main -->
-</div><!-- /app -->
-<!-- CLIENT DETAIL MODAL -->
-<div class="modal-backdrop" id="modal-detail">
+    </div></div></div><div class="modal-backdrop" id="modal-detail">
   <div class="modal" style="max-width:820px;">
     <div class="modal-header">
       <div><div class="modal-title" id="det-title">Client</div><div class="modal-sub" id="det-sub"></div></div>
@@ -642,7 +624,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- ADD/EDIT CLIENT MODAL -->
 <div class="modal-backdrop" id="modal-client">
   <div class="modal" style="max-width:760px;">
     <div class="modal-header">
@@ -681,7 +662,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- FILE PREVIEW MODAL -->
 <div class="modal-backdrop" id="modal-preview">
   <div class="modal" style="max-width:760px;">
     <div class="modal-header">
@@ -698,7 +678,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- ADD/EDIT USER MODAL (role assignment for pending or existing users) -->
 <div class="modal-backdrop" id="modal-add-user">
   <div class="modal" style="max-width:480px;">
     <div class="modal-header">
@@ -720,7 +699,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- TEMPLATE MODAL -->
 <div class="modal-backdrop" id="modal-template">
   <div class="modal" style="max-width:700px;">
     <div class="modal-header">
@@ -752,7 +730,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- TEMPLATE USE MODAL -->
 <div class="modal-backdrop" id="modal-use-template">
   <div class="modal" style="max-width:700px;">
     <div class="modal-header">
@@ -772,7 +749,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- NEW CATEGORY MODAL -->
 <div class="modal-backdrop" id="modal-new-cat">
   <div class="modal" style="max-width:480px;">
     <div class="modal-header"><div><div class="modal-title">New Case Category</div></div><button class="modal-close" onclick="closeModal('modal-new-cat')">&times;</button></div>
@@ -787,7 +763,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- TASK MODAL -->
 <div class="modal-backdrop" id="modal-task">
   <div class="modal" style="max-width:560px;">
     <div class="modal-header"><div><div class="modal-title" id="task-modal-title">New Task</div></div><button class="modal-close" onclick="closeModal('modal-task')">&times;</button></div>
@@ -820,46 +795,59 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 </div>
 
 <div id="toast-container"></div>
+
 <script>
 // ════════════════════════════════════════════
-//  SUPABASE CONFIG & CLIENT
+//  HARDCODED SUPABASE CONFIG & CLIENT Initialization
 // ════════════════════════════════════════════
-const CFG_KEY='ld_supabase_cfg';
-let sb=null;
+let sb = null;
 
-function getSupabaseConfig(){ try{return JSON.parse(localStorage.getItem(CFG_KEY)||'null')}catch{return null} }
+// Hardcoded system parameters to preserve universal client accessibility across separate devices
+const SUPABASE_URL = "https://nvojtsmurbvpclwcwrca.supabase.co"; 
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52b2p0c211cmJ2cGNsd2N3cmNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1OTYxODgsImV4cCI6MjA5NzE3MjE4OH0.83E5nAY27tX15ClrqwxjmAsPXj3Wx5na9j3Lg24I63E"; 
+
+function getSupabaseConfig(){ 
+  try { return JSON.parse(localStorage.getItem('ld_supabase_cfg') || 'null'); } catch { return null; } 
+}
 
 function saveSupabaseConfig(){
-  const url=(document.getElementById('cfg-url').value||'').trim();
-  const key=(document.getElementById('cfg-key').value||'').trim();
-  if(!url||!key){showToast('Both URL and key are required.','error');return;}
-  localStorage.setItem(CFG_KEY,JSON.stringify({url,key}));
+  const url = (document.getElementById('cfg-url').value || '').trim();
+  const key = (document.getElementById('cfg-key').value || '').trim();
+  if(!url || !key){ showToast('Both URL and key are required.', 'error'); return; }
+  localStorage.setItem('ld_supabase_cfg', JSON.stringify({url, key}));
   location.reload();
 }
 
 function disconnectSupabase(){
-  if(!confirm('Disconnect this browser from the database? You will need to re-enter the URL/key to use the app again.'))return;
-  localStorage.removeItem(CFG_KEY);
+  if(!confirm('Disconnect this browser from the database? Local configs overrides will be purged.')) return;
+  localStorage.removeItem('ld_supabase_cfg');
   location.reload();
 }
 
 function initSupabase(){
-  const cfg=getSupabaseConfig();
-  if(!cfg){ document.getElementById('setup-screen').style.display='flex'; return false; }
-  sb=window.supabase.createClient(cfg.url,cfg.key);
-  document.getElementById('setup-screen').style.display='none';
+  const localOverride = getSupabaseConfig();
+  const runtimeUrl = localOverride ? localOverride.url : SUPABASE_URL;
+  const runtimeKey = localOverride ? localOverride.key : SUPABASE_ANON_KEY;
+
+  if(!runtimeUrl || !runtimeKey || runtimeKey === "YOUR_SUPABASE_ANON_KEY") {
+    document.getElementById('setup-screen').style.display = 'flex';
+    return false;
+  }
+  
+  sb = window.supabase.createClient(runtimeUrl, runtimeKey);
+  document.getElementById('setup-screen').style.display = 'none';
   return true;
 }
 
 // ════════════════════════════════════════════
-//  STATE
+//  STATE METRICS MATRIX
 // ════════════════════════════════════════════
 let S={
-  user:null, profile:null,             // current auth user + profile row
+  user:null, profile:null,
   clients:[], users:[], documents:[], templates:[],
   categories:[], formSchemas:{},
   tasks:[], taskComments:{},
-  messages:[], activeChatPeer:null,    // null = team broadcast channel
+  messages:[], activeChatPeer:null,
   signupCode:null,
   editingClientId:null, detailClientId:null,
   activeCaseType:null, pendingFiles:[],
@@ -871,7 +859,7 @@ let S={
 const FIELD_TYPES=['text','number','date','tel','select','textarea'];
 
 // ════════════════════════════════════════════
-//  AUTH
+//  SECURE AUTH PLATFORM INTERACTIVE ACTIONS
 // ════════════════════════════════════════════
 function showAuthTab(tab){
   document.getElementById('auth-signin').style.display=tab==='signin'?'block':'none';
@@ -887,15 +875,13 @@ async function doSignIn(){
   const pwdInput = document.getElementById('li-pwd');
   const err = document.getElementById('li-err');
   
-  if (!emailInput || !pwdInput) return;
+  if(!emailInput || !pwdInput) return;
   
   const email = (emailInput.value || '').trim();
   const pwd = pwdInput.value;
-  
   err.style.display = 'none';
   
-  // Guard clause to protect against sending malicious or malformed blocks triggering a 400
-  if (!email || !pwd) {
+  if(!email || !pwd){
     err.textContent = 'Please enter both your email and password.';
     err.style.display = 'block';
     return;
@@ -908,66 +894,97 @@ async function doSignIn(){
       password: pwd
     });
     
-    if (error) {
+    if(error){
       updateSyncStatus('synced', 'Live');
       err.textContent = error.message;
       err.style.display = 'block';
       return;
     }
-    
     await afterAuth();
-  } catch (windowErr) {
+  } catch(windowErr) {
     updateSyncStatus('offline', 'Error');
-    err.textContent = 'An unexpected connection error occurred.';
+    err.textContent = 'An unexpected connection failure occurred.';
     err.style.display = 'block';
   }
 }
+
 async function doSignUp(){
-  const name=(document.getElementById('su-name').value||'').trim();
-  const email=(document.getElementById('su-email').value||'').trim();
-  const pwd=document.getElementById('su-pwd').value;
-  const code=(document.getElementById('su-code').value||'').trim();
-  const err=document.getElementById('su-err');
-  err.style.display='none';
-  if(!name||!email||pwd.length<8){err.textContent='Name, email, and a password (8+ chars) are required.';err.style.display='block';return;}
-
-  // Check if this is the very first user (becomes admin automatically)
-  const {count}=await sb.from('profiles').select('*',{count:'exact',head:true});
-  const isFirstUser=(count||0)===0;
-
-  if(!isFirstUser){
-    if(!code){err.textContent='A signup code from your admin is required.';err.style.display='block';return;}
-    const {data:codeRow}=await sb.from('signup_codes').select('*').eq('code',code).eq('active',true).maybeSingle();
-    if(!codeRow){err.textContent='Invalid or expired signup code.';err.style.display='block';return;}
+  const name = (document.getElementById('su-name').value || '').trim();
+  const email = (document.getElementById('su-email').value || '').trim();
+  const pwd = document.getElementById('su-pwd').value;
+  const code = (document.getElementById('su-code').value || '').trim();
+  const err = document.getElementById('su-err');
+  err.style.display = 'none';
+  
+  if(!name || !email || pwd.length < 8){
+    err.textContent = 'Name, email, and a password (8+ characters) are required.';
+    err.style.display = 'block';
+    return;
   }
 
-  const {data,error}=await sb.auth.signUp({email,password:pwd});
-  if(error){err.textContent=error.message;err.style.display='block';return;}
+  try {
+    updateSyncStatus('syncing', 'Registering...');
+    const {count} = await sb.from('profiles').select('*', {count: 'exact', head: true});
+    const isFirstUser = (count || 0) === 0;
 
-  const userId=data.user?.id;
-  if(!userId){err.textContent='Signup failed — check your email to confirm, then sign in.';err.style.display='block';return;}
+    if(!isFirstUser){
+      if(!code){
+        err.textContent = 'A structural signup code from your system administrator is required.';
+        err.style.display = 'block';
+        updateSyncStatus('synced', 'Live');
+        return;
+      }
+      const {data: codeRow} = await sb.from('signup_codes').select('*').eq('code', code).eq('active', true).maybeSingle();
+      if(!codeRow){
+        err.textContent = 'Invalid or expired activation token context.';
+        err.style.display = 'block';
+        updateSyncStatus('synced', 'Live');
+        return;
+      }
+    }
 
-  await sb.from('profiles').insert({
-    id:userId, full_name:name, email,
-    role:isFirstUser?'admin':'pending',
-    approved:isFirstUser
-  });
+    const {data, error} = await sb.auth.signUp({email, password: pwd});
+    if(error){
+      err.textContent = error.message;
+      err.style.display = 'block';
+      updateSyncStatus('synced', 'Live');
+      return;
+    }
 
-  if(isFirstUser){
-    // Seed a signup code for them right away
-    const newCode=genCode();
-    await sb.from('signup_codes').insert({code:newCode, created_by:userId});
-    showToast('Welcome! You are the Admin.','success');
-    await afterAuth();
-  } else {
-    showToast('Account created — awaiting admin approval.','success');
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('pending-screen').style.display='flex';
+    const userId = data.user?.id;
+    if(!userId){
+      err.textContent = 'Profile instantiation failed. Verify confirmation options via system logs.';
+      err.style.display = 'block';
+      updateSyncStatus('synced', 'Live');
+      return;
+    }
+
+    await sb.from('profiles').insert({
+      id: userId, full_name: name, email,
+      role: isFirstUser ? 'admin' : 'pending',
+      approved: isFirstUser
+    });
+
+    if(isFirstUser){
+      const newCode = genCode();
+      await sb.from('signup_codes').insert({code: newCode, created_by: userId});
+      showToast('Welcome! Structural administrator context mapped.', 'success');
+      await afterAuth();
+    } else {
+      showToast('Account successfully provisioned — awaiting root verification reviews.', 'success');
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('pending-screen').style.display = 'flex';
+      updateSyncStatus('synced', 'Live');
+    }
+  } catch(signUpPanic) {
+    err.textContent = 'An internal execution boundary was breached.';
+    err.style.display = 'block';
+    updateSyncStatus('synced', 'Live');
   }
 }
 
 async function afterAuth(){
-  const {data:{user}}=await sb.auth.getUser();
+  const {data:{user}} = await sb.auth.getUser();
   if(!user){ document.getElementById('login-screen').style.display='flex'; return; }
   S.user=user;
   const {data:profile}=await sb.from('profiles').select('*').eq('id',user.id).maybeSingle();
@@ -986,7 +1003,7 @@ async function afterAuth(){
 }
 
 async function doLogout(){
-  if(S.profile && !confirm('Sign out?'))return;
+  if(S.profile && !confirm('Confirm session cancellation?')) return;
   await sb.auth.signOut();
   S={...S,user:null,profile:null};
   document.getElementById('app').style.display='none';
@@ -1000,9 +1017,10 @@ async function doLogout(){
 function isAdmin(){ return S.profile?.role==='admin'; }
 function genCode(){ return Math.random().toString(36).substring(2,8).toUpperCase(); }
 </script>
+
 <script>
 // ════════════════════════════════════════════
-//  DATA LOADING
+//  DATA CONTEXT INGESTION & POLLING LOOPS
 // ════════════════════════════════════════════
 async function loadAllData(){
   const [catRes,schemaRes,clientRes,userRes,docRes,tplRes,taskRes,codeRes]=await Promise.all([
@@ -1048,9 +1066,6 @@ async function refreshAll(){
   renderChatContacts();
 }
 
-// ════════════════════════════════════════════
-//  INIT
-// ════════════════════════════════════════════
 async function initApp(){
   await loadAllData();
   buildSidebar();
@@ -1074,7 +1089,6 @@ async function initApp(){
 }
 
 function startPolling(){
-  // Poll chat + tasks + pending users every 15s (per agreed design)
   setInterval(async ()=>{
     if(document.getElementById('view-chat')?.classList.contains('active')){
       await loadMessages();
@@ -1089,7 +1103,7 @@ function startPolling(){
 }
 
 // ════════════════════════════════════════════
-//  SIDEBAR
+//  NAVIGATION AND INTERFACE VIEW CONTROLLERS
 // ════════════════════════════════════════════
 function buildSidebar(){
   const nav=document.getElementById('sidebar-nav');
@@ -1126,9 +1140,6 @@ function updateSidebarProfile(){
   document.getElementById('sb-avatar').textContent=initials(n);
 }
 
-// ════════════════════════════════════════════
-//  NAVIGATION
-// ════════════════════════════════════════════
 const NAV_TITLES={
   dashboard:'Dashboard',clients:'All Clients',deadlines:'Deadlines & Alerts',
   documents:'Documents',templates:'Draft Templates',chat:'Messages',tasks:'Tasks',
@@ -1169,9 +1180,10 @@ function myClients(){
   return S.clients.filter(c=>c.assigned_to===S.user?.id);
 }
 </script>
+
 <script>
 // ════════════════════════════════════════════
-//  CASE TYPE TABS / DYNAMIC FIELDS
+//  DYNAMIC METADATA SCHEMAS & CONFIGURATOR
 // ════════════════════════════════════════════
 function buildCaseTypeTabs(){
   const c=document.getElementById('client-case-type-tabs');
@@ -1209,7 +1221,7 @@ function renderDynamicFields(catId){
   const cnt=document.getElementById('dynamic-case-fields');
   if(!cnt)return;
   if(!schema.length){
-    cnt.innerHTML=`<p style="color:var(--text-muted);font-size:13px;margin:12px 0;">No fields for this category.${isAdmin()?` <span style="color:var(--navy-mid);cursor:pointer;text-decoration:underline;" onclick="closeModal(\'modal-client\');navigate(\'formbuilder\')">Configure in Form Builder →</span>`:''}</p>`;
+    cnt.innerHTML=`<p style="color:var(--text-muted);font-size:13px;margin:12px 0;">No fields configured. ${isAdmin()?`<span style="color:var(--navy-mid);cursor:pointer;text-decoration:underline;" onclick="closeModal(\'modal-client\');navigate(\'formbuilder\')">Configure fields →</span>`:''}</p>`;
     return;
   }
   const colorMap={blue:'#ebf8ff',green:'#f0fff4',purple:'#faf5ff',orange:'#fffaf0',red:'#fff5f5'};
@@ -1232,7 +1244,7 @@ function readDynamicFields(catId){ const schema=S.formSchemas[catId]||[];const d
 function fillDynamicFields(catId,data){ const schema=S.formSchemas[catId]||[];schema.forEach(f=>{const el=document.getElementById('df-'+f.id);if(el&&data)el.value=data[f.id]||'';}); }
 
 // ════════════════════════════════════════════
-//  FORM BUILDER (admin only)
+//  FORM LOGIC EDITOR BUILDER FUNCTIONS
 // ════════════════════════════════════════════
 function renderFormBuilder(){
   if(!isAdmin())return;
@@ -1269,12 +1281,12 @@ function renderFbFields(){
 }
 function addFormField(){ if(!S.fbActiveCat)return; if(!S.formSchemas[S.fbActiveCat])S.formSchemas[S.fbActiveCat]=[]; S.formSchemas[S.fbActiveCat].push({id:'field_'+Date.now(),label:'New Field',type:'text',required:false}); renderFbFields(); }
 function updateFbField(idx,key,val){ S.formSchemas[S.fbActiveCat][idx][key]=val; if(key==='type')renderFbFields(); }
-function removeFbField(idx){ if(!confirm('Delete this field?'))return; S.formSchemas[S.fbActiveCat].splice(idx,1); renderFbFields(); }
+function removeFbField(idx){ if(!confirm('Delete this field configuration?'))return; S.formSchemas[S.fbActiveCat].splice(idx,1); renderFbFields(); }
 function editFieldOptions(idx){ const f=S.formSchemas[S.fbActiveCat][idx];const cur=(f.options||[]).join('\n');const n=prompt(`Options for "${f.label}" (one per line):`,cur);if(n===null)return;S.formSchemas[S.fbActiveCat][idx].options=n.split('\n').map(s=>s.trim()).filter(Boolean); }
 async function saveFormSchema(){
   const {error}=await sb.from('form_schemas').upsert({category_id:S.fbActiveCat,fields:S.formSchemas[S.fbActiveCat],updated_at:new Date().toISOString()});
   if(error){showToast('Save failed: '+error.message,'error');return;}
-  showToast('Form schema saved!','success');
+  showToast('Form schema saved tracking changes context.','success');
 }
 function setupFbDrag(){
   const list=document.getElementById('fb-fields-list');
@@ -1293,9 +1305,6 @@ function setupFbDrag(){
   });
 }
 
-// ════════════════════════════════════════════
-//  NEW CATEGORY
-// ════════════════════════════════════════════
 function openNewCategoryModal(){ document.getElementById('nc-name').value='';document.getElementById('nc-icon').value='fas fa-folder';openModal('modal-new-cat'); }
 async function createCategory(){
   const name=(document.getElementById('nc-name').value||'').trim();
@@ -1310,11 +1319,13 @@ async function createCategory(){
   S.formSchemas[id]=[];
   closeModal('modal-new-cat');
   buildSidebar();buildCaseTypeTabs();buildCategoryFilter();renderFormBuilder();updateStats();updateTemplateCatDropdown();
-  showToast(`Category "${name}" created!`,'success');
+  showToast(`Category "${name}" instantiated.`,'success');
 }
+</script>
 
+<script>
 // ════════════════════════════════════════════
-//  CLIENT CRUD
+//  CLIENT ARTIFACT OPERATIONS MANAGEMENT
 // ════════════════════════════════════════════
 function genId(){ const n=S.clients.length?Math.max(...S.clients.map(c=>parseInt((c.client_id||'').replace('CL-',''))||0))+1:1000+Math.floor(Math.random()*24); return `CL-${n}`; }
 
@@ -1326,7 +1337,6 @@ function openAddClient(catId=null){
   document.getElementById('f-id').value=genId();
   const aw=document.getElementById('f-assignee-wrap');
   aw.style.display=isAdmin()?'':'none';
-  if(!isAdmin()){ /* assistant: auto-assign to self happens on save */ }
   buildCaseTypeTabs();
   if(catId) selectCaseType(catId);
   openModal('modal-client');
@@ -1372,7 +1382,7 @@ async function saveClient(){
     payload.history=[...(ex?.history||[]),{date:now,text:`Updated by ${S.profile.full_name}.`}];
     const {error}=await sb.from('clients').update(payload).eq('client_id',S.editingClientId);
     if(error){showToast('Save failed: '+error.message,'error');saveBtn.disabled=false;return;}
-    showToast('Client updated!','success');
+    showToast('Client metadata synchronization successful.','success');
   } else {
     isNew=true;
     payload.created_by=S.user.id;
@@ -1380,22 +1390,21 @@ async function saveClient(){
     payload.created_at=now;
     const {error}=await sb.from('clients').insert(payload);
     if(error){showToast('Save failed: '+error.message,'error');saveBtn.disabled=false;return;}
-    showToast(`${clientId} added.`,'success');
+    showToast(`${clientId} indexed.`,'success');
   }
 
-  // Upload pending files to Supabase Storage
   if(S.pendingFiles.length){
     for(const f of S.pendingFiles){
       try{
         const path=`${clientId}/${Date.now()}_${f.name}`;
         const {error:upErr}=await sb.storage.from('lexdesk-files').upload(path,f._file,{contentType:f.type});
-        if(upErr){ showToast(`Upload failed for ${f.name}: ${upErr.message}`,'error'); continue; }
+        if(upErr){ showToast(`Storage deployment failure: ${f.name}`,'error'); continue; }
         await sb.from('documents').insert({
           client_id:clientId,name:f.name,
           category:S.categories.find(c=>c.id===catId)?.label||catId,
           size:f.size,mime_type:f.type,storage_path:path,uploaded_by:S.user.id
         });
-      }catch(fe){ console.error(fe); showToast(`Upload error: ${f.name}`,'error'); }
+      }catch(fe){ showToast(`Upload exception structural handler intercept: ${f.name}`,'error'); }
     }
   }
   S.pendingFiles=[];
@@ -1407,7 +1416,7 @@ async function saveClient(){
 async function editCurrentClient(){
   const c=S.clients.find(x=>x.client_id===S.detailClientId);
   if(!c)return;
-  if(!isAdmin()&&c.assigned_to!==S.user.id){showToast('Access denied.','error');return;}
+  if(!isAdmin()&&c.assigned_to!==S.user.id){showToast('Access restriction boundary violation.','error');return;}
   closeModal('modal-detail');
   S.editingClientId=c.client_id;
   document.getElementById('mc-title').textContent='Edit Client';
@@ -1434,19 +1443,19 @@ async function editCurrentClient(){
 async function deleteCurrentClient(){
   const c=S.clients.find(x=>x.client_id===S.detailClientId);
   if(!c)return;
-  if(!isAdmin()){ showToast('Only the Admin can delete clients.','error'); return; }
-  if(!confirm(`Delete "${c.name}"? This cannot be undone.`))return;
+  if(!isAdmin()){ showToast('Operation limited strictly to system administrators.','error'); return; }
+  if(!confirm(`Purge profile indexing for "${c.name}" permanently?`))return;
   const {error}=await sb.from('clients').delete().eq('client_id',S.detailClientId);
-  if(error){showToast('Delete failed: '+error.message,'error');return;}
+  if(error){showToast('Purge query pipeline failed: '+error.message,'error');return;}
   closeModal('modal-detail');
   await refreshAll();
-  showToast('Client deleted.','warning');
+  showToast('Client records expunged.','warning');
 }
 
 async function viewClient(id){
   const c=S.clients.find(x=>x.client_id===id);
   if(!c)return;
-  if(!isAdmin()&&c.assigned_to!==S.user.id){showToast('Access denied.','error');return;}
+  if(!isAdmin()&&c.assigned_to!==S.user.id){showToast('Access authorization failure.','error');return;}
   S.detailClientId=id;
   const cat=S.categories.find(x=>x.id===c.case_type)||{label:c.case_type,icon:'fas fa-file'};
   const au=S.users.find(u=>u.id===c.assigned_to);
@@ -1478,7 +1487,7 @@ async function viewClient(id){
       caseHTML+=`<div class="form-group"${fullW?' style="grid-column:1/-1;"':''}><div class="form-label">${f.label}</div><div style="font-size:14px;padding:6px 0;">${val} ${pill}</div></div>`;
     });
     caseHTML+='</div>';
-  } else caseHTML='<p class="text-muted">No case details.</p>';
+  } else caseHTML='<p class="text-muted">No specialized schema layouts active.</p>';
   document.getElementById('tab-case-details').innerHTML=caseHTML;
 
   const clientDocs=S.documents.filter(d=>d.client_id===id);
@@ -1489,20 +1498,21 @@ async function viewClient(id){
           <span class="file-item-name">${escHtml(d.name)}</span>
           <span class="file-item-size">${formatBytes(d.size)}</span>
         </div>`).join('')}</div>`
-    :'<p class="text-muted text-sm">No documents attached.</p>';
+    :'<p class="text-muted text-sm">No structured file context mapped.</p>';
 
   const hist=(c.history||[]).slice().reverse();
   document.getElementById('det-history').innerHTML=hist.length
     ?hist.map(h=>`<div class="timeline-item"><div class="timeline-date">${fmtDT(h.date)}</div><div class="timeline-text">${h.text}</div></div>`).join('')
-    :'<p class="text-muted text-sm">No history.</p>';
+    :'<p class="text-muted text-sm">History logs clear.</p>';
   switchTab('overview');
   openModal('modal-detail');
 }
 function dr(label,val){ return `<div class="form-group"><div class="form-label">${label}</div><div style="font-size:14px;padding:6px 0;">${val||'—'}</div></div>`; }
 </script>
+
 <script>
 // ════════════════════════════════════════════
-//  CLIENT TABLE RENDER
+//  UI DATA GRAPH REVIEWS & RENDERING PATTERNS
 // ════════════════════════════════════════════
 function renderClientTable(){
   const search=(document.getElementById('client-search')?.value||'').toLowerCase();
@@ -1542,7 +1552,7 @@ function renderRecentClients(){
   const tbody=document.getElementById('recent-tbody');
   if(!tbody)return;
   const clients=myClients().slice(0,6);
-  if(!clients.length){tbody.innerHTML='<tr><td colspan="4"><div class="empty-state"><i class="fas fa-users"></i><div class="empty-state-title">No clients yet</div></div></td></tr>';return;}
+  if(!clients.length){tbody.innerHTML='<tr><td colspan="4"><div class="empty-state"><i class="fas fa-users"></i><div class="empty-state-title">No clients active.</div></div></td></tr>';return;}
   tbody.innerHTML=clients.map(c=>{
     const au=S.users.find(u=>u.id===c.assigned_to);
     return `<tr onclick="viewClient('${c.client_id}')">
@@ -1554,21 +1564,18 @@ function renderRecentClients(){
 function openEditClientById(id){S.detailClientId=id;editCurrentClient();}
 function deleteClientById(id){S.detailClientId=id;deleteCurrentClient();}
 
-// ════════════════════════════════════════════
-//  STATS
-// ════════════════════════════════════════════
 function updateStats(){
   const cl=myClients();
   const alerts=getUpcomingDeadlines(60).length;
   const myOpenTasks=S.tasks.filter(t=>t.assigned_to===S.user?.id&&t.status!=='done'&&t.status!=='cancelled').length;
-  let html=`<div class="stat-card gold"><div class="stat-label">Total Clients</div><div class="stat-value">${cl.length}</div><div class="stat-sub">Active matters</div><i class="fas fa-users stat-icon"></i></div>`;
+  let html=`<div class="stat-card gold"><div class="stat-label">Total Clients</div><div class="stat-value">${cl.length}</div><div class="stat-sub">Active contexts</div><i class="fas fa-users stat-icon"></i></div>`;
   S.categories.slice(0,3).forEach((cat,i)=>{
     const colors=['blue','green','purple'];
     const cnt=cl.filter(c=>c.case_type===cat.id).length;
     html+=`<div class="stat-card ${colors[i]||'blue'}"><div class="stat-label">${cat.label}</div><div class="stat-value">${cnt}</div><i class="${cat.icon} stat-icon"></i></div>`;
   });
-  html+=`<div class="stat-card red"><div class="stat-label">Alerts</div><div class="stat-value">${alerts}</div><div class="stat-sub">60-day window</div><i class="fas fa-bell stat-icon"></i></div>`;
-  html+=`<div class="stat-card purple"><div class="stat-label">My Tasks</div><div class="stat-value">${myOpenTasks}</div><div class="stat-sub">Open</div><i class="fas fa-tasks stat-icon"></i></div>`;
+  html+=`<div class="stat-card red"><div class="stat-label">Alerts</div><div class="stat-value">${alerts}</div><div class="stat-sub">60-day threshold</div><i class="fas fa-bell stat-icon"></i></div>`;
+  html+=`<div class="stat-card purple"><div class="stat-label">My Tasks</div><div class="stat-value">${myOpenTasks}</div><div class="stat-sub">Pending action</div><i class="fas fa-tasks stat-icon"></i></div>`;
   document.getElementById('stats-grid').innerHTML=html;
   const dlBadge=document.getElementById('dl-badge');
   if(dlBadge){dlBadge.textContent=alerts;dlBadge.style.display=alerts?'inline-block':'none';}
@@ -1577,9 +1584,11 @@ function updateStats(){
   renderDashDeadlines();
   renderDashTasks();
 }
+</script>
 
+<script>
 // ════════════════════════════════════════════
-//  DEADLINES
+//  DEADLINES CRITICAL CRITERIA EVALUATORS
 // ════════════════════════════════════════════
 function getDeadline(c){
   const d=c.case_data||{};
@@ -1612,7 +1621,7 @@ function renderDeadlines(){
   setEl('dl-overdue',ov.length);setEl('dl-30',d30.length);setEl('dl-60',d60.length);
   const cnt=document.getElementById('deadlines-list');
   if(!cnt)return;
-  if(!dl.length){cnt.innerHTML=`<div class="card"><div class="card-body empty-state"><i class="fas fa-calendar-check"></i><div class="empty-state-title">No upcoming deadlines</div></div></div>`;return;}
+  if(!dl.length){cnt.innerHTML=`<div class="card"><div class="card-body empty-state"><i class="fas fa-calendar-check"></i><div class="empty-state-title">No upcoming execution thresholds.</div></div></div>`;return;}
   const sections=[{label:'Overdue',items:ov,type:'danger'},{label:'Within 30 days',items:d30,type:'warning'},{label:'Within 60 days',items:d60,type:'info'}];
   cnt.innerHTML=sections.filter(s=>s.items.length).map(s=>`
     <div class="card" style="margin-bottom:14px;">
@@ -1629,7 +1638,7 @@ function renderDashDeadlines(){
   const dl=getUpcomingDeadlines(60).slice(0,5);
   const cnt=document.getElementById('dash-deadlines');
   if(!cnt)return;
-  if(!dl.length){cnt.innerHTML='<p class="text-muted text-sm">No upcoming deadlines.</p>';return;}
+  if(!dl.length){cnt.innerHTML='<p class="text-muted text-sm">No approaching timelines found.</p>';return;}
   cnt.innerHTML=dl.map(d=>`
     <div class="deadline-item" onclick="viewClient('${d.client.client_id}')" style="cursor:pointer;">
       <div><div style="font-size:13.5px;font-weight:500;">${d.client.name}</div><div style="font-size:12px;color:var(--text-muted);">${d.field} · ${fmtD(d.deadline)}</div></div>
@@ -1648,18 +1657,20 @@ function renderDashTasks(){
     </div>`).join('');
 }
 function checkAlerts(){
-  getUpcomingDeadlines(7).forEach(d=>{ if(d.daysLeft>=0) setTimeout(()=>showToast(`⚠ Deadline in ${d.daysLeft}d: ${d.client.name} — ${d.field}`,'warning'),2000); });
+  getUpcomingDeadlines(7).forEach(d=>{ if(d.daysLeft>=0) setTimeout(()=>showToast(`⚠ Timeline boundary proximity event: ${d.client.name} — ${d.field}`,'warning'),2000); });
 }
+</script>
 
+<script>
 // ════════════════════════════════════════════
-//  FILE UPLOAD (modal staging)
+//  STAGING STACK FOR STAGED SECURE FILE ASSETS
 // ════════════════════════════════════════════
 function handleFileSelect(e){ addFiles(Array.from(e.target.files)); e.target.value=''; }
 function handleFileDrop(e){ e.preventDefault();document.getElementById('file-drop-zone').classList.remove('drag-over');addFiles(Array.from(e.dataTransfer.files)); }
 function addFiles(files){
   if(!S.pendingFiles)S.pendingFiles=[];
   files.forEach(f=>{
-    if(f.size>20*1024*1024){showToast(`"${f.name}" exceeds 20MB.`,'error');return;}
+    if(f.size>20*1024*1024){showToast(`"${f.name}" size bounds exceeded. Threshold: 20MB.`,'error');return;}
     S.pendingFiles.push({name:f.name,size:f.size,type:f.type,_file:f});
   });
   renderFileList();
@@ -1677,9 +1688,6 @@ function renderFileList(){
 }
 function removeFile(i){ S.pendingFiles.splice(i,1); renderFileList(); }
 
-// ════════════════════════════════════════════
-//  DOCUMENTS PAGE + FILE PREVIEW (real, working)
-// ════════════════════════════════════════════
 function renderDocuments(){
   const search=(document.getElementById('doc-search')?.value||'').toLowerCase();
   const typeF=document.getElementById('doc-filter-type')?.value||'';
@@ -1713,7 +1721,7 @@ function renderDocuments(){
 let _previewDoc=null;
 async function openFilePreview(docId){
   const d=S.documents.find(x=>x.id===docId);
-  if(!d){showToast('Document not found.','error');return;}
+  if(!d){showToast('File missing from system indexing.','error');return;}
   _previewDoc=d;
   document.getElementById('prev-title').textContent=d.name;
   document.getElementById('prev-sub').textContent=`${formatBytes(d.size)} · Uploaded ${fmtD(d.uploaded_at)}`;
@@ -1722,7 +1730,7 @@ async function openFilePreview(docId){
   openModal('modal-preview');
 
   const {data,error}=await sb.storage.from('lexdesk-files').createSignedUrl(d.storage_path,3600);
-  if(error||!data){ body.innerHTML='<p class="text-muted">Could not load file preview.</p>'; return; }
+  if(error||!data){ body.innerHTML='<p class="text-muted">Storage link generation failure.</p>'; return; }
   const url=data.signedUrl;
   const ext=(d.name.split('.').pop()||'').toLowerCase();
   if(['jpg','jpeg','png','gif','webp'].includes(ext)){
@@ -1730,10 +1738,10 @@ async function openFilePreview(docId){
   } else if(ext==='pdf'){
     body.innerHTML=`<iframe src="${url}"></iframe>`;
   } else if(['txt'].includes(ext)){
-    const txt=await fetch(url).then(r=>r.text()).catch(()=>'Could not load text content.');
+    const txt=await fetch(url).then(r=>r.text()).catch(()=>'Text loader context interrupt.');
     body.innerHTML=`<pre style="white-space:pre-wrap;padding:16px;font-size:13px;width:100%;">${escHtml(txt)}</pre>`;
   } else {
-    body.innerHTML=`<div style="text-align:center;padding:40px;"><i class="${fileIcon(d.name)}" style="font-size:48px;color:var(--text-muted);margin-bottom:14px;display:block;"></i><p class="text-muted">Preview not available for this file type.</p><p class="text-sm text-muted">Click Download to view it.</p></div>`;
+    body.innerHTML=`<div style="text-align:center;padding:40px;"><i class="${fileIcon(d.name)}" style="font-size:48px;color:var(--text-muted);margin-bottom:14px;display:block;"></i><p class="text-muted">Direct preview template unavailable.</p><p class="text-sm text-muted">Click Download button to view local copy.</p></div>`;
   }
   document.getElementById('prev-download-btn').dataset.url=url;
 }
@@ -1742,27 +1750,29 @@ function downloadPreviewFile(){
   if(!url||!_previewDoc)return;
   const a=document.createElement('a');a.href=url;a.download=_previewDoc.name;a.target='_blank';a.click();
 }
+</script>
 
+<script>
 // ════════════════════════════════════════════
-//  USERS MANAGEMENT (admin only)
+//  TEAM ACCOUNT MANAGEMENT CONTROL PIPELINES
 // ════════════════════════════════════════════
 function copySignupCode(){
-  if(!S.signupCode){showToast('No active code.','error');return;}
-  navigator.clipboard.writeText(S.signupCode).then(()=>showToast('Code copied!','success'));
+  if(!S.signupCode){showToast('No validation tokens found active.','error');return;}
+  navigator.clipboard.writeText(S.signupCode).then(()=>showToast('Verification context cached to clipboard.','success'));
 }
 async function regenerateSignupCode(){
-  if(!confirm('Generate a new code? The old one will stop working.'))return;
+  if(!confirm('Invalidate current signup configuration code to allocate new context?'))return;
   if(S.signupCode) await sb.from('signup_codes').update({active:false}).eq('code',S.signupCode);
   const newCode=genCode();
   await sb.from('signup_codes').insert({code:newCode,created_by:S.user.id});
   S.signupCode=newCode;
   renderUsers();
-  showToast('New signup code generated.','success');
+  showToast('Allocation sequence generated fresh code token.','success');
 }
 function openAddUserModal(userId){
   const u=[...S.users,...(S.pendingUsers||[])].find(x=>x.id===userId);
   if(!u)return;
-  document.getElementById('au-title').textContent=u.approved?'Edit Role':'Approve & Assign Role';
+  document.getElementById('au-title').textContent=u.approved?'Modify Role Access Mapping':'Approve & Commit Member Role';
   document.getElementById('au-name').value=u.full_name;
   document.getElementById('au-email').value=u.email||'';
   document.getElementById('au-role').value=u.role==='pending'?'assistant':u.role;
@@ -1778,23 +1788,23 @@ async function approveUser(){
   if(error){showToast('Failed: '+error.message,'error');return;}
   closeModal('modal-add-user');
   await refreshAll();
-  showToast('User approved!','success');
+  showToast('Account validated successfully. Role scopes committed.','success');
 }
 async function changeUserRole(userId,newRole){
-  if(userId===S.user.id&&newRole!=='admin'){showToast('You cannot demote yourself.','error');return;}
+  if(userId===S.user.id&&newRole!=='admin'){showToast('Self-demotion sequence intercepted and canceled.','error');return;}
   const {error}=await sb.from('profiles').update({role:newRole}).eq('id',userId);
   if(error){showToast('Failed: '+error.message,'error');return;}
   await refreshAll();
-  showToast('Role updated.','success');
+  showToast('Role updated tracking changes.','success');
 }
 async function removeUserAccess(userId){
-  if(userId===S.user.id){showToast('You cannot remove your own access.','error');return;}
-  if(!confirm('Revoke this user\'s access? Their assigned clients will remain but unassigned.'))return;
+  if(userId===S.user.id){showToast('Self truncation rejected. Administrative role locked.','error');return;}
+  if(!confirm('Revoke access privileges? Active case distributions will remain listed unassigned.'))return;
   await sb.from('clients').update({assigned_to:null}).eq('assigned_to',userId);
   const {error}=await sb.from('profiles').update({approved:false}).eq('id',userId);
   if(error){showToast('Failed: '+error.message,'error');return;}
   await refreshAll();
-  showToast('Access revoked.','warning');
+  showToast('Authorization contexts deactivated.','warning');
 }
 function renderUsers(){
   if(!isAdmin())return;
@@ -1814,7 +1824,7 @@ function renderUsers(){
 
   const cnt=document.getElementById('users-list');
   if(!cnt)return;
-  if(!S.users.length){cnt.innerHTML='<div class="empty-state"><i class="fas fa-users"></i><div class="empty-state-title">No users</div></div>';return;}
+  if(!S.users.length){cnt.innerHTML='<div class="empty-state"><i class="fas fa-users"></i><div class="empty-state-title">No workspace entities found.</div></div>';return;}
   cnt.innerHTML=S.users.map(u=>{
     const clientCount=S.clients.filter(c=>c.assigned_to===u.id).length;
     const isMe=u.id===S.user.id;
@@ -1822,7 +1832,7 @@ function renderUsers(){
       <div class="avatar-sm ${u.role==='admin'?'av-purple':'av-blue'}">${initials(u.full_name)}</div>
       <div class="user-list-item-info">
         <div class="user-list-item-name">${u.full_name}${isMe?' (You)':''} <span class="badge ${u.role==='admin'?'badge-admin':'badge-assistant'}">${u.role==='admin'?'Admin':'Assistant'}</span></div>
-        <div class="user-list-item-meta">${u.email} · ${u.bar_number||'No bar no.'} · ${clientCount} client${clientCount!==1?'s':''}</div>
+        <div class="user-list-item-meta">${u.email} · ${u.bar_number||'No bar registry validation listed'} · ${clientCount} client${clientCount!==1?'s':''}</div>
       </div>
       <div style="display:flex;gap:8px;flex-shrink:0;">
         <button class="btn btn-outline btn-sm" onclick="showUserClients('${u.id}')"><i class="fas fa-users"></i> Clients</button>
@@ -1836,13 +1846,14 @@ function showUserClients(userId){
   const u=S.users.find(x=>x.id===userId);
   navigate('clients');
   document.getElementById('filter-assignee').value=userId;
-  document.getElementById('topbar-title').textContent=`${u?.full_name||'User'}'s Clients`;
+  document.getElementById('topbar-title').textContent=`${u?.full_name||'User'}'s Portfolio`;
   renderClientTable();
 }
 </script>
+
 <script>
 // ════════════════════════════════════════════
-//  CHAT / MESSAGING
+//  COLLABORATIVE REAL-TIME TEAM INTERACTION
 // ════════════════════════════════════════════
 function renderChatContacts(){
   const cnt=document.getElementById('chat-contact-list');
@@ -1863,8 +1874,8 @@ function selectChatPeer(userId){
   S.activeChatPeer=userId;
   renderChatContacts();
   const headerEl=document.getElementById('chat-header-title');
-  if(userId===null){ headerEl.textContent='Team Channel'; }
-  else { const u=S.users.find(x=>x.id===userId); headerEl.textContent=u?u.full_name:'Direct Message'; }
+  if(userId===null){ headerEl.textContent='Team Broadcast Channel'; }
+  else { const u=S.users.find(x=>x.id===userId); headerEl.textContent=u?u.full_name:'Direct Context Message'; }
   loadMessages().then(renderChatMessages);
 }
 async function loadMessages(){
@@ -1880,16 +1891,16 @@ async function loadMessages(){
 function renderChatMessages(){
   const cnt=document.getElementById('chat-messages');
   if(!cnt)return;
-  if(!S.messages.length){cnt.innerHTML='<p class="text-muted text-sm" style="text-align:center;margin-top:20px;">No messages yet. Say hello!</p>';return;}
+  if(!S.messages.length){cnt.innerHTML='<p class="text-muted text-sm" style="text-align:center;margin-top:20px;">No message logs recorded inside this node tree.</p>';return;}
   cnt.innerHTML=S.messages.map(m=>{
     const mine=m.sender_id===S.user.id;
     const sender=S.users.find(u=>u.id===m.sender_id);
     let attachHTML='';
     if(m.attachment_path){
-      attachHTML=`<div class="chat-msg-attach" onclick="openChatAttachment('${m.id}')"><i class="fas fa-paperclip"></i> ${escHtml(m.attachment_name||'Attachment')}</div>`;
+      attachHTML=`<div class="chat-msg-attach" onclick="openChatAttachment('${m.id}')"><i class="fas fa-paperclip"></i> ${escHtml(m.attachment_name||'Attachment File Context')}</div>`;
     }
     return `<div class="chat-msg ${mine?'mine':'theirs'}">
-      ${!mine&&S.activeChatPeer===null?`<div style="font-size:11px;font-weight:600;opacity:.7;margin-bottom:2px;">${sender?sender.full_name:'Unknown'}</div>`:''}
+      ${!mine&&S.activeChatPeer===null?`<div style="font-size:11px;font-weight:600;opacity:.7;margin-bottom:2px;">${sender?sender.full_name:'External Entity'}</div>`:''}
       ${m.body?escHtml(m.body):''}
       ${attachHTML}
       <div class="chat-msg-time">${fmtDT(m.created_at)}</div>
@@ -1901,13 +1912,13 @@ async function openChatAttachment(msgId){
   const m=S.messages.find(x=>x.id===msgId);
   if(!m||!m.attachment_path)return;
   const {data,error}=await sb.storage.from('lexdesk-files').createSignedUrl(m.attachment_path,3600);
-  if(error||!data){showToast('Could not load attachment.','error');return;}
+  if(error||!data){showToast('Asset fetch failed via secure link resolution router.','error');return;}
   window.open(data.signedUrl,'_blank');
 }
 function handleChatFileSelect(e){
   const f=e.target.files[0];
   if(!f)return;
-  if(f.size>20*1024*1024){showToast('File exceeds 20MB.','error');e.target.value='';return;}
+  if(f.size>20*1024*1024){showToast('File data length checks failed. Maximum limit: 20MB.','error');e.target.value='';return;}
   S.pendingChatFile=f;
   document.getElementById('chat-pending-file-name').textContent=f.name;
   document.getElementById('chat-pending-file').style.display='flex';
@@ -1924,38 +1935,39 @@ async function sendChatMessage(){
     const f=S.pendingChatFile;
     const path=`chat/${Date.now()}_${f.name}`;
     const {error:upErr}=await sb.storage.from('lexdesk-files').upload(path,f,{contentType:f.type});
-    if(upErr){showToast('Attachment upload failed: '+upErr.message,'error');return;}
+    if(upErr){showToast('Attachment processing failed: '+upErr.message,'error');return;}
     payload.attachment_path=path;
     payload.attachment_name=f.name;
   }
   const {error}=await sb.from('messages').insert(payload);
-  if(error){showToast('Send failed: '+error.message,'error');return;}
+  if(error){showToast('Message generation failed: '+error.message,'error');return;}
   input.value='';
   clearChatPendingFile();
   await loadMessages();
   renderChatMessages();
 }
 </script>
+
 <script>
 // ════════════════════════════════════════════
-//  TASKS / KANBAN
+//  KANBAN SYSTEM TRACKING SCHEDULING PIPELINES
 // ════════════════════════════════════════════
 function buildTaskClientDropdown(){
   const sel=document.getElementById('task-client');
   if(!sel)return;
-  sel.innerHTML='<option value="">— None —</option>'+myClients().map(c=>`<option value="${c.client_id}">${c.name} (${c.client_id})</option>`).join('');
+  sel.innerHTML='<option value="">— Unlinked Matter —</option>'+myClients().map(c=>`<option value="${c.client_id}">${c.name} (${c.client_id})</option>`).join('');
 }
 
 function openTaskModal(taskId=null){
   S.editingTaskId=taskId;
   buildTaskClientDropdown();
-  buildAssigneeFilter(); // refreshes task-assignee options with hierarchy rule applied
+  buildAssigneeFilter(); 
   document.getElementById('task-comments-section').style.display=taskId?'block':'none';
   document.getElementById('task-status-actions').innerHTML='';
   if(taskId){
     const t=S.tasks.find(x=>x.id===taskId);
     if(!t)return;
-    document.getElementById('task-modal-title').textContent='Edit Task';
+    document.getElementById('task-modal-title').textContent='Edit Task Context';
     document.getElementById('task-save-txt').textContent='Update Task';
     document.getElementById('task-title').value=t.title;
     document.getElementById('task-desc').value=t.description||'';
@@ -1970,7 +1982,7 @@ function openTaskModal(taskId=null){
         `<button class="btn btn-outline btn-sm" onclick="updateTaskStatus('${taskId}','${k}')">${l}</button>`).join('');
     }
   } else {
-    document.getElementById('task-modal-title').textContent='New Task';
+    document.getElementById('task-modal-title').textContent='New Assignment';
     document.getElementById('task-save-txt').textContent='Create Task';
     document.getElementById('task-title').value='';
     document.getElementById('task-desc').value='';
@@ -1984,11 +1996,11 @@ function openTaskModal(taskId=null){
 async function saveTask(){
   const title=(document.getElementById('task-title').value||'').trim();
   const assignee=document.getElementById('task-assignee').value;
-  if(!title){showToast('Task title is required.','error');return;}
-  if(!assignee){showToast('Please assign this task to someone.','error');return;}
+  if(!title){showToast('Assignment tracking requirements call for a title descriptor.','error');return;}
+  if(!assignee){showToast('Please allocate an engineering/lawyer tracking reference ID.','error');return;}
   if(!isAdmin()){
     const target=S.users.find(u=>u.id===assignee);
-    if(!target||target.role!=='admin'){showToast('Assistants can only raise tasks to the Admin.','error');return;}
+    if(!target||target.role!=='admin'){showToast('Assistant operations must escalate tasks to an Administrator.','error');return;}
   }
   const payload={
     title,description:document.getElementById('task-desc').value,
@@ -2000,14 +2012,14 @@ async function saveTask(){
   };
   if(S.editingTaskId){
     const {error}=await sb.from('tasks').update(payload).eq('id',S.editingTaskId);
-    if(error){showToast('Update failed: '+error.message,'error');return;}
-    showToast('Task updated.','success');
+    if(error){showToast('Pipeline manipulation failed: '+error.message,'error');return;}
+    showToast('Assignment definitions updated.','success');
   } else {
     payload.assigned_by=S.user.id;
     payload.status='open';
     const {error}=await sb.from('tasks').insert(payload);
-    if(error){showToast('Create failed: '+error.message,'error');return;}
-    showToast('Task created.','success');
+    if(error){showToast('Instantiation sequence dropped: '+error.message,'error');return;}
+    showToast('Task added to active sprint tracking rows.','success');
   }
   closeModal('modal-task');
   const {data}=await sb.from('tasks').select('*').order('created_at',{ascending:false});
@@ -2022,7 +2034,7 @@ async function updateTaskStatus(taskId,status){
   const {data}=await sb.from('tasks').select('*').order('created_at',{ascending:false});
   S.tasks=data||[];
   renderTasks();updateStats();
-  showToast('Status updated.','success');
+  showToast('State configuration saved.','success');
 }
 
 async function renderTaskComments(taskId){
@@ -2030,10 +2042,10 @@ async function renderTaskComments(taskId){
   S.taskComments[taskId]=data||[];
   const cnt=document.getElementById('task-comments-list');
   if(!cnt)return;
-  if(!data||!data.length){cnt.innerHTML='<p class="text-muted text-sm">No comments yet.</p>';return;}
+  if(!data||!data.length){cnt.innerHTML='<p class="text-muted text-sm">No collaborative comment threads active on this assignment tree node.</p>';return;}
   cnt.innerHTML=data.map(c=>{
     const author=S.users.find(u=>u.id===c.author_id);
-    return `<div style="padding:7px 0;border-bottom:1px solid var(--border-light);font-size:13px;"><strong>${author?author.full_name:'Unknown'}:</strong> ${escHtml(c.body)} <span style="font-size:11px;color:var(--text-muted);">${fmtDT(c.created_at)}</span></div>`;
+    return `<div style="padding:7px 0;border-bottom:1px solid var(--border-light);font-size:13px;"><strong>${author?author.full_name:'Unknown Entity'}:</strong> ${escHtml(c.body)} <span style="font-size:11px;color:var(--text-muted);">${fmtDT(c.created_at)}</span></div>`;
   }).join('');
 }
 async function addTaskComment(){
@@ -2070,17 +2082,18 @@ function renderTasks(){
           ${client?`<span><i class="fas fa-folder"></i> ${client.name}</span>`:''}
         </div>
       </div>`;
-    }).join(''):'<p class="text-muted text-sm" style="padding:8px 4px;">Empty</p>';
+    }).join(''):'<p class="text-muted text-sm" style="padding:8px 4px;">Column stack clear.</p>';
   });
 }
 </script>
+
 <script>
 // ════════════════════════════════════════════
-//  TEMPLATES
+//  DOCUMENT DESIGN TEMPLATES COMPILER SYSTEM
 // ════════════════════════════════════════════
 function updateTemplateCatDropdown(){
   const sel=document.getElementById('tpl-category');
-  if(sel) sel.innerHTML='<option value="">General</option>'+S.categories.map(c=>`<option value="${c.id}">${c.label}</option>`).join('');
+  if(sel) sel.innerHTML='<option value="">General Worksheets</option>'+S.categories.map(c=>`<option value="${c.id}">${c.label}</option>`).join('');
 }
 function openTemplateModal(tplId=null){
   S.editingTemplateId=tplId;
@@ -2088,12 +2101,12 @@ function openTemplateModal(tplId=null){
   if(tplId){
     const t=S.templates.find(x=>x.id===tplId);
     if(!t)return;
-    document.getElementById('tpl-modal-title').textContent='Edit Template';
+    document.getElementById('tpl-modal-title').textContent='Modify Automation Schema';
     document.getElementById('tpl-name').value=t.name;
     document.getElementById('tpl-category').value=t.category||'';
     document.getElementById('tpl-content').innerHTML=t.content;
   } else {
-    document.getElementById('tpl-modal-title').textContent='New Draft Template';
+    document.getElementById('tpl-modal-title').textContent='New Workspace Blueprint Template';
     document.getElementById('tpl-name').value='';
     document.getElementById('tpl-content').innerHTML='';
   }
@@ -2104,7 +2117,7 @@ function insertPlaceholder(ph){ document.execCommand('insertText',false,ph); doc
 async function saveTemplate(){
   const name=(document.getElementById('tpl-name').value||'').trim();
   const content=document.getElementById('tpl-content').innerHTML;
-  if(!name||!content.trim()){showToast('Name and content are required.','error');return;}
+  if(!name||!content.trim()){showToast('Required validation missing on design names or tracking fields.','error');return;}
   const payload={name,category:document.getElementById('tpl-category').value||null,content,updated_at:new Date().toISOString()};
   if(S.editingTemplateId){
     const {error}=await sb.from('templates').update(payload).eq('id',S.editingTemplateId);
@@ -2118,15 +2131,15 @@ async function saveTemplate(){
   const {data}=await sb.from('templates').select('*').order('created_at',{ascending:false});
   S.templates=data||[];
   renderTemplates();
-  showToast('Template saved!','success');
+  showToast('Automation structural blueprint committed safely.','success');
 }
 async function deleteTemplate(id){
-  if(!confirm('Delete this template?'))return;
+  if(!confirm('Purge selection from document drafting index structures?'))return;
   const {error}=await sb.from('templates').delete().eq('id',id);
   if(error){showToast('Failed: '+error.message,'error');return;}
   S.templates=S.templates.filter(t=>t.id!==id);
   renderTemplates();
-  showToast('Template deleted.','warning');
+  showToast('Template layout dropped.','warning');
 }
 function renderTemplates(){
   const grid=document.getElementById('templates-grid');
@@ -2143,7 +2156,7 @@ function renderTemplates(){
       <div class="template-card-meta">${cat?cat.label:'General'} · by ${author?author.full_name:'—'}</div>
       <div class="template-preview">${t.content.replace(/<[^>]+>/g,' ').slice(0,140)}…</div>
       <div style="display:flex;gap:8px;margin-top:12px;">
-        <button class="btn btn-gold btn-sm" onclick="openUseTemplate('${t.id}')"><i class="fas fa-magic"></i> Use</button>
+        <button class="btn btn-gold btn-sm" onclick="openUseTemplate('${t.id}')"><i class="fas fa-magic"></i> Use Layout</button>
         ${canEdit?`<button class="btn btn-outline btn-sm" onclick="openTemplateModal('${t.id}')"><i class="fas fa-edit"></i></button>
         <button class="btn btn-danger btn-sm" onclick="deleteTemplate('${t.id}')"><i class="fas fa-trash"></i></button>`:''}
       </div>
@@ -2155,7 +2168,7 @@ function openUseTemplate(tplId){
   const sel=document.getElementById('ut-client');
   sel.innerHTML=myClients().map(c=>`<option value="${c.client_id}">${c.name} (${c.client_id})</option>`).join('');
   const t=S.templates.find(x=>x.id===tplId);
-  document.getElementById('ut-title').textContent='Use: '+(t?t.name:'Template');
+  document.getElementById('ut-title').textContent='Compile Draft: '+(t?t.name:'Template Layout Matrix');
   previewTemplate();
   openModal('modal-use-template');
 }
@@ -2177,17 +2190,17 @@ function previewTemplate(){
 }
 function copyTemplateText(){
   const txt=document.getElementById('ut-preview').innerText;
-  navigator.clipboard.writeText(txt).then(()=>showToast('Copied to clipboard!','success'));
+  navigator.clipboard.writeText(txt).then(()=>showToast('Compiled textual assets stored inside tracking memory buffers.','success'));
 }
 function downloadTemplateText(){
   const txt=document.getElementById('ut-preview').innerText;
   const t=S.templates.find(x=>x.id===S.activeTemplateId);
   const blob=new Blob([txt],{type:'text/plain'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(t?.name||'template')+'.txt';a.click();
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(t?.name||'compiled_document')+'.txt';a.click();
 }
 
 // ════════════════════════════════════════════
-//  EXCEL EXPORT (SheetJS, one workbook / 4 tabs)
+//  WORKBOOK EXPORT (SheetJS Multi-Tab Router)
 // ════════════════════════════════════════════
 function exportExcel(){
   try{
@@ -2223,13 +2236,13 @@ function exportExcel(){
     });
     XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(taskRows),'Tasks');
 
-    XLSX.writeFile(wb,`LexDesk_Export_${new Date().toISOString().slice(0,10)}.xlsx`);
-    showToast('Excel file exported!','success');
-  }catch(e){ console.error(e); showToast('Export failed.','error'); }
+    XLSX.writeFile(wb,`LexDesk_System_Backup_${new Date().toISOString().slice(0,10)}.xlsx`);
+    showToast('Data structured matrices parsed safely into multi-tab workbook sheet.','success');
+  }catch(e){ showToast('Structured compilation backup pipeline execution abort event.','error'); }
 }
 
 // ════════════════════════════════════════════
-//  SETTINGS
+//  SYSTEM PREFERENCES PROFILE PARAMETERS
 // ════════════════════════════════════════════
 function loadSettingsUI(){
   if(!S.profile)return;
@@ -2248,12 +2261,12 @@ async function saveProfile(){
   if(error){showToast('Save failed: '+error.message,'error');return;}
   S.profile={...S.profile,...payload};
   updateSidebarProfile();
-  showToast('Profile saved!','success');
+  showToast('Profile properties committed safely.','success');
 }
 function saveOneDriveClientId(){
   const id=(document.getElementById('s-onedrive-client-id').value||'').trim();
   localStorage.setItem('ld_onedrive_client_id',id);
-  showToast(id?'Client ID saved — OneDrive sync wiring coming in a future update.':'Cleared.','success');
+  showToast(id?'Azure API authentication parameters recorded. Integration extensions wiring scheduled future releases.':'Staging fields empty.','success');
 }
 function updateSyncStatus(state,text){
   const dot=document.getElementById('sync-dot');
@@ -2263,9 +2276,10 @@ function updateSyncStatus(state,text){
   txt.textContent=text;
 }
 </script>
+
 <script>
 // ════════════════════════════════════════════
-//  HELPERS
+//  SYSTEM RENDERING TRANSLATOR HELPERS
 // ════════════════════════════════════════════
 function escHtml(s){ if(s==null)return'';return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 function fmtD(ds){ if(!ds)return'—';const d=new Date(ds);if(isNaN(d))return ds;return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}); }
@@ -2298,19 +2312,23 @@ function showToast(msg,type='info'){
   setTimeout(()=>{ el.style.transition='opacity .3s';el.style.opacity='0';setTimeout(()=>el.remove(),300); },4500);
 }
 
-// Close modals when clicking backdrop
 document.addEventListener('click',e=>{
   if(e.target.classList.contains('modal-backdrop')) e.target.classList.remove('open');
 });
 
 // ════════════════════════════════════════════
-//  BOOT
+//  SYSTEM INITIALIZATION BOOT MANAGER
 // ════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded',async ()=>{
-  if(!initSupabase())return;
+  if(!initSupabase()) return;
+  
   const {data:{session}}=await sb.auth.getSession();
-  if(session){ await afterAuth(); }
-  else { document.getElementById('login-screen').style.display='flex'; }
+  if(session){ 
+    await afterAuth(); 
+  } else { 
+    document.getElementById('setup-screen').style.display='none';
+    document.getElementById('login-screen').style.display='flex'; 
+  }
 
   sb.auth.onAuthStateChange((event)=>{
     if(event==='SIGNED_OUT'){
