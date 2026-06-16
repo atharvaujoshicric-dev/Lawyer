@@ -1,70 +1,56 @@
 # LexDesk — Legal Practice Management CRM
 
-A fully offline-capable, single-file Legal Practice Management & Client Tracker built for cybersecurity and general practice lawyers.
+A complete, multi-user legal practice management system for a Cybersecurity + General Practice law firm. Built as a single-page app, backed by Supabase (Postgres + Auth + Storage), deployable to GitHub Pages.
 
-## Features
+## What's included
 
-- **Encrypted local storage** — All client data saved in browser localStorage (AES-256 reference architecture for desktop build)
-- **Three case types** — Cybersecurity, Rental/Property, and General Practice with dynamic form fields
-- **Google Drive sync** — Offline-first queue with background sync simulation
-- **Deadline tracking** — Automatic 60-day alert system for agreement expiry and regulatory deadlines
-- **Document management** — Attach PDFs, DOCX, XLSX, and images to client records
-- **Responsive design** — Fully adaptive for desktop, tablet, and mobile
-- **Zero dependencies** — Single `index.html` file, no build step required
+- Multi-user accounts with Supabase Auth (email + password)
+- Role-based access: **Admin** (full "god mode" — can delete clients, manage users, edit forms) vs **Assistant Lawyer** (sees only assigned clients, cannot delete)
+- Self-signup flow: first person to sign up becomes Admin automatically; everyone else signs up with a code the Admin shares, then waits for approval
+- Dynamic case categories and custom form fields — add new case types beyond Cyber/Rental/General, edit/reorder/require fields per category
+- Real file upload + inline preview (images, PDFs, text files) via Supabase Storage
+- Draft/template documents with placeholder fill-in ({{CLIENT_NAME}}, {{DATE}}, etc.), shared across the whole team
+- Internal team chat with file attachments (polls every 15 seconds — no websocket complexity)
+- Task assignment respecting hierarchy: Assistants can only raise tasks to the Admin; Admin can assign to anyone
+- Deadline tracking and dashboard alerts
+- Excel export (one workbook, 4 tabs: Clients / Documents / Users / Tasks)
+- Mobile-first responsive design throughout, including a rebuilt Settings page
+- OneDrive sync: UI is stubbed and ready, but **not yet wired up** — see "Adding OneDrive later" below
 
-## Case-Specific Fields
+## One-time setup
 
-### Cybersecurity Cases
-- Incident Date & Breach Type (Ransomware, Data Exfiltration, Phishing, etc.)
-- Affected Systems / Servers
-- Records Compromised
-- Regulatory Body (CERT-In, GDPR, HIPAA, PDPB, RBI, SEBI)
-- Regulatory Compliance Deadline
-- Forensic Report Status
-- Case Priority
+### 1. Run the database schema
 
-### Rental / Property Cases
-- Property Address & Type
-- Monthly Rent & Security Deposit
-- Lock-in Period
-- Agreement Start, Expiry & Renewal Date
-- Landlord Details
-- Dispute Notes
+1. Go to your Supabase project → **SQL Editor** → **New Query**
+2. Paste the entire contents of `supabase_schema.sql`
+3. Click **Run**
 
-### General Practice
-- Matter Description & Practice Area
-- Court / Tribunal & Case Number
-- Opposite Party
-- Next Hearing Date
-- Judge / Bench
-- Stage of Proceedings
+This creates all tables, security policies, the storage bucket, and seeds the three default case categories (Cybersecurity, Rental, General).
 
-## Deployment on GitHub Pages
+### 2. Get your Supabase credentials
 
-1. Fork or clone this repository
-2. Go to **Settings → Pages**
-3. Set source to **main branch → / (root)**
-4. Your app will be live at `https://yourusername.github.io/repo-name/`
+In your Supabase project: **Settings → API**. You'll need the **Project URL** and the **anon/public key** (NOT the service_role key).
 
-## First-Time Setup
+### 3. Deploy the app
 
-1. Enter your name and bar registration number
-2. Create a Master Password (min. 8 characters)
-3. Optionally link your Google Drive folder URL
-4. Start adding clients!
+Upload `index.html` (and the included `.nojekyll` file) to a GitHub repository, then enable GitHub Pages in repo settings, or just open `index.html` directly in a browser / host it anywhere static.
 
-## Data Privacy
+### 4. First run
 
-All data is stored in your browser's `localStorage` — nothing is sent to any server. The Google Drive URL is only stored as a reference for the manual sync workflow.
+1. Open the app — it will ask for your Supabase URL and anon key (one-time, stored in your browser's localStorage)
+2. Go to the **Sign Up** tab and create your account — you will automatically become the Admin
+3. From **Users**, copy your signup code and share it with any assistant lawyers
+4. When an assistant signs up with that code, approve them from the **Users** page and assign their role
 
-## Architecture Notes
+## Adding OneDrive sync later
 
-This is a **GitHub Pages demo** version. The full desktop application uses:
-- **Tauri + React** for `.msi`/`.exe` packaging
-- **SQLite + SQLCipher** for AES-256 encrypted local database
-- **Google Drive API v3** for OAuth2-authenticated background sync
-- **Background service workers** for the offline sync queue
+The Settings page has a OneDrive section ready to go but disabled. When you're ready:
+1. Register an app in the [Azure Portal](https://portal.azure.com) (Personal Microsoft Account / OneDrive, not OneDrive for Business)
+2. Paste the Client ID into Settings → OneDrive Sync
+3. Let me know and I'll wire up the OAuth flow and file-sync logic (same pattern as the previous Google Drive integration)
 
-## License
+## Notes
 
-Private / Internal use. Designed for professional legal practice management.
+- File uploads are capped at 20MB and stored in Supabase Storage (private bucket, signed URLs for viewing/downloading)
+- All data access is enforced server-side via Postgres Row Level Security — the RBAC rules aren't just UI conventions, they're enforced at the database level
+- Chat and task lists refresh automatically every 15 seconds while those tabs are open
