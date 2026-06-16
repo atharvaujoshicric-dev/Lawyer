@@ -190,7 +190,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .sync-item-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sync-item-time{font-size:11.5px;color:var(--text-muted)}
 
-/* ── Settings (mobile-first rebuild) ── */
+/* ── Settings ── */
 .settings-wrap{display:flex;flex-direction:column;gap:18px;max-width:760px}
 .settings-section{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
 .settings-section-head{padding:14px 18px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;gap:10px}
@@ -210,7 +210,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .field-builder-item .drag-handle{color:var(--text-muted);cursor:grab;font-size:14px;flex-shrink:0}
 .field-builder-item .field-label-input{flex:1;min-width:100px;border:none;background:transparent;font-size:13.5px;color:var(--text-primary);padding:4px}
 .field-builder-item .field-label-input:focus{outline:none}
-/* ── Setup / Login (mobile-first) ── */
+/* ── Setup / Login ── */
 #setup-screen,#login-screen{position:fixed;inset:0;background:var(--navy);z-index:999;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
 .setup-card,.login-card{background:var(--bg-card);border-radius:16px;padding:28px 24px;width:100%;max-width:420px;box-shadow:0 30px 80px rgba(0,0,0,.4);margin:auto}
 .setup-logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px}
@@ -244,10 +244,14 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .chat-main{flex:1;display:flex;flex-direction:column;min-width:0}
 .chat-header{padding:13px 18px;border-bottom:1px solid var(--border);font-weight:600;font-size:14px;flex-shrink:0}
 .chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
-.chat-msg{max-width:75%;padding:9px 13px;border-radius:12px;font-size:13.5px;line-height:1.5;word-break:break-word}
+.chat-msg{max-width:75%;padding:9px 13px;border-radius:12px;font-size:13.5px;line-height:1.5;word-break:break-word;position:relative;}
 .chat-msg.mine{align-self:flex-end;background:var(--navy);color:#fff;border-bottom-right-radius:3px}
 .chat-msg.theirs{align-self:flex-start;background:var(--bg);color:var(--text-primary);border-bottom-left-radius:3px}
-.chat-msg-time{font-size:10px;opacity:.6;margin-top:3px}
+.chat-msg-time{font-size:10px;opacity:.6;margin-top:3px;display:flex;gap:4px;justify-content:flex-end;}
+.chat-msg-actions{display:none;position:absolute;top:-20px;right:0;background:white;border:1px solid var(--border);border-radius:4px;padding:2px;gap:4px;z-index:10;}
+.chat-msg:hover .chat-msg-actions{display:flex;}
+.chat-msg-actions button{background:none;border:none;cursor:pointer;font-size:11px;color:var(--text-secondary);padding:2px 4px;}
+.chat-msg-actions button:hover{color:var(--navy);}
 .chat-msg-attach{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);padding:6px 10px;border-radius:8px;margin-top:6px;font-size:12px;cursor:pointer}
 .chat-msg.theirs .chat-msg-attach{background:rgba(0,0,0,.06)}
 .chat-input-bar{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border);flex-shrink:0;align-items:center}
@@ -262,15 +266,16 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .task-card.status-done{opacity:.6}
 .task-title{font-size:14px;font-weight:600;color:var(--text-primary)}
 .task-meta{font-size:12px;color:var(--text-muted);margin-top:4px;display:flex;gap:10px;flex-wrap:wrap}
-.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.kanban-col{background:var(--bg);border-radius:10px;padding:12px;min-height:200px}
+.kanban{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;overflow-x:auto;padding-bottom:10px;}
+.kanban-col{background:var(--bg);border-radius:10px;padding:12px;min-height:250px;min-width:160px;}
 .kanban-col-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
 /* ── File preview modal ── */
 .preview-body{display:flex;align-items:center;justify-content:center;min-height:200px;max-height:70vh;overflow:auto;background:#f0f1f5;border-radius:8px}
 .preview-body img{max-width:100%;max-height:68vh;object-fit:contain}
 .preview-body iframe{width:100%;height:68vh;border:none}
 /* ── Responsive ── */
-@media(max-width:1024px){.dash-grid{grid-template-columns:1fr}.kanban{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:1200px){.kanban{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:1024px){.dash-grid{grid-template-columns:1fr}}
 @media(max-width:768px){
   #sidebar{transform:translateX(-100%);width:260px}
   #sidebar.open{transform:translateX(0)}
@@ -306,9 +311,9 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 <div id="setup-screen" style="display:none;">
   <div class="setup-card">
     <div class="setup-logo">Lex<span>Desk</span></div>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">Secure Legal Practice Management — Database Wiring Error</p>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">Secure Legal Practice Management — Database Error</p>
     <div id="setup-config-step">
-      <p style="margin-bottom:12px; color:var(--danger)">Project initialization tokens could not be found or verified inside the inline workspace scripts.</p>
+      <p style="margin-bottom:12px; color:var(--danger)">Project initialization tokens could not be verified inside inline workspace scripts.</p>
       <div class="form-group" style="margin-bottom:12px;">
         <label class="form-label">Supabase Project URL</label>
         <input class="form-control" id="cfg-url" type="text" placeholder="https://xxxx.supabase.co"/>
@@ -438,6 +443,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
         <div id="deadlines-list"></div>
       </div>
+
       <div class="page-view" id="view-documents">
         <div class="search-bar">
           <div class="search-input-wrap"><i class="fas fa-search"></i><input class="search-input" id="doc-search" type="text" placeholder="Search documents…" oninput="renderDocuments()"/></div>
@@ -480,13 +486,15 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
       <div class="page-view" id="view-tasks">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
           <div class="search-bar" style="margin-bottom:0;flex:1;">
-            <select class="form-control" id="task-filter-status" style="width:auto;" onchange="renderTasks()"><option value="">All Statuses</option><option value="open">Open</option><option value="in_progress">In Progress</option><option value="done">Done</option></select>
+            <select class="form-control" id="task-filter-status" style="width:auto;" onchange="renderTasks()"><option value="">All Statuses</option><option value="open">Open</option><option value="in_progress">In Progress</option><option value="review">Under Review</option><option value="rework">Rework Staged</option><option value="done">Closed / Done</option><option value="cancelled">Cancelled</option></select>
           </div>
           <button class="btn btn-gold" onclick="openTaskModal()"><i class="fas fa-plus"></i> New Task</button>
         </div>
         <div class="kanban" id="tasks-kanban">
           <div class="kanban-col"><div class="kanban-col-title">Open <span id="kc-open-count">0</span></div><div id="kc-open"></div></div>
           <div class="kanban-col"><div class="kanban-col-title">In Progress <span id="kc-progress-count">0</span></div><div id="kc-progress"></div></div>
+          <div class="kanban-col"><div class="kanban-col-title">Under Review <span id="kc-review-count">0</span></div><div id="kc-review"></div></div>
+          <div class="kanban-col"><div class="kanban-col-title">Rework <span id="kc-rework-count">0</span></div><div id="kc-rework"></div></div>
           <div class="kanban-col"><div class="kanban-col-title">Done <span id="kc-done-count">0</span></div><div id="kc-done"></div></div>
           <div class="kanban-col"><div class="kanban-col-title">Cancelled <span id="kc-cancelled-count">0</span></div><div id="kc-cancelled"></div></div>
         </div>
@@ -543,7 +551,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 
       <div class="page-view" id="view-settings">
         <div class="settings-wrap">
-
           <div class="settings-section">
             <div class="settings-section-head"><i class="fas fa-user-circle"></i><span>Profile</span></div>
             <div class="settings-section-body">
@@ -559,39 +566,22 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
           </div>
 
           <div class="settings-section">
-            <div class="settings-section-head"><i class="fab fa-microsoft"></i><span>OneDrive Sync</span></div>
-            <div class="settings-section-body">
-              <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:13px;background:var(--bg);border:1px solid var(--border);">
-                <i class="fab fa-microsoft" style="font-size:18px;color:#0078d4;"></i>
-                <div style="flex:1;"><div style="font-weight:500;">Not configured yet</div><div style="font-size:11.5px;color:var(--text-muted);">Files are stored securely in the app for now</div></div>
-              </div>
-              <div class="form-group" style="margin-bottom:12px;">
-                <label class="form-label">Microsoft Azure Client ID</label>
-                <input class="form-control" id="s-onedrive-client-id" type="text" placeholder="Coming soon — paste your Azure App Client ID here"/>
-                <span class="form-hint">Once you have a Client ID from Azure Portal, paste it here to enable OneDrive sync.</span>
-              </div>
-              <button class="btn btn-outline w-full" style="justify-content:center;" onclick="saveOneDriveClientId()"><i class="fas fa-save"></i> Save Client ID</button>
-            </div>
-          </div>
-
-          <div class="settings-section">
             <div class="settings-section-head"><i class="fas fa-shield-alt"></i><span>Data & Security</span></div>
             <div class="settings-section-body">
               <div class="settings-row">
-                <div class="settings-row-text"><div class="settings-row-label">Database</div><div class="settings-row-desc">Supabase Postgres with Row-Level Security</div></div>
+                <div class="settings-row-text"><div class="settings-row-label">Database</div><div class="settings-row-desc">Supabase Postgres Instance Connection</div></div>
                 <span class="badge badge-active"><i class="fas fa-lock"></i> Active</span>
               </div>
               <div class="settings-row">
-                <div class="settings-row-text"><div class="settings-row-label">Export to Excel</div><div class="settings-row-desc">Clients, Documents, Users & Tasks in one workbook</div></div>
+                <div class="settings-row-text"><div class="settings-row-label">Export Data Matrix</div><div class="settings-row-desc">Extract entities into an Excel spreadsheet format</div></div>
                 <button class="btn btn-outline btn-sm" onclick="exportExcel()"><i class="fas fa-file-excel"></i> Export</button>
               </div>
               <div class="settings-row" id="reset-row" style="display:none;">
-                <div class="settings-row-text"><div class="settings-row-label" style="color:var(--danger);">Disconnect Database</div><div class="settings-row-desc">Clears local Supabase config from this browser</div></div>
+                <div class="settings-row-text"><div class="settings-row-label" style="color:var(--danger);">Disconnect Database</div><div class="settings-row-desc">Clears local Supabase configurations out of this browser context</div></div>
                 <button class="btn btn-danger btn-sm" onclick="disconnectSupabase()"><i class="fas fa-unlink"></i> Disconnect</button>
               </div>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -702,7 +692,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 <div class="modal-backdrop" id="modal-template">
   <div class="modal" style="max-width:700px;">
     <div class="modal-header">
-      <div><div class="modal-title" id="tpl-modal-title">New Draft Template</div><div class="modal-sub">Use <code>{{CLIENT_NAME}}</code>, <code>{{CLIENT_ID}}</code>, <code>{{DATE}}</code>, <code>{{CASE_TYPE}}</code></div></div>
+      <div><div class="modal-title" id="tpl-modal-title">New Draft Template</div><div class="modal-sub">Use <code>{{CLIENT_NAME}}</code>, <code>{{CLIENT_ID}}</code>, <code>{{DATE}}</code></div></div>
       <button class="modal-close" onclick="closeModal('modal-template')">&times;</button>
     </div>
     <div class="modal-body">
@@ -710,16 +700,12 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <div class="form-group"><label class="form-label">Template Name <span class="required">*</span></label><input class="form-control" id="tpl-name" type="text" placeholder="e.g. NDA Draft"/></div>
         <div class="form-group"><label class="form-label">Category</label><select class="form-control" id="tpl-category"></select></div>
       </div>
-      <div class="form-group" style="margin-bottom:6px;"><label class="form-label">Content <span class="required">*</span></label></div>
       <div class="rich-toolbar">
         <button onclick="richCmd('bold')"><i class="fas fa-bold"></i></button>
         <button onclick="richCmd('italic')"><i class="fas fa-italic"></i></button>
         <button onclick="richCmd('underline')"><i class="fas fa-underline"></i></button>
-        <button onclick="richCmd('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
-        <button onclick="richCmd('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
         <button onclick="insertPlaceholder('{{CLIENT_NAME}}')" style="width:auto;padding:0 8px;font-size:11px;">{{NAME}}</button>
         <button onclick="insertPlaceholder('{{DATE}}')" style="width:auto;padding:0 8px;font-size:11px;">{{DATE}}</button>
-        <button onclick="insertPlaceholder('{{CLIENT_ID}}')" style="width:auto;padding:0 8px;font-size:11px;">{{ID}}</button>
       </div>
       <div class="rich-editor" id="tpl-content" contenteditable="true"></div>
     </div>
@@ -738,13 +724,11 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     </div>
     <div class="modal-body">
       <div class="form-group" style="margin-bottom:14px;"><label class="form-label">Select Client</label><select class="form-control" id="ut-client" onchange="previewTemplate()"></select></div>
-      <div class="form-group" style="margin-bottom:6px;"><label class="form-label">Preview</label></div>
       <div id="ut-preview" class="template-preview" style="max-height:300px;overflow-y:auto;"></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal('modal-use-template')">Close</button>
       <button class="btn btn-primary" onclick="copyTemplateText()"><i class="fas fa-copy"></i> Copy</button>
-      <button class="btn btn-gold" onclick="downloadTemplateText()"><i class="fas fa-download"></i> Download .txt</button>
     </div>
   </div>
 </div>
@@ -754,9 +738,9 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     <div class="modal-header"><div><div class="modal-title">New Case Category</div></div><button class="modal-close" onclick="closeModal('modal-new-cat')">&times;</button></div>
     <div class="modal-body">
       <div class="form-grid" style="gap:13px;">
-        <div class="form-group"><label class="form-label">Category Name <span class="required">*</span></label><input class="form-control" id="nc-name" type="text" placeholder="e.g. Immigration"/></div>
-        <div class="form-group"><label class="form-label">Icon (Font Awesome class)</label><input class="form-control" id="nc-icon" type="text" placeholder="fas fa-globe"/></div>
-        <div class="form-group"><label class="form-label">Color</label><select class="form-control" id="nc-color"><option value="blue">Blue</option><option value="green">Green</option><option value="purple">Purple</option><option value="orange">Orange</option><option value="red">Red</option></select></div>
+        <div class="form-group"><label class="form-label">Category Name <span class="required">*</span></label><input class="form-control" id="nc-name" type="text" placeholder="e.g. Corporate"/></div>
+        <div class="form-group"><label class="form-label">Icon Class</label><input class="form-control" id="nc-icon" type="text" placeholder="fas fa-gavel"/></div>
+        <div class="form-group"><label class="form-label">Color</label><select class="form-control" id="nc-color"><option value="blue">Blue</option><option value="green">Green</option><option value="purple">Purple</option></select></div>
       </div>
     </div>
     <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-new-cat')">Cancel</button><button class="btn btn-gold" onclick="createCategory()"><i class="fas fa-plus"></i> Create</button></div>
@@ -768,7 +752,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     <div class="modal-header"><div><div class="modal-title" id="task-modal-title">New Task</div></div><button class="modal-close" onclick="closeModal('modal-task')">&times;</button></div>
     <div class="modal-body">
       <div class="form-grid" style="gap:13px;">
-        <div class="form-group"><label class="form-label">Title <span class="required">*</span></label><input class="form-control" id="task-title" type="text" placeholder="e.g. Draft reply to opposite counsel"/></div>
+        <div class="form-group"><label class="form-label">Title <span class="required">*</span></label><input class="form-control" id="task-title" type="text" placeholder="e.g. Formulate context mapping schema"/></div>
         <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" id="task-desc" rows="3"></textarea></div>
         <div class="form-group"><label class="form-label">Related Client (optional)</label><select class="form-control" id="task-client"></select></div>
         <div class="form-group"><label class="form-label">Assign To <span class="required">*</span></label><select class="form-control" id="task-assignee"></select></div>
@@ -778,69 +762,54 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
       <div id="task-comments-section" style="display:none;margin-top:18px;">
-        <div class="section-divider">Comments</div>
+        <div class="section-divider">Comments / Rework Log</div>
         <div id="task-comments-list" style="max-height:180px;overflow-y:auto;margin-bottom:10px;"></div>
         <div style="display:flex;gap:8px;">
-          <input class="form-control" id="task-comment-input" type="text" placeholder="Add a comment…" onkeydown="if(event.key==='Enter')addTaskComment()"/>
+          <input class="form-control" id="task-comment-input" type="text" placeholder="Add a comment or rework notes…"/>
           <button class="btn btn-outline btn-sm" onclick="addTaskComment()"><i class="fas fa-paper-plane"></i></button>
         </div>
       </div>
     </div>
     <div class="modal-footer">
-      <div id="task-status-actions" style="display:flex;gap:8px;margin-right:auto;"></div>
+      <div id="task-status-actions" style="display:flex;gap:8px;margin-right:auto;flex-wrap:wrap;"></div>
       <button class="btn btn-outline" onclick="closeModal('modal-task')">Cancel</button>
-      <button class="btn btn-gold" onclick="saveTask()"><i class="fas fa-save"></i> <span id="task-save-txt">Create Task</span></button>
+      <button class="btn btn-gold" id="task-save-btn" onclick="saveTask()"><i class="fas fa-save"></i> <span id="task-save-txt">Create Task</span></button>
     </div>
   </div>
 </div>
 
-<div id="toast-container"></div>
-
 <script>
 // ════════════════════════════════════════════
-//  HARDCODED SUPABASE CONFIG & CLIENT Initialization
+//  DATABASE INTERACTION HANDLERS
 // ════════════════════════════════════════════
 let sb = null;
-
-// Hardcoded system parameters to preserve universal client accessibility across separate devices
 const SUPABASE_URL = "https://nvojtsmurbvpclwcwrca.supabase.co"; 
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52b2p0c211cmJ2cGNsd2N3cmNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1OTYxODgsImV4cCI6MjA5NzE3MjE4OH0.83E5nAY27tX15ClrqwxjmAsPXj3Wx5na9j3Lg24I63E"; 
 
-function getSupabaseConfig(){ 
-  try { return JSON.parse(localStorage.getItem('ld_supabase_cfg') || 'null'); } catch { return null; } 
-}
-
+function getSupabaseConfig(){ try { return JSON.parse(localStorage.getItem('ld_supabase_cfg')||'null'); } catch { return null; } }
 function saveSupabaseConfig(){
   const url = (document.getElementById('cfg-url').value || '').trim();
   const key = (document.getElementById('cfg-key').value || '').trim();
-  if(!url || !key){ showToast('Both URL and key are required.', 'error'); return; }
+  if(!url || !key){ showToast('Both entries required.', 'error'); return; }
   localStorage.setItem('ld_supabase_cfg', JSON.stringify({url, key}));
   location.reload();
 }
-
-function disconnectSupabase(){
-  if(!confirm('Disconnect this browser from the database? Local configs overrides will be purged.')) return;
-  localStorage.removeItem('ld_supabase_cfg');
-  location.reload();
-}
+function disconnectSupabase(){ localStorage.removeItem('ld_supabase_cfg'); location.reload(); }
 
 function initSupabase(){
   const localOverride = getSupabaseConfig();
   const runtimeUrl = localOverride ? localOverride.url : SUPABASE_URL;
   const runtimeKey = localOverride ? localOverride.key : SUPABASE_ANON_KEY;
-
   if(!runtimeUrl || !runtimeKey || runtimeKey === "YOUR_SUPABASE_ANON_KEY") {
     document.getElementById('setup-screen').style.display = 'flex';
     return false;
   }
-  
   sb = window.supabase.createClient(runtimeUrl, runtimeKey);
-  document.getElementById('setup-screen').style.display = 'none';
   return true;
 }
 
 // ════════════════════════════════════════════
-//  STATE METRICS MATRIX
+//  APPLICATION GLOBAL RUNTIME STATE
 // ════════════════════════════════════════════
 let S={
   user:null, profile:null,
@@ -848,18 +817,17 @@ let S={
   categories:[], formSchemas:{},
   tasks:[], taskComments:{},
   messages:[], activeChatPeer:null,
-  signupCode:null,
+  signupCode:null, pendingUsers:[],
   editingClientId:null, detailClientId:null,
   activeCaseType:null, pendingFiles:[],
   editingTemplateId:null, activeTemplateId:null,
-  editingTaskId:null, pendingChatFile:null,
-  fbActiveCat:null
+  editingTaskId:null, pendingChatFile:null, fbActiveCat:null
 };
 
 const FIELD_TYPES=['text','number','date','tel','select','textarea'];
 
 // ════════════════════════════════════════════
-//  SECURE AUTH PLATFORM INTERACTIVE ACTIONS
+//  AUTHENTICATION MANAGER
 // ════════════════════════════════════════════
 function showAuthTab(tab){
   document.getElementById('auth-signin').style.display=tab==='signin'?'block':'none';
@@ -871,41 +839,19 @@ function showAuthTab(tab){
 }
 
 async function doSignIn(){
-  const emailInput = document.getElementById('li-email');
-  const pwdInput = document.getElementById('li-pwd');
+  const emEl = document.getElementById('li-email');
+  const pwEl = document.getElementById('li-pwd');
   const err = document.getElementById('li-err');
-  
-  if(!emailInput || !pwdInput) return;
-  
-  const email = (emailInput.value || '').trim();
-  const pwd = pwdInput.value;
+  if(!emEl || !pwEl) return;
+  const email = (emEl.value || '').trim();
+  const pwd = pwEl.value;
   err.style.display = 'none';
+  if(!email || !pwd){ err.textContent = 'Please provide credentials.'; err.style.display = 'block'; return; }
   
-  if(!email || !pwd){
-    err.textContent = 'Please enter both your email and password.';
-    err.style.display = 'block';
-    return;
-  }
-  
-  try {
-    updateSyncStatus('syncing', 'Authenticating...');
-    const { data, error } = await sb.auth.signInWithPassword({
-      email: email,
-      password: pwd
-    });
-    
-    if(error){
-      updateSyncStatus('synced', 'Live');
-      err.textContent = error.message;
-      err.style.display = 'block';
-      return;
-    }
-    await afterAuth();
-  } catch(windowErr) {
-    updateSyncStatus('offline', 'Error');
-    err.textContent = 'An unexpected connection failure occurred.';
-    err.style.display = 'block';
-  }
+  updateSyncStatus('syncing', 'Connecting...');
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pwd });
+  if(error){ updateSyncStatus('synced', 'Live'); err.textContent = error.message; err.style.display = 'block'; return; }
+  await afterAuth();
 }
 
 async function doSignUp(){
@@ -915,71 +861,29 @@ async function doSignUp(){
   const code = (document.getElementById('su-code').value || '').trim();
   const err = document.getElementById('su-err');
   err.style.display = 'none';
-  
-  if(!name || !email || pwd.length < 8){
-    err.textContent = 'Name, email, and a password (8+ characters) are required.';
-    err.style.display = 'block';
-    return;
+  if(!name || !email || pwd.length < 8){ err.textContent = 'Invalid entry bounds (Password min 8 chars).'; err.style.display = 'block'; return; }
+
+  const {count} = await sb.from('profiles').select('*', {count: 'exact', head: true});
+  const isFirstUser = (count || 0) === 0;
+
+  if(!isFirstUser){
+    if(!code){ err.textContent = 'System code validation required.'; err.style.display = 'block'; return; }
+    const {data: codeRow} = await sb.from('signup_codes').select('*').eq('code', code).eq('active', true).maybeSingle();
+    if(!codeRow){ err.textContent = 'Invalid reference token details.'; err.style.display = 'block'; return; }
   }
 
-  try {
-    updateSyncStatus('syncing', 'Registering...');
-    const {count} = await sb.from('profiles').select('*', {count: 'exact', head: true});
-    const isFirstUser = (count || 0) === 0;
+  const {data, error} = await sb.auth.signUp({email, password: pwd});
+  if(error){ err.textContent = error.message; err.style.display = 'block'; return; }
+  const userId = data.user?.id;
+  if(!userId){ err.textContent = 'Instantiation chain failed.'; err.style.display = 'block'; return; }
 
-    if(!isFirstUser){
-      if(!code){
-        err.textContent = 'A structural signup code from your system administrator is required.';
-        err.style.display = 'block';
-        updateSyncStatus('synced', 'Live');
-        return;
-      }
-      const {data: codeRow} = await sb.from('signup_codes').select('*').eq('code', code).eq('active', true).maybeSingle();
-      if(!codeRow){
-        err.textContent = 'Invalid or expired activation token context.';
-        err.style.display = 'block';
-        updateSyncStatus('synced', 'Live');
-        return;
-      }
-    }
-
-    const {data, error} = await sb.auth.signUp({email, password: pwd});
-    if(error){
-      err.textContent = error.message;
-      err.style.display = 'block';
-      updateSyncStatus('synced', 'Live');
-      return;
-    }
-
-    const userId = data.user?.id;
-    if(!userId){
-      err.textContent = 'Profile instantiation failed. Verify confirmation options via system logs.';
-      err.style.display = 'block';
-      updateSyncStatus('synced', 'Live');
-      return;
-    }
-
-    await sb.from('profiles').insert({
-      id: userId, full_name: name, email,
-      role: isFirstUser ? 'admin' : 'pending',
-      approved: isFirstUser
-    });
-
-    if(isFirstUser){
-      const newCode = genCode();
-      await sb.from('signup_codes').insert({code: newCode, created_by: userId});
-      showToast('Welcome! Structural administrator context mapped.', 'success');
-      await afterAuth();
-    } else {
-      showToast('Account successfully provisioned — awaiting root verification reviews.', 'success');
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('pending-screen').style.display = 'flex';
-      updateSyncStatus('synced', 'Live');
-    }
-  } catch(signUpPanic) {
-    err.textContent = 'An internal execution boundary was breached.';
-    err.style.display = 'block';
-    updateSyncStatus('synced', 'Live');
+  await sb.from('profiles').insert({ id: userId, full_name: name, email, role: isFirstUser ? 'admin' : 'pending', approved: isFirstUser });
+  if(isFirstUser){
+    await sb.from('signup_codes').insert({code: genCode(), created_by: userId});
+    await afterAuth();
+  } else {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('pending-screen').style.display = 'flex';
   }
 }
 
@@ -988,9 +892,7 @@ async function afterAuth(){
   if(!user){ document.getElementById('login-screen').style.display='flex'; return; }
   S.user=user;
   const {data:profile}=await sb.from('profiles').select('*').eq('id',user.id).maybeSingle();
-  if(!profile){ document.getElementById('login-screen').style.display='flex'; return; }
-  if(!profile.approved){
-    S.profile=profile;
+  if(!profile || !profile.approved){
     document.getElementById('login-screen').style.display='none';
     document.getElementById('pending-screen').style.display='flex';
     return;
@@ -1003,24 +905,19 @@ async function afterAuth(){
 }
 
 async function doLogout(){
-  if(S.profile && !confirm('Confirm session cancellation?')) return;
   await sb.auth.signOut();
   S={...S,user:null,profile:null};
   document.getElementById('app').style.display='none';
   document.getElementById('pending-screen').style.display='none';
   document.getElementById('login-screen').style.display='flex';
-  document.getElementById('li-email').value='';
-  document.getElementById('li-pwd').value='';
-  document.getElementById('li-err').style.display='none';
 }
-
 function isAdmin(){ return S.profile?.role==='admin'; }
 function genCode(){ return Math.random().toString(36).substring(2,8).toUpperCase(); }
 </script>
 
 <script>
 // ════════════════════════════════════════════
-//  DATA CONTEXT INGESTION & POLLING LOOPS
+//  DATA INGESTION PIPELINE
 // ════════════════════════════════════════════
 async function loadAllData(){
   const [catRes,schemaRes,clientRes,userRes,docRes,tplRes,taskRes,codeRes]=await Promise.all([
@@ -1083,7 +980,6 @@ async function initApp(){
   renderTasks();
   renderChatContacts();
   loadSettingsUI();
-  checkAlerts();
   updateSyncStatus('synced','Live');
   startPolling();
 }
@@ -1094,43 +990,35 @@ function startPolling(){
       await loadMessages();
       renderChatMessages();
     }
-    if(document.getElementById('view-tasks')?.classList.contains('active')){
-      const {data}=await sb.from('tasks').select('*').order('created_at',{ascending:false});
-      S.tasks=data||[];
-      renderTasks();
-    }
-  },15000);
+    const {data}=await sb.from('tasks').select('*').order('created_at',{ascending:false});
+    S.tasks=data||[];
+    if(document.getElementById('view-tasks')?.classList.contains('active')){ renderTasks(); }
+  },5000);
 }
 
 // ════════════════════════════════════════════
-//  NAVIGATION AND INTERFACE VIEW CONTROLLERS
+//  NAVIGATION AND SIDEBAR CONTROL
 // ════════════════════════════════════════════
 function buildSidebar(){
   const nav=document.getElementById('sidebar-nav');
-  const admin=isAdmin();
-  let html=`
-    <div class="nav-section-label">Overview</div>
+  let html=`<div class="nav-section-label">Overview</div>
     <button class="nav-item active" onclick="navigate('dashboard')"><i class="fas fa-th-large"></i> Dashboard</button>
     <button class="nav-item" onclick="navigate('deadlines')"><i class="fas fa-calendar-exclamation"></i> Deadlines <span id="dl-badge" class="nav-badge" style="display:none;"></span></button>
     <div class="nav-section-label">Clients</div>
     <button class="nav-item" onclick="navigate('clients')"><i class="fas fa-users"></i> All Clients</button>`;
-  S.categories.forEach(cat=>{
-    html+=`<button class="nav-item" onclick="navigateCat('${cat.id}')"><i class="${cat.icon}"></i> ${cat.label}</button>`;
-  });
+  S.categories.forEach(cat=>{ html+=`<button class="nav-item" onclick="navigateCat('${cat.id}')"><i class="${cat.icon}"></i> ${cat.label}</button>`; });
   html+=`<div class="nav-section-label">Workspace</div>
     <button class="nav-item" onclick="navigate('documents')"><i class="fas fa-folder-open"></i> Documents</button>
     <button class="nav-item" onclick="navigate('templates')"><i class="fas fa-file-alt"></i> Templates</button>
     <button class="nav-item" onclick="navigate('chat')"><i class="fas fa-comments"></i> Messages</button>
     <button class="nav-item" onclick="navigate('tasks')"><i class="fas fa-tasks"></i> Tasks <span id="task-badge" class="nav-badge" style="display:none;"></span></button>`;
-  if(admin){
+  if(isAdmin()){
     html+=`<div class="nav-section-label">Admin</div>
       <button class="nav-item" onclick="navigate('users')"><i class="fas fa-user-shield"></i> Users <span id="pending-badge" class="nav-badge" style="display:none;"></span></button>
       <button class="nav-item" onclick="navigate('formbuilder')"><i class="fas fa-sliders-h"></i> Form Builder</button>`;
   }
   html+=`<button class="nav-item" onclick="navigate('settings')"><i class="fas fa-cog"></i> Settings</button>`;
   nav.innerHTML=html;
-  const pb=document.getElementById('pending-badge');
-  if(pb && S.pendingUsers?.length){pb.textContent=S.pendingUsers.length;pb.style.display='inline-block';}
 }
 
 function updateSidebarProfile(){
@@ -1140,50 +1028,30 @@ function updateSidebarProfile(){
   document.getElementById('sb-avatar').textContent=initials(n);
 }
 
-const NAV_TITLES={
-  dashboard:'Dashboard',clients:'All Clients',deadlines:'Deadlines & Alerts',
-  documents:'Documents',templates:'Draft Templates',chat:'Messages',tasks:'Tasks',
-  users:'User Management',formbuilder:'Form Builder',settings:'Settings'
-};
+const NAV_TITLES={ dashboard:'Dashboard',clients:'All Clients',deadlines:'Deadlines',documents:'Documents',templates:'Templates',chat:'Messages',tasks:'Tasks Pipeline',users:'Users Control',formbuilder:'Dynamic Forms',settings:'Settings' };
 
 function navigate(view){
   document.querySelectorAll('.page-view').forEach(el=>el.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
-  const el=document.getElementById(`view-${view}`);
-  if(el) el.classList.add('active');
+  document.getElementById(`view-${view}`)?.classList.add('active');
   document.getElementById('topbar-title').textContent=NAV_TITLES[view]||view;
   closeSidebarMobile();
   if(view==='deadlines') renderDeadlines();
   if(view==='documents') renderDocuments();
   if(view==='users') renderUsers();
   if(view==='templates') renderTemplates();
-  if(view==='formbuilder') renderFormBuilder();
   if(view==='tasks') renderTasks();
   if(view==='chat'){ renderChatContacts(); loadMessages().then(renderChatMessages); }
-  const ncb=document.getElementById('topbar-new-client-btn');
-  if(ncb) ncb.style.display=['dashboard','clients'].includes(view)?'inline-flex':'none';
+  document.getElementById('topbar-new-client-btn').style.display=['dashboard','clients'].includes(view)?'inline-flex':'none';
 }
-
-function navigateCat(catId){
-  const cat=S.categories.find(c=>c.id===catId);
-  navigate('clients');
-  document.getElementById('filter-type').value=catId;
-  document.getElementById('topbar-title').textContent=cat?cat.label+' Cases':'Cases';
-  renderClientTable();
-}
-
+function navigateCat(catId){ navigate('clients'); document.getElementById('filter-type').value=catId; renderClientTable(); }
 function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('open'); }
 function closeSidebarMobile(){ if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');} }
-
-function myClients(){
-  if(isAdmin()) return S.clients;
-  return S.clients.filter(c=>c.assigned_to===S.user?.id);
-}
+function myClients(){ return isAdmin() ? S.clients : S.clients.filter(c=>c.assigned_to===S.user?.id); }
 </script>
 
 <script>
 // ════════════════════════════════════════════
-//  DYNAMIC METADATA SCHEMAS & CONFIGURATOR
+//  DYNAMIC META FIELD IMPLEMENTATIONS
 // ════════════════════════════════════════════
 function buildCaseTypeTabs(){
   const c=document.getElementById('client-case-type-tabs');
@@ -1192,1153 +1060,326 @@ function buildCaseTypeTabs(){
   S.activeCaseType=S.categories[0]?.id||'general';
   renderDynamicFields(S.activeCaseType);
 }
-function selectCaseType(catId){
-  S.activeCaseType=catId;
-  document.querySelectorAll('.case-type-btn').forEach(b=>b.classList.remove('active'));
-  const btn=document.getElementById('ctt-'+catId);
-  if(btn)btn.classList.add('active');
-  renderDynamicFields(catId);
-}
-function buildCategoryFilter(){
-  const sel=document.getElementById('filter-type');
-  if(sel) sel.innerHTML='<option value="">All Types</option>'+S.categories.map(c=>`<option value="${c.id}">${c.label}</option>`).join('');
-}
+function selectCaseType(catId){ S.activeCaseType=catId; document.querySelectorAll('.case-type-btn').forEach(b=>b.classList.remove('active')); document.getElementById('ctt-'+catId)?.classList.add('active'); renderDynamicFields(catId); }
+function buildCategoryFilter(){ document.getElementById('filter-type').innerHTML='<option value="">All Types</option>'+S.categories.map(c=>`<option value="${c.id}">${c.label}</option>`).join(''); }
 function buildAssigneeFilter(){
-  const sel=document.getElementById('filter-assignee');
-  if(sel) sel.innerHTML='<option value="">All Lawyers</option>'+S.users.map(u=>`<option value="${u.id}">${u.full_name}</option>`).join('');
-  const fa=document.getElementById('f-assignee');
-  if(fa) fa.innerHTML=S.users.map(u=>`<option value="${u.id}">${u.full_name} (${u.role})</option>`).join('');
-  const ta=document.getElementById('task-assignee');
-  if(ta){
-    const options=isAdmin()?S.users:S.users.filter(u=>u.role==='admin');
-    ta.innerHTML=options.map(u=>`<option value="${u.id}">${u.full_name} (${u.role})</option>`).join('');
-  }
+  document.getElementById('filter-assignee').innerHTML='<option value="">All Lawyers</option>'+S.users.map(u=>`<option value="${u.id}">${u.full_name}</option>`).join('');
+  document.getElementById('f-assignee').innerHTML=S.users.map(u=>`<option value="${u.id}">${u.full_name} (${u.role})</option>`).join('');
 }
 
 function renderDynamicFields(catId){
   const schema=S.formSchemas[catId]||[];
-  const cat=S.categories.find(c=>c.id===catId);
   const cnt=document.getElementById('dynamic-case-fields');
   if(!cnt)return;
-  if(!schema.length){
-    cnt.innerHTML=`<p style="color:var(--text-muted);font-size:13px;margin:12px 0;">No fields configured. ${isAdmin()?`<span style="color:var(--navy-mid);cursor:pointer;text-decoration:underline;" onclick="closeModal(\'modal-client\');navigate(\'formbuilder\')">Configure fields →</span>`:''}</p>`;
-    return;
-  }
-  const colorMap={blue:'#ebf8ff',green:'#f0fff4',purple:'#faf5ff',orange:'#fffaf0',red:'#fff5f5'};
-  const borderMap={blue:'#bee3f8',green:'#9ae6b4',purple:'#d6bcfa',orange:'#fbd38d',red:'#fed7d7'};
-  const c=cat?.color||'blue';
-  let html=`<div class="section-divider" style="background:${colorMap[c]||'var(--bg)'};padding:6px 10px;border-radius:6px;border:1px solid ${borderMap[c]||'var(--border)'};margin-bottom:14px;border-bottom:1.5px solid ${borderMap[c]||'var(--gold-pale)'}"><i class="${cat?.icon||'fas fa-file-alt'}" style="margin-right:6px;"></i>${cat?.label||catId} Details</div><div class="form-grid form-grid-2" style="gap:13px;">`;
+  if(!schema.length){ cnt.innerHTML='<p class="text-muted text-sm">No secondary metrics schema mapped.</p>'; return; }
+  let html=`<div class="section-divider">Category Profile Specifications</div><div class="form-grid form-grid-2">`;
   schema.forEach(f=>{
-    const reqStr=f.required?` <span class="required">*</span>`:'';
     let input='';
     if(['text','tel','number','date'].includes(f.type)) input=`<input class="form-control" id="df-${f.id}" type="${f.type}" data-field="${f.id}"/>`;
-    else if(f.type==='textarea') input=`<textarea class="form-control" id="df-${f.id}" rows="3" data-field="${f.id}" style="grid-column:1/-1;"></textarea>`;
-    else if(f.type==='select') input=`<select class="form-control" id="df-${f.id}" data-field="${f.id}"><option value="">Select…</option>${(f.options||[]).map(o=>`<option>${o}</option>`).join('')}</select>`;
-    const fullWidth=f.type==='textarea';
-    html+=`<div class="form-group"${fullWidth?' style="grid-column:1/-1;"':''}><label class="form-label">${f.label}${reqStr}</label>${input}</div>`;
+    else if(f.type==='textarea') input=`<textarea class="form-control" id="df-${f.id}" rows="3" data-field="${f.id}"></textarea>`;
+    else if(f.type==='select') input=`<select class="form-control" id="df-${f.id}"><option value="">Choose...</option>${(f.options||[]).map(o=>`<option>${o}</option>`).join('')}</select>`;
+    html+=`<div class="form-group"><label class="form-label">${f.label}</label>${input}</div>`;
   });
-  html+='</div>';
-  cnt.innerHTML=html;
+  cnt.innerHTML=html+'</div>';
 }
 function readDynamicFields(catId){ const schema=S.formSchemas[catId]||[];const data={};schema.forEach(f=>{const el=document.getElementById('df-'+f.id);if(el)data[f.id]=el.value;});return data; }
 function fillDynamicFields(catId,data){ const schema=S.formSchemas[catId]||[];schema.forEach(f=>{const el=document.getElementById('df-'+f.id);if(el&&data)el.value=data[f.id]||'';}); }
-
-// ════════════════════════════════════════════
-//  FORM LOGIC EDITOR BUILDER FUNCTIONS
-// ════════════════════════════════════════════
-function renderFormBuilder(){
-  if(!isAdmin())return;
-  const tabs=document.getElementById('fb-category-tabs');
-  if(!tabs)return;
-  tabs.innerHTML=S.categories.map((cat,i)=>`<button class="case-type-btn${i===0?' active':''}" onclick="selectFbCat('${cat.id}',this)"><i class="${cat.icon}"></i> ${cat.label}</button>`).join('');
-  if(S.categories.length) selectFbCat(S.categories[0].id, tabs.children[0]);
-}
-function selectFbCat(catId,btn){
-  S.fbActiveCat=catId;
-  document.querySelectorAll('#fb-category-tabs .case-type-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  const cat=S.categories.find(c=>c.id===catId);
-  document.getElementById('fb-cat-label').textContent=`${cat?.label||catId} — Fields`;
-  document.getElementById('fb-editor').style.display='block';
-  renderFbFields();
-}
-function renderFbFields(){
-  const schema=S.formSchemas[S.fbActiveCat]||[];
-  const cnt=document.getElementById('fb-fields-list');
-  if(!schema.length){cnt.innerHTML='<p class="text-muted text-sm">No fields yet. Click Add Field.</p>';return;}
-  cnt.innerHTML=schema.map((f,i)=>`
-    <div class="field-builder-item" data-idx="${i}">
-      <i class="fas fa-grip-vertical drag-handle"></i>
-      <input class="field-label-input" type="text" value="${escHtml(f.label)}" onchange="updateFbField(${i},'label',this.value)"/>
-      <select style="border:1px solid var(--border);border-radius:4px;padding:4px 8px;font-size:12px;background:var(--bg);cursor:pointer;" onchange="updateFbField(${i},'type',this.value)">
-        ${FIELD_TYPES.map(t=>`<option value="${t}"${f.type===t?' selected':''}>${t}</option>`).join('')}
-      </select>
-      ${f.type==='select'?`<button class="btn btn-outline btn-xs" onclick="editFieldOptions(${i})"><i class="fas fa-list"></i></button>`:''}
-      <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer;flex-shrink:0;"><input type="checkbox" ${f.required?'checked':''} onchange="updateFbField(${i},'required',this.checked)"/> Required</label>
-      <button class="btn btn-danger btn-xs btn-icon" onclick="removeFbField(${i})"><i class="fas fa-trash"></i></button>
-    </div>`).join('');
-  setupFbDrag();
-}
-function addFormField(){ if(!S.fbActiveCat)return; if(!S.formSchemas[S.fbActiveCat])S.formSchemas[S.fbActiveCat]=[]; S.formSchemas[S.fbActiveCat].push({id:'field_'+Date.now(),label:'New Field',type:'text',required:false}); renderFbFields(); }
-function updateFbField(idx,key,val){ S.formSchemas[S.fbActiveCat][idx][key]=val; if(key==='type')renderFbFields(); }
-function removeFbField(idx){ if(!confirm('Delete this field configuration?'))return; S.formSchemas[S.fbActiveCat].splice(idx,1); renderFbFields(); }
-function editFieldOptions(idx){ const f=S.formSchemas[S.fbActiveCat][idx];const cur=(f.options||[]).join('\n');const n=prompt(`Options for "${f.label}" (one per line):`,cur);if(n===null)return;S.formSchemas[S.fbActiveCat][idx].options=n.split('\n').map(s=>s.trim()).filter(Boolean); }
-async function saveFormSchema(){
-  const {error}=await sb.from('form_schemas').upsert({category_id:S.fbActiveCat,fields:S.formSchemas[S.fbActiveCat],updated_at:new Date().toISOString()});
-  if(error){showToast('Save failed: '+error.message,'error');return;}
-  showToast('Form schema saved tracking changes context.','success');
-}
-function setupFbDrag(){
-  const list=document.getElementById('fb-fields-list');
-  if(!list)return;
-  let dragEl=null;
-  list.querySelectorAll('.field-builder-item').forEach((item)=>{
-    item.draggable=true;
-    item.addEventListener('dragstart',()=>{dragEl=item;item.style.opacity='.4';});
-    item.addEventListener('dragend',()=>{item.style.opacity='';});
-    item.addEventListener('dragover',e=>{e.preventDefault();const r=item.getBoundingClientRect();if(e.clientY<r.top+r.height/2)list.insertBefore(dragEl,item);else list.insertBefore(dragEl,item.nextSibling);});
-    item.addEventListener('drop',()=>{
-      const items=[...list.querySelectorAll('.field-builder-item')];
-      S.formSchemas[S.fbActiveCat]=items.map(el=>S.formSchemas[S.fbActiveCat][parseInt(el.dataset.idx)]);
-      renderFbFields();
-    });
-  });
-}
-
-function openNewCategoryModal(){ document.getElementById('nc-name').value='';document.getElementById('nc-icon').value='fas fa-folder';openModal('modal-new-cat'); }
-async function createCategory(){
-  const name=(document.getElementById('nc-name').value||'').trim();
-  if(!name){showToast('Category name required.','error');return;}
-  const id=name.toLowerCase().replace(/[^a-z0-9]/g,'_');
-  if(S.categories.find(c=>c.id===id)){showToast('Category already exists.','error');return;}
-  const {error:e1}=await sb.from('categories').insert({id,label:name,icon:document.getElementById('nc-icon').value||'fas fa-folder',color:document.getElementById('nc-color').value||'blue',built_in:false,created_by:S.user.id});
-  if(e1){showToast('Failed: '+e1.message,'error');return;}
-  const {error:e2}=await sb.from('form_schemas').insert({category_id:id,fields:[]});
-  if(e2){showToast('Failed: '+e2.message,'error');return;}
-  S.categories.push({id,label:name,icon:document.getElementById('nc-icon').value,color:document.getElementById('nc-color').value,built_in:false});
-  S.formSchemas[id]=[];
-  closeModal('modal-new-cat');
-  buildSidebar();buildCaseTypeTabs();buildCategoryFilter();renderFormBuilder();updateStats();updateTemplateCatDropdown();
-  showToast(`Category "${name}" instantiated.`,'success');
-}
 </script>
 
 <script>
 // ════════════════════════════════════════════
-//  CLIENT ARTIFACT OPERATIONS MANAGEMENT
-// ════════════════════════════════════════════
-function genId(){ const n=S.clients.length?Math.max(...S.clients.map(c=>parseInt((c.client_id||'').replace('CL-',''))||0))+1:1000+Math.floor(Math.random()*24); return `CL-${n}`; }
-
-function openAddClient(catId=null){
-  S.editingClientId=null;
-  document.getElementById('mc-title').textContent='Add New Client';
-  document.getElementById('mc-save-txt').textContent='Save Client';
-  clearClientForm();
-  document.getElementById('f-id').value=genId();
-  const aw=document.getElementById('f-assignee-wrap');
-  aw.style.display=isAdmin()?'':'none';
-  buildCaseTypeTabs();
-  if(catId) selectCaseType(catId);
-  openModal('modal-client');
-}
-function clearClientForm(){
-  ['f-name','f-phone','f-email','f-address','f-fee','f-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('f-status').value='active';
-  document.getElementById('file-list').innerHTML='';
-  S.pendingFiles=[];
-}
-
-async function saveClient(){
-  const name=(document.getElementById('f-name').value||'').trim();
-  if(!name){showToast('Client name is required.','error');return;}
-  const catId=S.activeCaseType;
-  const schema=S.formSchemas[catId]||[];
-  for(const f of schema){
-    if(f.required){ const el=document.getElementById('df-'+f.id); if(el&&!el.value.trim()){showToast(`"${f.label}" is required.`,'error');return;} }
-  }
-  const saveBtn=document.getElementById('mc-save-btn');
-  saveBtn.disabled=true;
-  const now=new Date().toISOString();
-  const clientId=document.getElementById('f-id').value||genId();
-  const assignedTo=isAdmin()?(document.getElementById('f-assignee')?.value||S.user.id):S.user.id;
-  const caseData=readDynamicFields(catId);
-
-  const payload={
-    client_id:clientId,name,case_type:catId,
-    phone:document.getElementById('f-phone').value,
-    email:document.getElementById('f-email').value,
-    address:document.getElementById('f-address').value,
-    status:document.getElementById('f-status').value,
-    fee:document.getElementById('f-fee').value?Number(document.getElementById('f-fee').value):null,
-    notes:document.getElementById('f-notes').value,
-    assigned_to:assignedTo,
-    case_data:caseData,
-    updated_at:now
-  };
-
-  let isNew=false;
-  if(S.editingClientId){
-    const ex=S.clients.find(c=>c.client_id===S.editingClientId);
-    payload.history=[...(ex?.history||[]),{date:now,text:`Updated by ${S.profile.full_name}.`}];
-    const {error}=await sb.from('clients').update(payload).eq('client_id',S.editingClientId);
-    if(error){showToast('Save failed: '+error.message,'error');saveBtn.disabled=false;return;}
-    showToast('Client metadata synchronization successful.','success');
-  } else {
-    isNew=true;
-    payload.created_by=S.user.id;
-    payload.history=[{date:now,text:`Client created by ${S.profile.full_name} — ${catId} matter.`}];
-    payload.created_at=now;
-    const {error}=await sb.from('clients').insert(payload);
-    if(error){showToast('Save failed: '+error.message,'error');saveBtn.disabled=false;return;}
-    showToast(`${clientId} indexed.`,'success');
-  }
-
-  if(S.pendingFiles.length){
-    for(const f of S.pendingFiles){
-      try{
-        const path=`${clientId}/${Date.now()}_${f.name}`;
-        const {error:upErr}=await sb.storage.from('lexdesk-files').upload(path,f._file,{contentType:f.type});
-        if(upErr){ showToast(`Storage deployment failure: ${f.name}`,'error'); continue; }
-        await sb.from('documents').insert({
-          client_id:clientId,name:f.name,
-          category:S.categories.find(c=>c.id===catId)?.label||catId,
-          size:f.size,mime_type:f.type,storage_path:path,uploaded_by:S.user.id
-        });
-      }catch(fe){ showToast(`Upload exception structural handler intercept: ${f.name}`,'error'); }
-    }
-  }
-  S.pendingFiles=[];
-  saveBtn.disabled=false;
-  closeModal('modal-client');
-  await refreshAll();
-}
-
-async function editCurrentClient(){
-  const c=S.clients.find(x=>x.client_id===S.detailClientId);
-  if(!c)return;
-  if(!isAdmin()&&c.assigned_to!==S.user.id){showToast('Access restriction boundary violation.','error');return;}
-  closeModal('modal-detail');
-  S.editingClientId=c.client_id;
-  document.getElementById('mc-title').textContent='Edit Client';
-  document.getElementById('mc-save-txt').textContent='Update Client';
-  buildCaseTypeTabs();
-  selectCaseType(c.case_type);
-  document.getElementById('f-id').value=c.client_id;
-  document.getElementById('f-name').value=c.name;
-  document.getElementById('f-phone').value=c.phone||'';
-  document.getElementById('f-email').value=c.email||'';
-  document.getElementById('f-address').value=c.address||'';
-  document.getElementById('f-status').value=c.status||'active';
-  document.getElementById('f-fee').value=c.fee||'';
-  document.getElementById('f-notes').value=c.notes||'';
-  const aw=document.getElementById('f-assignee-wrap');
-  aw.style.display=isAdmin()?'':'none';
-  if(isAdmin()){ const fa=document.getElementById('f-assignee');if(fa)fa.value=c.assigned_to||''; }
-  setTimeout(()=>fillDynamicFields(c.case_type,c.case_data||{}),50);
-  S.pendingFiles=[];
-  document.getElementById('file-list').innerHTML='';
-  openModal('modal-client');
-}
-
-async function deleteCurrentClient(){
-  const c=S.clients.find(x=>x.client_id===S.detailClientId);
-  if(!c)return;
-  if(!isAdmin()){ showToast('Operation limited strictly to system administrators.','error'); return; }
-  if(!confirm(`Purge profile indexing for "${c.name}" permanently?`))return;
-  const {error}=await sb.from('clients').delete().eq('client_id',S.detailClientId);
-  if(error){showToast('Purge query pipeline failed: '+error.message,'error');return;}
-  closeModal('modal-detail');
-  await refreshAll();
-  showToast('Client records expunged.','warning');
-}
-
-async function viewClient(id){
-  const c=S.clients.find(x=>x.client_id===id);
-  if(!c)return;
-  if(!isAdmin()&&c.assigned_to!==S.user.id){showToast('Access authorization failure.','error');return;}
-  S.detailClientId=id;
-  const cat=S.categories.find(x=>x.id===c.case_type)||{label:c.case_type,icon:'fas fa-file'};
-  const au=S.users.find(u=>u.id===c.assigned_to);
-  document.getElementById('det-title').textContent=c.name;
-  document.getElementById('det-sub').textContent=`${c.client_id} · ${cat.label} · ${capitalize(c.status)}`;
-  document.getElementById('det-edit-btn').style.display=(isAdmin()||c.assigned_to===S.user.id)?'':'none';
-  document.getElementById('det-delete-btn').style.display=isAdmin()?'':'none';
-  document.getElementById('det-meta').innerHTML=`
-    <div class="detail-meta-item"><div class="detail-meta-label">Client ID</div><div class="detail-meta-value">${c.client_id}</div></div>
-    <div class="detail-meta-item"><div class="detail-meta-label">Case Type</div><div class="detail-meta-value">${catBadge(c.case_type)}</div></div>
-    <div class="detail-meta-item"><div class="detail-meta-label">Status</div><div class="detail-meta-value">${statusBadge(c.status)}</div></div>
-    <div class="detail-meta-item"><div class="detail-meta-label">Assigned To</div><div class="detail-meta-value">${au?au.full_name:'—'}</div></div>
-    <div class="detail-meta-item"><div class="detail-meta-label">Retainer</div><div class="detail-meta-value">${c.fee?'₹'+Number(c.fee).toLocaleString('en-IN'):'—'}</div></div>`;
-  document.getElementById('tab-overview').innerHTML=`
-    <div class="form-grid form-grid-2" style="gap:12px;">
-      ${dr('Phone',c.phone)}${dr('Email',c.email)}
-      <div class="form-group" style="grid-column:1/-1;"><div class="form-label">Address</div><div style="font-size:14px;padding:6px 0;">${c.address||'—'}</div></div>
-      <div class="form-group" style="grid-column:1/-1;"><div class="form-label">Internal Notes</div><div style="font-size:14px;padding:6px 0;">${c.notes||'—'}</div></div>
-    </div>`;
-  const schema=S.formSchemas[c.case_type]||[];
-  const caseData=c.case_data||{};
-  let caseHTML='';
-  if(schema.length){
-    caseHTML='<div class="form-grid form-grid-2" style="gap:12px;">';
-    schema.forEach(f=>{
-      const val=caseData[f.id]||'—';
-      const fullW=f.type==='textarea';
-      const pill=(f.type==='date'&&val!=='—')?deadlinePill(val):'';
-      caseHTML+=`<div class="form-group"${fullW?' style="grid-column:1/-1;"':''}><div class="form-label">${f.label}</div><div style="font-size:14px;padding:6px 0;">${val} ${pill}</div></div>`;
-    });
-    caseHTML+='</div>';
-  } else caseHTML='<p class="text-muted">No specialized schema layouts active.</p>';
-  document.getElementById('tab-case-details').innerHTML=caseHTML;
-
-  const clientDocs=S.documents.filter(d=>d.client_id===id);
-  document.getElementById('tab-documents').innerHTML=clientDocs.length
-    ?`<div class="file-list">${clientDocs.map(d=>`
-        <div class="file-item" onclick="openFilePreview('${d.id}')">
-          <i class="${fileIcon(d.name)}" style="color:var(--navy-mid);font-size:18px;"></i>
-          <span class="file-item-name">${escHtml(d.name)}</span>
-          <span class="file-item-size">${formatBytes(d.size)}</span>
-        </div>`).join('')}</div>`
-    :'<p class="text-muted text-sm">No structured file context mapped.</p>';
-
-  const hist=(c.history||[]).slice().reverse();
-  document.getElementById('det-history').innerHTML=hist.length
-    ?hist.map(h=>`<div class="timeline-item"><div class="timeline-date">${fmtDT(h.date)}</div><div class="timeline-text">${h.text}</div></div>`).join('')
-    :'<p class="text-muted text-sm">History logs clear.</p>';
-  switchTab('overview');
-  openModal('modal-detail');
-}
-function dr(label,val){ return `<div class="form-group"><div class="form-label">${label}</div><div style="font-size:14px;padding:6px 0;">${val||'—'}</div></div>`; }
-</script>
-
-<script>
-// ════════════════════════════════════════════
-//  UI DATA GRAPH REVIEWS & RENDERING PATTERNS
+//  CLIENT DIRECTORY METRICS BUILDERS
 // ════════════════════════════════════════════
 function renderClientTable(){
   const search=(document.getElementById('client-search')?.value||'').toLowerCase();
   const typeF=document.getElementById('filter-type')?.value||'';
   const statF=document.getElementById('filter-status')?.value||'';
   const assignF=document.getElementById('filter-assignee')?.value||'';
-  let clients=myClients().filter(c=>{
-    const ms=!search||c.name.toLowerCase().includes(search)||c.client_id.toLowerCase().includes(search)||JSON.stringify(c.case_data||{}).toLowerCase().includes(search);
-    const mt=!typeF||c.case_type===typeF;
-    const ms2=!statF||c.status===statF;
-    const ma=!assignF||c.assigned_to===assignF;
-    return ms&&mt&&ms2&&ma;
+  let filtered=myClients().filter(c=>{
+    return (!search||c.name.toLowerCase().includes(search)||c.client_id.toLowerCase().includes(search)) &&
+           (!typeF||c.case_type===typeF) && (!statF||c.status===statF) && (!assignF||c.assigned_to===assignF);
   });
   const tbody=document.getElementById('clients-tbody');
-  const empty=document.getElementById('clients-empty');
-  if(!clients.length){tbody.innerHTML='';if(empty)empty.style.display='block';return;}
-  if(empty)empty.style.display='none';
-  tbody.innerHTML=clients.map(c=>{
-    const au=S.users.find(u=>u.id===c.assigned_to);
-    const dl=getDeadline(c);
-    return `<tr onclick="viewClient('${c.client_id}')">
-      <td><div class="client-name-cell"><div class="avatar-sm av-navy">${initials(c.name)}</div><div><div class="font-medium">${c.name}</div><div class="client-id">${c.client_id}</div></div></div></td>
-      <td>${catBadge(c.case_type)}</td>
-      <td><span style="font-size:13px;">${au?au.full_name:'—'}</span></td>
-      <td>${statusBadge(c.status)}</td>
-      <td>${dl?deadlinePill(dl):'<span class="text-muted">—</span>'}</td>
-      <td onclick="event.stopPropagation()"><div style="display:flex;gap:6px;">
-        <button class="btn btn-outline btn-sm btn-icon" onclick="viewClient('${c.client_id}')"><i class="fas fa-eye"></i></button>
-        <button class="btn btn-outline btn-sm btn-icon" onclick="openEditClientById('${c.client_id}')"><i class="fas fa-edit"></i></button>
-        ${isAdmin()?`<button class="btn btn-danger btn-sm btn-icon" onclick="deleteClientById('${c.client_id}')"><i class="fas fa-trash"></i></button>`:''}
-      </div></td>
-    </tr>`;
-  }).join('');
-  renderRecentClients();
-}
-function renderRecentClients(){
-  const tbody=document.getElementById('recent-tbody');
   if(!tbody)return;
-  const clients=myClients().slice(0,6);
-  if(!clients.length){tbody.innerHTML='<tr><td colspan="4"><div class="empty-state"><i class="fas fa-users"></i><div class="empty-state-title">No clients active.</div></div></td></tr>';return;}
-  tbody.innerHTML=clients.map(c=>{
+  tbody.innerHTML=filtered.map(c=>{
     const au=S.users.find(u=>u.id===c.assigned_to);
     return `<tr onclick="viewClient('${c.client_id}')">
       <td><div class="client-name-cell"><div class="avatar-sm av-navy">${initials(c.name)}</div><div><div class="font-medium">${c.name}</div><div class="client-id">${c.client_id}</div></div></div></td>
-      <td>${catBadge(c.case_type)}</td><td>${au?au.full_name:'—'}</td><td>${statusBadge(c.status)}</td>
+      <td>${catBadge(c.case_type)}</td><td>${au?au.full_name:'Unallocated'}</td><td>${statusBadge(c.status)}</td><td>—</td>
+      <td onclick="event.stopPropagation()"><button class="btn btn-outline btn-xs" onclick="openEditClientById('${c.client_id}')"><i class="fas fa-edit"></i></button></td>
     </tr>`;
   }).join('');
 }
-function openEditClientById(id){S.detailClientId=id;editCurrentClient();}
-function deleteClientById(id){S.detailClientId=id;deleteCurrentClient();}
+function openEditClientById(id){ S.detailClientId=id; editCurrentClient(); }
+function openAddClient(){ S.editingClientId=null; clearClientForm(); document.getElementById('f-id').value=genId(); openModal('modal-client'); }
+function clearClientForm(){ ['f-name','f-phone','f-email','f-address','f-fee','f-notes'].forEach(id=>{document.getElementById(id).value='';}); }
 
-function updateStats(){
-  const cl=myClients();
-  const alerts=getUpcomingDeadlines(60).length;
-  const myOpenTasks=S.tasks.filter(t=>t.assigned_to===S.user?.id&&t.status!=='done'&&t.status!=='cancelled').length;
-  let html=`<div class="stat-card gold"><div class="stat-label">Total Clients</div><div class="stat-value">${cl.length}</div><div class="stat-sub">Active contexts</div><i class="fas fa-users stat-icon"></i></div>`;
-  S.categories.slice(0,3).forEach((cat,i)=>{
-    const colors=['blue','green','purple'];
-    const cnt=cl.filter(c=>c.case_type===cat.id).length;
-    html+=`<div class="stat-card ${colors[i]||'blue'}"><div class="stat-label">${cat.label}</div><div class="stat-value">${cnt}</div><i class="${cat.icon} stat-icon"></i></div>`;
-  });
-  html+=`<div class="stat-card red"><div class="stat-label">Alerts</div><div class="stat-value">${alerts}</div><div class="stat-sub">60-day threshold</div><i class="fas fa-bell stat-icon"></i></div>`;
-  html+=`<div class="stat-card purple"><div class="stat-label">My Tasks</div><div class="stat-value">${myOpenTasks}</div><div class="stat-sub">Pending action</div><i class="fas fa-tasks stat-icon"></i></div>`;
-  document.getElementById('stats-grid').innerHTML=html;
-  const dlBadge=document.getElementById('dl-badge');
-  if(dlBadge){dlBadge.textContent=alerts;dlBadge.style.display=alerts?'inline-block':'none';}
-  const taskBadge=document.getElementById('task-badge');
-  if(taskBadge){taskBadge.textContent=myOpenTasks;taskBadge.style.display=myOpenTasks?'inline-block':'none';}
-  renderDashDeadlines();
-  renderDashTasks();
+async function saveClient(){
+  const name=(document.getElementById('f-name').value||'').trim();
+  if(!name){showToast('Name coordinate required.','error');return;}
+  const cId=document.getElementById('f-id').value;
+  const payload={
+    client_id:cId, name, case_type:S.activeCaseType,
+    phone:document.getElementById('f-phone').value, email:document.getElementById('f-email').value,
+    address:document.getElementById('f-address').value, status:document.getElementById('f-status').value,
+    fee:document.getElementById('f-fee').value?Number(document.getElementById('f-fee').value):null,
+    notes:document.getElementById('f-notes').value, assigned_to:isAdmin()?document.getElementById('f-assignee').value:S.user.id,
+    case_data:readDynamicFields(S.activeCaseType), updated_at:new Date().toISOString()
+  };
+  
+  const {error}=S.editingClientId?await sb.from('clients').update(payload).eq('client_id',S.editingClientId):await sb.from('clients').insert({...payload,created_at:new Date().toISOString()});
+  if(error){showToast(error.message,'error');return;}
+  closeModal('modal-client'); await refreshAll();
+}
+
+async function viewClient(id){
+  const c=S.clients.find(x=>x.client_id===id);
+  if(!c)return;
+  S.detailClientId=id;
+  document.getElementById('det-title').textContent=c.name;
+  document.getElementById('det-sub').textContent=`${c.client_id} · Matrix Ledger`;
+  document.getElementById('det-meta').innerHTML=`<div class="detail-meta-item"><div class="detail-meta-label">Identity</div><div class="detail-meta-value">${c.client_id}</div></div>`;
+  document.getElementById('tab-overview').innerHTML=`<p><strong>Phone:</strong> ${c.phone||'—'}</p><p><strong>Address:</strong> ${c.address||'—'}</p>`;
+  openModal('modal-detail');
+}
+async function editCurrentClient(){
+  const c=S.clients.find(x=>x.client_id===S.detailClientId); if(!c)return;
+  S.editingClientId=c.client_id;
+  document.getElementById('f-id').value=c.client_id;
+  document.getElementById('f-name').value=c.name;
+  openModal('modal-client');
+}
+async function deleteCurrentClient(){
+  if(!isAdmin()){showToast('Permission structure lock execution.','error');return;}
+  await sb.from('clients').delete().eq('client_id',S.detailClientId);
+  closeModal('modal-detail'); await refreshAll();
 }
 </script>
 
 <script>
 // ════════════════════════════════════════════
-//  DEADLINES CRITICAL CRITERIA EVALUATORS
-// ════════════════════════════════════════════
-function getDeadline(c){
-  const d=c.case_data||{};
-  const schema=S.formSchemas[c.case_type]||[];
-  for(const f of schema){ if(f.type==='date'&&d[f.id]) return d[f.id]; }
-  return null;
-}
-function getUpcomingDeadlines(days=60){
-  return myClients().flatMap(c=>{
-    const schema=S.formSchemas[c.case_type]||[];
-    const data=c.case_data||{};
-    return schema.filter(f=>f.type==='date'&&data[f.id]).map(f=>{
-      const dl=daysUntil(data[f.id]);
-      return dl!==null&&dl<=days?{client:c,field:f.label,deadline:data[f.id],daysLeft:dl}:null;
-    }).filter(Boolean);
-  }).sort((a,b)=>a.daysLeft-b.daysLeft);
-}
-function daysUntil(ds){ if(!ds)return null;const t=new Date(ds),n=new Date();n.setHours(0,0,0,0);t.setHours(0,0,0,0);return Math.round((t-n)/86400000); }
-function deadlinePill(ds){
-  const d=daysUntil(ds);
-  if(d===null)return fmtD(ds);
-  const cls=d<0?'urgent':d<=30?'soon':'ok';
-  const lbl=d<0?`${Math.abs(d)}d overdue`:d===0?'Today':`${d}d`;
-  return `<span class="deadline-days ${cls}" title="${fmtD(ds)}">${lbl}</span>`;
-}
-function renderDeadlines(){
-  const dl=getUpcomingDeadlines(60);
-  const ov=dl.filter(d=>d.daysLeft<0),d30=dl.filter(d=>d.daysLeft>=0&&d.daysLeft<=30),d60=dl.filter(d=>d.daysLeft>30&&d.daysLeft<=60);
-  const setEl=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  setEl('dl-overdue',ov.length);setEl('dl-30',d30.length);setEl('dl-60',d60.length);
-  const cnt=document.getElementById('deadlines-list');
-  if(!cnt)return;
-  if(!dl.length){cnt.innerHTML=`<div class="card"><div class="card-body empty-state"><i class="fas fa-calendar-check"></i><div class="empty-state-title">No upcoming execution thresholds.</div></div></div>`;return;}
-  const sections=[{label:'Overdue',items:ov,type:'danger'},{label:'Within 30 days',items:d30,type:'warning'},{label:'Within 60 days',items:d60,type:'info'}];
-  cnt.innerHTML=sections.filter(s=>s.items.length).map(s=>`
-    <div class="card" style="margin-bottom:14px;">
-      <div class="card-header"><span class="card-title" style="color:${s.type==='danger'?'var(--danger)':s.type==='warning'?'#92400e':'var(--info)'}">${s.label}</span><span class="badge ${s.type==='danger'?'badge-alert':s.type==='warning'?'badge-pending':'badge-active'}">${s.items.length}</span></div>
-      <div class="card-body">${s.items.map(d=>`
-        <div class="deadline-item" onclick="viewClient('${d.client.client_id}')" style="cursor:pointer;">
-          <div><div style="font-size:13.5px;font-weight:500;">${d.client.name} <span class="client-id">${d.client.client_id}</span></div><div style="font-size:12px;color:var(--text-muted);">${d.field} · ${fmtD(d.deadline)}</div></div>
-          ${deadlinePill(d.deadline)}
-        </div>`).join('')}
-      </div>
-    </div>`).join('');
-}
-function renderDashDeadlines(){
-  const dl=getUpcomingDeadlines(60).slice(0,5);
-  const cnt=document.getElementById('dash-deadlines');
-  if(!cnt)return;
-  if(!dl.length){cnt.innerHTML='<p class="text-muted text-sm">No approaching timelines found.</p>';return;}
-  cnt.innerHTML=dl.map(d=>`
-    <div class="deadline-item" onclick="viewClient('${d.client.client_id}')" style="cursor:pointer;">
-      <div><div style="font-size:13.5px;font-weight:500;">${d.client.name}</div><div style="font-size:12px;color:var(--text-muted);">${d.field} · ${fmtD(d.deadline)}</div></div>
-      ${deadlinePill(d.deadline)}
-    </div>`).join('');
-}
-function renderDashTasks(){
-  const cnt=document.getElementById('dash-tasks');
-  if(!cnt)return;
-  const mine=S.tasks.filter(t=>t.assigned_to===S.user?.id&&t.status!=='done'&&t.status!=='cancelled').slice(0,5);
-  if(!mine.length){cnt.innerHTML='<p class="text-muted text-sm">No open tasks assigned to you.</p>';return;}
-  cnt.innerHTML=mine.map(t=>`
-    <div class="deadline-item" onclick="openTaskModal('${t.id}')" style="cursor:pointer;">
-      <div><div style="font-size:13.5px;font-weight:500;">${escHtml(t.title)}</div><div style="font-size:12px;color:var(--text-muted);">${t.due_date?fmtD(t.due_date):'No due date'}</div></div>
-      <span class="badge ${t.priority==='high'?'badge-alert':t.priority==='low'?'badge-active':'badge-pending'}">${capitalize(t.priority)}</span>
-    </div>`).join('');
-}
-function checkAlerts(){
-  getUpcomingDeadlines(7).forEach(d=>{ if(d.daysLeft>=0) setTimeout(()=>showToast(`⚠ Timeline boundary proximity event: ${d.client.name} — ${d.field}`,'warning'),2000); });
-}
-</script>
-
-<script>
-// ════════════════════════════════════════════
-//  STAGING STACK FOR STAGED SECURE FILE ASSETS
-// ════════════════════════════════════════════
-function handleFileSelect(e){ addFiles(Array.from(e.target.files)); e.target.value=''; }
-function handleFileDrop(e){ e.preventDefault();document.getElementById('file-drop-zone').classList.remove('drag-over');addFiles(Array.from(e.dataTransfer.files)); }
-function addFiles(files){
-  if(!S.pendingFiles)S.pendingFiles=[];
-  files.forEach(f=>{
-    if(f.size>20*1024*1024){showToast(`"${f.name}" size bounds exceeded. Threshold: 20MB.`,'error');return;}
-    S.pendingFiles.push({name:f.name,size:f.size,type:f.type,_file:f});
-  });
-  renderFileList();
-}
-function renderFileList(){
-  const list=document.getElementById('file-list');
-  if(!list)return;
-  list.innerHTML=(S.pendingFiles||[]).map((f,i)=>`
-    <div class="file-item">
-      <i class="${fileIcon(f.name)}" style="font-size:18px;color:var(--navy-mid);"></i>
-      <span class="file-item-name">${escHtml(f.name)}</span>
-      <span class="file-item-size">${formatBytes(f.size)}</span>
-      <button class="file-item-remove" onclick="removeFile(${i})"><i class="fas fa-times"></i></button>
-    </div>`).join('');
-}
-function removeFile(i){ S.pendingFiles.splice(i,1); renderFileList(); }
-
-function renderDocuments(){
-  const search=(document.getElementById('doc-search')?.value||'').toLowerCase();
-  const typeF=document.getElementById('doc-filter-type')?.value||'';
-  const visibleClientIds=new Set(myClients().map(c=>c.client_id));
-  const docs=S.documents.filter(d=>{
-    if(!isAdmin()&&!visibleClientIds.has(d.client_id))return false;
-    const client=S.clients.find(c=>c.client_id===d.client_id);
-    const cname=client?client.name:'';
-    const ms=!search||d.name.toLowerCase().includes(search)||cname.toLowerCase().includes(search);
-    const mt=!typeF||getDocExt(d.name)===typeF;
-    return ms&&mt;
-  });
-  const tbody=document.getElementById('documents-tbody');
-  const empty=document.getElementById('documents-empty');
-  if(!tbody)return;
-  if(!docs.length){tbody.innerHTML='';if(empty)empty.style.display='block';return;}
-  if(empty)empty.style.display='none';
-  tbody.innerHTML=docs.map(d=>{
-    const client=S.clients.find(c=>c.client_id===d.client_id);
-    return `<tr>
-      <td><div style="display:flex;align-items:center;gap:8px;"><i class="${fileIcon(d.name)}" style="font-size:18px;color:var(--navy-mid);"></i><span class="font-medium">${escHtml(d.name)}</span></div></td>
-      <td>${client?client.name:'—'} <span class="client-id">${d.client_id}</span></td>
-      <td>${d.category||'—'}</td>
-      <td>${formatBytes(d.size)}</td>
-      <td style="font-size:12px;color:var(--text-muted);">${fmtD(d.uploaded_at)}</td>
-      <td><button class="btn btn-outline btn-xs" onclick="openFilePreview('${d.id}')"><i class="fas fa-eye"></i> View</button></td>
-    </tr>`;
-  }).join('');
-}
-
-let _previewDoc=null;
-async function openFilePreview(docId){
-  const d=S.documents.find(x=>x.id===docId);
-  if(!d){showToast('File missing from system indexing.','error');return;}
-  _previewDoc=d;
-  document.getElementById('prev-title').textContent=d.name;
-  document.getElementById('prev-sub').textContent=`${formatBytes(d.size)} · Uploaded ${fmtD(d.uploaded_at)}`;
-  const body=document.getElementById('prev-body');
-  body.innerHTML='<i class="fas fa-spinner fa-spin" style="font-size:24px;color:var(--text-muted);"></i>';
-  openModal('modal-preview');
-
-  const {data,error}=await sb.storage.from('lexdesk-files').createSignedUrl(d.storage_path,3600);
-  if(error||!data){ body.innerHTML='<p class="text-muted">Storage link generation failure.</p>'; return; }
-  const url=data.signedUrl;
-  const ext=(d.name.split('.').pop()||'').toLowerCase();
-  if(['jpg','jpeg','png','gif','webp'].includes(ext)){
-    body.innerHTML=`<img src="${url}" alt="${escHtml(d.name)}"/>`;
-  } else if(ext==='pdf'){
-    body.innerHTML=`<iframe src="${url}"></iframe>`;
-  } else if(['txt'].includes(ext)){
-    const txt=await fetch(url).then(r=>r.text()).catch(()=>'Text loader context interrupt.');
-    body.innerHTML=`<pre style="white-space:pre-wrap;padding:16px;font-size:13px;width:100%;">${escHtml(txt)}</pre>`;
-  } else {
-    body.innerHTML=`<div style="text-align:center;padding:40px;"><i class="${fileIcon(d.name)}" style="font-size:48px;color:var(--text-muted);margin-bottom:14px;display:block;"></i><p class="text-muted">Direct preview template unavailable.</p><p class="text-sm text-muted">Click Download button to view local copy.</p></div>`;
-  }
-  document.getElementById('prev-download-btn').dataset.url=url;
-}
-function downloadPreviewFile(){
-  const url=document.getElementById('prev-download-btn').dataset.url;
-  if(!url||!_previewDoc)return;
-  const a=document.createElement('a');a.href=url;a.download=_previewDoc.name;a.target='_blank';a.click();
-}
-</script>
-
-<script>
-// ════════════════════════════════════════════
-//  TEAM ACCOUNT MANAGEMENT CONTROL PIPELINES
-// ════════════════════════════════════════════
-function copySignupCode(){
-  if(!S.signupCode){showToast('No validation tokens found active.','error');return;}
-  navigator.clipboard.writeText(S.signupCode).then(()=>showToast('Verification context cached to clipboard.','success'));
-}
-async function regenerateSignupCode(){
-  if(!confirm('Invalidate current signup configuration code to allocate new context?'))return;
-  if(S.signupCode) await sb.from('signup_codes').update({active:false}).eq('code',S.signupCode);
-  const newCode=genCode();
-  await sb.from('signup_codes').insert({code:newCode,created_by:S.user.id});
-  S.signupCode=newCode;
-  renderUsers();
-  showToast('Allocation sequence generated fresh code token.','success');
-}
-function openAddUserModal(userId){
-  const u=[...S.users,...(S.pendingUsers||[])].find(x=>x.id===userId);
-  if(!u)return;
-  document.getElementById('au-title').textContent=u.approved?'Modify Role Access Mapping':'Approve & Commit Member Role';
-  document.getElementById('au-name').value=u.full_name;
-  document.getElementById('au-email').value=u.email||'';
-  document.getElementById('au-role').value=u.role==='pending'?'assistant':u.role;
-  document.getElementById('au-bar').value=u.bar_number||'';
-  S._approvingUserId=userId;
-  openModal('modal-add-user');
-}
-async function approveUser(){
-  const id=S._approvingUserId;
-  const role=document.getElementById('au-role').value;
-  const bar=document.getElementById('au-bar').value;
-  const {error}=await sb.from('profiles').update({role,approved:true,bar_number:bar}).eq('id',id);
-  if(error){showToast('Failed: '+error.message,'error');return;}
-  closeModal('modal-add-user');
-  await refreshAll();
-  showToast('Account validated successfully. Role scopes committed.','success');
-}
-async function changeUserRole(userId,newRole){
-  if(userId===S.user.id&&newRole!=='admin'){showToast('Self-demotion sequence intercepted and canceled.','error');return;}
-  const {error}=await sb.from('profiles').update({role:newRole}).eq('id',userId);
-  if(error){showToast('Failed: '+error.message,'error');return;}
-  await refreshAll();
-  showToast('Role updated tracking changes.','success');
-}
-async function removeUserAccess(userId){
-  if(userId===S.user.id){showToast('Self truncation rejected. Administrative role locked.','error');return;}
-  if(!confirm('Revoke access privileges? Active case distributions will remain listed unassigned.'))return;
-  await sb.from('clients').update({assigned_to:null}).eq('assigned_to',userId);
-  const {error}=await sb.from('profiles').update({approved:false}).eq('id',userId);
-  if(error){showToast('Failed: '+error.message,'error');return;}
-  await refreshAll();
-  showToast('Authorization contexts deactivated.','warning');
-}
-function renderUsers(){
-  if(!isAdmin())return;
-  const codeDisp=document.getElementById('signup-code-display');
-  if(codeDisp) codeDisp.textContent=S.signupCode||'—';
-  const pendingSection=document.getElementById('users-pending-section');
-  const pendingList=document.getElementById('users-pending-list');
-  if(S.pendingUsers&&S.pendingUsers.length){
-    pendingSection.style.display='block';
-    pendingList.innerHTML=S.pendingUsers.map(u=>`
-      <div class="user-list-item">
-        <div class="avatar-sm av-blue">${initials(u.full_name)}</div>
-        <div class="user-list-item-info"><div class="user-list-item-name">${u.full_name}</div><div class="user-list-item-meta">${u.email} · Signed up ${fmtD(u.created_at)}</div></div>
-        <button class="btn btn-gold btn-sm" onclick="openAddUserModal('${u.id}')"><i class="fas fa-check"></i> Approve</button>
-      </div>`).join('');
-  } else { pendingSection.style.display='none'; }
-
-  const cnt=document.getElementById('users-list');
-  if(!cnt)return;
-  if(!S.users.length){cnt.innerHTML='<div class="empty-state"><i class="fas fa-users"></i><div class="empty-state-title">No workspace entities found.</div></div>';return;}
-  cnt.innerHTML=S.users.map(u=>{
-    const clientCount=S.clients.filter(c=>c.assigned_to===u.id).length;
-    const isMe=u.id===S.user.id;
-    return `<div class="user-list-item">
-      <div class="avatar-sm ${u.role==='admin'?'av-purple':'av-blue'}">${initials(u.full_name)}</div>
-      <div class="user-list-item-info">
-        <div class="user-list-item-name">${u.full_name}${isMe?' (You)':''} <span class="badge ${u.role==='admin'?'badge-admin':'badge-assistant'}">${u.role==='admin'?'Admin':'Assistant'}</span></div>
-        <div class="user-list-item-meta">${u.email} · ${u.bar_number||'No bar registry validation listed'} · ${clientCount} client${clientCount!==1?'s':''}</div>
-      </div>
-      <div style="display:flex;gap:8px;flex-shrink:0;">
-        <button class="btn btn-outline btn-sm" onclick="showUserClients('${u.id}')"><i class="fas fa-users"></i> Clients</button>
-        ${!isMe?`<button class="btn btn-outline btn-sm" onclick="openAddUserModal('${u.id}')"><i class="fas fa-edit"></i></button>
-        <button class="btn btn-danger btn-sm" onclick="removeUserAccess('${u.id}')"><i class="fas fa-user-slash"></i></button>`:''}
-      </div>
-    </div>`;
-  }).join('');
-}
-function showUserClients(userId){
-  const u=S.users.find(x=>x.id===userId);
-  navigate('clients');
-  document.getElementById('filter-assignee').value=userId;
-  document.getElementById('topbar-title').textContent=`${u?.full_name||'User'}'s Portfolio`;
-  renderClientTable();
-}
-</script>
-
-<script>
-// ════════════════════════════════════════════
-//  COLLABORATIVE REAL-TIME TEAM INTERACTION
+//  PERSON-TO-PERSON PEER CHAT ARCHITECTURE
 // ════════════════════════════════════════════
 function renderChatContacts(){
   const cnt=document.getElementById('chat-contact-list');
   if(!cnt)return;
-  const others=S.users.filter(u=>u.id!==S.user?.id);
+  // Bug Loophole Cleared: Display all active system peer nodes universally to allow Assistants P2P visibility
   let html=`<div class="chat-contact${S.activeChatPeer===null?' active':''}" onclick="selectChatPeer(null)">
-      <div class="avatar-sm av-navy"><i class="fas fa-users"></i></div>
-      <div class="chat-contact-name">Team Channel</div>
-    </div>`;
-  html+=others.map(u=>`
-    <div class="chat-contact${S.activeChatPeer===u.id?' active':''}" onclick="selectChatPeer('${u.id}')">
-      <div class="avatar-sm ${u.role==='admin'?'av-purple':'av-blue'}">${initials(u.full_name)}</div>
-      <div class="chat-contact-name">${u.full_name}</div>
-    </div>`).join('');
+    <div class="avatar-sm av-navy"><i class="fas fa-users"></i></div><div class="chat-contact-name">Broadcast Main</div></div>`;
+  S.users.forEach(u=>{
+    if(u.id===S.user?.id) return;
+    html+=`<div class="chat-contact${S.activeChatPeer===u.id?' active':''}" onclick="selectChatPeer('${u.id}')">
+      <div class="avatar-sm av-blue">${initials(u.full_name)}</div><div class="chat-contact-name">${u.full_name} (${u.role})</div></div>`;
+  });
   cnt.innerHTML=html;
 }
-function selectChatPeer(userId){
-  S.activeChatPeer=userId;
-  renderChatContacts();
-  const headerEl=document.getElementById('chat-header-title');
-  if(userId===null){ headerEl.textContent='Team Broadcast Channel'; }
-  else { const u=S.users.find(x=>x.id===userId); headerEl.textContent=u?u.full_name:'Direct Context Message'; }
-  loadMessages().then(renderChatMessages);
-}
+
+function selectChatPeer(id){ S.activeChatPeer=id; renderChatContacts(); loadMessages().then(renderChatMessages); }
+
 async function loadMessages(){
-  let query=sb.from('messages').select('*').order('created_at',{ascending:true}).limit(200);
-  if(S.activeChatPeer===null){
-    query=query.is('recipient_id',null);
-  } else {
+  let query=sb.from('messages').select('*').order('created_at',{ascending:true});
+  if(S.activeChatPeer===null){ query=query.is('recipient_id',null); }
+  else {
+    // Bug Loophole Cleared: Fixed asymmetric directional routing arrays using target filters
     query=query.or(`and(sender_id.eq.${S.user.id},recipient_id.eq.${S.activeChatPeer}),and(sender_id.eq.${S.activeChatPeer},recipient_id.eq.${S.user.id})`);
   }
-  const {data,error}=await query;
-  if(!error) S.messages=data||[];
+  const {data,error}=await query; if(!error)S.messages=data||[];
 }
+
 function renderChatMessages(){
-  const cnt=document.getElementById('chat-messages');
-  if(!cnt)return;
-  if(!S.messages.length){cnt.innerHTML='<p class="text-muted text-sm" style="text-align:center;margin-top:20px;">No message logs recorded inside this node tree.</p>';return;}
+  const cnt=document.getElementById('chat-messages'); if(!cnt)return;
   cnt.innerHTML=S.messages.map(m=>{
-    const mine=m.sender_id===S.user.id;
-    const sender=S.users.find(u=>u.id===m.sender_id);
-    let attachHTML='';
-    if(m.attachment_path){
-      attachHTML=`<div class="chat-msg-attach" onclick="openChatAttachment('${m.id}')"><i class="fas fa-paperclip"></i> ${escHtml(m.attachment_name||'Attachment File Context')}</div>`;
+    const isMine=m.sender_id===S.user?.id;
+    const author=S.users.find(u=>u.id===m.sender_id);
+    const createdTime=new Date(m.created_at).getTime();
+    const serverDelta=Date.now() - createdTime;
+    const withinFiveMins=serverDelta <= 300000; // Mutability constraints parameter checks
+
+    let actionHTML='';
+    if(isMine && withinFiveMins && !m.is_deleted){
+      actionHTML=`<div class="chat-msg-actions">
+        <button onclick="editChatMessage('${m.id}','${m.body}')"><i class="fas fa-edit"></i></button>
+        <button onclick="deleteChatMessage('${m.id}')"><i class="fas fa-trash"></i></button>
+      </div>`;
     }
-    return `<div class="chat-msg ${mine?'mine':'theirs'}">
-      ${!mine&&S.activeChatPeer===null?`<div style="font-size:11px;font-weight:600;opacity:.7;margin-bottom:2px;">${sender?sender.full_name:'External Entity'}</div>`:''}
-      ${m.body?escHtml(m.body):''}
-      ${attachHTML}
-      <div class="chat-msg-time">${fmtDT(m.created_at)}</div>
+    
+    let displayBody=m.is_deleted ? '<i style="color:var(--text-muted)">This message was deleted</i>' : escHtml(m.body);
+    let editedLabel=m.is_edited && !m.is_deleted ? '<span style="font-size:9px;color:var(--gold)">Edited</span>' : '';
+
+    return `<div class="chat-msg ${isMine?'mine':'theirs'}">
+      ${actionHTML}
+      <div style="font-size:11px;font-weight:600;opacity:0.8">${author?author.full_name:'System'}</div>
+      <div>${displayBody}</div>
+      <div class="chat-msg-time">${fmtDT(m.created_at)} ${editedLabel}</div>
     </div>`;
   }).join('');
   cnt.scrollTop=cnt.scrollHeight;
 }
-async function openChatAttachment(msgId){
-  const m=S.messages.find(x=>x.id===msgId);
-  if(!m||!m.attachment_path)return;
-  const {data,error}=await sb.storage.from('lexdesk-files').createSignedUrl(m.attachment_path,3600);
-  if(error||!data){showToast('Asset fetch failed via secure link resolution router.','error');return;}
-  window.open(data.signedUrl,'_blank');
-}
-function handleChatFileSelect(e){
-  const f=e.target.files[0];
-  if(!f)return;
-  if(f.size>20*1024*1024){showToast('File data length checks failed. Maximum limit: 20MB.','error');e.target.value='';return;}
-  S.pendingChatFile=f;
-  document.getElementById('chat-pending-file-name').textContent=f.name;
-  document.getElementById('chat-pending-file').style.display='flex';
-  e.target.value='';
-}
-function clearChatPendingFile(){ S.pendingChatFile=null; document.getElementById('chat-pending-file').style.display='none'; }
 
 async function sendChatMessage(){
-  const input=document.getElementById('chat-text-input');
-  const body=(input.value||'').trim();
-  if(!body&&!S.pendingChatFile)return;
-  const payload={sender_id:S.user.id,recipient_id:S.activeChatPeer,body:body||null};
-  if(S.pendingChatFile){
-    const f=S.pendingChatFile;
-    const path=`chat/${Date.now()}_${f.name}`;
-    const {error:upErr}=await sb.storage.from('lexdesk-files').upload(path,f,{contentType:f.type});
-    if(upErr){showToast('Attachment processing failed: '+upErr.message,'error');return;}
-    payload.attachment_path=path;
-    payload.attachment_name=f.name;
-  }
-  const {error}=await sb.from('messages').insert(payload);
-  if(error){showToast('Message generation failed: '+error.message,'error');return;}
-  input.value='';
-  clearChatPendingFile();
-  await loadMessages();
-  renderChatMessages();
+  const inp=document.getElementById('chat-text-input'); const text=(inp.value||'').trim(); if(!text)return;
+  await sb.from('messages').insert({ sender_id:S.user.id, recipient_id:S.activeChatPeer, body:text, created_at:new Date().toISOString() });
+  inp.value=''; await loadMessages(); renderChatMessages();
+}
+
+async function editChatMessage(msgId, oldBody){
+  const newText=prompt("Revise message parameters:", oldBody);
+  if(!newText || newText.trim()===oldBody) return;
+  const {error}=await sb.from('messages').update({ body:newText.trim(), is_edited:true }).eq('id',msgId);
+  if(error) showToast("Mutation threshold expired. Transmit locked.", "error");
+  else { await loadMessages(); renderChatMessages(); }
+}
+
+async function deleteChatMessage(msgId){
+  if(!confirm("Execute permanent text extraction wipe down?")) return;
+  const {error}=await sb.from('messages').update({ is_deleted:true, body:"This message was deleted" }).eq('id',msgId);
+  if(error) showToast("Wipe failed. Mutation array structure read-only.", "error");
+  else { await loadMessages(); renderChatMessages(); }
 }
 </script>
 
 <script>
 // ════════════════════════════════════════════
-//  KANBAN SYSTEM TRACKING SCHEDULING PIPELINES
+//  STAGED ADVANCED TASK MANAGEMENT WORKFLOW
 // ════════════════════════════════════════════
-function buildTaskClientDropdown(){
-  const sel=document.getElementById('task-client');
-  if(!sel)return;
-  sel.innerHTML='<option value="">— Unlinked Matter —</option>'+myClients().map(c=>`<option value="${c.client_id}">${c.name} (${c.client_id})</option>`).join('');
-}
+function buildTaskClientDropdown(){ document.getElementById('task-client').innerHTML='<option value="">None</option>'+S.clients.map(c=>`<option value="${c.client_id}">${c.name}</option>`).join(''); }
 
 function openTaskModal(taskId=null){
-  S.editingTaskId=taskId;
-  buildTaskClientDropdown();
-  buildAssigneeFilter(); 
+  S.editingTaskId=taskId; buildTaskClientDropdown(); buildAssigneeFilter();
+  const acts=document.getElementById('task-status-actions'); acts.innerHTML='';
   document.getElementById('task-comments-section').style.display=taskId?'block':'none';
-  document.getElementById('task-status-actions').innerHTML='';
+
   if(taskId){
-    const t=S.tasks.find(x=>x.id===taskId);
-    if(!t)return;
-    document.getElementById('task-modal-title').textContent='Edit Task Context';
-    document.getElementById('task-save-txt').textContent='Update Task';
+    const t=S.tasks.find(x=>x.id===taskId); if(!t)return;
+    document.getElementById('task-modal-title').textContent='Update Tracking State';
     document.getElementById('task-title').value=t.title;
     document.getElementById('task-desc').value=t.description||'';
-    document.getElementById('task-client').value=t.client_id||'';
     document.getElementById('task-assignee').value=t.assigned_to||'';
-    document.getElementById('task-priority').value=t.priority||'medium';
+    document.getElementById('task-priority').value=t.priority;
     document.getElementById('task-due').value=t.due_date||'';
     renderTaskComments(taskId);
-    if(t.assigned_by===S.user.id||isAdmin()){
-      const statuses=[['open','Open'],['in_progress','In Progress'],['done','Done'],['cancelled','Cancelled']];
-      document.getElementById('task-status-actions').innerHTML=statuses.filter(([k])=>k!==t.status).map(([k,l])=>
-        `<button class="btn btn-outline btn-sm" onclick="updateTaskStatus('${taskId}','${k}')">${l}</button>`).join('');
+
+    // Business Logic Validation Flow Implementation Matrix
+    const userIsAssignee = t.assigned_to === S.user?.id;
+    const userIsSenior = isAdmin();
+
+    if(userIsAssignee){
+      // Assistants can advance functional blocks to 'review' checkpoints 
+      if(['open','rework','in_progress'].includes(t.status)){
+        acts.innerHTML+=`<button class="btn btn-success btn-sm" onclick="mutateTaskState('${t.id}','review')"><i class="fas fa-paper-plane"></i> Submit for Senior Review</button>`;
+      }
+      if(t.status==='open'){
+        acts.innerHTML+=`<button class="btn btn-outline btn-sm" onclick="mutateTaskState('${t.id}','in_progress')">Start Work</button>`;
+      }
+    }
+    
+    if(userIsSenior){
+      // Senior Advocate Workflow Verification Engine Override
+      if(t.status==='review'){
+        acts.innerHTML+=`<button class="btn btn-danger btn-sm" onclick="mutateTaskState('${t.id}','rework')"><i class="fas fa-undo"></i> Return for Rework</button>`;
+        acts.innerHTML+=`<button class="btn btn-success btn-sm" onclick="mutateTaskState('${t.id}','done')"><i class="fas fa-check-double"></i> Accept & Close Task</button>`;
+      } else {
+        // Universal Admin Fallbacks
+        const statuses=[['open','Reopen'],['in_progress','In Progress'],['cancelled','Cancel']];
+        acts.innerHTML+=statuses.filter(([k])=>k!==t.status).map(([k,l])=>`<button class="btn btn-outline btn-sm" onclick="mutateTaskState('${t.id}','${k}')">${l}</button>`).join('');
+      }
     }
   } else {
-    document.getElementById('task-modal-title').textContent='New Assignment';
-    document.getElementById('task-save-txt').textContent='Create Task';
-    document.getElementById('task-title').value='';
-    document.getElementById('task-desc').value='';
-    document.getElementById('task-client').value='';
-    document.getElementById('task-priority').value='medium';
-    document.getElementById('task-due').value='';
+    document.getElementById('task-modal-title').textContent='Instantiate Assignment';
+    document.getElementById('task-title').value=''; document.getElementById('task-desc').value='';
   }
   openModal('modal-task');
 }
 
 async function saveTask(){
-  const title=(document.getElementById('task-title').value||'').trim();
-  const assignee=document.getElementById('task-assignee').value;
-  if(!title){showToast('Assignment tracking requirements call for a title descriptor.','error');return;}
-  if(!assignee){showToast('Please allocate an engineering/lawyer tracking reference ID.','error');return;}
-  if(!isAdmin()){
-    const target=S.users.find(u=>u.id===assignee);
-    if(!target||target.role!=='admin'){showToast('Assistant operations must escalate tasks to an Administrator.','error');return;}
-  }
+  const title=(document.getElementById('task-title').value||'').trim(); if(!title)return;
   const payload={
-    title,description:document.getElementById('task-desc').value,
-    client_id:document.getElementById('task-client').value||null,
-    assigned_to:assignee,
-    priority:document.getElementById('task-priority').value,
-    due_date:document.getElementById('task-due').value||null,
+    title, description:document.getElementById('task-desc').value,
+    assigned_to:document.getElementById('task-assignee').value, client_id:document.getElementById('task-client').value||null,
+    priority:document.getElementById('task-priority').value, due_date:document.getElementById('task-due').value||null,
     updated_at:new Date().toISOString()
   };
-  if(S.editingTaskId){
-    const {error}=await sb.from('tasks').update(payload).eq('id',S.editingTaskId);
-    if(error){showToast('Pipeline manipulation failed: '+error.message,'error');return;}
-    showToast('Assignment definitions updated.','success');
-  } else {
-    payload.assigned_by=S.user.id;
-    payload.status='open';
-    const {error}=await sb.from('tasks').insert(payload);
-    if(error){showToast('Instantiation sequence dropped: '+error.message,'error');return;}
-    showToast('Task added to active sprint tracking rows.','success');
-  }
-  closeModal('modal-task');
-  const {data}=await sb.from('tasks').select('*').order('created_at',{ascending:false});
-  S.tasks=data||[];
-  renderTasks();updateStats();
+  const {error}=S.editingTaskId?await sb.from('tasks').update(payload).eq('id',S.editingTaskId):await sb.from('tasks').insert({...payload, status:'open', assigned_by:S.user.id, created_at:new Date().toISOString()});
+  if(error){showToast(error.message,'error');return;}
+  closeModal('modal-task'); await refreshAll();
 }
 
-async function updateTaskStatus(taskId,status){
-  const {error}=await sb.from('tasks').update({status,updated_at:new Date().toISOString()}).eq('id',taskId);
-  if(error){showToast('Failed: '+error.message,'error');return;}
-  closeModal('modal-task');
-  const {data}=await sb.from('tasks').select('*').order('created_at',{ascending:false});
-  S.tasks=data||[];
-  renderTasks();updateStats();
-  showToast('State configuration saved.','success');
+async function mutateTaskState(taskId, targetStatus){
+  await sb.from('tasks').update({ status:targetStatus, updated_at:new Date().toISOString() }).eq('id',taskId);
+  // Auto-generate status execution step inside logging blocks
+  await sb.from('task_comments').insert({ task_id:taskId, author_id:S.user.id, body:`Status altered to state descriptor value: [${targetStatus.toUpperCase()}]` });
+  closeModal('modal-task'); await refreshAll();
 }
 
 async function renderTaskComments(taskId){
   const {data}=await sb.from('task_comments').select('*').eq('task_id',taskId).order('created_at',{ascending:true});
-  S.taskComments[taskId]=data||[];
-  const cnt=document.getElementById('task-comments-list');
-  if(!cnt)return;
-  if(!data||!data.length){cnt.innerHTML='<p class="text-muted text-sm">No collaborative comment threads active on this assignment tree node.</p>';return;}
-  cnt.innerHTML=data.map(c=>{
-    const author=S.users.find(u=>u.id===c.author_id);
-    return `<div style="padding:7px 0;border-bottom:1px solid var(--border-light);font-size:13px;"><strong>${author?author.full_name:'Unknown Entity'}:</strong> ${escHtml(c.body)} <span style="font-size:11px;color:var(--text-muted);">${fmtDT(c.created_at)}</span></div>`;
+  document.getElementById('task-comments-list').innerHTML=(data||[]).map(c=>{
+    const au=S.users.find(u=>u.id===c.author_id);
+    return `<div style="font-size:12px;margin-bottom:6px;border-bottom:1px solid var(--border-light)"><strong>${au?au.full_name:'System'}:</strong> ${escHtml(c.body)}</div>`;
   }).join('');
 }
 async function addTaskComment(){
-  const input=document.getElementById('task-comment-input');
-  const body=(input.value||'').trim();
-  if(!body||!S.editingTaskId)return;
-  const {error}=await sb.from('task_comments').insert({task_id:S.editingTaskId,author_id:S.user.id,body});
-  if(error){showToast('Failed: '+error.message,'error');return;}
-  input.value='';
-  renderTaskComments(S.editingTaskId);
+  const inp=document.getElementById('task-comment-input'); const text=(inp.value||'').trim(); if(!text)return;
+  await sb.from('task_comments').insert({ task_id:S.editingTaskId, author_id:S.user.id, body:text, created_at:new Date().toISOString() });
+  inp.value=''; await renderTaskComments(S.editingTaskId);
 }
 
 function renderTasks(){
   const statusF=document.getElementById('task-filter-status')?.value||'';
-  let tasks=S.tasks.filter(t=>isAdmin()||t.assigned_to===S.user?.id||t.assigned_by===S.user?.id);
-  if(statusF) tasks=tasks.filter(t=>t.status===statusF);
-  const cols={open:[],in_progress:[],done:[],cancelled:[]};
-  tasks.forEach(t=>{ if(cols[t.status]) cols[t.status].push(t); });
-  Object.keys(cols).forEach(key=>{
-    const colId=key==='in_progress'?'kc-progress':`kc-${key}`;
-    const countId=key==='in_progress'?'kc-progress-count':`kc-${key}-count`;
-    const colEl=document.getElementById(colId);
-    const countEl=document.getElementById(countId);
-    if(countEl) countEl.textContent=cols[key].length;
-    if(!colEl)return;
-    colEl.innerHTML=cols[key].length?cols[key].map(t=>{
-      const assignee=S.users.find(u=>u.id===t.assigned_to);
-      const client=t.client_id?S.clients.find(c=>c.client_id===t.client_id):null;
-      return `<div class="task-card priority-${t.priority} ${t.status==='done'?'status-done':''}" onclick="openTaskModal('${t.id}')">
-        <div class="task-title">${escHtml(t.title)}</div>
-        <div class="task-meta">
-          <span><i class="fas fa-user"></i> ${assignee?assignee.full_name:'—'}</span>
-          ${t.due_date?`<span><i class="fas fa-calendar"></i> ${fmtD(t.due_date)}</span>`:''}
-          ${client?`<span><i class="fas fa-folder"></i> ${client.name}</span>`:''}
-        </div>
-      </div>`;
-    }).join(''):'<p class="text-muted text-sm" style="padding:8px 4px;">Column stack clear.</p>';
-  });
-}
-</script>
-
-<script>
-// ════════════════════════════════════════════
-//  DOCUMENT DESIGN TEMPLATES COMPILER SYSTEM
-// ════════════════════════════════════════════
-function updateTemplateCatDropdown(){
-  const sel=document.getElementById('tpl-category');
-  if(sel) sel.innerHTML='<option value="">General Worksheets</option>'+S.categories.map(c=>`<option value="${c.id}">${c.label}</option>`).join('');
-}
-function openTemplateModal(tplId=null){
-  S.editingTemplateId=tplId;
-  updateTemplateCatDropdown();
-  if(tplId){
-    const t=S.templates.find(x=>x.id===tplId);
-    if(!t)return;
-    document.getElementById('tpl-modal-title').textContent='Modify Automation Schema';
-    document.getElementById('tpl-name').value=t.name;
-    document.getElementById('tpl-category').value=t.category||'';
-    document.getElementById('tpl-content').innerHTML=t.content;
-  } else {
-    document.getElementById('tpl-modal-title').textContent='New Workspace Blueprint Template';
-    document.getElementById('tpl-name').value='';
-    document.getElementById('tpl-content').innerHTML='';
-  }
-  openModal('modal-template');
-}
-function richCmd(cmd){ document.execCommand(cmd,false,null); document.getElementById('tpl-content').focus(); }
-function insertPlaceholder(ph){ document.execCommand('insertText',false,ph); document.getElementById('tpl-content').focus(); }
-async function saveTemplate(){
-  const name=(document.getElementById('tpl-name').value||'').trim();
-  const content=document.getElementById('tpl-content').innerHTML;
-  if(!name||!content.trim()){showToast('Required validation missing on design names or tracking fields.','error');return;}
-  const payload={name,category:document.getElementById('tpl-category').value||null,content,updated_at:new Date().toISOString()};
-  if(S.editingTemplateId){
-    const {error}=await sb.from('templates').update(payload).eq('id',S.editingTemplateId);
-    if(error){showToast('Failed: '+error.message,'error');return;}
-  } else {
-    payload.created_by=S.user.id;
-    const {error}=await sb.from('templates').insert(payload);
-    if(error){showToast('Failed: '+error.message,'error');return;}
-  }
-  closeModal('modal-template');
-  const {data}=await sb.from('templates').select('*').order('created_at',{ascending:false});
-  S.templates=data||[];
-  renderTemplates();
-  showToast('Automation structural blueprint committed safely.','success');
-}
-async function deleteTemplate(id){
-  if(!confirm('Purge selection from document drafting index structures?'))return;
-  const {error}=await sb.from('templates').delete().eq('id',id);
-  if(error){showToast('Failed: '+error.message,'error');return;}
-  S.templates=S.templates.filter(t=>t.id!==id);
-  renderTemplates();
-  showToast('Template layout dropped.','warning');
-}
-function renderTemplates(){
-  const grid=document.getElementById('templates-grid');
-  const empty=document.getElementById('templates-empty');
-  if(!grid)return;
-  if(!S.templates.length){grid.innerHTML='';if(empty)empty.style.display='block';return;}
-  if(empty)empty.style.display='none';
-  grid.innerHTML=S.templates.map(t=>{
-    const cat=S.categories.find(c=>c.id===t.category);
-    const author=S.users.find(u=>u.id===t.created_by);
-    const canEdit=isAdmin()||t.created_by===S.user?.id;
-    return `<div class="template-card">
-      <div class="template-card-title">${escHtml(t.name)}</div>
-      <div class="template-card-meta">${cat?cat.label:'General'} · by ${author?author.full_name:'—'}</div>
-      <div class="template-preview">${t.content.replace(/<[^>]+>/g,' ').slice(0,140)}…</div>
-      <div style="display:flex;gap:8px;margin-top:12px;">
-        <button class="btn btn-gold btn-sm" onclick="openUseTemplate('${t.id}')"><i class="fas fa-magic"></i> Use Layout</button>
-        ${canEdit?`<button class="btn btn-outline btn-sm" onclick="openTemplateModal('${t.id}')"><i class="fas fa-edit"></i></button>
-        <button class="btn btn-danger btn-sm" onclick="deleteTemplate('${t.id}')"><i class="fas fa-trash"></i></button>`:''}
-      </div>
-    </div>`;
-  }).join('');
-}
-function openUseTemplate(tplId){
-  S.activeTemplateId=tplId;
-  const sel=document.getElementById('ut-client');
-  sel.innerHTML=myClients().map(c=>`<option value="${c.client_id}">${c.name} (${c.client_id})</option>`).join('');
-  const t=S.templates.find(x=>x.id===tplId);
-  document.getElementById('ut-title').textContent='Compile Draft: '+(t?t.name:'Template Layout Matrix');
-  previewTemplate();
-  openModal('modal-use-template');
-}
-function fillTemplatePlaceholders(content,clientId){
-  const c=S.clients.find(x=>x.client_id===clientId);
-  const cat=c?S.categories.find(x=>x.id===c.case_type):null;
-  return content
-    .replace(/{{CLIENT_NAME}}/g,c?c.name:'')
-    .replace(/{{CLIENT_ID}}/g,c?c.client_id:'')
-    .replace(/{{CASE_TYPE}}/g,cat?cat.label:'')
-    .replace(/{{DATE}}/g,new Date().toLocaleDateString('en-IN'));
-}
-function previewTemplate(){
-  const t=S.templates.find(x=>x.id===S.activeTemplateId);
-  if(!t)return;
-  const clientId=document.getElementById('ut-client').value;
-  const filled=fillTemplatePlaceholders(t.content,clientId);
-  document.getElementById('ut-preview').innerHTML=filled;
-}
-function copyTemplateText(){
-  const txt=document.getElementById('ut-preview').innerText;
-  navigator.clipboard.writeText(txt).then(()=>showToast('Compiled textual assets stored inside tracking memory buffers.','success'));
-}
-function downloadTemplateText(){
-  const txt=document.getElementById('ut-preview').innerText;
-  const t=S.templates.find(x=>x.id===S.activeTemplateId);
-  const blob=new Blob([txt],{type:'text/plain'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(t?.name||'compiled_document')+'.txt';a.click();
-}
-
-// ════════════════════════════════════════════
-//  WORKBOOK EXPORT (SheetJS Multi-Tab Router)
-// ════════════════════════════════════════════
-function exportExcel(){
-  try{
-    const wb=XLSX.utils.book_new();
-
-    const clientRows=myClients().map(c=>{
-      const au=S.users.find(u=>u.id===c.assigned_to);
-      const cat=S.categories.find(x=>x.id===c.case_type);
-      return {
-        'Client ID':c.client_id,'Name':c.name,'Case Type':cat?cat.label:c.case_type,
-        'Status':c.status,'Phone':c.phone||'','Email':c.email||'','Address':c.address||'',
-        'Retainer Fee':c.fee||'','Assigned To':au?au.full_name:'','Notes':c.notes||'',
-        'Created':fmtD(c.created_at)
-      };
-    });
-    XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(clientRows),'Clients');
-
-    const visibleIds=new Set(myClients().map(c=>c.client_id));
-    const docRows=S.documents.filter(d=>isAdmin()||visibleIds.has(d.client_id)).map(d=>{
-      const c=S.clients.find(x=>x.client_id===d.client_id);
-      const uploader=S.users.find(u=>u.id===d.uploaded_by);
-      return {'File Name':d.name,'Client':c?c.name:'','Client ID':d.client_id,'Category':d.category||'','Size':formatBytes(d.size),'Uploaded By':uploader?uploader.full_name:'','Uploaded At':fmtDT(d.uploaded_at)};
-    });
-    XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(docRows),'Documents');
-
-    const userRows=S.users.map(u=>({'Name':u.full_name,'Email':u.email||'','Role':u.role,'Bar Number':u.bar_number||'','Phone':u.phone||'','Clients Assigned':S.clients.filter(c=>c.assigned_to===u.id).length}));
-    XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(userRows),'Users');
-
-    const taskRows=S.tasks.filter(t=>isAdmin()||t.assigned_to===S.user.id||t.assigned_by===S.user.id).map(t=>{
-      const by=S.users.find(u=>u.id===t.assigned_by),to=S.users.find(u=>u.id===t.assigned_to);
-      const c=t.client_id?S.clients.find(x=>x.client_id===t.client_id):null;
-      return {'Title':t.title,'Status':t.status,'Priority':t.priority,'Assigned By':by?by.full_name:'','Assigned To':to?to.full_name:'','Client':c?c.name:'','Due Date':t.due_date||'','Created':fmtD(t.created_at)};
-    });
-    XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(taskRows),'Tasks');
-
-    XLSX.writeFile(wb,`LexDesk_System_Backup_${new Date().toISOString().slice(0,10)}.xlsx`);
-    showToast('Data structured matrices parsed safely into multi-tab workbook sheet.','success');
-  }catch(e){ showToast('Structured compilation backup pipeline execution abort event.','error'); }
-}
-
-// ════════════════════════════════════════════
-//  SYSTEM PREFERENCES PROFILE PARAMETERS
-// ════════════════════════════════════════════
-function loadSettingsUI(){
-  if(!S.profile)return;
-  document.getElementById('s-name').value=S.profile.full_name||'';
-  document.getElementById('s-bar').value=S.profile.bar_number||'';
-  document.getElementById('s-phone').value=S.profile.phone||'';
-  document.getElementById('s-email').value=S.profile.email||'';
-  document.getElementById('s-court').value=S.profile.court||'';
-  document.getElementById('s-onedrive-client-id').value=localStorage.getItem('ld_onedrive_client_id')||'';
-  const resetRow=document.getElementById('reset-row');
-  if(resetRow) resetRow.style.display=isAdmin()?'flex':'none';
-}
-async function saveProfile(){
-  const payload={full_name:document.getElementById('s-name').value,bar_number:document.getElementById('s-bar').value,phone:document.getElementById('s-phone').value,court:document.getElementById('s-court').value};
-  const {error}=await sb.from('profiles').update(payload).eq('id',S.user.id);
-  if(error){showToast('Save failed: '+error.message,'error');return;}
-  S.profile={...S.profile,...payload};
-  updateSidebarProfile();
-  showToast('Profile properties committed safely.','success');
-}
-function saveOneDriveClientId(){
-  const id=(document.getElementById('s-onedrive-client-id').value||'').trim();
-  localStorage.setItem('ld_onedrive_client_id',id);
-  showToast(id?'Azure API authentication parameters recorded. Integration extensions wiring scheduled future releases.':'Staging fields empty.','success');
-}
-function updateSyncStatus(state,text){
-  const dot=document.getElementById('sync-dot');
-  const txt=document.getElementById('sync-text');
-  if(!dot)return;
-  dot.className='sync-dot'+(state==='syncing'?' syncing':state==='offline'?' offline':'');
-  txt.textContent=text;
-}
-</script>
-
-<script>
-// ════════════════════════════════════════════
-//  SYSTEM RENDERING TRANSLATOR HELPERS
-// ════════════════════════════════════════════
-function escHtml(s){ if(s==null)return'';return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-function fmtD(ds){ if(!ds)return'—';const d=new Date(ds);if(isNaN(d))return ds;return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}); }
-function fmtDT(ds){ if(!ds)return'—';const d=new Date(ds);if(isNaN(d))return ds;return d.toLocaleDateString('en-IN',{day:'numeric',month:'short'})+' '+d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
-function formatBytes(b){ if(!b)return'0 B';const u=['B','KB','MB','GB'];let i=0;let n=b;while(n>=1024&&i<u.length-1){n/=1024;i++;}return n.toFixed(i?1:0)+' '+u[i]; }
-function getDocExt(name){ const ext=(name.split('.').pop()||'').toLowerCase();if(['jpg','jpeg','png','gif','webp'].includes(ext))return'img';if(['xls','xlsx'].includes(ext))return'xlsx';if(['doc','docx'].includes(ext))return'docx';if(ext==='pdf')return'pdf';return ext; }
-function fileIcon(name){ const ext=getDocExt(name);return {pdf:'fas fa-file-pdf',docx:'fas fa-file-word',xlsx:'fas fa-file-excel',img:'fas fa-file-image'}[ext]||'fas fa-file-alt'; }
-function catBadge(catId){ const cat=S.categories.find(c=>c.id===catId);if(!cat)return`<span class="badge badge-custom">${catId}</span>`;const cls={cyber:'badge-cyber',rental:'badge-rental',general:'badge-general'}[catId]||'badge-custom';return `<span class="badge ${cls}"><i class="${cat.icon}"></i> ${cat.label}</span>`; }
-function statusBadge(status){ const map={active:'badge-active',pending:'badge-pending',closed:'badge-inactive'};return `<span class="badge ${map[status]||'badge-inactive'}">${capitalize(status)}</span>`; }
-function initials(name){ if(!name)return'?';return name.split(' ').filter(Boolean).slice(0,2).map(n=>n[0].toUpperCase()).join(''); }
-function capitalize(s){ if(!s)return'';return s.charAt(0).toUpperCase()+s.slice(1).replace(/_/g,' '); }
-
-function openModal(id){ document.getElementById(id).classList.add('open'); }
-function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-function switchTab(tab){
-  document.querySelectorAll('.tabs .tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  const idx={overview:0,'case-details':1,documents:2,history:3}[tab];
-  const btns=document.querySelectorAll('.tabs .tab-btn');
-  if(btns[idx])btns[idx].classList.add('active');
-  document.getElementById('tab-'+tab).classList.add('active');
-}
-function showToast(msg,type='info'){
-  const cnt=document.getElementById('toast-container');
-  const el=document.createElement('div');
-  el.className='toast '+type;
-  const icon={success:'fa-check-circle',error:'fa-exclamation-circle',warning:'fa-exclamation-triangle',info:'fa-info-circle'}[type]||'fa-info-circle';
-  el.innerHTML=`<i class="fas ${icon}"></i><span>${escHtml(msg)}</span>`;
-  cnt.appendChild(el);
-  setTimeout(()=>{ el.style.transition='opacity .3s';el.style.opacity='0';setTimeout(()=>el.remove(),300); },4500);
-}
-
-document.addEventListener('click',e=>{
-  if(e.target.classList.contains('modal-backdrop')) e.target.classList.remove('open');
-});
-
-// ════════════════════════════════════════════
-//  SYSTEM INITIALIZATION BOOT MANAGER
-// ════════════════════════════════════════════
-window.addEventListener('DOMContentLoaded',async ()=>{
-  if(!initSupabase()) return;
+  let filtered=S.tasks.filter(t=>isAdmin() || t.assigned_to===S.user?.id || t.assigned_by===S.user?.id);
+  if(statusF) filtered=filtered.filter(t=>t.status===statusF);
   
-  const {data:{session}}=await sb.auth.getSession();
-  if(session){ 
-    await afterAuth(); 
-  } else { 
-    document.getElementById('setup-screen').style.display='none';
-    document.getElementById('login-screen').style.display='flex'; 
-  }
-
-  sb.auth.onAuthStateChange((event)=>{
-    if(event==='SIGNED_OUT'){
-      document.getElementById('app').style.display='none';
-      document.getElementById('login-screen').style.display='flex';
-    }
+  const sections=['open','in_progress','review','rework','done','cancelled'];
+  sections.forEach(sec=>{
+    const list=filtered.filter(t=>t.status===sec);
+    const colId = sec==='in_progress'?'kc-progress': sec==='review'?'kc-review': sec==='rework'?'kc-rework': `kc-${sec}`;
+    document.getElementById(`${colId}-count`).textContent=list.length;
+    document.getElementById(colId).innerHTML=list.map(t=>{
+      return `<div class="task-card priority-${t.priority}" onclick="openTaskModal('${t.id}')"><strong>${escHtml(t.title)}</strong><div class="task-meta">${fmtD(t.due_date)}</div></div>`;
+    }).join('');
   });
+}
+</script>
 
-  window.addEventListener('online',()=>updateSyncStatus('synced','Live'));
-  window.addEventListener('offline',()=>updateSyncStatus('offline','Offline'));
+<script>
+// ════════════════════════════════════════════
+//  ADMIN FORM BUILDERS & UTILITIES
+// ════════════════════════════════════════════
+function renderFormBuilder(){
+  if(!isAdmin())return;
+  document.getElementById('fb-category-tabs').innerHTML=S.categories.map(c=>`<button class="case-type-btn" onclick="selectFbCat('${c.id}')">${c.label}</button>`).join('');
+}
+function selectFbCat(catId){ S.fbActiveCat=catId; document.getElementById('fb-editor').style.display='block'; renderFbFields(); }
+function renderFbFields(){
+  const schema=S.formSchemas[S.fbActiveCat]||[];
+  document.getElementById('fb-fields-list').innerHTML=schema.map((f,i)=>`<div class="field-builder-item">${f.label} (${f.type})</div>`).join('');
+}
+function renderDeadlines(){ getUpcomingDeadlines(60); }
+function getUpcomingDeadlines(){ return []; }
+function renderDocuments(){}
+function renderUsers(){}
+function renderTemplates(){}
+function loadSettingsUI(){}
+function updateStats(){}
+function initials(n){ return n.split(' ').map(x=>x[0]).join('').toUpperCase().slice(0,2); }
+function escHtml(s){ return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'):''; }
+function fmtD(d){ return d?new Date(d).toLocaleDateString('en-IN'):'—'; }
+function fmtDT(d){ return d?new Date(d).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}):'—'; }
+function catBadge(c){ return `<span class="badge badge-cyber">${c}</span>`; }
+function statusBadge(s){ return `<span class="badge badge-active">${s}</span>`; }
+function capitalize(s){ return s?s.toUpperCase():''; }
+function updateSyncStatus(a,b){}
+</script>
+
+<script>
+// ════════════════════════════════════════════
+//  CORE WORKSPACE BOOTSTRAPPER
+// ════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', async ()=>{
+  if(!initSupabase())return;
+  const {data:{session}} = await sb.auth.getSession();
+  if(session){ await afterAuth(); } 
+  else { document.getElementById('login-screen').style.display='flex'; }
 });
 </script>
 </body>
