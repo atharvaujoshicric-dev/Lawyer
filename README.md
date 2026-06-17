@@ -6,6 +6,19 @@ A complete, multi-user legal practice management system for a Cybersecurity + Ge
 
 If you already set up LexDesk and ran the original `supabase_schema.sql`, you don't need to start over. Just run the **migration block** at the bottom of the new `supabase_schema.sql` (everything after the `MIGRATION` header) in your Supabase SQL Editor — it's safe to run even if some of it doesn't apply yet.
 
+**How to confirm the migration actually ran** (this matters — if it silently didn't, you'll see "No other team members yet" in chat and a `tasks_status_check` error when sending a task for review):
+1. Open LexDesk as the Admin and go to **Settings** — there's now a "Migration Status" row that tests this directly and tells you in plain language if it's missing.
+2. Or, run this directly in the Supabase SQL Editor and confirm it returns a row:
+   ```sql
+   select conname, pg_get_constraintdef(oid) from pg_constraint where conname = 'tasks_status_check';
+   ```
+   The output should include `in_review` in the list of allowed values. If it still only shows `open, in_progress, done, cancelled`, the migration block didn't run — copy it again from `supabase_schema.sql` and run it directly (don't run the whole file a second time, just the block under the `MIGRATION` header).
+3. Also confirm with:
+   ```sql
+   select policyname from pg_policies where tablename = 'profiles';
+   ```
+   You should see `profiles_select_approved_or_self` in the list, not `profiles_select_own_or_admin`.
+
 **Bugs fixed:**
 - Assistants couldn't see each other (or the Admin) in Direct Messages — caused by a database security rule that only let people see their own profile. Fixed so any approved team member can see the whole team.
 - A security gap let a message **recipient** edit or delete a message that wasn't theirs. Now only the original sender can edit/delete their own message, and only within 5 minutes — enforced at the database level, not just in the interface.
@@ -13,10 +26,12 @@ If you already set up LexDesk and ran the original `supabase_schema.sql`, you do
 - Documents had no delete option even though the permissions already supported it. Added.
 - Regenerating the team signup code had a small window where, if something went wrong, you could be left with no working code at all. Fixed the order of operations.
 - Two people creating a client at the exact same moment could get assigned the same Client ID, causing the second save to silently fail. The app now detects this and retries automatically.
+- An Assistant could only send a task for review after first clicking "Start Work" — there was no direct path from a freshly-assigned task to "Send for Review." Fixed so Send for Review is available immediately.
 
 **New features:**
 - **Chat**: edit or delete your own messages within 5 minutes of sending. Edited messages show "(Edited)" next to the timestamp; deleted messages show "This message was deleted." The edit/delete options disappear automatically once the 5 minutes pass.
-- **Tasks**: a full review workflow. An Assistant can send a task for review once they're done; the Senior Advocate then sends it back for rework, reopens it, or approves and closes it. The task board now has a fifth column, "In Review."
+- **Tasks**: a full review workflow. An Assistant can send a task for review at any point once it's assigned to them; the Senior Advocate then sends it back for rework, reopens it, or approves and closes it. The task board now has a fifth column, "In Review."
+- **Settings → Migration Status**: a built-in admin-only check that tells you directly whether the database migration has been applied, instead of you having to guess from app symptoms.
 
 ## v3 — original feature set
 

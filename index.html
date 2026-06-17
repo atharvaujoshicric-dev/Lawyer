@@ -599,6 +599,10 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
                 <div class="settings-row-text"><div class="settings-row-label">Database</div><div class="settings-row-desc">Supabase Postgres with Row-Level Security</div></div>
                 <span class="badge badge-active"><i class="fas fa-lock"></i> Active</span>
               </div>
+              <div class="settings-row" id="migration-check-row" style="display:none;">
+                <div class="settings-row-text"><div class="settings-row-label">Migration Status</div><div class="settings-row-desc" id="migration-check-desc">Checking…</div></div>
+                <button class="btn btn-outline btn-sm" onclick="checkMigrationStatus()"><i class="fas fa-sync-alt"></i> Re-check</button>
+              </div>
               <div class="settings-row">
                 <div class="settings-row-text"><div class="settings-row-label">Export to Excel</div><div class="settings-row-desc">Clients, Documents, Users & Tasks in one workbook</div></div>
                 <button class="btn btn-outline btn-sm" onclick="exportExcel()"><i class="fas fa-file-excel"></i> Export</button>
@@ -2092,7 +2096,11 @@ function buildTaskStatusActions(t){
   const isReviewer=t.assigned_by===S.user.id||isAdmin();
   const btns=[];
 
-  if(t.status==='open'&&(isDoer||isReviewer)){
+  if(t.status==='open'&&isDoer){
+    btns.push(['in_progress','Start Work','btn-outline']);
+    btns.push(['in_review','Send for Review','btn-gold']);
+  }
+  if(t.status==='open'&&isReviewer&&!isDoer){
     btns.push(['in_progress','Start Work','btn-outline']);
   }
   if(t.status==='in_progress'&&isDoer){
@@ -2382,6 +2390,51 @@ function loadSettingsUI(){
   document.getElementById('s-onedrive-client-id').value=localStorage.getItem('ld_onedrive_client_id')||'';
   const resetRow=document.getElementById('reset-row');
   if(resetRow) resetRow.style.display=isAdmin()?'flex':'none';
+  const migRow=document.getElementById('migration-check-row');
+  if(migRow){ migRow.style.display=isAdmin()?'flex':'none'; if(isAdmin()) checkMigrationStatus(); }
+}
+
+// Diagnoses whether the v3.1 SQL migration has actually been run on this
+// Supabase project. Checks the two concrete symptoms reported: the profiles
+// visibility policy (chat contact list) and the tasks status constraint
+// (in_review). Admin-only, surfaced on the Settings page.
+async function checkMigrationStatus(){
+  const descEl=document.getElementById('migration-check-desc');
+  if(!descEl)return;
+  descEl.textContent='Checking…';
+  const issues=[];
+
+  // Check 1: can we see other approved profiles? (fails if old RLS policy is still active)
+  try{
+    const {data,error}=await sb.from('profiles').select('id').eq('approved',true).limit(50);
+    if(error){ issues.push('profile visibility check failed: '+error.message); }
+    else if((data||[]).length<=1 && S.users.length<=1){ issues.push('team members are still hidden from each other (old profiles policy is still active)'); }
+  }catch(e){ issues.push('profile visibility check threw an error'); }
+
+  // Check 2: does the tasks table actually accept 'in_review'? We test this directly
+  // with a real insert + immediate delete, using a harmless throwaway row, so the
+  // result reflects the live constraint rather than a proxy.
+  try{
+    const probeTitle='__lexdesk_migration_probe__';
+    const {data:inserted,error:insErr}=await sb.from('tasks').insert({
+      title:probeTitle, status:'in_review', assigned_by:S.user.id, assigned_to:S.user.id
+    }).select('id').single();
+    if(insErr){
+      if(/check constraint|tasks_status_check/i.test(insErr.message)){
+        issues.push("tasks table doesn't accept 'in_review' yet (old status constraint is still active)");
+      } else {
+        issues.push('tasks constraint check failed: '+insErr.message);
+      }
+    } else if(inserted?.id){
+      await sb.from('tasks').delete().eq('id',inserted.id);
+    }
+  }catch(e){ issues.push('tasks constraint check threw an error'); }
+
+  if(!issues.length){
+    descEl.innerHTML='<span style="color:var(--success);"><i class="fas fa-check-circle"></i> Migration fully applied</span>';
+  } else {
+    descEl.innerHTML=`<span style="color:var(--danger);"><i class="fas fa-exclamation-triangle"></i> Migration NOT applied: ${issues.map(escHtml).join('; ')}. Run the MIGRATION block in supabase_schema.sql.</span>`;
+  }
 }
 async function saveProfile(){
   const payload={full_name:document.getElementById('s-name').value,bar_number:document.getElementById('s-bar').value,phone:document.getElementById('s-phone').value,court:document.getElementById('s-court').value};
