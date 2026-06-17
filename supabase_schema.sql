@@ -90,7 +90,7 @@ create table if not exists tasks (
   client_id text references clients(client_id) on delete set null,
   assigned_by uuid references profiles(id),
   assigned_to uuid references profiles(id),
-  status text default 'open' check (status in ('open','in_progress','done','cancelled')),
+  status text default 'open' check (status in ('open','in_progress','in_review','done','cancelled')),
   priority text default 'medium' check (priority in ('low','medium','high')),
   due_date date,
   created_at timestamptz default now(),
@@ -115,6 +115,8 @@ create table if not exists messages (
   attachment_path text,         -- Supabase Storage path
   attachment_name text,
   created_at timestamptz default now(),
+  edited_at timestamptz,        -- set when sender edits within the 5-min window
+  deleted boolean default false,-- soft-delete; UI shows "This message was deleted"
   read boolean default false
 );
 
@@ -150,8 +152,12 @@ create or replace function is_approved() returns boolean as $$
 $$ language sql security definer stable;
 
 -- PROFILES policies
-create policy "profiles_select_own_or_admin" on profiles for select
-  using (id = auth.uid() or is_admin());
+-- NOTE: any approved user can see all approved profiles (needed for the
+-- team directory / chat contact list / task-assignee dropdowns to work).
+-- You can always see your own row even before approval (so the pending
+-- screen and self-service flows keep working).
+create policy "profiles_select_approved_or_self" on profiles for select
+  using (id = auth.uid() or is_admin() or (approved = true and is_approved()));
 create policy "profiles_insert_self" on profiles for insert
   with check (id = auth.uid());
 create policy "profiles_update_own_or_admin" on profiles for update
@@ -209,8 +215,11 @@ create policy "task_comments_insert" on task_comments for insert with check (is_
 create policy "messages_select" on messages for select
   using (sender_id = auth.uid() or recipient_id = auth.uid() or recipient_id is null);
 create policy "messages_insert" on messages for insert with check (is_approved());
+-- Only the original sender can edit/delete their own message, and only
+-- within 5 minutes of sending — enforced here, not just in the UI, since
+-- client-side checks alone can be bypassed by calling the API directly.
 create policy "messages_update" on messages for update
-  using (recipient_id = auth.uid() or sender_id = auth.uid());
+  using (sender_id = auth.uid() and created_at > (now() - interval '5 minutes'));
 
 -- SIGNUP CODES — admin manages; anyone (even unauthenticated via anon key) can read to validate during signup
 create policy "signup_codes_select" on signup_codes for select using (true);
@@ -281,3 +290,25 @@ on conflict (category_id) do nothing;
 -- then run this once (replace the email) to make yourself admin:
 --
 -- update profiles set role = 'admin', approved = true where email = 'you@example.com';
+
+-- ════════════════════════════════════════════════════════
+--  MIGRATION (run this block if you already ran the schema
+--  above on an earlier version of LexDesk — it's safe to run
+--  multiple times)
+-- ════════════════════════════════════════════════════════
+alter table messages add column if not exists edited_at timestamptz;
+alter table messages add column if not exists deleted boolean default false;
+
+alter table tasks drop constraint if exists tasks_status_check;
+alter table tasks add constraint tasks_status_check
+  check (status in ('open','in_progress','in_review','done','cancelled'));
+
+drop policy if exists "profiles_select_own_or_admin" on profiles;
+drop policy if exists "profiles_select_approved_or_self" on profiles;
+create policy "profiles_select_approved_or_self" on profiles for select
+  using (id = auth.uid() or is_admin() or (approved = true and is_approved()));
+
+drop policy if exists "messages_update" on messages;
+create policy "messages_update" on messages for update
+  using (sender_id = auth.uid() and created_at > (now() - interval '5 minutes'));
+
