@@ -37,8 +37,15 @@ create table if not exists form_schemas (
 );
 
 -- ── CLIENTS ──
+-- Each row here is really a "case" (a matter). A real-world client can have
+-- multiple rows/cases — contact_id groups them. When contact_id is null,
+-- the row is its own standalone contact (the common case). When a new case
+-- is created "for an existing client," contact_id points at the client_id
+-- of their first/original case row, so the UI can list all their matters
+-- together and auto-fill contact info on new ones.
 create table if not exists clients (
   client_id text primary key,
+  contact_id text references clients(client_id),
   name text not null,
   case_type text references categories(id),
   status text default 'active' check (status in ('active','pending','closed')),
@@ -97,6 +104,40 @@ create table if not exists tasks (
   updated_at timestamptz default now()
 );
 
+-- ── ONEDRIVE TOKENS (per-user OAuth tokens, kept private to each user) ──
+create table if not exists onedrive_tokens (
+  user_id uuid primary key references profiles(id) on delete cascade,
+  access_token text,
+  refresh_token text,
+  expires_at timestamptz,
+  root_folder_id text,
+  updated_at timestamptz default now()
+);
+
+-- ── PAYMENTS (fee ledger — multiple dated entries per case) ──
+create table if not exists payments (
+  id uuid primary key default gen_random_uuid(),
+  client_id text references clients(client_id) on delete cascade,
+  amount numeric not null check (amount > 0),
+  payment_date date not null default current_date,
+  method text,                  -- e.g. Cash, Bank Transfer, UPI, Cheque
+  note text,
+  recorded_by uuid references profiles(id),
+  created_at timestamptz default now()
+);
+
+-- ── DAILY PLANNER NOTES (manual entries; tasks/deadlines/hearings are
+--    pulled in live by the app, not stored here) ──
+create table if not exists planner_notes (
+  id uuid primary key default gen_random_uuid(),
+  owner_id uuid references profiles(id) not null,
+  note_date date not null default current_date,
+  time text,                    -- free-text time label, e.g. "10:30 AM", optional
+  content text not null,
+  done boolean default false,
+  created_at timestamptz default now()
+);
+
 -- ── TASK COMMENTS ──
 create table if not exists task_comments (
   id uuid primary key default gen_random_uuid(),
@@ -135,6 +176,9 @@ alter table profiles enable row level security;
 alter table categories enable row level security;
 alter table form_schemas enable row level security;
 alter table clients enable row level security;
+alter table payments enable row level security;
+alter table planner_notes enable row level security;
+alter table onedrive_tokens enable row level security;
 alter table documents enable row level security;
 alter table templates enable row level security;
 alter table tasks enable row level security;
@@ -183,6 +227,31 @@ create policy "clients_update" on clients for update
   using (is_admin() or assigned_to = auth.uid());
 create policy "clients_delete" on clients for delete
   using (is_admin());
+
+-- PAYMENTS — visible if you can see the parent client (case); only admin
+-- or the case's assigned lawyer can record/edit/delete entries
+create policy "payments_select" on payments for select
+  using (is_admin() or exists(select 1 from clients c where c.client_id = payments.client_id and c.assigned_to = auth.uid()));
+create policy "payments_insert" on payments for insert
+  with check (is_admin() or exists(select 1 from clients c where c.client_id = payments.client_id and c.assigned_to = auth.uid()));
+create policy "payments_update" on payments for update
+  using (is_admin() or recorded_by = auth.uid());
+create policy "payments_delete" on payments for delete
+  using (is_admin() or recorded_by = auth.uid());
+
+-- PLANNER NOTES — strictly private to the owner (each lawyer's own agenda)
+create policy "planner_select" on planner_notes for select
+  using (owner_id = auth.uid());
+create policy "planner_insert" on planner_notes for insert
+  with check (owner_id = auth.uid());
+create policy "planner_update" on planner_notes for update
+  using (owner_id = auth.uid());
+create policy "planner_delete" on planner_notes for delete
+  using (owner_id = auth.uid());
+
+-- ONEDRIVE TOKENS — strictly private; each user can only see/manage their own
+create policy "onedrive_tokens_all" on onedrive_tokens for all
+  using (user_id = auth.uid()) with check (user_id = auth.uid());
 
 -- DOCUMENTS — visible if you can see the parent client
 create policy "documents_select" on documents for select

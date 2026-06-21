@@ -2,9 +2,32 @@
 
 A complete, multi-user legal practice management system for a Cybersecurity + General Practice law firm. Built as a single-page app, backed by Supabase (Postgres + Auth + Storage), deployable to GitHub Pages.
 
+## v3.2 update — fee tracking, multi-case clients, daily planner, task locking
+
+**If you've already run a previous migration**, run `RUN_THIS_MIGRATION.sql` again — it's a complete superset of every fix so far (chat visibility, task review status, message edit/delete, plus everything below) and is safe to run repeatedly.
+
+**New features:**
+- **Fee ledger.** Each case now has a Payments tab showing Total Fee, Paid So Far, and Balance Due, with a full dated history of individual payments (advance, partial, installments — however your clients actually pay). Anyone who can see the case can record a payment against it; only the recorder or the Admin can delete an entry.
+- **Multiple cases per client.** When adding a new case, there's now a "New Case for an Existing Client?" search box — pick an existing contact and their phone/email/address auto-fill, while the new case stays its own independent record. Each client's detail view shows an "Other Cases for [Name]" list so you can jump between their matters. This list only shows cases you're allowed to see — an Assistant won't see another lawyer's case for a shared contact, just that it might exist.
+- **Daily Planner.** A new sidebar item that auto-builds each day's agenda from tasks due that day and any date-type field in a case (hearing dates, deadlines, etc.), plus a personal notes/to-do list you can check off. Each lawyer's planner is private to them.
+- **Task field locking.** Once a task moves past "Open," its title, description, due date, assignee, and priority lock — only status changes and comments are possible from there. This stops a task's scope shifting after work has already started.
+- **Migration Status checker.** Settings (Admin only) now actively tests your live database against the two most common failure points — team visibility and the task review status — and tells you in plain language if the migration still needs to be run, instead of you discovering it from a cryptic error mid-task.
+
+**OneDrive is now fully built and waiting on one value from you.** The OAuth flow, file upload, and link-retrieval logic are complete (Microsoft Graph API, "consumers" endpoint for personal accounts, PKCE flow — no client secret ever touches the browser). All that's left is registering a free Azure app to get a Client ID:
+
+1. Go to **portal.azure.com**, sign in with your personal Microsoft account.
+2. Search **"App registrations"** → **+ New registration**.
+3. Name it anything (e.g. `LexDesk`). Under **Supported account types**, choose **"Accounts in any organizational directory and personal Microsoft accounts."**
+4. Under **Redirect URI**, choose platform **Single-page application (SPA)** and enter your app's exact URL (e.g. `https://yourusername.github.io/lexdesk/`).
+5. Click **Register**, then copy the **Application (client) ID** from the Overview page.
+6. Go to **API permissions** → **+ Add a permission** → **Microsoft Graph** → **Delegated permissions** → check `Files.ReadWrite.All` and `offline_access` → **Add permissions**.
+7. No client secret is needed — paste the Client ID into LexDesk's Settings → OneDrive Sync, then click Connect OneDrive.
+
+No cost at any step — this is a one-time, free setup regardless of which Microsoft 365 storage plan you're on.
+
 ## v3.1 update — bug fixes and new features
 
-If you already set up LexDesk and ran the original `supabase_schema.sql`, you don't need to start over. Just run the **migration block** at the bottom of the new `supabase_schema.sql` (everything after the `MIGRATION` header) in your Supabase SQL Editor — it's safe to run even if some of it doesn't apply yet.
+If you already set up LexDesk and ran the original `supabase_schema.sql`, you don't need to start over. Just run **`RUN_THIS_MIGRATION.sql`** in your Supabase SQL Editor — it's safe to run even if some of it doesn't apply yet, and it's a complete superset that also includes everything from the v3.2 update below, so you only need to run it once.
 
 **How to confirm the migration actually ran** (this matters — if it silently didn't, you'll see "No other team members yet" in chat and a `tasks_status_check` error when sending a task for review):
 1. Open LexDesk as the Admin and go to **Settings** — there's now a "Migration Status" row that tests this directly and tells you in plain language if it's missing.
@@ -12,7 +35,7 @@ If you already set up LexDesk and ran the original `supabase_schema.sql`, you do
    ```sql
    select conname, pg_get_constraintdef(oid) from pg_constraint where conname = 'tasks_status_check';
    ```
-   The output should include `in_review` in the list of allowed values. If it still only shows `open, in_progress, done, cancelled`, the migration block didn't run — copy it again from `supabase_schema.sql` and run it directly (don't run the whole file a second time, just the block under the `MIGRATION` header).
+   The output should include `in_review` in the list of allowed values. If it still only shows `open, in_progress, done, cancelled`, the migration hasn't run yet — open `RUN_THIS_MIGRATION.sql` and run the whole file in the Supabase SQL Editor.
 3. Also confirm with:
    ```sql
    select policyname from pg_policies where tablename = 'profiles';
@@ -41,14 +64,18 @@ If you already set up LexDesk and ran the original `supabase_schema.sql`, you do
 - Role-based access: **Admin** (full "god mode" — can delete clients, manage users, edit forms) vs **Assistant Lawyer** (sees only assigned clients, cannot delete)
 - Self-signup flow: first person to sign up becomes Admin automatically; everyone else signs up with a code the Admin shares, then waits for approval
 - Dynamic case categories and custom form fields — add new case types beyond Cyber/Rental/General, edit/reorder/require fields per category
+- Multiple cases per client — link a new matter to an existing contact so their details auto-fill, and jump between all their cases from any one of them
+- Fee ledger — track partial/advance payments per case with a running balance, not just a single fee number
 - Real file upload + inline preview (images, PDFs, text files) via Supabase Storage
 - Draft/template documents with placeholder fill-in ({{CLIENT_NAME}}, {{DATE}}, etc.), shared across the whole team
-- Internal team chat with file attachments (polls every 15 seconds — no websocket complexity)
-- Task assignment respecting hierarchy: Assistants can only raise tasks to the Admin; Admin can assign to anyone
+- Internal team chat with file attachments, message edit/delete within 5 minutes, and "Edited"/"deleted" indicators (polls every 15 seconds — no websocket complexity)
+- Daily Planner — auto-built agenda from tasks and case deadlines/hearings, plus personal notes, private to each lawyer
+- Task assignment respecting hierarchy: Assistants can only raise tasks to the Admin; Admin can assign to anyone. Includes a full review workflow (Open → In Progress → In Review → Rework/Reopen/Close) with task details locked once work has started
 - Deadline tracking and dashboard alerts
-- Excel export (one workbook, 4 tabs: Clients / Documents / Users / Tasks)
+- Excel export (one workbook, 5 tabs: Clients / Documents / Payments / Users / Tasks)
 - Mobile-first responsive design throughout, including a rebuilt Settings page
-- OneDrive sync: UI is stubbed and ready, but **not yet wired up** — see "Adding OneDrive later" below
+- OneDrive sync — fully built (Microsoft Graph, personal account OAuth), just needs a free one-time Client ID — see the v3.2 section above
+- Built-in Migration Status checker so you can always tell if your database is up to date
 
 ## One-time setup
 
@@ -74,13 +101,6 @@ Upload `index.html` (and the included `.nojekyll` file) to a GitHub repository, 
 2. Go to the **Sign Up** tab and create your account — you will automatically become the Admin
 3. From **Users**, copy your signup code and share it with any assistant lawyers
 4. When an assistant signs up with that code, approve them from the **Users** page and assign their role
-
-## Adding OneDrive sync later
-
-The Settings page has a OneDrive section ready to go but disabled. When you're ready:
-1. Register an app in the [Azure Portal](https://portal.azure.com) (Personal Microsoft Account / OneDrive, not OneDrive for Business)
-2. Paste the Client ID into Settings → OneDrive Sync
-3. Let me know and I'll wire up the OAuth flow and file-sync logic (same pattern as the previous Google Drive integration)
 
 ## Notes
 

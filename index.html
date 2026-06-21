@@ -190,7 +190,33 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .sync-item-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sync-item-time{font-size:11.5px;color:var(--text-muted)}
 
-/* ── Settings (mobile-first rebuild) ── */
+/* ── Daily Planner ── */
+.planner-note-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border-light)}
+.planner-note-item:last-child{border-bottom:none}
+.planner-note-item.done .planner-note-text{text-decoration:line-through;color:var(--text-muted)}
+.planner-note-check{margin-top:3px;cursor:pointer;flex-shrink:0}
+.planner-note-text{flex:1;font-size:13.5px}
+.planner-note-time{font-size:11px;color:var(--gold);font-weight:600;margin-right:6px}
+.planner-agenda-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border-light);cursor:pointer}
+.planner-agenda-item:last-child{border-bottom:none}
+.planner-agenda-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+.planner-agenda-icon.task{background:#e9d8fd;color:#6b46c1}
+.planner-agenda-icon.deadline{background:#fed7d7;color:#c53030}
+.planner-agenda-icon.hearing{background:#bee3f8;color:#2b6cb0}
+
+/* ── Payments / Fee Ledger ── */
+.fee-summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.fee-summary-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;text-align:center}
+.fee-summary-box .label{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);font-weight:500}
+.fee-summary-box .value{font-size:18px;font-weight:700;margin-top:3px}
+.fee-summary-box.balance-due .value{color:var(--danger)}
+.fee-summary-box.paid .value{color:var(--success)}
+.payment-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-light);gap:10px}
+.payment-row:last-child{border-bottom:none}
+.payment-row-info{display:flex;flex-direction:column;gap:1px}
+.payment-row-amount{font-size:14px;font-weight:600;color:var(--success)}
+.payment-row-meta{font-size:11.5px;color:var(--text-muted)}
+@media(max-width:480px){.fee-summary-grid{grid-template-columns:1fr}}
 .settings-wrap{display:flex;flex-direction:column;gap:18px;max-width:760px}
 .settings-section{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
 .settings-section-head{padding:14px 18px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;gap:10px}
@@ -424,6 +450,40 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
+      <!-- DAILY PLANNER -->
+      <div class="page-view" id="view-planner">
+        <div class="card mb-4">
+          <div class="card-header">
+            <span class="card-title"><i class="fas fa-calendar-day" style="color:var(--gold);"></i> <span id="planner-date-label">Today</span></span>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button class="btn btn-outline btn-sm btn-icon" onclick="shiftPlannerDate(-1)"><i class="fas fa-chevron-left"></i></button>
+              <input class="form-control" id="planner-date-input" type="date" style="width:auto;" onchange="onPlannerDateChange()"/>
+              <button class="btn btn-outline btn-sm btn-icon" onclick="shiftPlannerDate(1)"><i class="fas fa-chevron-right"></i></button>
+              <button class="btn btn-gold btn-sm" onclick="goToToday()">Today</button>
+            </div>
+          </div>
+        </div>
+        <div class="dash-grid" style="grid-template-columns:1fr 1fr;">
+          <div class="card">
+            <div class="card-header"><span class="card-title"><i class="fas fa-bolt" style="color:var(--gold);"></i> Agenda (auto)</span></div>
+            <div class="card-body" id="planner-agenda"></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="fas fa-sticky-note" style="color:var(--gold);"></i> Notes & To-Dos</span>
+            </div>
+            <div class="card-body">
+              <div style="display:flex;gap:8px;margin-bottom:14px;">
+                <input class="form-control" id="planner-note-time" type="text" placeholder="Time (optional)" style="max-width:120px;"/>
+                <input class="form-control" id="planner-note-input" type="text" placeholder="Add a note or to-do…" onkeydown="if(event.key==='Enter')addPlannerNote()"/>
+                <button class="btn btn-gold btn-icon" onclick="addPlannerNote()"><i class="fas fa-plus"></i></button>
+              </div>
+              <div id="planner-notes-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- CLIENTS -->
       <div class="page-view" id="view-clients">
         <div class="search-bar">
@@ -448,6 +508,38 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
         <div id="deadlines-list"></div>
       </div>
+      <!-- DAILY PLANNER -->
+      <div class="page-view" id="view-planner">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <button class="btn btn-outline btn-icon" onclick="shiftPlannerDate(-1)"><i class="fas fa-chevron-left"></i></button>
+            <input class="form-control" id="planner-date-input" type="date" style="width:auto;" onchange="onPlannerDateChange()"/>
+            <button class="btn btn-outline btn-icon" onclick="shiftPlannerDate(1)"><i class="fas fa-chevron-right"></i></button>
+            <button class="btn btn-outline btn-sm" onclick="goToToday()">Today</button>
+          </div>
+          <span id="planner-date-label" style="font-weight:600;color:var(--text-secondary);"></span>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header"><span class="card-title"><i class="fas fa-calendar-day" style="color:var(--gold)"></i> Agenda</span></div>
+          <div class="card-body" id="planner-agenda"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="fas fa-list-check" style="color:var(--gold)"></i> Notes & To-dos</span>
+          </div>
+          <div class="card-body">
+            <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+              <input class="form-control" id="planner-note-time" type="text" placeholder="Time (optional, e.g. 10:30 AM)" style="max-width:180px;"/>
+              <input class="form-control" id="planner-note-input" type="text" placeholder="Add a note or to-do for this day…" style="flex:1;min-width:160px;" onkeydown="if(event.key==='Enter')addPlannerNote()"/>
+              <button class="btn btn-gold" onclick="addPlannerNote()"><i class="fas fa-plus"></i></button>
+            </div>
+            <div id="planner-notes-list"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- DOCUMENTS -->
       <div class="page-view" id="view-documents">
         <div class="search-bar">
@@ -579,16 +671,20 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
           <div class="settings-section">
             <div class="settings-section-head"><i class="fab fa-microsoft"></i><span>OneDrive Sync</span></div>
             <div class="settings-section-body">
-              <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:13px;background:var(--bg);border:1px solid var(--border);">
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:13px;background:var(--bg);border:1px solid var(--border);" id="onedrive-status-box">
                 <i class="fab fa-microsoft" style="font-size:18px;color:#0078d4;"></i>
-                <div style="flex:1;"><div style="font-weight:500;">Not configured yet</div><div style="font-size:11.5px;color:var(--text-muted);">Files are stored securely in the app for now</div></div>
+                <div style="flex:1;"><div style="font-weight:500;" id="onedrive-status-title">Not connected</div><div style="font-size:11.5px;color:var(--text-muted);" id="onedrive-status-sub">Files are stored securely in the app for now</div></div>
               </div>
               <div class="form-group" style="margin-bottom:12px;">
                 <label class="form-label">Microsoft Azure Client ID</label>
-                <input class="form-control" id="s-onedrive-client-id" type="text" placeholder="Coming soon — paste your Azure App Client ID here"/>
-                <span class="form-hint">Once you have a Client ID from Azure Portal, paste it here to enable OneDrive sync.</span>
+                <input class="form-control" id="s-onedrive-client-id" type="text" placeholder="Paste your Azure App Client ID here"/>
+                <span class="form-hint">From Azure Portal → App registrations → your app → Overview → Application (client) ID.</span>
               </div>
-              <button class="btn btn-outline w-full" style="justify-content:center;" onclick="saveOneDriveClientId()"><i class="fas fa-save"></i> Save Client ID</button>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button class="btn btn-outline" style="flex:1;justify-content:center;" onclick="saveOneDriveClientId()"><i class="fas fa-save"></i> Save Client ID</button>
+                <button class="btn btn-gold" id="onedrive-connect-btn" style="flex:1;justify-content:center;" onclick="connectOneDrive()"><i class="fab fa-microsoft"></i> Connect OneDrive</button>
+              </div>
+              <button class="btn btn-danger w-full mt-2" id="onedrive-disconnect-btn" style="justify-content:center;display:none;" onclick="disconnectOneDrive()"><i class="fas fa-unlink"></i> Disconnect</button>
             </div>
           </div>
 
@@ -635,11 +731,13 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
       <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
         <button class="tab-btn" onclick="switchTab('case-details')">Case Details</button>
+        <button class="tab-btn" onclick="switchTab('payments')">Payments</button>
         <button class="tab-btn" onclick="switchTab('documents')">Documents</button>
         <button class="tab-btn" onclick="switchTab('history')">History</button>
       </div>
       <div class="tab-panel active" id="tab-overview"></div>
       <div class="tab-panel" id="tab-case-details"></div>
+      <div class="tab-panel" id="tab-payments"></div>
       <div class="tab-panel" id="tab-documents"></div>
       <div class="tab-panel" id="tab-history"><div class="timeline" id="det-history"></div></div>
     </div>
@@ -660,6 +758,15 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     <div class="modal-body">
       <div class="section-divider">Case Type</div>
       <div class="case-type-selector" id="client-case-type-tabs"></div>
+
+      <div class="section-divider"><i class="fas fa-link"></i> New Case for an Existing Client?</div>
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label">Search existing clients (optional — leave blank for a brand-new client)</label>
+        <input class="form-control" id="f-link-existing" type="text" list="existing-clients-list" placeholder="Start typing a client name…" oninput="onLinkExistingClientInput()" autocomplete="off"/>
+        <datalist id="existing-clients-list"></datalist>
+        <span class="form-hint" id="f-link-hint"></span>
+      </div>
+
       <div class="section-divider">Client Information</div>
       <div class="form-grid form-grid-2" style="gap:13px;margin-bottom:14px;">
         <div class="form-group"><label class="form-label">Full Name <span class="required">*</span></label><input class="form-control" id="f-name" type="text" placeholder="John Doe"/></div>
@@ -668,7 +775,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="f-email" type="email"/></div>
         <div class="form-group" style="grid-column:1/-1;"><label class="form-label">Address</label><input class="form-control" id="f-address" type="text"/></div>
         <div class="form-group"><label class="form-label">Status</label><select class="form-control" id="f-status"><option value="active">Active</option><option value="pending">Pending</option><option value="closed">Closed</option></select></div>
-        <div class="form-group"><label class="form-label">Retainer Fee (₹)</label><input class="form-control" id="f-fee" type="number"/></div>
+        <div class="form-group"><label class="form-label">Total Fee Quoted (₹)</label><input class="form-control" id="f-fee" type="number"/></div>
         <div class="form-group" id="f-assignee-wrap"><label class="form-label">Assigned Lawyer</label><select class="form-control" id="f-assignee"></select></div>
       </div>
       <div id="dynamic-case-fields"></div>
@@ -702,6 +809,25 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal('modal-preview')">Close</button>
       <button class="btn btn-gold" id="prev-download-btn" onclick="downloadPreviewFile()"><i class="fas fa-download"></i> Download</button>
+    </div>
+  </div>
+</div>
+
+<!-- RECORD PAYMENT MODAL -->
+<div class="modal-backdrop" id="modal-payment">
+  <div class="modal" style="max-width:440px;">
+    <div class="modal-header"><div><div class="modal-title">Record Payment</div><div class="modal-sub" id="pay-client-name"></div></div><button class="modal-close" onclick="closeModal('modal-payment')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-grid" style="gap:13px;">
+        <div class="form-group"><label class="form-label">Amount Received (₹) <span class="required">*</span></label><input class="form-control" id="pay-amount" type="number" min="0" step="0.01" placeholder="e.g. 20000"/></div>
+        <div class="form-group"><label class="form-label">Payment Date <span class="required">*</span></label><input class="form-control" id="pay-date" type="date"/></div>
+        <div class="form-group"><label class="form-label">Method</label><select class="form-control" id="pay-method"><option value="Cash">Cash</option><option value="Bank Transfer">Bank Transfer</option><option value="UPI">UPI</option><option value="Cheque">Cheque</option><option value="Card">Card</option><option value="Other">Other</option></select></div>
+        <div class="form-group"><label class="form-label">Note</label><input class="form-control" id="pay-note" type="text" placeholder="Optional reference / remarks"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-payment')">Cancel</button>
+      <button class="btn btn-gold" onclick="savePayment()"><i class="fas fa-save"></i> Record Payment</button>
     </div>
   </div>
 </div>
@@ -800,6 +926,9 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   <div class="modal" style="max-width:560px;">
     <div class="modal-header"><div><div class="modal-title" id="task-modal-title">New Task</div></div><button class="modal-close" onclick="closeModal('modal-task')">&times;</button></div>
     <div class="modal-body">
+      <div id="task-locked-banner" style="display:none;align-items:center;gap:8px;background:var(--warning-bg);color:var(--warning);border:1px solid #fbd38d;border-radius:8px;padding:9px 12px;font-size:12.5px;margin-bottom:14px;">
+        <i class="fas fa-lock"></i> This task has started — details are locked. Use the actions below to move it forward.
+      </div>
       <div class="form-grid" style="gap:13px;">
         <div class="form-group"><label class="form-label">Title <span class="required">*</span></label><input class="form-control" id="task-title" type="text" placeholder="e.g. Draft reply to opposite counsel"/></div>
         <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" id="task-desc" rows="3"></textarea></div>
@@ -822,7 +951,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     <div class="modal-footer">
       <div id="task-status-actions" style="display:flex;gap:8px;margin-right:auto;"></div>
       <button class="btn btn-outline" onclick="closeModal('modal-task')">Cancel</button>
-      <button class="btn btn-gold" onclick="saveTask()"><i class="fas fa-save"></i> <span id="task-save-txt">Create Task</span></button>
+      <button class="btn btn-gold" id="task-save-btn" onclick="saveTask()"><i class="fas fa-save"></i> <span id="task-save-txt">Create Task</span></button>
     </div>
   </div>
 </div>
@@ -874,7 +1003,8 @@ let S={
   activeCaseType:null, pendingFiles:[],
   editingTemplateId:null, activeTemplateId:null,
   editingTaskId:null, pendingChatFile:null,
-  fbActiveCat:null
+  fbActiveCat:null, payingClientId:null, linkedContactId:null,
+  paymentsCache:{}
 };
 
 const FIELD_TYPES=['text','number','date','tel','select','textarea'];
@@ -1077,6 +1207,7 @@ function buildSidebar(){
   let html=`
     <div class="nav-section-label">Overview</div>
     <button class="nav-item active" onclick="navigate('dashboard')"><i class="fas fa-th-large"></i> Dashboard</button>
+    <button class="nav-item" onclick="navigate('planner')"><i class="fas fa-calendar-day"></i> Daily Planner</button>
     <button class="nav-item" onclick="navigate('deadlines')"><i class="fas fa-calendar-exclamation"></i> Deadlines <span id="dl-badge" class="nav-badge" style="display:none;"></span></button>
     <div class="nav-section-label">Clients</div>
     <button class="nav-item" onclick="navigate('clients')"><i class="fas fa-users"></i> All Clients</button>`;
@@ -1110,7 +1241,7 @@ function updateSidebarProfile(){
 //  NAVIGATION
 // ════════════════════════════════════════════
 const NAV_TITLES={
-  dashboard:'Dashboard',clients:'All Clients',deadlines:'Deadlines & Alerts',
+  dashboard:'Dashboard',planner:'Daily Planner',clients:'All Clients',deadlines:'Deadlines & Alerts',
   documents:'Documents',templates:'Draft Templates',chat:'Messages',tasks:'Tasks',
   users:'User Management',formbuilder:'Form Builder',settings:'Settings'
 };
@@ -1122,6 +1253,7 @@ function navigate(view){
   if(el) el.classList.add('active');
   document.getElementById('topbar-title').textContent=NAV_TITLES[view]||view;
   closeSidebarMobile();
+  if(view==='planner') renderPlanner();
   if(view==='deadlines') renderDeadlines();
   if(view==='documents') renderDocuments();
   if(view==='users') renderUsers();
@@ -1300,6 +1432,7 @@ function genId(){ const n=S.clients.length?Math.max(...S.clients.map(c=>parseInt
 
 function openAddClient(catId=null){
   S.editingClientId=null;
+  S.linkedContactId=null;
   document.getElementById('mc-title').textContent='Add New Client';
   document.getElementById('mc-save-txt').textContent='Save Client';
   clearClientForm();
@@ -1309,7 +1442,42 @@ function openAddClient(catId=null){
   if(!isAdmin()){ /* assistant: auto-assign to self happens on save */ }
   buildCaseTypeTabs();
   if(catId) selectCaseType(catId);
+  const linkWrap=document.getElementById('f-link-existing');
+  if(linkWrap){ linkWrap.closest('.form-group').style.display='flex'; linkWrap.value=''; }
+  document.getElementById('f-link-hint').textContent='';
+  buildExistingClientsDatalist();
   openModal('modal-client');
+}
+// Builds the list of distinct contacts (one entry per underlying person —
+// their original/first case row — not one per case) for the "link to
+// existing client" lookup.
+function buildExistingClientsDatalist(){
+  const dl=document.getElementById('existing-clients-list');
+  if(!dl)return;
+  const seen=new Set();
+  const contacts=[];
+  S.clients.forEach(c=>{
+    const rootId=c.contact_id||c.client_id;
+    if(seen.has(rootId))return;
+    seen.add(rootId);
+    const root=S.clients.find(x=>x.client_id===rootId)||c;
+    contacts.push(root);
+  });
+  dl.innerHTML=contacts.map(c=>`<option value="${escHtml(c.name)} — ${c.client_id}"></option>`).join('');
+  S._contactLookup=contacts;
+}
+function onLinkExistingClientInput(){
+  const val=document.getElementById('f-link-existing').value;
+  const match=(S._contactLookup||[]).find(c=>`${c.name} — ${c.client_id}`===val);
+  const hint=document.getElementById('f-link-hint');
+  if(!match){ S.linkedContactId=null; hint.textContent=''; return; }
+  S.linkedContactId=match.contact_id||match.client_id;
+  document.getElementById('f-name').value=match.name;
+  document.getElementById('f-phone').value=match.phone||'';
+  document.getElementById('f-email').value=match.email||'';
+  document.getElementById('f-address').value=match.address||'';
+  const caseCount=S.clients.filter(c=>(c.contact_id||c.client_id)===S.linkedContactId).length;
+  hint.textContent=`Linked to ${match.name} — this will be case #${caseCount+1} for them. Contact details auto-filled below (you can still edit them).`;
 }
 function clearClientForm(){
   ['f-name','f-phone','f-email','f-address','f-fee','f-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
@@ -1335,6 +1503,7 @@ async function saveClient(){
 
   const payload={
     client_id:initialClientId,name,case_type:catId,
+    contact_id:S.editingClientId?undefined:(S.linkedContactId||null),
     phone:document.getElementById('f-phone').value,
     email:document.getElementById('f-email').value,
     address:document.getElementById('f-address').value,
@@ -1345,6 +1514,7 @@ async function saveClient(){
     case_data:caseData,
     updated_at:now
   };
+  if(payload.contact_id===undefined) delete payload.contact_id; // don't touch contact_id on edits
 
   let isNew=false;
   if(S.editingClientId){
@@ -1421,6 +1591,9 @@ async function editCurrentClient(){
   if(isAdmin()){ const fa=document.getElementById('f-assignee');if(fa)fa.value=c.assigned_to||''; }
   setTimeout(()=>fillDynamicFields(c.case_type,c.case_data||{}),50);
   S.pendingFiles=[];
+  S.linkedContactId=null;
+  const linkWrap=document.getElementById('f-link-existing');
+  if(linkWrap) linkWrap.closest('.form-group').style.display='none';
   document.getElementById('file-list').innerHTML='';
   openModal('modal-client');
 }
@@ -1460,13 +1633,15 @@ async function viewClient(id){
     <div class="detail-meta-item"><div class="detail-meta-label">Case Type</div><div class="detail-meta-value">${catBadge(c.case_type)}</div></div>
     <div class="detail-meta-item"><div class="detail-meta-label">Status</div><div class="detail-meta-value">${statusBadge(c.status)}</div></div>
     <div class="detail-meta-item"><div class="detail-meta-label">Assigned To</div><div class="detail-meta-value">${au?au.full_name:'—'}</div></div>
-    <div class="detail-meta-item"><div class="detail-meta-label">Retainer</div><div class="detail-meta-value">${c.fee?'₹'+Number(c.fee).toLocaleString('en-IN'):'—'}</div></div>`;
+    <div class="detail-meta-item"><div class="detail-meta-label">Total Fee</div><div class="detail-meta-value">${c.fee?'₹'+Number(c.fee).toLocaleString('en-IN'):'—'}</div></div>`;
+  renderPaymentsTab(id);
   document.getElementById('tab-overview').innerHTML=`
     <div class="form-grid form-grid-2" style="gap:12px;">
       ${dr('Phone',c.phone)}${dr('Email',c.email)}
       <div class="form-group" style="grid-column:1/-1;"><div class="form-label">Address</div><div style="font-size:14px;padding:6px 0;">${c.address||'—'}</div></div>
       <div class="form-group" style="grid-column:1/-1;"><div class="form-label">Internal Notes</div><div style="font-size:14px;padding:6px 0;">${c.notes||'—'}</div></div>
-    </div>`;
+    </div>
+    ${renderRelatedCasesHTML(c)}`;
   const schema=S.formSchemas[c.case_type]||[];
   const caseData=c.case_data||{};
   let caseHTML='';
@@ -1500,6 +1675,28 @@ async function viewClient(id){
   openModal('modal-detail');
 }
 function dr(label,val){ return `<div class="form-group"><div class="form-label">${label}</div><div style="font-size:14px;padding:6px 0;">${val||'—'}</div></div>`; }
+
+// Shows other matters belonging to the same underlying contact (linked via
+// contact_id), so a lawyer can see at a glance if this client has other
+// cases with the firm.
+function renderRelatedCasesHTML(c){
+  const rootId=c.contact_id||c.client_id;
+  // Only surface related cases the current user can actually see — an
+  // Assistant shouldn't learn that a shared client has another matter
+  // that belongs to a different lawyer, even just by name.
+  const visibleIds=new Set(myClients().map(x=>x.client_id));
+  const related=S.clients.filter(x=>(x.contact_id||x.client_id)===rootId&&x.client_id!==c.client_id&&(isAdmin()||visibleIds.has(x.client_id)));
+  if(!related.length)return'';
+  return `<div class="section-divider" style="margin-top:18px;"><i class="fas fa-folder-tree"></i> Other Cases for ${escHtml(c.name)}</div>
+    <div class="file-list">${related.map(r=>{
+      const cat=S.categories.find(x=>x.id===r.case_type);
+      return `<div class="file-item" onclick="closeModal('modal-detail');viewClient('${r.client_id}')">
+        <i class="${cat?.icon||'fas fa-folder'}" style="color:var(--navy-mid);font-size:16px;"></i>
+        <span class="file-item-name">${escHtml(r.name)} <span class="client-id">${r.client_id}</span></span>
+        ${statusBadge(r.status)}
+      </div>`;
+    }).join('')}</div>`;
+}
 </script>
 <script>
 // ════════════════════════════════════════════
@@ -2046,16 +2243,29 @@ async function sendChatMessage(){
 </script>
 <script>
 // ════════════════════════════════════════════
-//  TASKS / KANBAN  (with review workflow)
+//  TASKS / KANBAN  (with review workflow + field locking)
 // ════════════════════════════════════════════
 // Lifecycle: open -> in_progress -> in_review -> (rework: in_progress | close: done | back: open)
 // cancelled is reachable from any state by the assigner/admin.
+// Field locking: once a task leaves "open", its title/description/due
+// date/assignee/priority/client can no longer be edited — only status
+// and comments can change. This stops a task's scope shifting mid-work.
 const TASK_STATUS_LABELS={open:'Open',in_progress:'In Progress',in_review:'In Review',done:'Done',cancelled:'Cancelled'};
+const TASK_EDITABLE_FIELD_IDS=['task-title','task-desc','task-client','task-assignee','task-priority','task-due'];
 
 function buildTaskClientDropdown(){
   const sel=document.getElementById('task-client');
   if(!sel)return;
   sel.innerHTML='<option value="">— None —</option>'+myClients().map(c=>`<option value="${c.client_id}">${c.name} (${c.client_id})</option>`).join('');
+}
+
+function setTaskFieldsLocked(locked){
+  TASK_EDITABLE_FIELD_IDS.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.disabled=locked;
+  });
+  const banner=document.getElementById('task-locked-banner');
+  if(banner) banner.style.display=locked?'flex':'none';
 }
 
 function openTaskModal(taskId=null){
@@ -2064,6 +2274,7 @@ function openTaskModal(taskId=null){
   buildAssigneeFilter(); // refreshes task-assignee options with hierarchy rule applied
   document.getElementById('task-comments-section').style.display=taskId?'block':'none';
   document.getElementById('task-status-actions').innerHTML='';
+  setTaskFieldsLocked(false);
   if(taskId){
     const t=S.tasks.find(x=>x.id===taskId);
     if(!t)return;
@@ -2077,6 +2288,13 @@ function openTaskModal(taskId=null){
     document.getElementById('task-due').value=t.due_date||'';
     renderTaskComments(taskId);
     document.getElementById('task-status-actions').innerHTML=buildTaskStatusActions(t);
+    // Once work has started, the task definition is locked — only
+    // status/comments can move it forward from here. Hide the Save/Update
+    // button entirely in that case since there's nothing left it can save.
+    const locked=t.status!=='open';
+    setTaskFieldsLocked(locked);
+    const saveBtn=document.getElementById('task-save-btn');
+    if(saveBtn) saveBtn.style.display=locked?'none':'inline-flex';
   } else {
     document.getElementById('task-modal-title').textContent='New Task';
     document.getElementById('task-save-txt').textContent='Create Task';
@@ -2085,6 +2303,8 @@ function openTaskModal(taskId=null){
     document.getElementById('task-client').value='';
     document.getElementById('task-priority').value='medium';
     document.getElementById('task-due').value='';
+    const saveBtn=document.getElementById('task-save-btn');
+    if(saveBtn) saveBtn.style.display='inline-flex';
   }
   openModal('modal-task');
 }
@@ -2098,10 +2318,6 @@ function buildTaskStatusActions(t){
 
   if(t.status==='open'&&isDoer){
     btns.push(['in_progress','Start Work','btn-outline']);
-    btns.push(['in_review','Send for Review','btn-gold']);
-  }
-  if(t.status==='open'&&isReviewer&&!isDoer){
-    btns.push(['in_progress','Start Work','btn-outline']);
   }
   if(t.status==='in_progress'&&isDoer){
     btns.push(['in_review','Send for Review','btn-gold']);
@@ -2111,11 +2327,13 @@ function buildTaskStatusActions(t){
     btns.push(['open','Reopen','btn-outline']);
     btns.push(['done','Approve & Close','btn-success']);
   }
+  // Reviewer/admin can cancel from any non-terminal state
   if(!['done','cancelled'].includes(t.status)&&isReviewer){
     btns.push(['cancelled','Cancel Task','btn-danger']);
   }
-  if(t.status==='done'&&isReviewer){
-    btns.push(['in_progress','Reopen','btn-outline']);
+  // Either party can reopen a closed/cancelled task back into play
+  if(['done','cancelled'].includes(t.status)&&(isReviewer||isDoer)){
+    btns.push(['open','Reopen','btn-outline']);
   }
   return btns.map(([k,l,cls])=>`<button class="btn ${cls} btn-sm" onclick="updateTaskStatus('${t.id}','${k}')">${l}</button>`).join('');
 }
@@ -2128,6 +2346,16 @@ async function saveTask(){
   if(!isAdmin()){
     const target=S.users.find(u=>u.id===assignee);
     if(!target||target.role!=='admin'){showToast('Assistants can only raise tasks to the Admin.','error');return;}
+  }
+  // Field-locking guard: once a task has left "open", the definition can't
+  // be changed through this form at all — only the status-action buttons
+  // (Start Work / Send for Review / etc.) can move it forward.
+  if(S.editingTaskId){
+    const existing=S.tasks.find(x=>x.id===S.editingTaskId);
+    if(existing&&existing.status!=='open'){
+      showToast('This task has already started — its details are locked. Use the status buttons below instead.','error');
+      return;
+    }
   }
   const payload={
     title,description:document.getElementById('task-desc').value,
@@ -2338,8 +2566,9 @@ function downloadTemplateText(){
 // ════════════════════════════════════════════
 //  EXCEL EXPORT (SheetJS, one workbook / 4 tabs)
 // ════════════════════════════════════════════
-function exportExcel(){
+async function exportExcel(){
   try{
+    showToast('Building export…','info');
     const wb=XLSX.utils.book_new();
 
     const clientRows=myClients().map(c=>{
@@ -2348,7 +2577,7 @@ function exportExcel(){
       return {
         'Client ID':c.client_id,'Name':c.name,'Case Type':cat?cat.label:c.case_type,
         'Status':c.status,'Phone':c.phone||'','Email':c.email||'','Address':c.address||'',
-        'Retainer Fee':c.fee||'','Assigned To':au?au.full_name:'','Notes':c.notes||'',
+        'Total Fee':c.fee||'','Assigned To':au?au.full_name:'','Notes':c.notes||'',
         'Created':fmtD(c.created_at)
       };
     });
@@ -2361,6 +2590,18 @@ function exportExcel(){
       return {'File Name':d.name,'Client':c?c.name:'','Client ID':d.client_id,'Category':d.category||'','Size':formatBytes(d.size),'Uploaded By':uploader?uploader.full_name:'','Uploaded At':fmtDT(d.uploaded_at)};
     });
     XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(docRows),'Documents');
+
+    // Payments sheet — fetched fresh since not every payment is cached locally
+    let paymentRows=[];
+    const {data:allPayments,error:payErr}=await sb.from('payments').select('*').order('payment_date',{ascending:false});
+    if(!payErr&&allPayments){
+      paymentRows=allPayments.filter(p=>visibleIds.has(p.client_id)).map(p=>{
+        const c=S.clients.find(x=>x.client_id===p.client_id);
+        const recorder=S.users.find(u=>u.id===p.recorded_by);
+        return {'Client':c?c.name:'','Client ID':p.client_id,'Amount':p.amount,'Date':fmtD(p.payment_date),'Method':p.method||'','Note':p.note||'','Recorded By':recorder?recorder.full_name:''};
+      });
+    }
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(paymentRows),'Payments');
 
     const userRows=S.users.map(u=>({'Name':u.full_name,'Email':u.email||'','Role':u.role,'Bar Number':u.bar_number||'','Phone':u.phone||'','Clients Assigned':S.clients.filter(c=>c.assigned_to===u.id).length}));
     XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(userRows),'Users');
@@ -2388,6 +2629,7 @@ function loadSettingsUI(){
   document.getElementById('s-email').value=S.profile.email||'';
   document.getElementById('s-court').value=S.profile.court||'';
   document.getElementById('s-onedrive-client-id').value=localStorage.getItem('ld_onedrive_client_id')||'';
+  updateOneDriveStatusUI();
   const resetRow=document.getElementById('reset-row');
   if(resetRow) resetRow.style.display=isAdmin()?'flex':'none';
   const migRow=document.getElementById('migration-check-row');
@@ -2459,6 +2701,318 @@ function updateSyncStatus(state,text){
 </script>
 <script>
 // ════════════════════════════════════════════
+//  FEE LEDGER (Payments) — multiple dated entries per case,
+//  with a running balance against the quoted Total Fee.
+// ════════════════════════════════════════════
+S.paymentsCache=S.paymentsCache||{}; // client_id -> array of payment rows, loaded on demand
+
+async function renderPaymentsTab(clientId){
+  const cnt=document.getElementById('tab-payments');
+  if(!cnt)return;
+  cnt.innerHTML='<p class="text-muted text-sm"><i class="fas fa-spinner fa-spin"></i> Loading payment history…</p>';
+
+  const {data,error}=await sb.from('payments').select('*').eq('client_id',clientId).order('payment_date',{ascending:false});
+  if(error){ cnt.innerHTML=`<p class="text-muted text-sm">Could not load payments: ${escHtml(error.message)}</p>`; return; }
+  S.paymentsCache[clientId]=data||[];
+  renderPaymentsTabFromCache(clientId);
+}
+
+function renderPaymentsTabFromCache(clientId){
+  const cnt=document.getElementById('tab-payments');
+  if(!cnt)return;
+  const c=S.clients.find(x=>x.client_id===clientId);
+  const payments=S.paymentsCache[clientId]||[];
+  const totalFee=Number(c?.fee||0);
+  const totalPaid=payments.reduce((sum,p)=>sum+Number(p.amount||0),0);
+  const balance=totalFee-totalPaid;
+  const canRecord=isAdmin()||c?.assigned_to===S.user?.id;
+
+  let html=`<div class="fee-summary-grid">
+    <div class="fee-summary-box"><div class="label">Total Fee</div><div class="value">${totalFee?'₹'+totalFee.toLocaleString('en-IN'):'—'}</div></div>
+    <div class="fee-summary-box paid"><div class="label">Paid So Far</div><div class="value">₹${totalPaid.toLocaleString('en-IN')}</div></div>
+    <div class="fee-summary-box ${balance>0?'balance-due':''}"><div class="label">Balance Due</div><div class="value">${totalFee?'₹'+Math.max(balance,0).toLocaleString('en-IN'):'—'}</div></div>
+  </div>`;
+
+  if(canRecord){
+    html+=`<button class="btn btn-gold btn-sm mb-3" onclick="openPaymentModal('${clientId}')"><i class="fas fa-plus"></i> Record Payment</button>`;
+  }
+
+  if(!payments.length){
+    html+=`<p class="text-muted text-sm">No payments recorded yet.</p>`;
+  } else {
+    html+='<div>'+payments.map(p=>{
+      const recorder=S.users.find(u=>u.id===p.recorded_by);
+      const canDelete=isAdmin()||p.recorded_by===S.user?.id;
+      return `<div class="payment-row">
+        <div class="payment-row-info">
+          <span class="payment-row-amount">+ ₹${Number(p.amount).toLocaleString('en-IN')}</span>
+          <span class="payment-row-meta">${fmtD(p.payment_date)} · ${p.method||'Unspecified'}${p.note?' · '+escHtml(p.note):''} · recorded by ${recorder?recorder.full_name:'—'}</span>
+        </div>
+        ${canDelete?`<button class="btn btn-outline btn-xs btn-icon" onclick="deletePayment('${p.id}','${clientId}')" title="Delete"><i class="fas fa-trash"></i></button>`:''}
+      </div>`;
+    }).join('')+'</div>';
+  }
+  cnt.innerHTML=html;
+}
+
+function openPaymentModal(clientId){
+  const c=S.clients.find(x=>x.client_id===clientId);
+  S.payingClientId=clientId;
+  document.getElementById('pay-client-name').textContent=c?`${c.name} (${c.client_id})`:clientId;
+  document.getElementById('pay-amount').value='';
+  document.getElementById('pay-date').value=new Date().toISOString().slice(0,10);
+  document.getElementById('pay-method').value='Cash';
+  document.getElementById('pay-note').value='';
+  openModal('modal-payment');
+}
+
+async function savePayment(){
+  const clientId=S.payingClientId;
+  if(!clientId)return;
+  const amount=Number(document.getElementById('pay-amount').value||0);
+  const date=document.getElementById('pay-date').value;
+  if(!amount||amount<=0){showToast('Enter a valid amount greater than zero.','error');return;}
+  if(!date){showToast('Payment date is required.','error');return;}
+  const payload={
+    client_id:clientId,amount,payment_date:date,
+    method:document.getElementById('pay-method').value,
+    note:document.getElementById('pay-note').value||null,
+    recorded_by:S.user.id
+  };
+  const {error}=await sb.from('payments').insert(payload);
+  if(error){showToast('Could not record payment: '+error.message,'error');return;}
+  closeModal('modal-payment');
+  showToast('Payment recorded.','success');
+  await renderPaymentsTab(clientId);
+}
+
+async function deletePayment(paymentId,clientId){
+  if(!confirm('Delete this payment entry? This cannot be undone.'))return;
+  const {error}=await sb.from('payments').delete().eq('id',paymentId);
+  if(error){showToast('Delete failed: '+error.message,'error');return;}
+  showToast('Payment entry removed.','warning');
+  await renderPaymentsTab(clientId);
+}
+</script>
+<script>
+// ════════════════════════════════════════════
+//  DAILY PLANNER — auto-aggregated agenda (tasks due today +
+//  deadlines/hearings due today) plus a manual notes/to-do list.
+//  Each lawyer's planner is private to them (RLS-enforced on planner_notes;
+//  the agenda itself naturally scopes to "my" tasks/clients via myClients()
+//  and the existing task-visibility rules).
+// ════════════════════════════════════════════
+S.plannerDate=S.plannerDate||new Date().toISOString().slice(0,10);
+S.plannerNotes=S.plannerNotes||[];
+
+function shiftPlannerDate(days){
+  const d=new Date(S.plannerDate+'T00:00:00');
+  d.setDate(d.getDate()+days);
+  S.plannerDate=d.toISOString().slice(0,10);
+  renderPlanner();
+}
+function goToToday(){
+  S.plannerDate=new Date().toISOString().slice(0,10);
+  renderPlanner();
+}
+function onPlannerDateChange(){
+  const val=document.getElementById('planner-date-input').value;
+  if(val){ S.plannerDate=val; renderPlanner(); }
+}
+
+async function renderPlanner(){
+  document.getElementById('planner-date-input').value=S.plannerDate;
+  const todayStr=new Date().toISOString().slice(0,10);
+  const label=document.getElementById('planner-date-label');
+  if(S.plannerDate===todayStr) label.textContent='Today — '+fmtD(S.plannerDate);
+  else label.textContent=fmtD(S.plannerDate);
+
+  renderPlannerAgenda();
+  await loadPlannerNotes();
+}
+
+function renderPlannerAgenda(){
+  const cnt=document.getElementById('planner-agenda');
+  if(!cnt)return;
+  const items=[];
+
+  // Tasks due on this date, visible to the current user
+  S.tasks.filter(t=>t.due_date===S.plannerDate&&(isAdmin()||t.assigned_to===S.user?.id||t.assigned_by===S.user?.id)).forEach(t=>{
+    const assignee=S.users.find(u=>u.id===t.assigned_to);
+    items.push({type:'task',icon:'fas fa-tasks',cls:'task',title:t.title,sub:`Task · ${assignee?assignee.full_name:'—'} · ${capitalize(t.status)}`,onClick:`openTaskModal('${t.id}')`});
+  });
+
+  // Deadlines/hearings: any date-type field in case_data that falls on this date
+  myClients().forEach(c=>{
+    const schema=S.formSchemas[c.case_type]||[];
+    const data=c.case_data||{};
+    schema.filter(f=>f.type==='date'&&data[f.id]===S.plannerDate).forEach(f=>{
+      const isHearing=/hearing|court|date of appearance/i.test(f.label);
+      items.push({
+        type:isHearing?'hearing':'deadline',
+        icon:isHearing?'fas fa-gavel':'fas fa-exclamation-circle',
+        cls:isHearing?'hearing':'deadline',
+        title:`${c.name} — ${f.label}`,
+        sub:`${isHearing?'Hearing':'Deadline'} · ${c.client_id}`,
+        onClick:`viewClient('${c.client_id}')`
+      });
+    });
+  });
+
+  if(!items.length){ cnt.innerHTML='<p class="text-muted text-sm">Nothing scheduled for this date.</p>'; return; }
+  cnt.innerHTML=items.map(it=>`
+    <div class="planner-agenda-item" onclick="${it.onClick}">
+      <div class="planner-agenda-icon ${it.cls}"><i class="${it.icon}"></i></div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13.5px;font-weight:500;">${escHtml(it.title)}</div>
+        <div style="font-size:11.5px;color:var(--text-muted);">${it.sub}</div>
+      </div>
+    </div>`).join('');
+}
+
+async function loadPlannerNotes(){
+  const {data,error}=await sb.from('planner_notes').select('*').eq('owner_id',S.user.id).eq('note_date',S.plannerDate).order('created_at',{ascending:true});
+  if(error){ console.error('loadPlannerNotes failed:',error); S.plannerNotes=[]; }
+  else S.plannerNotes=data||[];
+  renderPlannerNotes();
+}
+function renderPlannerNotes(){
+  const cnt=document.getElementById('planner-notes-list');
+  if(!cnt)return;
+  if(!S.plannerNotes.length){ cnt.innerHTML='<p class="text-muted text-sm">No notes for this day yet.</p>'; return; }
+  cnt.innerHTML=S.plannerNotes.map(n=>`
+    <div class="planner-note-item ${n.done?'done':''}">
+      <i class="fa-solid ${n.done?'fa-square-check':'fa-square'} planner-note-check" style="color:${n.done?'var(--success)':'var(--text-muted)'};" onclick="togglePlannerNote('${n.id}',${!n.done})"></i>
+      <div class="planner-note-text">${n.time?`<span class="planner-note-time">${escHtml(n.time)}</span>`:''}${escHtml(n.content)}</div>
+      <button class="file-item-remove" onclick="deletePlannerNote('${n.id}')"><i class="fas fa-times"></i></button>
+    </div>`).join('');
+}
+async function addPlannerNote(){
+  const input=document.getElementById('planner-note-input');
+  const timeInput=document.getElementById('planner-note-time');
+  const content=(input.value||'').trim();
+  if(!content)return;
+  const {error}=await sb.from('planner_notes').insert({owner_id:S.user.id,note_date:S.plannerDate,time:timeInput.value||null,content});
+  if(error){showToast('Could not add note: '+error.message,'error');return;}
+  input.value='';timeInput.value='';
+  await loadPlannerNotes();
+}
+async function togglePlannerNote(id,done){
+  const {error}=await sb.from('planner_notes').update({done}).eq('id',id);
+  if(error){showToast('Failed: '+error.message,'error');return;}
+  await loadPlannerNotes();
+}
+async function deletePlannerNote(id){
+  const {error}=await sb.from('planner_notes').delete().eq('id',id);
+  if(error){showToast('Failed: '+error.message,'error');return;}
+  await loadPlannerNotes();
+}
+</script>
+<script>
+// ════════════════════════════════════════════
+//  ONEDRIVE SYNC (Microsoft Graph, personal OneDrive)
+//  Uses the OAuth 2.0 implicit flow against Microsoft's "consumers"
+//  endpoint (works for personal Microsoft accounts, no Azure tenant
+//  needed) — same shape as the existing Google Drive integration.
+//  Until a Client ID is saved, all of this stays inert and the app
+//  keeps using Supabase Storage as the file backend.
+// ════════════════════════════════════════════
+const ONEDRIVE_SCOPES='Files.ReadWrite.All offline_access User.Read';
+const ONEDRIVE_TOKEN_KEY='ld_onedrive_token'; // {access_token, expires_at}
+
+function getOneDriveClientId(){ return localStorage.getItem('ld_onedrive_client_id')||''; }
+function getOneDriveToken(){
+  try{
+    const raw=JSON.parse(localStorage.getItem(ONEDRIVE_TOKEN_KEY)||'null');
+    if(!raw||!raw.access_token)return null;
+    if(raw.expires_at&&Date.now()>raw.expires_at)return null; // expired
+    return raw;
+  }catch{ return null; }
+}
+function isOneDriveConnected(){ return !!getOneDriveToken(); }
+
+function connectOneDrive(){
+  const clientId=getOneDriveClientId();
+  if(!clientId){ showToast('Save your Azure Client ID first.','error'); return; }
+  const redirectUri=window.location.origin+window.location.pathname;
+  const params=new URLSearchParams({
+    client_id:clientId,
+    response_type:'token',
+    redirect_uri:redirectUri,
+    scope:ONEDRIVE_SCOPES,
+    response_mode:'fragment',
+    state:'lexdesk_onedrive_connect'
+  });
+  window.location.href=`https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?${params.toString()}`;
+}
+
+function disconnectOneDrive(){
+  if(!confirm('Disconnect OneDrive? Files already uploaded there will stay in your OneDrive, but LexDesk will stop syncing new ones until you reconnect.'))return;
+  localStorage.removeItem(ONEDRIVE_TOKEN_KEY);
+  updateOneDriveStatusUI();
+  showToast('OneDrive disconnected.','warning');
+}
+
+// Captures the access_token from the URL fragment after Microsoft redirects
+// back, then cleans the URL so the token isn't left sitting in the address bar.
+function captureOneDriveRedirectToken(){
+  if(!window.location.hash||!window.location.hash.includes('access_token'))return;
+  const params=new URLSearchParams(window.location.hash.substring(1));
+  if(params.get('state')!=='lexdesk_onedrive_connect')return;
+  const accessToken=params.get('access_token');
+  const expiresIn=Number(params.get('expires_in')||3600);
+  if(accessToken){
+    localStorage.setItem(ONEDRIVE_TOKEN_KEY,JSON.stringify({access_token:accessToken,expires_at:Date.now()+expiresIn*1000}));
+    showToast('OneDrive connected!','success');
+  }
+  history.replaceState(null,'',window.location.pathname+window.location.search);
+}
+
+function updateOneDriveStatusUI(){
+  const titleEl=document.getElementById('onedrive-status-title');
+  const subEl=document.getElementById('onedrive-status-sub');
+  const connectBtn=document.getElementById('onedrive-connect-btn');
+  const disconnectBtn=document.getElementById('onedrive-disconnect-btn');
+  if(!titleEl)return;
+  if(isOneDriveConnected()){
+    titleEl.textContent='Connected';
+    subEl.textContent='Files can now sync to your personal OneDrive.';
+    if(connectBtn) connectBtn.style.display='none';
+    if(disconnectBtn) disconnectBtn.style.display='block';
+  } else if(getOneDriveClientId()){
+    titleEl.textContent='Client ID saved — not yet connected';
+    subEl.textContent='Click Connect OneDrive to finish setup.';
+    if(connectBtn) connectBtn.style.display='inline-flex';
+    if(disconnectBtn) disconnectBtn.style.display='none';
+  } else {
+    titleEl.textContent='Not connected';
+    subEl.textContent='Files are stored securely in the app for now.';
+    if(connectBtn) connectBtn.style.display='inline-flex';
+    if(disconnectBtn) disconnectBtn.style.display='none';
+  }
+}
+
+// ── Microsoft Graph helpers (ready for use once connected) ──
+async function oneDriveUploadFile(path,file){
+  const token=getOneDriveToken();
+  if(!token)throw new Error('OneDrive not connected.');
+  const url=`https://graph.microsoft.com/v1.0/me/drive/root:/LexDesk_Data/${encodeURIComponent(path)}:/content`;
+  const res=await fetch(url,{method:'PUT',headers:{'Authorization':'Bearer '+token.access_token,'Content-Type':file.type||'application/octet-stream'},body:file});
+  if(!res.ok)throw new Error('OneDrive upload failed: '+res.status);
+  return res.json();
+}
+async function oneDriveGetFileLink(path){
+  const token=getOneDriveToken();
+  if(!token)throw new Error('OneDrive not connected.');
+  const url=`https://graph.microsoft.com/v1.0/me/drive/root:/LexDesk_Data/${encodeURIComponent(path)}`;
+  const res=await fetch(url,{headers:{'Authorization':'Bearer '+token.access_token}});
+  if(!res.ok)throw new Error('OneDrive lookup failed: '+res.status);
+  const data=await res.json();
+  return data.webUrl||null;
+}
+</script>
+<script>
+// ════════════════════════════════════════════
 //  HELPERS
 // ════════════════════════════════════════════
 function escHtml(s){ if(s==null)return'';return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
@@ -2477,7 +3031,7 @@ function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 function switchTab(tab){
   document.querySelectorAll('.tabs .tab-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  const idx={overview:0,'case-details':1,documents:2,history:3}[tab];
+  const idx={overview:0,'case-details':1,payments:2,documents:3,history:4}[tab];
   const btns=document.querySelectorAll('.tabs .tab-btn');
   if(btns[idx])btns[idx].classList.add('active');
   document.getElementById('tab-'+tab).classList.add('active');
@@ -2501,6 +3055,7 @@ document.addEventListener('click',e=>{
 //  BOOT
 // ════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded',async ()=>{
+  captureOneDriveRedirectToken(); // must run before anything else touches the URL hash
   if(!initSupabase())return;
   const {data:{session}}=await sb.auth.getSession();
   if(session){ await afterAuth(); }
