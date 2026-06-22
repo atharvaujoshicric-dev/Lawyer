@@ -278,6 +278,12 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .chat-msg-controls{opacity:0;transition:opacity .15s;display:inline-flex;align-items:center;}
 .chat-msg:hover .chat-msg-controls{opacity:1}
 .chat-msg-controls i:hover{opacity:1!important;transform:scale(1.1)}
+/* Read receipt indicators on sent messages */
+.msg-receipt{display:inline-flex;align-items:center;margin-left:4px;font-size:9px;}
+.msg-receipt.delivered{opacity:.5;}   /* single tick — delivered, not yet seen */
+.msg-receipt.seen{opacity:1;color:var(--gold-light);}  /* eye icon — seen by recipient */
+.chat-msg.mine .msg-receipt.seen i{color:var(--gold-light);}
+.chat-msg.mine .msg-receipt.delivered i{color:rgba(255,255,255,.7);}
 .chat-msg-attach{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);padding:6px 10px;border-radius:8px;margin-top:6px;font-size:12px;cursor:pointer}
 .chat-msg.theirs .chat-msg-attach{background:rgba(0,0,0,.06)}
 .chat-input-bar{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border);flex-shrink:0;align-items:center}
@@ -1080,7 +1086,7 @@ let S={
   categories:[], formSchemas:{},
   tasks:[], taskComments:{},
   messages:[], activeChatPeer:null,    // null = team broadcast channel
-  editingMessageId:null,
+  editingMessageId:null, messageReadIds:new Set(),
   signupCode:null,
   editingClientId:null, detailClientId:null,
   activeCaseType:null, pendingFiles:[],
@@ -1183,7 +1189,9 @@ async function afterAuth(){
 async function doLogout(){
   if(S.profile && !confirm('Sign out?'))return;
   await sb.auth.signOut();
-  S={...S,user:null,profile:null};
+  S={...S, user:null, profile:null,
+     unreadCounts:{}, locallyReadIds:new Set(), messageReadIds:new Set(),
+     messages:[], lastSeenTaskTs:''};
   document.getElementById('app').style.display='none';
   document.getElementById('pending-screen').style.display='none';
   document.getElementById('login-screen').style.display='flex';
@@ -2205,6 +2213,25 @@ async function loadMessages(){
   const {data,error}=await query;
   if(!error) S.messages=data||[];
   else console.error('loadMessages failed:',error);
+
+  // Load read receipts for messages I sent in this conversation,
+  // so we can show the eye icon when the other person has seen them.
+  if(S.messages.length){
+    const myMsgIds=S.messages
+      .filter(m=>m.sender_id===S.user.id && !m.deleted)
+      .map(m=>m.id);
+    if(myMsgIds.length){
+      const {data:reads}=await sb.from('message_reads')
+        .select('message_id')
+        .in('message_id',myMsgIds)
+        .neq('user_id',S.user.id);   // read by someone else, not myself
+      S.messageReadIds=new Set((reads||[]).map(r=>r.message_id));
+    } else {
+      S.messageReadIds=new Set();
+    }
+  } else {
+    S.messageReadIds=new Set();
+  }
 }
 function withinEditWindow(m){
   return (Date.now()-new Date(m.created_at).getTime())<MSG_EDIT_WINDOW_MS;
@@ -2212,7 +2239,10 @@ function withinEditWindow(m){
 function renderChatMessages(){
   const cnt=document.getElementById('chat-messages');
   if(!cnt)return;
-  if(!S.messages.length){cnt.innerHTML='<p class="text-muted text-sm" style="text-align:center;margin-top:20px;">No messages yet. Say hello!</p>';return;}
+  if(!S.messages.length){
+    cnt.innerHTML='<p class="text-muted text-sm" style="text-align:center;margin-top:20px;">No messages yet. Say hello!</p>';
+    return;
+  }
   cnt.innerHTML=S.messages.map(m=>{
     const mine=m.sender_id===S.user.id;
     const sender=S.users.find(u=>u.id===m.sender_id);
@@ -2224,20 +2254,47 @@ function renderChatMessages(){
     } else {
       bodyHTML=m.body?escHtml(m.body):'';
       if(m.attachment_path){
-        attachHTML=`<div class="chat-msg-attach" onclick="openChatAttachment('${m.id}')"><i class="fas fa-paperclip"></i> ${escHtml(m.attachment_name||'Attachment')}</div>`;
+        attachHTML=`<div class="chat-msg-attach" onclick="openChatAttachment('${m.id}')">
+          <i class="fas fa-paperclip"></i> ${escHtml(m.attachment_name||'Attachment')}
+        </div>`;
       }
     }
-    const editedTag=(m.edited_at&&!m.deleted)?` <span style="opacity:.65;font-style:italic;">(Edited)</span>`:'';
+    const editedTag=(m.edited_at&&!m.deleted)
+      ?` <span style="opacity:.55;font-style:italic;font-size:9px;">(edited)</span>`:'' ;
     const controls=editable?`
-      <span class="chat-msg-controls" style="margin-left:8px;">
-        <i class="fas fa-pen" title="Edit" onclick="startEditMessage('${m.id}')" style="cursor:pointer;margin-right:8px;opacity:.75;"></i>
-        <i class="fas fa-trash" title="Delete" onclick="deleteChatMessage('${m.id}')" style="cursor:pointer;opacity:.75;"></i>
+      <span class="chat-msg-controls" style="margin-left:6px;">
+        <i class="fas fa-pen" title="Edit" onclick="startEditMessage('${m.id}')"
+           style="cursor:pointer;margin-right:7px;opacity:.75;"></i>
+        <i class="fas fa-trash" title="Delete" onclick="deleteChatMessage('${m.id}')"
+           style="cursor:pointer;opacity:.75;"></i>
       </span>`:'';
+
+    // Read receipt — shown only on messages I sent, not deleted ones
+    let receiptHTML='';
+    if(mine && !m.deleted){
+      const isRead=(S.messageReadIds||new Set()).has(m.id);
+      if(isRead){
+        // Eye icon = seen by recipient
+        receiptHTML=`<span class="msg-receipt seen" title="Seen">
+          <i class="fas fa-eye"></i>
+        </span>`;
+      } else {
+        // Single tick = delivered to server (not yet seen)
+        receiptHTML=`<span class="msg-receipt delivered" title="Delivered">
+          <i class="fas fa-check"></i>
+        </span>`;
+      }
+    }
+
     return `<div class="chat-msg ${mine?'mine':'theirs'}" data-msg-id="${m.id}" data-created="${m.created_at}">
-      ${!mine&&S.activeChatPeer===null?`<div style="font-size:11px;font-weight:600;opacity:.7;margin-bottom:2px;">${sender?sender.full_name:'Unknown'}</div>`:''}
+      ${!mine&&S.activeChatPeer===null
+        ?`<div style="font-size:11px;font-weight:600;opacity:.7;margin-bottom:2px;">${sender?sender.full_name:'Unknown'}</div>`
+        :''}
       <div class="chat-msg-body">${bodyHTML}</div>
       ${attachHTML}
-      <div class="chat-msg-time">${fmtDT(m.created_at)}${editedTag}${controls}</div>
+      <div class="chat-msg-time">
+        ${fmtDT(m.created_at)}${editedTag}${receiptHTML}${controls}
+      </div>
     </div>`;
   }).join('');
   cnt.scrollTop=cnt.scrollHeight;
@@ -3308,24 +3365,24 @@ async function oneDriveGetFileLink(path){
 //  NOTIFICATIONS, UNREAD COUNTS & SMART POLLING
 // ════════════════════════════════════════════
 // Architecture:
-//   • Background poll every 30s checks for new messages & tasks
-//     while ANY view is open — no manual refresh needed.
+//   • Background poll every 30s checks for new messages & tasks.
 //   • When chat or tasks view is ACTIVE, tightens to 5s.
-//   • Unread counts are tracked locally in S.unreadCounts:
-//       { 'broadcast': N, [userId]: N }
-//   • Browser push notifications request permission once on first
-//     new message/task arrival, then show natively even when the
-//     tab is backgrounded.
-//   • Sidebar badges update live without page reload.
+//   • S.locallyReadIds: Set of message IDs the current user has
+//     already seen this session. refreshUnreadCounts() subtracts
+//     these BEFORE computing badge values — eliminates the race
+//     condition where a fresh DB query would re-show a badge for
+//     a conversation the user just opened.
+//   • S.unreadCounts: { 'broadcast': N, [senderId]: N }
+//   • Browser push notifications fire even when tab is backgrounded.
 
-S.unreadCounts  = S.unreadCounts  || {};  // { peerId → count }
-S.lastSeenMsgId = S.lastSeenMsgId || {};  // { peerId → message_id } persisted in localStorage
-S.lastSeenTaskTs= S.lastSeenTaskTs|| localStorage.getItem('ld_last_task_ts')||'';
-S.notifPermission = S.notifPermission || Notification.permission;
-S._pollTimer = null;
+S.unreadCounts   = S.unreadCounts   || {};
+S.locallyReadIds = S.locallyReadIds || new Set();  // session-local read receipt cache
+S.lastSeenTaskTs = S.lastSeenTaskTs || localStorage.getItem('ld_last_task_ts') || '';
+S.notifPermission= S.notifPermission|| Notification.permission;
+S._pollTimer     = null;
 S._fastPollTimer = null;
 
-// ── Permission ───────────────────────────────────────────────────────────
+// ── Browser push permission ───────────────────────────────────────────────
 async function requestNotifPermission(){
   if(S.notifPermission==='granted') return true;
   if(S.notifPermission==='denied')  return false;
@@ -3337,15 +3394,12 @@ async function requestNotifPermission(){
 function sendBrowserNotif(title,body,onClick){
   if(S.notifPermission!=='granted') return;
   const n=new Notification(title,{
-    body,
-    icon:'/favicon.ico',
-    badge:'/favicon.ico',
-    tag:title               // deduplicate same-title notifs
+    body, icon:'/favicon.ico', badge:'/favicon.ico', tag:title
   });
   if(onClick) n.onclick=()=>{ window.focus(); onClick(); n.close(); };
 }
 
-// ── Load persisted last-seen state ────────────────────────────────────────
+// ── Persist last-seen message state across page reloads ───────────────────
 function loadLastSeenState(){
   try{
     const stored=JSON.parse(localStorage.getItem('ld_last_seen_msgs')||'{}');
@@ -3353,63 +3407,55 @@ function loadLastSeenState(){
   }catch{ S.lastSeenMsgId={}; }
 }
 function saveLastSeenState(){
-  try{ localStorage.setItem('ld_last_seen_msgs',JSON.stringify(S.lastSeenMsgId)); }catch{}
+  try{ localStorage.setItem('ld_last_seen_msgs',JSON.stringify(S.lastSeenMsgId)); }
+  catch{}
 }
 
 // ── Mark a conversation as read ───────────────────────────────────────────
-// Called when the user actually opens a chat peer or sees its messages.
+// Immediately updates both the local Set and the badge, then
+// asynchronously writes to the DB. The local Set prevents any
+// in-flight or subsequent poll from re-showing these as unread.
 async function markConversationRead(peerId){
-  // peerId is null for broadcast ("Team Channel") or a user uuid for DM
   const key=peerId===null?'broadcast':peerId;
-  const msgs=S.messages; // already loaded for this peer
-  if(!msgs.length) return;
+  if(!S.messages.length) return;
 
-  const latestId=msgs[msgs.length-1].id;
-  S.lastSeenMsgId[key]=latestId;
-  saveLastSeenState();
+  // Add every visible received message to the session-local read set
+  const inbound=S.messages.filter(m=>m.sender_id!==S.user?.id && !m.deleted);
+  inbound.forEach(m=>S.locallyReadIds.add(m.id));
 
-  // Insert read receipts for all unread messages in this conversation
-  const unread=msgs.filter(m=>
-    m.sender_id!==S.user?.id &&
-    !m.deleted
-  );
-  if(unread.length){
-    // upsert so re-viewing doesn't create duplicates
-    await sb.from('message_reads').upsert(
-      unread.map(m=>({message_id:m.id, user_id:S.user.id})),
-      {onConflict:'message_id,user_id',ignoreDuplicates:true}
-    );
-  }
+  // Update last-seen pointer
+  const latest=S.messages[S.messages.length-1];
+  if(latest){ S.lastSeenMsgId[key]=latest.id; saveLastSeenState(); }
 
-  // Clear local badge for this peer
+  // Clear badge immediately — before any DB round-trip
   S.unreadCounts[key]=0;
   updateAllChatBadges();
+
+  // Persist read receipts to DB (fire-and-forget; the local Set handles UI)
+  if(inbound.length){
+    sb.from('message_reads').upsert(
+      inbound.map(m=>({message_id:m.id, user_id:S.user.id})),
+      {onConflict:'message_id,user_id', ignoreDuplicates:true}
+    ).then(({error})=>{ if(error) console.warn('message_reads upsert:',error.message); });
+  }
 }
 
-// ── Compute unread counts from DB ─────────────────────────────────────────
+// ── Compute unread counts ─────────────────────────────────────────────────
+// Uses two queries (Supabase JS doesn't support true subqueries) but
+// immediately subtracts S.locallyReadIds so a just-opened conversation
+// never flashes a badge again even before the DB write completes.
 async function refreshUnreadCounts(){
-  if(!S.user) return;
+  if(!S.user) return null;
 
-  // Fetch all messages I can see that are:
-  //   a) not sent by me
-  //   b) not deleted
-  //   c) not already in message_reads for me
-  const {data:unreadMsgs,error}=await sb.from('messages')
-    .select('id,sender_id,recipient_id,created_at')
-    .neq('sender_id',S.user.id)
-    .eq('deleted',false)
-    .not('id','in',
-      // sub-select read ids — Supabase JS doesn't support true subqueries,
-      // so we fetch the read ids first and exclude them
-      `(select message_id from message_reads where user_id='${S.user.id}')`
-    );
-
-  // The above sub-select syntax isn't supported in Supabase JS client.
-  // Use two queries instead:
+  // 1. Fetch read receipt IDs from DB
   const {data:readRows}=await sb.from('message_reads')
     .select('message_id').eq('user_id',S.user.id);
-  const readSet=new Set((readRows||[]).map(r=>r.message_id));
+  const dbReadSet=new Set((readRows||[]).map(r=>r.message_id));
 
+  // 2. Combine DB set + session-local set (handles the race window)
+  const allReadIds=new Set([...dbReadSet,...S.locallyReadIds]);
+
+  // 3. Fetch recent visible messages not sent by me
   const {data:allVisible}=await sb.from('messages')
     .select('id,sender_id,recipient_id,created_at')
     .neq('sender_id',S.user.id)
@@ -3419,14 +3465,9 @@ async function refreshUnreadCounts(){
 
   const newCounts={};
   (allVisible||[]).forEach(m=>{
-    if(readSet.has(m.id)) return;
-    // broadcast
-    if(m.recipient_id===null){
-      newCounts['broadcast']=(newCounts['broadcast']||0)+1;
-    } else {
-      // DM — key is the sender's id (the other party)
-      newCounts[m.sender_id]=(newCounts[m.sender_id]||0)+1;
-    }
+    if(allReadIds.has(m.id)) return;   // already seen — skip
+    const key=m.recipient_id===null?'broadcast':m.sender_id;
+    newCounts[key]=(newCounts[key]||0)+1;
   });
 
   const prevCounts={...S.unreadCounts};
@@ -3435,134 +3476,129 @@ async function refreshUnreadCounts(){
   return {newCounts,prevCounts};
 }
 
-// ── Update every badge in the sidebar ────────────────────────────────────
+// ── Update every badge in the sidebar + chat contact list ─────────────────
 function updateAllChatBadges(){
-  // Total unread = sum of all conversations
   const total=Object.values(S.unreadCounts).reduce((a,b)=>a+(b||0),0);
+
+  // Sidebar nav badge
   const chatNavBadge=document.getElementById('chat-nav-badge');
   if(chatNavBadge){
     chatNavBadge.textContent=total||'';
     chatNavBadge.style.display=total?'inline-block':'none';
   }
 
-  // Per-contact badges in the chat contact list
-  S.users.filter(u=>u.id!==S.user?.id).forEach(u=>{
+  // Per-contact badges in the chat sidebar
+  (S.users||[]).filter(u=>u.id!==S.user?.id).forEach(u=>{
     const badge=document.getElementById(`chat-badge-${u.id}`);
     const count=S.unreadCounts[u.id]||0;
-    if(badge){ badge.textContent=count||''; badge.style.display=count?'inline-flex':'none'; }
+    if(badge){
+      badge.textContent=count||'';
+      badge.style.display=count?'inline-flex':'none';
+    }
   });
   const broadcastBadge=document.getElementById('chat-badge-broadcast');
   const bc=S.unreadCounts['broadcast']||0;
-  if(broadcastBadge){ broadcastBadge.textContent=bc||''; broadcastBadge.style.display=bc?'inline-flex':'none'; }
+  if(broadcastBadge){
+    broadcastBadge.textContent=bc||'';
+    broadcastBadge.style.display=bc?'inline-flex':'none';
+  }
 }
 
-// ── Check for genuinely new items and fire notifications ──────────────────
+// ── Check for new items and fire notifications ────────────────────────────
 async function checkForNewItems(){
   if(!S.user) return;
-  const {newCounts,prevCounts}=await refreshUnreadCounts()||{newCounts:{},prevCounts:{}};
-  if(!newCounts) return;
+  const result=await refreshUnreadCounts();
+  if(!result) return;
+  const {newCounts,prevCounts}=result;
 
-  // New messages — fire one browser notification per conversation that grew
+  // New messages — notify per conversation that grew
   for(const [key,count] of Object.entries(newCounts)){
     const prev=prevCounts[key]||0;
-    if(count>prev){
-      const delta=count-prev;
-      const label=key==='broadcast'?'Team Channel':
-        (S.users.find(u=>u.id===key)?.full_name||'Someone');
-      const granted=await requestNotifPermission();
-      if(granted){
-        sendBrowserNotif(
-          `${delta} new message${delta>1?'s':''} from ${label}`,
-          'LexDesk — tap to open',
-          ()=>{ navigate('chat'); selectChatPeer(key==='broadcast'?null:key); }
-        );
-      }
-      // In-app toast only if chat isn't already open
-      if(!document.getElementById('view-chat')?.classList.contains('active')){
-        showToast(`${delta} new message${delta>1?'s':''} from ${label}`,'info');
-      }
+    if(count<=prev) continue;
+    const delta=count-prev;
+    const label=key==='broadcast'?'Team Channel':
+      (S.users.find(u=>u.id===key)?.full_name||'Someone');
+    const granted=await requestNotifPermission();
+    if(granted){
+      sendBrowserNotif(
+        `${delta} new message${delta>1?'s':''} — ${label}`,
+        'LexDesk · tap to open',
+        ()=>{ navigate('chat'); selectChatPeer(key==='broadcast'?null:key); }
+      );
+    }
+    if(!document.getElementById('view-chat')?.classList.contains('active')){
+      showToast(`💬 ${delta} new message${delta>1?'s':''} from ${label}`,'info');
     }
   }
 
-  // New tasks assigned to me since last check
+  // New tasks assigned to me
   if(S.lastSeenTaskTs){
     const {data:newTasks}=await sb.from('tasks')
       .select('id,title,assigned_by')
       .eq('assigned_to',S.user.id)
       .gt('created_at',S.lastSeenTaskTs);
-    if(newTasks&&newTasks.length){
+    if(newTasks?.length){
       const granted=await requestNotifPermission();
       newTasks.forEach(t=>{
         const by=S.users.find(u=>u.id===t.assigned_by)?.full_name||'Senior Advocate';
-        if(granted){
-          sendBrowserNotif(
-            `New task from ${by}`,
-            t.title,
-            ()=>{ navigate('tasks'); openTaskModal(t.id); }
-          );
-        }
-        if(!document.getElementById('view-tasks')?.classList.contains('active')){
-          showToast(`New task from ${by}: "${t.title}"`,'info');
-        }
+        if(granted) sendBrowserNotif(`New task from ${by}`,t.title,
+          ()=>{ navigate('tasks'); openTaskModal(t.id); });
+        if(!document.getElementById('view-tasks')?.classList.contains('active'))
+          showToast(`📋 New task from ${by}: "${escHtml(t.title)}"`,'info');
       });
     }
   }
 
-  // New task status changes (e.g. Admin reviewed and sent for rework)
+  // Task status changes for me (rework, approval, etc.)
   if(S.lastSeenTaskTs){
-    const {data:statusChanges}=await sb.from('tasks')
+    const {data:changes}=await sb.from('tasks')
       .select('id,title,status,assigned_by,assigned_to')
       .eq('assigned_to',S.user.id)
       .gt('updated_at',S.lastSeenTaskTs)
-      .neq('status','open');  // open = just created, already handled above
-    if(statusChanges&&statusChanges.length){
+      .not('status','eq','open');
+    if(changes?.length){
       const granted=await requestNotifPermission();
-      statusChanges.forEach(t=>{
-        const statusLabel={in_progress:'started',in_review:'under review',done:'approved & closed',cancelled:'cancelled',open:'reopened'}[t.status]||t.status;
-        if(granted){
-          sendBrowserNotif(`Task ${statusLabel}`,t.title,()=>{ navigate('tasks'); openTaskModal(t.id); });
-        }
-        if(!document.getElementById('view-tasks')?.classList.contains('active')){
-          showToast(`Task "${t.title}" — ${statusLabel}`,'info');
-        }
+      changes.forEach(t=>{
+        const lbl={in_progress:'started',in_review:'under review',done:'approved & closed',
+          cancelled:'cancelled'}[t.status]||t.status;
+        if(granted) sendBrowserNotif(`Task ${lbl}`,t.title,
+          ()=>{ navigate('tasks'); openTaskModal(t.id); });
+        if(!document.getElementById('view-tasks')?.classList.contains('active'))
+          showToast(`Task "${escHtml(t.title)}" — ${lbl}`,'info');
       });
     }
   }
 
-  // Update last-seen task timestamp
   S.lastSeenTaskTs=new Date().toISOString();
   localStorage.setItem('ld_last_task_ts',S.lastSeenTaskTs);
 }
 
-// ── Polling scheduler ─────────────────────────────────────────────────────
-// Background: 30s always.
-// Active view: tightens to 5s when chat or tasks is the active view.
+// ── Smart polling ─────────────────────────────────────────────────────────
+// 30s background poll — always active, keeps badges fresh and fires
+// notifications even when the user is on a non-chat/tasks view.
+// 5s fast poll — only runs while chat or tasks view is visible.
 function startPolling(){
-  // Clear any existing timers
-  if(S._pollTimer)    clearInterval(S._pollTimer);
-  if(S._fastPollTimer)clearInterval(S._fastPollTimer);
+  if(S._pollTimer)     clearInterval(S._pollTimer);
+  if(S._fastPollTimer) clearInterval(S._fastPollTimer);
 
-  // Background poll — always runs, 30s
+  // Background: 30s — notifications + task data refresh
   S._pollTimer=setInterval(async ()=>{
-    if(!S.user)return;
+    if(!S.user) return;
     await checkForNewItems();
-    // Refresh tasks data for kanban if tasks view is not active
-    // (if it IS active, the fast poll handles it below)
     if(!document.getElementById('view-tasks')?.classList.contains('active')){
       const {data}=await sb.from('tasks').select('*').order('created_at',{ascending:false});
-      if(data) S.tasks=data;
-      updateStats();
+      if(data){ S.tasks=data; updateStats(); }
     }
   },30000);
 
-  // Fast poll — 5s, only runs while chat or tasks view is active
+  // Fast: 5s — only when chat or tasks is the active view
   S._fastPollTimer=setInterval(async ()=>{
-    if(!S.user)return;
-    const chatActive=document.getElementById('view-chat')?.classList.contains('active');
+    if(!S.user) return;
+    const chatActive =document.getElementById('view-chat') ?.classList.contains('active');
     const tasksActive=document.getElementById('view-tasks')?.classList.contains('active');
     if(chatActive){
       await loadMessages();
-      renderChatMessages();
+      renderChatMessages();   // re-renders read-receipt ticks as new reads arrive
       await refreshUnreadCounts();
       updateAllChatBadges();
     }
