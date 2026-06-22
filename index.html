@@ -260,6 +260,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .rich-toolbar button:hover{background:var(--border);color:var(--text-primary)}
 .rich-editor{min-height:160px;padding:12px;border:1px solid var(--border);border-radius:0 0 var(--radius-sm) var(--radius-sm);font-size:14px;line-height:1.7;color:var(--text-primary);outline:none;background:var(--bg-card)}
 .rich-editor:focus{border-color:var(--navy-mid)}
+.chat-unread-badge{position:absolute;top:-4px;right:-4px;background:var(--danger);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px;border:1.5px solid var(--bg-card);line-height:1;pointer-events:none;}
 /* ── Chat ── */
 .chat-layout{display:flex;height:calc(100vh - 160px);min-height:420px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--bg-card)}
 .chat-sidebar{width:220px;border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0;background:var(--bg)}
@@ -522,7 +523,10 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 
         <div class="card mb-4">
           <div class="card-header"><span class="card-title"><i class="fas fa-calendar-day" style="color:var(--gold)"></i> Agenda</span></div>
-          <div class="card-body" id="planner-agenda"></div>
+          <div class="card-body">
+            <div id="planner-calendar-strip"></div>
+            <div id="planner-agenda"></div>
+          </div>
         </div>
 
         <div class="card">
@@ -537,6 +541,23 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
             </div>
             <div id="planner-notes-list"></div>
           </div>
+        </div>
+      </div>
+
+      <!-- NOTES -->
+      <div class="page-view" id="view-notes">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+          <button class="btn btn-gold" onclick="openNoteEditor()"><i class="fas fa-plus"></i> New Note</button>
+        </div>
+        <div id="notes-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
+        <div id="notes-empty" class="empty-state" style="display:none;"><i class="fas fa-sticky-note"></i><div class="empty-state-title">No notes yet</div><div class="empty-state-desc">Create private notes and share them with your team</div></div>
+      </div>
+
+      <!-- ACTIVITY LOG (admin sees client changes; everyone sees changes to their own notes) -->
+      <div class="page-view" id="view-activity">
+        <div class="card">
+          <div class="card-header"><span class="card-title"><i class="fas fa-history" style="color:var(--gold)"></i> Activity Log</span><button class="btn btn-outline btn-sm" onclick="loadActivityLog()"><i class="fas fa-sync-alt"></i> Refresh</button></div>
+          <div class="card-body" id="activity-log-list"><p class="text-muted text-sm">Loading…</p></div>
         </div>
       </div>
 
@@ -813,6 +834,68 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
+<!-- NOTE EDITOR MODAL -->
+<div class="modal-backdrop" id="modal-note">
+  <div class="modal" style="max-width:780px;">
+    <div class="modal-header">
+      <div><div class="modal-title" id="note-modal-title">New Note</div></div>
+      <button class="modal-close" onclick="closeModal('modal-note')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group" style="margin-bottom:12px;">
+        <label class="form-label">Title <span class="required">*</span></label>
+        <input class="form-control" id="note-title-input" type="text" placeholder="Note title…"/>
+      </div>
+      <div class="rich-toolbar" id="note-rich-toolbar">
+        <button onclick="noteCmd('bold')"><i class="fas fa-bold"></i></button>
+        <button onclick="noteCmd('italic')"><i class="fas fa-italic"></i></button>
+        <button onclick="noteCmd('underline')"><i class="fas fa-underline"></i></button>
+        <button onclick="noteCmd('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
+        <button onclick="noteCmd('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
+      </div>
+      <div class="rich-editor" id="note-content-editor" contenteditable="true" style="min-height:220px;"></div>
+      <div id="note-history-section" style="display:none;margin-top:18px;">
+        <div class="section-divider"><i class="fas fa-history"></i> Edit History</div>
+        <div id="note-history-list"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-note')">Close</button>
+      <button class="btn btn-gold" id="note-save-btn" onclick="saveNote()"><i class="fas fa-save"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTE SHARE MODAL -->
+<div class="modal-backdrop" id="modal-note-share">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-header">
+      <div><div class="modal-title" id="note-share-title">Share Note</div></div>
+      <button class="modal-close" onclick="closeModal('modal-note-share')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="section-divider">Add Person</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+        <select class="form-control" id="note-share-user" style="flex:1;min-width:150px;"></select>
+        <select class="form-control" id="note-share-perm" style="width:auto;">
+          <option value="viewer">Viewer</option>
+          <option value="editor">Editor</option>
+        </select>
+        <button class="btn btn-gold btn-sm" onclick="addNoteShare()"><i class="fas fa-plus"></i> Share</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;font-size:13px;">
+        <input type="checkbox" id="note-share-send-chat" style="width:16px;height:16px;"/>
+        <label for="note-share-send-chat">Also send a message to this person in chat</label>
+      </div>
+      <div class="section-divider">Currently Shared With</div>
+      <div id="note-current-shares"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-note-share')">Done</button>
+    </div>
+  </div>
+</div>
+
 <!-- RECORD PAYMENT MODAL -->
 <div class="modal-backdrop" id="modal-payment">
   <div class="modal" style="max-width:440px;">
@@ -1004,6 +1087,7 @@ let S={
   editingTemplateId:null, activeTemplateId:null,
   editingTaskId:null, pendingChatFile:null,
   fbActiveCat:null, payingClientId:null, linkedContactId:null,
+  notes:[], noteShares:{}, editingNoteId:null, sharingNoteId:null,
   unreadCount:0,
   paymentsCache:{}
 };
@@ -1181,158 +1265,9 @@ async function initApp(){
   loadSettingsUI();
   checkAlerts();
   updateSyncStatus('synced','Live');
-  loadUnreadCount();   // sets the Messages badge from the DB on first load
-  startPolling();      // actually starts realtime subscriptions
-}
-
-function startPolling(){
-  // ── Supabase Realtime subscriptions ──────────────────────────────────
-  // Replace 15s polling with live websocket push so messages and task
-  // updates appear instantly without a page refresh.
-  // One channel per concern so they can be paused/resumed independently.
-
-  // ── Messages channel ──────────────────────────────────────────────────
-  // Fires on any INSERT into messages visible to the current user (Supabase
-  // applies RLS to realtime just like regular queries, so each user only
-  // receives messages they're allowed to see).
-  sb.channel('lexdesk-messages')
-    .on('postgres_changes', {
-      event: 'INSERT',
-      schema: 'public',
-      table: 'messages'
-    }, async (payload) => {
-      const msg = payload.new;
-      // Only process messages relevant to the current user
-      const isForMe = msg.recipient_id === S.user?.id ||
-                      msg.recipient_id === null ||
-                      msg.sender_id    === S.user?.id;
-      if(!isForMe) return;
-
-      // If this is a new inbound message (not something I just sent),
-      // increment the unread counter and show a toast notification.
-      if(msg.sender_id !== S.user?.id){
-        S.unreadCount = (S.unreadCount||0) + 1;
-        updateMessagesBadge();
-
-        // Brief toast so the user knows a message arrived even if they're
-        // on a different view
-        const sender = S.users.find(u=>u.id===msg.sender_id);
-        const from   = sender ? sender.full_name : 'Someone';
-        const preview= msg.deleted ? '' : (msg.body||'').slice(0,60);
-        showToast(`💬 ${from}: ${preview||'sent an attachment'}`, 'info');
-      }
-
-      // If the chat view is open AND the relevant conversation is active,
-      // pull the full updated message list and re-render immediately
-      if(document.getElementById('view-chat')?.classList.contains('active')){
-        await loadMessages();
-        renderChatMessages();
-
-        // If the incoming message is in the active conversation,
-        // mark it read right away
-        if(msg.sender_id !== S.user?.id){
-          const inActiveConvo =
-            (S.activeChatPeer === null && msg.recipient_id === null) ||
-            (S.activeChatPeer === msg.sender_id);
-          if(inActiveConvo) markConversationRead(S.activeChatPeer);
-        }
-      }
-    })
-    .subscribe();
-
-  // ── Tasks channel ─────────────────────────────────────────────────────
-  // Fires on INSERT (new task assigned to me) and UPDATE (status changed —
-  // e.g. an assistant sent for review, or admin approved/reworked a task).
-  sb.channel('lexdesk-tasks')
-    .on('postgres_changes', {
-      event: '*',           // INSERT and UPDATE both matter
-      schema: 'public',
-      table: 'tasks'
-    }, async (payload) => {
-      const t = payload.new || payload.old;
-      if(!t) return;
-
-      // Only react to tasks that involve the current user
-      const involvesMe = isAdmin() ||
-                         t.assigned_to  === S.user?.id ||
-                         t.assigned_by  === S.user?.id;
-      if(!involvesMe) return;
-
-      // Refresh task list silently in background
-      const {data} = await sb.from('tasks').select('*').order('created_at',{ascending:false});
-      S.tasks = data||[];
-      updateStats();
-
-      // Re-render kanban if open
-      if(document.getElementById('view-tasks')?.classList.contains('active')){
-        renderTasks();
-      }
-      // Also refresh dashboard My Open Tasks widget
-      if(document.getElementById('view-dashboard')?.classList.contains('active')){
-        renderDashTasks();
-      }
-
-      // Toast for relevant events:
-      //  - Admin gets notified when an assistant sends a task for review
-      //  - Assignee gets notified when admin creates/assigns or reworks/approves
-      if(payload.eventType === 'INSERT' && t.assigned_to === S.user?.id){
-        const byUser = S.users.find(u=>u.id===t.assigned_by);
-        showToast(`📋 New task from ${byUser?byUser.full_name:'Admin'}: "${escHtml(t.title)}"`, 'info');
-      } else if(payload.eventType === 'UPDATE'){
-        if(t.status === 'in_review' && (t.assigned_by===S.user?.id||isAdmin())){
-          const doer = S.users.find(u=>u.id===t.assigned_to);
-          showToast(`🔍 ${doer?doer.full_name:'Assignee'} sent "${escHtml(t.title)}" for review.`, 'warning');
-        } else if(t.status === 'in_progress' && t.assigned_to===S.user?.id){
-          const prev = S.tasks.find(x=>x.id===t.id);
-          if(prev?.status === 'in_review')
-            showToast(`↩ "${escHtml(t.title)}" was sent back for rework.`, 'warning');
-        } else if(t.status === 'done' && t.assigned_to===S.user?.id){
-          showToast(`✅ "${escHtml(t.title)}" was approved and closed.`, 'success');
-        }
-      }
-    })
-    .subscribe();
-}
-
-// ── Unread message badge ──────────────────────────────────────────────────
-// S.unreadCount tracks messages received since the last time each
-// conversation was opened. It's computed fresh on login from the DB,
-// then maintained incrementally via the realtime subscription above.
-
-async function loadUnreadCount(){
-  // Count messages addressed to me (or broadcast) that are still unread
-  const {count} = await sb.from('messages')
-    .select('*', {count:'exact', head:true})
-    .or(`recipient_id.eq.${S.user.id},recipient_id.is.null`)
-    .eq('read', false)
-    .neq('sender_id', S.user.id);   // don't count my own messages
-  S.unreadCount = count||0;
-  updateMessagesBadge();
-}
-
-function updateMessagesBadge(){
-  const badge = document.getElementById('msg-badge');
-  if(!badge) return;
-  const n = S.unreadCount||0;
-  badge.textContent = n > 99 ? '99+' : String(n);
-  badge.style.display = n > 0 ? 'inline-block' : 'none';
-}
-
-async function markConversationRead(peerId){
-  // Mark as read all messages in this conversation that were sent TO me
-  let q = sb.from('messages')
-    .update({read:true})
-    .eq('read', false)
-    .neq('sender_id', S.user.id);
-  if(peerId === null){
-    q = q.is('recipient_id', null);           // team broadcast channel
-  } else {
-    q = q.eq('sender_id', peerId)
-          .eq('recipient_id', S.user.id);     // 1:1 DM
-  }
-  await q;
-  // Recompute badge from DB to stay in sync
-  await loadUnreadCount();
+  loadLastSeenState();           // restore last-seen message state from localStorage
+  await checkForNewItems();      // initial unread count from DB + badge update
+  startPolling();                // 5s fast poll (active view) + 30s background poll
 }
 
 
@@ -1355,12 +1290,14 @@ function buildSidebar(){
   html+=`<div class="nav-section-label">Workspace</div>
     <button class="nav-item" onclick="navigate('documents')"><i class="fas fa-folder-open"></i> Documents</button>
     <button class="nav-item" onclick="navigate('templates')"><i class="fas fa-file-alt"></i> Templates</button>
-    <button class="nav-item" onclick="navigate('chat')"><i class="fas fa-comments"></i> Messages <span id="msg-badge" class="nav-badge" style="display:none;"></span></button>
+    <button class="nav-item" onclick="navigate('notes')"><i class="fas fa-sticky-note"></i> Notes</button>
+    <button class="nav-item" onclick="navigate('chat')"><i class="fas fa-comments"></i> Messages <span id="chat-nav-badge" class="nav-badge" style="display:none;"></span></button>
     <button class="nav-item" onclick="navigate('tasks')"><i class="fas fa-tasks"></i> Tasks <span id="task-badge" class="nav-badge" style="display:none;"></span></button>`;
   if(admin){
     html+=`<div class="nav-section-label">Admin</div>
       <button class="nav-item" onclick="navigate('users')"><i class="fas fa-user-shield"></i> Users <span id="pending-badge" class="nav-badge" style="display:none;"></span></button>
-      <button class="nav-item" onclick="navigate('formbuilder')"><i class="fas fa-sliders-h"></i> Form Builder</button>`;
+      <button class="nav-item" onclick="navigate('formbuilder')"><i class="fas fa-sliders-h"></i> Form Builder</button>
+      <button class="nav-item" onclick="navigate('activity')"><i class="fas fa-history"></i> Activity Log</button>`;
   }
   html+=`<button class="nav-item" onclick="navigate('settings')"><i class="fas fa-cog"></i> Settings</button>`;
   nav.innerHTML=html;
@@ -1381,7 +1318,8 @@ function updateSidebarProfile(){
 const NAV_TITLES={
   dashboard:'Dashboard',planner:'Daily Planner',clients:'All Clients',deadlines:'Deadlines & Alerts',
   documents:'Documents',templates:'Draft Templates',chat:'Messages',tasks:'Tasks',
-  users:'User Management',formbuilder:'Form Builder',settings:'Settings'
+  users:'User Management',formbuilder:'Form Builder',settings:'Settings',
+  notes:'Notes',activity:'Activity Log'
 };
 
 function navigate(view){
@@ -1396,6 +1334,8 @@ function navigate(view){
   if(view==='documents') renderDocuments();
   if(view==='users') renderUsers();
   if(view==='templates') renderTemplates();
+  if(view==='notes'){ loadNotes().then(renderNotes); }
+  if(view==='activity') loadActivityLog();
   if(view==='formbuilder') renderFormBuilder();
   if(view==='tasks') renderTasks();
   if(view==='chat'){
@@ -1666,6 +1606,7 @@ async function saveClient(){
     payload.history=[...(ex?.history||[]),{date:now,text:`Updated by ${S.profile.full_name}.`}];
     const {error}=await sb.from('clients').update(payload).eq('client_id',S.editingClientId);
     if(error){showToast('Save failed: '+error.message,'error');saveBtn.disabled=false;return;}
+    sb.from('activity_log').insert({actor_id:S.user.id,action:'client_updated',entity_type:'client',entity_id:S.editingClientId,detail:{name:payload.name,updated_by:S.profile.full_name}});
     showToast('Client updated!','success');
   } else {
     isNew=true;
@@ -1687,6 +1628,7 @@ async function saveClient(){
       attempt++;
     }
     if(lastError){showToast('Save failed: '+lastError.message,'error');saveBtn.disabled=false;return;}
+    sb.from('activity_log').insert({actor_id:S.user.id,action:'client_created',entity_type:'client',entity_id:usedId,detail:{name:payload.name,created_by:S.profile.full_name,case_type:catId}});
     showToast(`${usedId} added.`,'success');
   }
   const clientId=payload.client_id;
@@ -2216,18 +2158,27 @@ function renderChatContacts(){
   const cnt=document.getElementById('chat-contact-list');
   if(!cnt)return;
   const others=S.users.filter(u=>u.id!==S.user?.id);
+  const bc=S.unreadCounts['broadcast']||0;
   let html=`<div class="chat-contact${S.activeChatPeer===null?' active':''}" onclick="selectChatPeer(null)">
-      <div class="avatar-sm av-navy"><i class="fas fa-users"></i></div>
+      <div class="avatar-sm av-navy" style="position:relative;">
+        <i class="fas fa-users"></i>
+        <span id="chat-badge-broadcast" class="chat-unread-badge" style="display:${bc?'inline-flex':'none'}">${bc||''}</span>
+      </div>
       <div class="chat-contact-name">Team Channel</div>
     </div>`;
   if(!others.length){
     html+=`<div style="padding:14px;font-size:12px;color:var(--text-muted);">No other team members yet.</div>`;
   }
-  html+=others.map(u=>`
-    <div class="chat-contact${S.activeChatPeer===u.id?' active':''}" onclick="selectChatPeer('${u.id}')">
-      <div class="avatar-sm ${u.role==='admin'?'av-purple':'av-blue'}">${initials(u.full_name)}</div>
+  html+=others.map(u=>{
+    const count=S.unreadCounts[u.id]||0;
+    return `<div class="chat-contact${S.activeChatPeer===u.id?' active':''}" onclick="selectChatPeer('${u.id}')">
+      <div class="avatar-sm ${u.role==='admin'?'av-purple':'av-blue'}" style="position:relative;">
+        ${initials(u.full_name)}
+        <span id="chat-badge-${u.id}" class="chat-unread-badge" style="display:${count?'inline-flex':'none'}">${count||''}</span>
+      </div>
       <div class="chat-contact-name">${u.full_name}</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
   cnt.innerHTML=html;
 }
 function selectChatPeer(userId){
@@ -3036,23 +2987,37 @@ async function deletePayment(paymentId,clientId){
 </script>
 <script>
 // ════════════════════════════════════════════
-//  DAILY PLANNER — auto-aggregated agenda (tasks due today +
-//  deadlines/hearings due today) plus a manual notes/to-do list.
-//  Each lawyer's planner is private to them (RLS-enforced on planner_notes;
-//  the agenda itself naturally scopes to "my" tasks/clients via myClients()
-//  and the existing task-visibility rules).
+//  DAILY PLANNER
 // ════════════════════════════════════════════
-S.plannerDate=S.plannerDate||new Date().toISOString().slice(0,10);
+// BUG FIX: never use toISOString() for local dates — it returns UTC and
+// in IST (UTC+5:30) the date flips at 05:30, so "today" becomes "yesterday"
+// in the early morning, making +1 look like a no-op and -1 look like -2.
+// localDateStr() always uses the device's local calendar date.
+
+function localDateStr(d){
+  const dt=d||new Date();
+  const y=dt.getFullYear();
+  const m=String(dt.getMonth()+1).padStart(2,'0');
+  const day=String(dt.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function parsePlannerDate(str){
+  // Parse YYYY-MM-DD in local time (not UTC)
+  const [y,m,d]=str.split('-').map(Number);
+  return new Date(y,m-1,d);
+}
+
+S.plannerDate=S.plannerDate||localDateStr();
 S.plannerNotes=S.plannerNotes||[];
 
 function shiftPlannerDate(days){
-  const d=new Date(S.plannerDate+'T00:00:00');
+  const d=parsePlannerDate(S.plannerDate);
   d.setDate(d.getDate()+days);
-  S.plannerDate=d.toISOString().slice(0,10);
+  S.plannerDate=localDateStr(d);
   renderPlanner();
 }
 function goToToday(){
-  S.plannerDate=new Date().toISOString().slice(0,10);
+  S.plannerDate=localDateStr();
   renderPlanner();
 }
 function onPlannerDateChange(){
@@ -3061,33 +3026,46 @@ function onPlannerDateChange(){
 }
 
 async function renderPlanner(){
-  document.getElementById('planner-date-input').value=S.plannerDate;
-  const todayStr=new Date().toISOString().slice(0,10);
+  const inp=document.getElementById('planner-date-input');
+  if(inp) inp.value=S.plannerDate;
+  const todayStr=localDateStr();
   const label=document.getElementById('planner-date-label');
-  if(S.plannerDate===todayStr) label.textContent='Today — '+fmtD(S.plannerDate);
-  else label.textContent=fmtD(S.plannerDate);
-
+  if(label){
+    if(S.plannerDate===todayStr) label.textContent='Today — '+fmtD(S.plannerDate);
+    else if(S.plannerDate===localDateStr(new Date(parsePlannerDate(todayStr).getTime()-86400000))) label.textContent='Yesterday — '+fmtD(S.plannerDate);
+    else if(S.plannerDate===localDateStr(new Date(parsePlannerDate(todayStr).getTime()+86400000))) label.textContent='Tomorrow — '+fmtD(S.plannerDate);
+    else label.textContent=fmtD(S.plannerDate);
+  }
   renderPlannerAgenda();
+  renderPlannerCalendarMarks();
   await loadPlannerNotes();
 }
 
+// ── Agenda (auto-pulled events for the selected day) ─────────────────────
 function renderPlannerAgenda(){
   const cnt=document.getElementById('planner-agenda');
   if(!cnt)return;
   const items=[];
 
-  // Tasks due on this date, visible to the current user
-  S.tasks.filter(t=>t.due_date===S.plannerDate&&(isAdmin()||t.assigned_to===S.user?.id||t.assigned_by===S.user?.id)).forEach(t=>{
-    const assignee=S.users.find(u=>u.id===t.assigned_to);
-    items.push({type:'task',icon:'fas fa-tasks',cls:'task',title:t.title,sub:`Task · ${assignee?assignee.full_name:'—'} · ${capitalize(t.status)}`,onClick:`openTaskModal('${t.id}')`});
-  });
+  // Tasks assigned to or by me, due on this day
+  S.tasks
+    .filter(t=>t.due_date===S.plannerDate&&(isAdmin()||t.assigned_to===S.user?.id||t.assigned_by===S.user?.id))
+    .forEach(t=>{
+      const assignee=S.users.find(u=>u.id===t.assigned_to);
+      items.push({
+        type:'task',icon:'fas fa-tasks',cls:'task',
+        title:t.title,
+        sub:`Task · ${assignee?assignee.full_name:'—'} · ${capitalize(t.status)}`,
+        onClick:`openTaskModal('${t.id}')`
+      });
+    });
 
-  // Deadlines/hearings: any date-type field in case_data that falls on this date
+  // Deadlines/hearings: any date-type field in case_data that matches today
   myClients().forEach(c=>{
     const schema=S.formSchemas[c.case_type]||[];
     const data=c.case_data||{};
     schema.filter(f=>f.type==='date'&&data[f.id]===S.plannerDate).forEach(f=>{
-      const isHearing=/hearing|court|date of appearance/i.test(f.label);
+      const isHearing=/hearing|court|appearance/i.test(f.label);
       items.push({
         type:isHearing?'hearing':'deadline',
         icon:isHearing?'fas fa-gavel':'fas fa-exclamation-circle',
@@ -3099,7 +3077,10 @@ function renderPlannerAgenda(){
     });
   });
 
-  if(!items.length){ cnt.innerHTML='<p class="text-muted text-sm">Nothing scheduled for this date.</p>'; return; }
+  if(!items.length){
+    cnt.innerHTML='<p class="text-muted text-sm">Nothing scheduled for this date.</p>';
+    return;
+  }
   cnt.innerHTML=items.map(it=>`
     <div class="planner-agenda-item" onclick="${it.onClick}">
       <div class="planner-agenda-icon ${it.cls}"><i class="${it.icon}"></i></div>
@@ -3110,21 +3091,91 @@ function renderPlannerAgenda(){
     </div>`).join('');
 }
 
+// ── Calendar dot marks ───────────────────────────────────────────────────
+// Builds a 7-day mini strip around the selected date, each cell showing a
+// red dot if there are tasks/deadlines on that day.
+function renderPlannerCalendarMarks(){
+  const cnt=document.getElementById('planner-calendar-strip');
+  if(!cnt)return;
+
+  // Collect all dates that have events
+  const eventDates=new Set();
+  S.tasks
+    .filter(t=>t.due_date&&(isAdmin()||t.assigned_to===S.user?.id||t.assigned_by===S.user?.id))
+    .forEach(t=>eventDates.add(t.due_date));
+  myClients().forEach(c=>{
+    const schema=S.formSchemas[c.case_type]||[];
+    const data=c.case_data||{};
+    schema.filter(f=>f.type==='date'&&data[f.id]).forEach(f=>eventDates.add(data[f.id]));
+  });
+
+  // 7-day strip centred on selected date
+  const centre=parsePlannerDate(S.plannerDate);
+  const todayStr=localDateStr();
+  const days=[];
+  for(let i=-3;i<=3;i++){
+    const d=new Date(centre.getTime());
+    d.setDate(d.getDate()+i);
+    days.push(d);
+  }
+
+  const DAY_LABELS=['Su','Mo','Tu','We','Th','Fr','Sa'];
+  cnt.innerHTML=`<div style="display:flex;gap:4px;justify-content:center;margin-bottom:16px;">${
+    days.map(d=>{
+      const ds=localDateStr(d);
+      const isToday=ds===todayStr;
+      const isSelected=ds===S.plannerDate;
+      const hasEvent=eventDates.has(ds);
+      return `<div onclick="S.plannerDate='${ds}';renderPlanner()"
+        style="
+          display:flex;flex-direction:column;align-items:center;gap:3px;
+          padding:6px 8px;border-radius:10px;cursor:pointer;min-width:36px;
+          background:${isSelected?'var(--navy)':'transparent'};
+          border:1.5px solid ${isSelected?'var(--navy)':isToday?'var(--gold)':'transparent'};
+        ">
+        <span style="font-size:10px;color:${isSelected?'rgba(255,255,255,.6)':'var(--text-muted)'};">
+          ${DAY_LABELS[d.getDay()]}
+        </span>
+        <span style="font-size:13px;font-weight:600;color:${isSelected?'#fff':isToday?'var(--navy)':'var(--text-primary)'};">
+          ${d.getDate()}
+        </span>
+        <span style="
+          width:6px;height:6px;border-radius:50%;
+          background:${hasEvent?'#f56565':'transparent'};
+          visibility:${hasEvent?'visible':'hidden'};
+        "></span>
+      </div>`;
+    }).join('')
+  }</div>`;
+}
+
+// ── Manual notes ─────────────────────────────────────────────────────────
 async function loadPlannerNotes(){
-  const {data,error}=await sb.from('planner_notes').select('*').eq('owner_id',S.user.id).eq('note_date',S.plannerDate).order('created_at',{ascending:true});
-  if(error){ console.error('loadPlannerNotes failed:',error); S.plannerNotes=[]; }
+  const {data,error}=await sb.from('planner_notes')
+    .select('*').eq('owner_id',S.user.id).eq('note_date',S.plannerDate)
+    .order('created_at',{ascending:true});
+  if(error){ console.error('loadPlannerNotes:',error); S.plannerNotes=[]; }
   else S.plannerNotes=data||[];
   renderPlannerNotes();
 }
 function renderPlannerNotes(){
   const cnt=document.getElementById('planner-notes-list');
   if(!cnt)return;
-  if(!S.plannerNotes.length){ cnt.innerHTML='<p class="text-muted text-sm">No notes for this day yet.</p>'; return; }
+  if(!S.plannerNotes.length){
+    cnt.innerHTML='<p class="text-muted text-sm">No notes for this day yet.</p>';
+    return;
+  }
   cnt.innerHTML=S.plannerNotes.map(n=>`
     <div class="planner-note-item ${n.done?'done':''}">
-      <i class="fa-solid ${n.done?'fa-square-check':'fa-square'} planner-note-check" style="color:${n.done?'var(--success)':'var(--text-muted)'};" onclick="togglePlannerNote('${n.id}',${!n.done})"></i>
-      <div class="planner-note-text">${n.time?`<span class="planner-note-time">${escHtml(n.time)}</span>`:''}${escHtml(n.content)}</div>
-      <button class="file-item-remove" onclick="deletePlannerNote('${n.id}')"><i class="fas fa-times"></i></button>
+      <i class="fa-solid ${n.done?'fa-square-check':'fa-square'} planner-note-check"
+         style="color:${n.done?'var(--success)':'var(--text-muted)'};"
+         onclick="togglePlannerNote('${n.id}',${!n.done})"></i>
+      <div class="planner-note-text" style="flex:1;">
+        ${n.time?`<span class="planner-note-time">${escHtml(n.time)} &nbsp;</span>`:''}${escHtml(n.content)}
+      </div>
+      <button class="file-item-remove" onclick="deletePlannerNote('${n.id}')">
+        <i class="fas fa-times"></i>
+      </button>
     </div>`).join('');
 }
 async function addPlannerNote(){
@@ -3132,9 +3183,10 @@ async function addPlannerNote(){
   const timeInput=document.getElementById('planner-note-time');
   const content=(input.value||'').trim();
   if(!content)return;
-  const {error}=await sb.from('planner_notes').insert({owner_id:S.user.id,note_date:S.plannerDate,time:timeInput.value||null,content});
+  const {error}=await sb.from('planner_notes')
+    .insert({owner_id:S.user.id,note_date:S.plannerDate,time:timeInput.value||null,content});
   if(error){showToast('Could not add note: '+error.message,'error');return;}
-  input.value='';timeInput.value='';
+  input.value=''; timeInput.value='';
   await loadPlannerNotes();
 }
 async function togglePlannerNote(id,done){
@@ -3250,6 +3302,549 @@ async function oneDriveGetFileLink(path){
   const data=await res.json();
   return data.webUrl||null;
 }
+</script>
+<script>
+// ════════════════════════════════════════════
+//  NOTIFICATIONS, UNREAD COUNTS & SMART POLLING
+// ════════════════════════════════════════════
+// Architecture:
+//   • Background poll every 30s checks for new messages & tasks
+//     while ANY view is open — no manual refresh needed.
+//   • When chat or tasks view is ACTIVE, tightens to 5s.
+//   • Unread counts are tracked locally in S.unreadCounts:
+//       { 'broadcast': N, [userId]: N }
+//   • Browser push notifications request permission once on first
+//     new message/task arrival, then show natively even when the
+//     tab is backgrounded.
+//   • Sidebar badges update live without page reload.
+
+S.unreadCounts  = S.unreadCounts  || {};  // { peerId → count }
+S.lastSeenMsgId = S.lastSeenMsgId || {};  // { peerId → message_id } persisted in localStorage
+S.lastSeenTaskTs= S.lastSeenTaskTs|| localStorage.getItem('ld_last_task_ts')||'';
+S.notifPermission = S.notifPermission || Notification.permission;
+S._pollTimer = null;
+S._fastPollTimer = null;
+
+// ── Permission ───────────────────────────────────────────────────────────
+async function requestNotifPermission(){
+  if(S.notifPermission==='granted') return true;
+  if(S.notifPermission==='denied')  return false;
+  const result=await Notification.requestPermission();
+  S.notifPermission=result;
+  return result==='granted';
+}
+
+function sendBrowserNotif(title,body,onClick){
+  if(S.notifPermission!=='granted') return;
+  const n=new Notification(title,{
+    body,
+    icon:'/favicon.ico',
+    badge:'/favicon.ico',
+    tag:title               // deduplicate same-title notifs
+  });
+  if(onClick) n.onclick=()=>{ window.focus(); onClick(); n.close(); };
+}
+
+// ── Load persisted last-seen state ────────────────────────────────────────
+function loadLastSeenState(){
+  try{
+    const stored=JSON.parse(localStorage.getItem('ld_last_seen_msgs')||'{}');
+    S.lastSeenMsgId=stored;
+  }catch{ S.lastSeenMsgId={}; }
+}
+function saveLastSeenState(){
+  try{ localStorage.setItem('ld_last_seen_msgs',JSON.stringify(S.lastSeenMsgId)); }catch{}
+}
+
+// ── Mark a conversation as read ───────────────────────────────────────────
+// Called when the user actually opens a chat peer or sees its messages.
+async function markConversationRead(peerId){
+  // peerId is null for broadcast ("Team Channel") or a user uuid for DM
+  const key=peerId===null?'broadcast':peerId;
+  const msgs=S.messages; // already loaded for this peer
+  if(!msgs.length) return;
+
+  const latestId=msgs[msgs.length-1].id;
+  S.lastSeenMsgId[key]=latestId;
+  saveLastSeenState();
+
+  // Insert read receipts for all unread messages in this conversation
+  const unread=msgs.filter(m=>
+    m.sender_id!==S.user?.id &&
+    !m.deleted
+  );
+  if(unread.length){
+    // upsert so re-viewing doesn't create duplicates
+    await sb.from('message_reads').upsert(
+      unread.map(m=>({message_id:m.id, user_id:S.user.id})),
+      {onConflict:'message_id,user_id',ignoreDuplicates:true}
+    );
+  }
+
+  // Clear local badge for this peer
+  S.unreadCounts[key]=0;
+  updateAllChatBadges();
+}
+
+// ── Compute unread counts from DB ─────────────────────────────────────────
+async function refreshUnreadCounts(){
+  if(!S.user) return;
+
+  // Fetch all messages I can see that are:
+  //   a) not sent by me
+  //   b) not deleted
+  //   c) not already in message_reads for me
+  const {data:unreadMsgs,error}=await sb.from('messages')
+    .select('id,sender_id,recipient_id,created_at')
+    .neq('sender_id',S.user.id)
+    .eq('deleted',false)
+    .not('id','in',
+      // sub-select read ids — Supabase JS doesn't support true subqueries,
+      // so we fetch the read ids first and exclude them
+      `(select message_id from message_reads where user_id='${S.user.id}')`
+    );
+
+  // The above sub-select syntax isn't supported in Supabase JS client.
+  // Use two queries instead:
+  const {data:readRows}=await sb.from('message_reads')
+    .select('message_id').eq('user_id',S.user.id);
+  const readSet=new Set((readRows||[]).map(r=>r.message_id));
+
+  const {data:allVisible}=await sb.from('messages')
+    .select('id,sender_id,recipient_id,created_at')
+    .neq('sender_id',S.user.id)
+    .eq('deleted',false)
+    .order('created_at',{ascending:false})
+    .limit(500);
+
+  const newCounts={};
+  (allVisible||[]).forEach(m=>{
+    if(readSet.has(m.id)) return;
+    // broadcast
+    if(m.recipient_id===null){
+      newCounts['broadcast']=(newCounts['broadcast']||0)+1;
+    } else {
+      // DM — key is the sender's id (the other party)
+      newCounts[m.sender_id]=(newCounts[m.sender_id]||0)+1;
+    }
+  });
+
+  const prevCounts={...S.unreadCounts};
+  S.unreadCounts=newCounts;
+  updateAllChatBadges();
+  return {newCounts,prevCounts};
+}
+
+// ── Update every badge in the sidebar ────────────────────────────────────
+function updateAllChatBadges(){
+  // Total unread = sum of all conversations
+  const total=Object.values(S.unreadCounts).reduce((a,b)=>a+(b||0),0);
+  const chatNavBadge=document.getElementById('chat-nav-badge');
+  if(chatNavBadge){
+    chatNavBadge.textContent=total||'';
+    chatNavBadge.style.display=total?'inline-block':'none';
+  }
+
+  // Per-contact badges in the chat contact list
+  S.users.filter(u=>u.id!==S.user?.id).forEach(u=>{
+    const badge=document.getElementById(`chat-badge-${u.id}`);
+    const count=S.unreadCounts[u.id]||0;
+    if(badge){ badge.textContent=count||''; badge.style.display=count?'inline-flex':'none'; }
+  });
+  const broadcastBadge=document.getElementById('chat-badge-broadcast');
+  const bc=S.unreadCounts['broadcast']||0;
+  if(broadcastBadge){ broadcastBadge.textContent=bc||''; broadcastBadge.style.display=bc?'inline-flex':'none'; }
+}
+
+// ── Check for genuinely new items and fire notifications ──────────────────
+async function checkForNewItems(){
+  if(!S.user) return;
+  const {newCounts,prevCounts}=await refreshUnreadCounts()||{newCounts:{},prevCounts:{}};
+  if(!newCounts) return;
+
+  // New messages — fire one browser notification per conversation that grew
+  for(const [key,count] of Object.entries(newCounts)){
+    const prev=prevCounts[key]||0;
+    if(count>prev){
+      const delta=count-prev;
+      const label=key==='broadcast'?'Team Channel':
+        (S.users.find(u=>u.id===key)?.full_name||'Someone');
+      const granted=await requestNotifPermission();
+      if(granted){
+        sendBrowserNotif(
+          `${delta} new message${delta>1?'s':''} from ${label}`,
+          'LexDesk — tap to open',
+          ()=>{ navigate('chat'); selectChatPeer(key==='broadcast'?null:key); }
+        );
+      }
+      // In-app toast only if chat isn't already open
+      if(!document.getElementById('view-chat')?.classList.contains('active')){
+        showToast(`${delta} new message${delta>1?'s':''} from ${label}`,'info');
+      }
+    }
+  }
+
+  // New tasks assigned to me since last check
+  if(S.lastSeenTaskTs){
+    const {data:newTasks}=await sb.from('tasks')
+      .select('id,title,assigned_by')
+      .eq('assigned_to',S.user.id)
+      .gt('created_at',S.lastSeenTaskTs);
+    if(newTasks&&newTasks.length){
+      const granted=await requestNotifPermission();
+      newTasks.forEach(t=>{
+        const by=S.users.find(u=>u.id===t.assigned_by)?.full_name||'Senior Advocate';
+        if(granted){
+          sendBrowserNotif(
+            `New task from ${by}`,
+            t.title,
+            ()=>{ navigate('tasks'); openTaskModal(t.id); }
+          );
+        }
+        if(!document.getElementById('view-tasks')?.classList.contains('active')){
+          showToast(`New task from ${by}: "${t.title}"`,'info');
+        }
+      });
+    }
+  }
+
+  // New task status changes (e.g. Admin reviewed and sent for rework)
+  if(S.lastSeenTaskTs){
+    const {data:statusChanges}=await sb.from('tasks')
+      .select('id,title,status,assigned_by,assigned_to')
+      .eq('assigned_to',S.user.id)
+      .gt('updated_at',S.lastSeenTaskTs)
+      .neq('status','open');  // open = just created, already handled above
+    if(statusChanges&&statusChanges.length){
+      const granted=await requestNotifPermission();
+      statusChanges.forEach(t=>{
+        const statusLabel={in_progress:'started',in_review:'under review',done:'approved & closed',cancelled:'cancelled',open:'reopened'}[t.status]||t.status;
+        if(granted){
+          sendBrowserNotif(`Task ${statusLabel}`,t.title,()=>{ navigate('tasks'); openTaskModal(t.id); });
+        }
+        if(!document.getElementById('view-tasks')?.classList.contains('active')){
+          showToast(`Task "${t.title}" — ${statusLabel}`,'info');
+        }
+      });
+    }
+  }
+
+  // Update last-seen task timestamp
+  S.lastSeenTaskTs=new Date().toISOString();
+  localStorage.setItem('ld_last_task_ts',S.lastSeenTaskTs);
+}
+
+// ── Polling scheduler ─────────────────────────────────────────────────────
+// Background: 30s always.
+// Active view: tightens to 5s when chat or tasks is the active view.
+function startPolling(){
+  // Clear any existing timers
+  if(S._pollTimer)    clearInterval(S._pollTimer);
+  if(S._fastPollTimer)clearInterval(S._fastPollTimer);
+
+  // Background poll — always runs, 30s
+  S._pollTimer=setInterval(async ()=>{
+    if(!S.user)return;
+    await checkForNewItems();
+    // Refresh tasks data for kanban if tasks view is not active
+    // (if it IS active, the fast poll handles it below)
+    if(!document.getElementById('view-tasks')?.classList.contains('active')){
+      const {data}=await sb.from('tasks').select('*').order('created_at',{ascending:false});
+      if(data) S.tasks=data;
+      updateStats();
+    }
+  },30000);
+
+  // Fast poll — 5s, only runs while chat or tasks view is active
+  S._fastPollTimer=setInterval(async ()=>{
+    if(!S.user)return;
+    const chatActive=document.getElementById('view-chat')?.classList.contains('active');
+    const tasksActive=document.getElementById('view-tasks')?.classList.contains('active');
+    if(chatActive){
+      await loadMessages();
+      renderChatMessages();
+      await refreshUnreadCounts();
+      updateAllChatBadges();
+    }
+    if(tasksActive){
+      const {data}=await sb.from('tasks').select('*').order('created_at',{ascending:false});
+      if(data){ S.tasks=data; renderTasks(); updateStats(); }
+    }
+  },5000);
+}
+</script>
+<script>
+// ════════════════════════════════════════════
+//  NOTES — private rich-text documents, shareable with
+//  viewer/editor permissions per person, with full history.
+//  Owner sees their own change history.
+//  Senior Advocate sees firm-wide activity feed.
+// ════════════════════════════════════════════
+S.notes       = S.notes       || [];
+S.noteShares  = S.noteShares  || {};   // note_id → [{shared_with, permission, ...}]
+S.editingNoteId = S.editingNoteId || null;
+
+// ── Load all notes visible to me ─────────────────────────────────────────
+async function loadNotes(){
+  const {data,error}=await sb.from('notes').select('*').order('updated_at',{ascending:false});
+  if(error){ console.error('loadNotes:',error); return; }
+  S.notes=data||[];
+}
+
+// ── Render notes grid ─────────────────────────────────────────────────────
+function renderNotes(){
+  const grid=document.getElementById('notes-grid');
+  const empty=document.getElementById('notes-empty');
+  if(!grid)return;
+  if(!S.notes.length){ grid.innerHTML=''; if(empty)empty.style.display='block'; return; }
+  if(empty)empty.style.display='none';
+
+  grid.innerHTML=S.notes.map(n=>{
+    const isOwner=n.owner_id===S.user?.id;
+    const owner=S.users.find(u=>u.id===n.owner_id);
+    const preview=n.content.replace(/<[^>]+>/g,' ').slice(0,120);
+    return `<div class="template-card" onclick="openNoteEditor('${n.id}')">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px;">
+        <div class="template-card-title">${escHtml(n.title)}</div>
+        ${isOwner?'<span class="badge badge-admin" style="font-size:10px;flex-shrink:0;">Owner</span>':'<span class="badge badge-assistant" style="font-size:10px;flex-shrink:0;">Shared</span>'}
+      </div>
+      <div class="template-card-meta">By ${owner?owner.full_name:'—'} · ${fmtDT(n.updated_at)}</div>
+      <div class="template-preview">${preview}…</div>
+      <div style="display:flex;gap:8px;margin-top:12px;" onclick="event.stopPropagation()">
+        <button class="btn btn-gold btn-sm" onclick="openNoteEditor('${n.id}')"><i class="fas fa-edit"></i> Open</button>
+        ${isOwner?`<button class="btn btn-outline btn-sm" onclick="openNoteShareModal('${n.id}')"><i class="fas fa-share-alt"></i> Share</button>`:''}
+        ${isOwner?`<button class="btn btn-danger btn-sm" onclick="deleteNote('${n.id}')"><i class="fas fa-trash"></i></button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Open note editor modal ────────────────────────────────────────────────
+function openNoteEditor(noteId=null){
+  S.editingNoteId=noteId;
+  if(noteId){
+    const n=S.notes.find(x=>x.id===noteId);
+    if(!n)return;
+    document.getElementById('note-modal-title').textContent=n.title;
+    document.getElementById('note-title-input').value=n.title;
+    document.getElementById('note-content-editor').innerHTML=n.content;
+    // Check if user can edit
+    const isOwner=n.owner_id===S.user?.id;
+    // Check editor permission from shares (already loaded or fetch inline)
+    loadNoteEditorAccess(noteId,isOwner);
+    renderNoteHistory(noteId);
+  } else {
+    document.getElementById('note-modal-title').textContent='New Note';
+    document.getElementById('note-title-input').value='';
+    document.getElementById('note-content-editor').innerHTML='';
+    document.getElementById('note-history-section').style.display='none';
+    document.getElementById('note-save-btn').style.display='inline-flex';
+    document.getElementById('note-content-editor').contentEditable='true';
+    document.getElementById('note-rich-toolbar').style.display='flex';
+  }
+  openModal('modal-note');
+}
+
+async function loadNoteEditorAccess(noteId,isOwner){
+  // Determine if viewer or editor
+  let canEdit=isOwner;
+  if(!isOwner){
+    const {data}=await sb.from('note_shares')
+      .select('permission').eq('note_id',noteId).eq('shared_with',S.user.id).maybeSingle();
+    canEdit=data?.permission==='editor';
+  }
+  const editor=document.getElementById('note-content-editor');
+  const toolbar=document.getElementById('note-rich-toolbar');
+  const saveBtn=document.getElementById('note-save-btn');
+  if(editor) editor.contentEditable=canEdit?'true':'false';
+  if(toolbar) toolbar.style.display=canEdit?'flex':'none';
+  if(saveBtn) saveBtn.style.display=canEdit?'inline-flex':'none';
+  if(!canEdit && editor){
+    editor.style.background='var(--bg)';
+    editor.style.cursor='default';
+  }
+}
+
+async function renderNoteHistory(noteId){
+  const histSection=document.getElementById('note-history-section');
+  const histList=document.getElementById('note-history-list');
+  if(!histSection||!histList)return;
+  const n=S.notes.find(x=>x.id===noteId);
+  const isOwner=n?.owner_id===S.user?.id;
+  if(!isOwner){ histSection.style.display='none'; return; }
+  histSection.style.display='block';
+  const {data}=await sb.from('note_history')
+    .select('*').eq('note_id',noteId).order('changed_at',{ascending:false}).limit(10);
+  if(!data||!data.length){ histList.innerHTML='<p class="text-muted text-sm">No edits yet.</p>'; return; }
+  histList.innerHTML=data.map(h=>{
+    const who=S.users.find(u=>u.id===h.changed_by);
+    return `<div style="padding:7px 0;border-bottom:1px solid var(--border-light);">
+      <span style="font-size:12px;color:var(--text-muted);">${fmtDT(h.changed_at)} · ${who?who.full_name:'Unknown'}</span>
+    </div>`;
+  }).join('');
+}
+
+async function saveNote(){
+  const title=(document.getElementById('note-title-input').value||'').trim();
+  const content=document.getElementById('note-content-editor').innerHTML;
+  if(!title){ showToast('Note title is required.','error'); return; }
+
+  if(S.editingNoteId){
+    // Save history snapshot before overwriting
+    const existing=S.notes.find(x=>x.id===S.editingNoteId);
+    if(existing){
+      await sb.from('note_history').insert({
+        note_id:S.editingNoteId, changed_by:S.user.id, snapshot:existing.content
+      });
+      // Log to activity_log
+      await sb.from('activity_log').insert({
+        actor_id:S.user.id, action:'note_edited',
+        entity_type:'note', entity_id:S.editingNoteId,
+        detail:{title}
+      });
+    }
+    const {error}=await sb.from('notes')
+      .update({title,content,updated_at:new Date().toISOString()}).eq('id',S.editingNoteId);
+    if(error){ showToast('Save failed: '+error.message,'error'); return; }
+    showToast('Note saved.','success');
+  } else {
+    const {data,error}=await sb.from('notes')
+      .insert({owner_id:S.user.id,title,content}).select().single();
+    if(error){ showToast('Create failed: '+error.message,'error'); return; }
+    S.editingNoteId=data.id;
+    showToast('Note created.','success');
+    await sb.from('activity_log').insert({
+      actor_id:S.user.id, action:'note_created',
+      entity_type:'note', entity_id:data.id, detail:{title}
+    });
+  }
+  closeModal('modal-note');
+  await loadNotes();
+  renderNotes();
+}
+
+async function deleteNote(id){
+  if(!confirm('Delete this note permanently? This cannot be undone.'))return;
+  const {error}=await sb.from('notes').delete().eq('id',id);
+  if(error){ showToast('Delete failed: '+error.message,'error'); return; }
+  S.notes=S.notes.filter(x=>x.id!==id);
+  renderNotes();
+  showToast('Note deleted.','warning');
+}
+
+// ── Share modal ───────────────────────────────────────────────────────────
+async function openNoteShareModal(noteId){
+  S.sharingNoteId=noteId;
+  const n=S.notes.find(x=>x.id===noteId);
+  document.getElementById('note-share-title').textContent=n?`Share "${n.title}"`:' Share Note';
+
+  // Build people picker (everyone except owner)
+  const sel=document.getElementById('note-share-user');
+  const others=S.users.filter(u=>u.id!==S.user?.id);
+  sel.innerHTML=others.map(u=>`<option value="${u.id}">${u.full_name} (${u.role})</option>`).join('');
+
+  // Load current shares
+  await renderCurrentShares(noteId);
+  openModal('modal-note-share');
+}
+
+async function renderCurrentShares(noteId){
+  const cnt=document.getElementById('note-current-shares');
+  const {data}=await sb.from('note_shares').select('*').eq('note_id',noteId);
+  S.noteShares[noteId]=data||[];
+  if(!data||!data.length){
+    cnt.innerHTML='<p class="text-muted text-sm">Not shared with anyone yet.</p>';
+    return;
+  }
+  cnt.innerHTML=data.map(s=>{
+    const who=S.users.find(u=>u.id===s.shared_with);
+    return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-light);">
+      <div style="flex:1;font-size:13.5px;">${who?who.full_name:'Unknown'}</div>
+      <select class="form-control" style="width:auto;font-size:12px;" onchange="updateSharePermission('${noteId}','${s.shared_with}',this.value)">
+        <option value="viewer" ${s.permission==='viewer'?'selected':''}>Viewer</option>
+        <option value="editor" ${s.permission==='editor'?'selected':''}>Editor</option>
+      </select>
+      <button class="btn btn-danger btn-xs btn-icon" onclick="revokeShare('${noteId}','${s.shared_with}')"><i class="fas fa-times"></i></button>
+    </div>`;
+  }).join('');
+}
+
+async function addNoteShare(){
+  const noteId=S.sharingNoteId;
+  const userId=document.getElementById('note-share-user').value;
+  const perm=document.getElementById('note-share-perm').value;
+  if(!userId||!noteId)return;
+  const {error}=await sb.from('note_shares').upsert(
+    {note_id:noteId, shared_with:userId, permission:perm, shared_by:S.user.id},
+    {onConflict:'note_id,shared_with'}
+  );
+  if(error){ showToast('Share failed: '+error.message,'error'); return; }
+  await sb.from('activity_log').insert({
+    actor_id:S.user.id, action:'note_shared',
+    entity_type:'note', entity_id:noteId,
+    detail:{shared_with:userId, permission:perm}
+  });
+  await renderCurrentShares(noteId);
+  showToast('Shared successfully.','success');
+  // Option: also send a chat message with an internal link to the note
+  const sendToChat=document.getElementById('note-share-send-chat').checked;
+  if(sendToChat){
+    const n=S.notes.find(x=>x.id===noteId);
+    const body=`📝 Shared a note with you: "${n?.title||'Note'}" (${perm} access)`;
+    await sb.from('messages').insert({
+      sender_id:S.user.id, recipient_id:userId, body, note_id:noteId
+    });
+    showToast('Also sent as a chat message.','success');
+  }
+}
+
+async function updateSharePermission(noteId,userId,perm){
+  const {error}=await sb.from('note_shares')
+    .update({permission:perm}).eq('note_id',noteId).eq('shared_with',userId);
+  if(error){ showToast('Update failed: '+error.message,'error'); return; }
+  await sb.from('activity_log').insert({
+    actor_id:S.user.id, action:'note_permission_changed',
+    entity_type:'note', entity_id:noteId,
+    detail:{shared_with:userId, new_permission:perm}
+  });
+  showToast('Permission updated.','success');
+}
+
+async function revokeShare(noteId,userId){
+  if(!confirm('Remove this person\'s access to the note?'))return;
+  const {error}=await sb.from('note_shares')
+    .delete().eq('note_id',noteId).eq('shared_with',userId);
+  if(error){ showToast('Revoke failed: '+error.message,'error'); return; }
+  await renderCurrentShares(noteId);
+  showToast('Access revoked.','warning');
+}
+
+// ── Activity log (admin = client changes; note owner = their note changes) ──
+async function loadActivityLog(){
+  const cnt=document.getElementById('activity-log-list');
+  if(!cnt)return;
+  const {data,error}=await sb.from('activity_log')
+    .select('*').order('created_at',{ascending:false}).limit(100);
+  if(error){ cnt.innerHTML=`<p class="text-muted text-sm">Could not load activity.</p>`; return; }
+  if(!data||!data.length){ cnt.innerHTML='<p class="text-muted text-sm">No activity yet.</p>'; return; }
+  const ACTION_LABELS={
+    client_updated:'Updated client',client_created:'Added client',
+    note_created:'Created note',note_edited:'Edited note',
+    note_shared:'Shared note',note_permission_changed:'Changed note permission'
+  };
+  cnt.innerHTML=data.map(e=>{
+    const actor=S.users.find(u=>u.id===e.actor_id);
+    const label=ACTION_LABELS[e.action]||e.action;
+    const detail=e.detail?Object.entries(e.detail).map(([k,v])=>`${k}: ${v}`).join(' · '):'';
+    return `<div style="padding:9px 0;border-bottom:1px solid var(--border-light);">
+      <div style="font-size:13px;font-weight:500;">${actor?actor.full_name:'Unknown'} — ${label}</div>
+      <div style="font-size:11.5px;color:var(--text-muted);">${fmtDT(e.created_at)}${detail?' · '+detail:''}</div>
+    </div>`;
+  }).join('');
+}
+
+// Rich text helpers for the note editor
+function noteCmd(cmd){ document.execCommand(cmd,false,null); document.getElementById('note-content-editor').focus(); }
 </script>
 <script>
 // ════════════════════════════════════════════
