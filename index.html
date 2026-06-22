@@ -250,6 +250,58 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .payment-row-amount{font-size:14px;font-weight:600;color:var(--success)}
 .payment-row-meta{font-size:11.5px;color:var(--text-muted)}
 @media(max-width:480px){.fee-summary-grid{grid-template-columns:1fr}}
+/* ── Sidebar custom scrollbar ── */
+#sidebar{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}
+#sidebar::-webkit-scrollbar{width:4px}
+#sidebar::-webkit-scrollbar-track{background:transparent}
+#sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:4px}
+#sidebar::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.26)}
+.sidebar-nav::-webkit-scrollbar{width:3px}
+.sidebar-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+/* ── Monthly calendar ── */
+.cal-layout{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
+.cal-grid-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border-light)}
+.cal-nav-title{font-size:16px;font-weight:700;color:var(--text-primary)}
+.cal-day-labels{display:grid;grid-template-columns:repeat(7,1fr);background:var(--bg);border-bottom:1px solid var(--border)}
+.cal-day-label{padding:8px 0;text-align:center;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr)}
+.cal-cell{min-height:82px;padding:6px 7px;border-right:1px solid var(--border-light);border-bottom:1px solid var(--border-light);cursor:pointer;transition:background .1s;overflow:hidden}
+.cal-cell:nth-child(7n){border-right:none}
+.cal-cell:hover{background:#f0f4ff}
+.cal-cell.today{background:var(--gold-pale)}
+.cal-cell.selected{background:#e8eeff;outline:2px solid var(--navy-mid);outline-offset:-2px}
+.cal-cell.other-month .cal-date{opacity:.35}
+.cal-date{font-size:12px;font-weight:600;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:50%;margin-bottom:3px}
+.cal-cell.today .cal-date{background:var(--navy);color:var(--gold)}
+.cal-dots{display:flex;flex-wrap:wrap;gap:2px;margin-top:2px}
+.cal-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.cal-dot.task{background:#805ad5}.cal-dot.deadline{background:#f56565}.cal-dot.hearing{background:#4299e1}.cal-dot.event{background:var(--gold)}
+.cal-event-pill{font-size:10px;padding:1px 5px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:block;margin-top:2px;line-height:1.4}
+.cal-event-pill.task-pill{background:#e9d8fd;color:#553c9a}
+.cal-event-pill.deadline-pill{background:#fed7d7;color:#9b2c2c}
+.cal-event-pill.hearing-pill{background:#bee3f8;color:#2a4365}
+.cal-event-pill.event-pill{background:var(--gold-pale);color:#744210}
+.cal-detail-panel{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;position:sticky;top:80px;max-height:calc(100vh - 120px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.cal-detail-date{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border-light)}
+.cal-detail-section{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--text-muted);margin:14px 0 6px}
+.cal-detail-item{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(--border-light);font-size:13px}
+.cal-detail-item:last-child{border-bottom:none}
+.cal-detail-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+/* ── Finances ── */
+.fin-summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.fin-client-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border-light);cursor:pointer;transition:background .1s}
+.fin-client-row:hover{background:#f7f8ff}.fin-client-row.expanded{background:#f0f4ff}
+.fin-progress-wrap{flex:1;min-width:80px}
+.fin-progress-label{font-size:11px;color:var(--text-muted);margin-bottom:3px;display:flex;justify-content:space-between}
+.fin-ledger{background:var(--bg);padding:12px 16px 12px 44px;border-bottom:1px solid var(--border-light)}
+.fin-ledger-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:12.5px;border-bottom:1px solid var(--border-light)}
+.fin-ledger-row:last-child{border-bottom:none}
+.fin-badge-paid{background:var(--success-bg);color:var(--success);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500}
+.fin-badge-partial{background:var(--warning-bg);color:var(--warning);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500}
+.fin-badge-unpaid{background:var(--danger-bg);color:var(--danger);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500}
+@media(max-width:1024px){.cal-layout{grid-template-columns:1fr}.cal-detail-panel{position:static;max-height:none}.fin-summary-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.cal-cell{min-height:52px;padding:3px 4px}.cal-event-pill{display:none}.fin-summary-grid{grid-template-columns:1fr}}
 .settings-wrap{display:flex;flex-direction:column;gap:18px;max-width:760px}
 .settings-section{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
 .settings-section-head{padding:14px 18px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;gap:10px}
@@ -490,39 +542,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- DAILY PLANNER -->
-      <div class="page-view" id="view-planner">
-        <div class="card mb-4">
-          <div class="card-header">
-            <span class="card-title"><i class="fas fa-calendar-day" style="color:var(--gold);"></i> <span id="planner-date-label">Today</span></span>
-            <div style="display:flex;gap:8px;align-items:center;">
-              <button class="btn btn-outline btn-sm btn-icon" onclick="shiftPlannerMonth(-1)"><i class="fas fa-chevron-left"></i></button>
-              <input class="form-control" id="planner-date-input" type="date" style="width:auto;" onchange="onPlannerDateChange()"/>
-              <button class="btn btn-outline btn-sm btn-icon" onclick="shiftPlannerMonth(1)"><i class="fas fa-chevron-right"></i></button>
-              <button class="btn btn-gold btn-sm" onclick="goToToday()">Today</button>
-            </div>
-          </div>
-        </div>
-        <div class="dash-grid" style="grid-template-columns:1fr 1fr;">
-          <div class="card">
-            <div class="card-header"><span class="card-title"><i class="fas fa-bolt" style="color:var(--gold);"></i> Agenda (auto)</span></div>
-            <div class="card-body" id="planner-agenda"></div>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              <span class="card-title"><i class="fas fa-sticky-note" style="color:var(--gold);"></i> Notes & To-Dos</span>
-            </div>
-            <div class="card-body">
-              <div style="display:flex;gap:8px;margin-bottom:14px;">
-                <input class="form-control" id="planner-note-time" type="text" placeholder="Time (optional)" style="max-width:120px;"/>
-                <input class="form-control" id="planner-note-input" type="text" placeholder="Add a note or to-do…" onkeydown="if(event.key==='Enter')addPlannerNote()"/>
-                <button class="btn btn-gold btn-icon" onclick="addPlannerNote()"><i class="fas fa-plus"></i></button>
-              </div>
-              <div id="planner-notes-list"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+
 
       <!-- CLIENTS -->
       <div class="page-view" id="view-clients">
@@ -548,30 +568,47 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
         <div id="deadlines-list"></div>
       </div>
-      <!-- DAILY PLANNER -->
+      <!-- DAILY PLANNER (monthly grid + day detail panel) -->
       <div class="page-view" id="view-planner">
-        <div class="planner-layout">
-          <div class="planner-cal-wrap">
-            <div class="planner-cal-nav">
+        <div class="cal-layout">
+          <!-- Left: monthly calendar -->
+          <div class="cal-grid-wrap">
+            <div class="cal-nav">
               <button class="btn btn-outline btn-icon" onclick="shiftPlannerMonth(-1)"><i class="fas fa-chevron-left"></i></button>
-              <span id="planner-month-label" style="font-weight:600;font-size:15px;min-width:160px;text-align:center;"></span>
-              <button class="btn btn-outline btn-icon" onclick="shiftPlannerMonth(1)"><i class="fas fa-chevron-right"></i></button>
-              <button class="btn btn-outline btn-sm" onclick="goToToday()">Today</button>
+              <span id="planner-month-label" class="cal-nav-title"></span>
+              <div style="display:flex;gap:6px;">
+                <button class="btn btn-outline btn-sm" onclick="goToToday()">Today</button>
+                <button class="btn btn-outline btn-icon" onclick="shiftPlannerMonth(1)"><i class="fas fa-chevron-right"></i></button>
+              </div>
+            </div>
+            <div class="cal-day-labels">
+              <div class="cal-day-label">Sun</div><div class="cal-day-label">Mon</div>
+              <div class="cal-day-label">Tue</div><div class="cal-day-label">Wed</div>
+              <div class="cal-day-label">Thu</div><div class="cal-day-label">Fri</div>
+              <div class="cal-day-label">Sat</div>
             </div>
             <div id="planner-cal-grid"></div>
-            <div class="planner-cal-legend">
-              <span><span class="cal-dot overdue"></span> Overdue</span>
-              <span><span class="cal-dot deadline"></span> Deadline/Hearing</span>
-              <span><span class="cal-dot todo"></span> Task due</span>
-              <span><span class="cal-dot note"></span> Event/Note</span>
+            <div style="display:flex;gap:14px;padding:10px 14px;border-top:1px solid var(--border-light);font-size:11.5px;color:var(--text-muted);flex-wrap:wrap;">
+              <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#f56565;margin-right:4px;"></span>Deadline/Overdue</span>
+              <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#805ad5;margin-right:4px;"></span>Task due</span>
+              <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#4299e1;margin-right:4px;"></span>Hearing</span>
+              <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-right:4px;"></span>Event/Note</span>
             </div>
           </div>
-          <div class="planner-day-wrap">
-            <div class="planner-day-header">
-              <i class="fas fa-calendar-day" style="color:var(--gold);"></i>
-              <span id="planner-day-label" style="font-weight:600;font-size:14.5px;"></span>
+          <!-- Right: selected day detail -->
+          <div class="cal-detail-panel" id="planner-day-detail">
+            <div class="cal-detail-date" id="planner-day-label">Select a day</div>
+            <div id="planner-day-panel"></div>
+            <div id="cal-add-wrap" style="display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border-light);">
+              <div class="cal-detail-section">Add Note / Event</div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+                <input class="form-control" id="cal-note-time" type="text" placeholder="Time (e.g. 10:00 AM)" style="font-size:12.5px;"/>
+                <div style="display:flex;gap:6px;">
+                  <input class="form-control" id="cal-note-input" type="text" placeholder="Note or event description…" onkeydown="if(event.key==='Enter')calAddNote()" style="font-size:12.5px;flex:1;"/>
+                  <button class="btn btn-gold btn-sm" onclick="calAddNote()"><i class="fas fa-plus"></i></button>
+                </div>
+              </div>
             </div>
-            <div id="planner-day-panel" style="overflow-y:auto;flex:1;padding:16px;"></div>
           </div>
         </div>
       </div>
@@ -1142,7 +1179,7 @@ let S={
   editingTaskId:null, pendingChatFile:null,
   fbActiveCat:null, payingClientId:null, linkedContactId:null,
   notes:[], noteShares:{}, editingNoteId:null, sharingNoteId:null,
-  unreadCount:0,
+  finPayments:[], finExpanded:{},
   paymentsCache:{}
 };
 
@@ -3087,6 +3124,10 @@ async function savePayment(){
   closeModal('modal-payment');
   showToast('Payment recorded.','success');
   await renderPaymentsTab(clientId);
+  // If the firm-wide Finances view is open, refresh it too
+  if(document.getElementById('view-finances')?.classList.contains('active')){
+    await renderFinances();
+  }
 }
 
 async function deletePayment(paymentId,clientId){
@@ -3100,17 +3141,8 @@ async function deletePayment(paymentId,clientId){
 <script>
 // ════════════════════════════════════════════
 //  DAILY PLANNER — monthly grid + day detail panel
+//  BUG FIX: all dates use local time (no toISOString/UTC)
 // ════════════════════════════════════════════
-// Layout: two-column. Left = monthly calendar grid (~60%).
-// Right = selected-day detail panel (~40%) showing agenda
-// items (tasks, deadlines, hearings auto-pulled) plus
-// manual planner notes. Click any day to select it.
-// Dot colours on grid cells:
-//   red    = overdue item
-//   amber  = deadline / hearing that day
-//   blue   = task due that day
-//   green  = manual note / event that day
-
 function localDateStr(d){
   const dt=d||new Date();
   return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
@@ -3119,312 +3151,220 @@ function parsePlannerDate(str){
   const [y,m,d]=str.split('-').map(Number);
   return new Date(y,m-1,d);
 }
-function localMonthStr(d){ // YYYY-MM
+function localMonthStr(d){
   const dt=d||new Date();
   return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}`;
 }
 
-// State
-S.plannerDate      = S.plannerDate  || localDateStr();
-S.plannerMonth     = S.plannerMonth || localMonthStr();  // YYYY-MM currently displayed
-S.plannerNotes     = S.plannerNotes || [];
-S.plannerAllNotes  = S.plannerAllNotes || {}; // dateStr → [notes] for the whole month
+S.plannerDate  = S.plannerDate  || localDateStr();
+S.plannerMonth = S.plannerMonth || localMonthStr();
+S.plannerNotes = S.plannerNotes || [];
 
-// ── Top-level render ─────────────────────────────────────────────────────
 async function renderPlanner(){
-  await loadPlannerMonth();
-  renderPlannerGrid();
-  renderPlannerDayPanel();
+  await renderPlannerGrid();
+  await renderPlannerDayPanel(S.plannerDate);
 }
-
-// ── Load all notes for the displayed month ───────────────────────────────
-async function loadPlannerMonth(){
-  const [y,m]=S.plannerMonth.split('-').map(Number);
-  const firstDay=`${S.plannerMonth}-01`;
-  const lastDay=new Date(y,m,0); // last day of month
-  const lastDayStr=`${y}-${String(m).padStart(2,'0')}-${String(lastDay.getDate()).padStart(2,'0')}`;
-  const {data}=await sb.from('planner_notes')
-    .select('*')
-    .eq('owner_id',S.user.id)
-    .gte('note_date',firstDay)
-    .lte('note_date',lastDayStr)
-    .order('created_at',{ascending:true});
-  S.plannerAllNotes={};
-  (data||[]).forEach(n=>{
-    if(!S.plannerAllNotes[n.note_date]) S.plannerAllNotes[n.note_date]=[];
-    S.plannerAllNotes[n.note_date].push(n);
-  });
-}
-
-// Reload just the selected day's notes
-async function loadPlannerDay(){
-  const {data}=await sb.from('planner_notes')
-    .select('*')
-    .eq('owner_id',S.user.id)
-    .eq('note_date',S.plannerDate)
-    .order('created_at',{ascending:true});
-  S.plannerNotes=data||[];
-  S.plannerAllNotes[S.plannerDate]=S.plannerNotes;
-}
-
-// ── Month navigation ─────────────────────────────────────────────────────
 async function shiftPlannerMonth(delta){
   const [y,m]=S.plannerMonth.split('-').map(Number);
   const d=new Date(y,m-1+delta,1);
   S.plannerMonth=localMonthStr(d);
-  // keep selected date in same month if possible
-  const selDate=parsePlannerDate(S.plannerDate);
-  if(selDate.getFullYear()!==d.getFullYear()||selDate.getMonth()!==d.getMonth()){
-    S.plannerDate=localDateStr(d);
-  }
-  await renderPlanner();
+  await renderPlannerGrid();
 }
 async function goToToday(){
-  const today=new Date();
-  S.plannerMonth=localMonthStr(today);
-  S.plannerDate=localDateStr(today);
+  S.plannerDate=localDateStr();
+  S.plannerMonth=localMonthStr();
   await renderPlanner();
 }
-async function selectPlannerDay(dateStr){
-  S.plannerDate=dateStr;
-  await loadPlannerDay();
-  renderPlannerDayPanel();
-  // Update selected highlight in grid without full re-render
-  document.querySelectorAll('.cal-day').forEach(el=>{
-    el.classList.toggle('selected',el.dataset.date===dateStr);
-  });
-}
 
-// ── Build event map for the month (tasks + case deadlines) ───────────────
-function buildMonthEventMap(){
-  const map={}; // dateStr → { hasTodo, hasDeadline, hasOverdue }
-  const today=localDateStr();
-  // Tasks
-  S.tasks
-    .filter(t=>t.due_date&&(isAdmin()||t.assigned_to===S.user?.id||t.assigned_by===S.user?.id))
-    .forEach(t=>{
-      if(!map[t.due_date]) map[t.due_date]={};
-      map[t.due_date].hasTodo=true;
-      if(t.due_date<today&&t.status!=='done'&&t.status!=='cancelled')
-        map[t.due_date].hasOverdue=true;
-    });
-  // Case deadlines / hearings
+// ── Build calendar event map ──────────────────────────────────────────────
+function buildCalEventMap(){
+  const map={}; // date-str → [{type,label,color}]
+  const add=(ds,type,label,color)=>{
+    if(!map[ds]) map[ds]=[];
+    map[ds].push({type,label,color});
+  };
+  // Tasks due
+  S.tasks.filter(t=>t.due_date&&(isAdmin()||t.assigned_to===S.user?.id||t.assigned_by===S.user?.id))
+    .forEach(t=>add(t.due_date,'task',t.title,'#805ad5'));
+  // Case date fields (deadlines, hearings)
   myClients().forEach(c=>{
     const schema=S.formSchemas[c.case_type]||[];
     const data=c.case_data||{};
     schema.filter(f=>f.type==='date'&&data[f.id]).forEach(f=>{
-      const ds=data[f.id];
-      if(!map[ds]) map[ds]={};
-      map[ds].hasDeadline=true;
-      if(ds<today) map[ds].hasOverdue=true;
+      const isHearing=/hearing|court|appearance/i.test(f.label);
+      add(data[f.id],isHearing?'hearing':'deadline',`${c.name}: ${f.label}`,isHearing?'#4299e1':'#f56565');
     });
-  });
-  // Manual notes
-  Object.keys(S.plannerAllNotes).forEach(ds=>{
-    if(S.plannerAllNotes[ds]?.length){
-      if(!map[ds]) map[ds]={};
-      map[ds].hasNote=true;
-    }
   });
   return map;
 }
 
-// ── Render the monthly grid ───────────────────────────────────────────────
-function renderPlannerGrid(){
-  const cnt=document.getElementById('planner-cal-grid');
-  if(!cnt)return;
-
+// ── Monthly grid render ───────────────────────────────────────────────────
+async function renderPlannerGrid(){
   const [y,m]=S.plannerMonth.split('-').map(Number);
-  const today=localDateStr();
-  const eventMap=buildMonthEventMap();
+  const label=document.getElementById('planner-month-label');
+  if(label) label.textContent=new Date(y,m-1,1).toLocaleDateString('en-IN',{month:'long',year:'numeric'});
 
-  // Month label
-  const monthLabel=document.getElementById('planner-month-label');
-  if(monthLabel){
-    const d=new Date(y,m-1,1);
-    monthLabel.textContent=d.toLocaleDateString('en-IN',{month:'long',year:'numeric'});
-  }
-
-  // Day-of-week headers
-  const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  let html=`<div class="cal-header-row">${DOW.map(d=>`<div class="cal-dow">${d}</div>`).join('')}</div>`;
-
-  // First day of month (0=Sun)
-  const firstDow=new Date(y,m-1,1).getDay();
-  // Total days in month
-  const daysInMonth=new Date(y,m,0).getDate();
-  // Previous month fill
-  const prevMonthDays=new Date(y,m-1,0).getDate();
-
-  html+='<div class="cal-grid">';
-
-  // Leading empty cells (prev month days, greyed out)
-  for(let i=firstDow-1;i>=0;i--){
-    html+=`<div class="cal-day other-month"><span class="cal-day-num">${prevMonthDays-i}</span></div>`;
-  }
-
-  // Current month days
-  for(let day=1;day<=daysInMonth;day++){
-    const ds=`${y}-${String(m).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-    const isToday=ds===today;
-    const isSelected=ds===S.plannerDate;
-    const ev=eventMap[ds]||{};
-
-    // Dot indicators (up to 3 shown)
-    const dots=[];
-    if(ev.hasOverdue)  dots.push('<span class="cal-dot overdue"></span>');
-    if(ev.hasDeadline) dots.push('<span class="cal-dot deadline"></span>');
-    if(ev.hasTodo)     dots.push('<span class="cal-dot todo"></span>');
-    if(ev.hasNote)     dots.push('<span class="cal-dot note"></span>');
-
-    html+=`<div class="cal-day${isToday?' today':''}${isSelected?' selected':''}"
-      data-date="${ds}" onclick="selectPlannerDay('${ds}')">
-      <span class="cal-day-num">${day}</span>
-      <div class="cal-dots">${dots.slice(0,3).join('')}</div>
-    </div>`;
-  }
-
-  // Trailing cells to complete grid
-  const cellsUsed=firstDow+daysInMonth;
-  const remainder=cellsUsed%7===0?0:7-(cellsUsed%7);
-  for(let i=1;i<=remainder;i++){
-    html+=`<div class="cal-day other-month"><span class="cal-day-num">${i}</span></div>`;
-  }
-
-  html+='</div>'; // cal-grid
-  cnt.innerHTML=html;
-}
-
-// ── Render the day detail panel (right side) ─────────────────────────────
-function renderPlannerDayPanel(){
-  const panel=document.getElementById('planner-day-panel');
-  if(!panel)return;
-
-  const d=parsePlannerDate(S.plannerDate);
-  const today=localDateStr();
-  const label=S.plannerDate===today?'Today'
-    :d.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-
-  document.getElementById('planner-day-label').textContent=label;
-
-  // ── Agenda items ──
-  const agenda=[];
-  // Tasks due today
-  S.tasks
-    .filter(t=>t.due_date===S.plannerDate&&(isAdmin()||t.assigned_to===S.user?.id||t.assigned_by===S.user?.id))
-    .forEach(t=>{
-      const assignee=S.users.find(u=>u.id===t.assigned_to);
-      agenda.push({
-        type:'task',icon:'fas fa-tasks',color:'#805ad5',
-        title:t.title,
-        sub:`Task · ${assignee?assignee.full_name:'—'} · ${capitalize(t.status)}`,
-        action:`openTaskModal('${t.id}')`
-      });
-    });
-  // Deadlines/hearings
-  myClients().forEach(c=>{
-    const schema=S.formSchemas[c.case_type]||[];
-    const data=c.case_data||{};
-    schema.filter(f=>f.type==='date'&&data[f.id]===S.plannerDate).forEach(f=>{
-      const isHearing=/hearing|court|appearance/i.test(f.label);
-      agenda.push({
-        type:isHearing?'hearing':'deadline',
-        icon:isHearing?'fas fa-gavel':'fas fa-exclamation-circle',
-        color:isHearing?'#2b6cb0':'#c53030',
-        title:`${c.name} — ${f.label}`,
-        sub:`${isHearing?'Hearing':'Deadline'} · ${c.client_id}`,
-        action:`viewClient('${c.client_id}')`
-      });
-    });
+  // Fetch planner notes for this month
+  const monthStart=`${S.plannerMonth}-01`;
+  const nextM=new Date(y,m,1); // first of next month
+  const monthEnd=`${localMonthStr(nextM)}-01`;
+  const {data:monthNotes}=await sb.from('planner_notes')
+    .select('*').eq('owner_id',S.user.id)
+    .gte('note_date',monthStart).lt('note_date',monthEnd);
+  const notesByDate={};
+  (monthNotes||[]).forEach(n=>{
+    if(!notesByDate[n.note_date]) notesByDate[n.note_date]=[];
+    notesByDate[n.note_date].push(n);
   });
 
-  const agendaHTML=agenda.length
-    ?agenda.map(item=>`
-      <div class="planner-agenda-item" onclick="${item.action}">
-        <div class="planner-agenda-icon" style="background:${item.color}22;color:${item.color};">
-          <i class="${item.icon}"></i>
-        </div>
-        <div style="min-width:0;flex:1;">
-          <div style="font-size:13.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;">${escHtml(item.title)}</div>
-          <div style="font-size:11.5px;color:var(--text-muted);">${item.sub}</div>
-        </div>
-      </div>`).join('')
-    :'<p class="text-muted text-sm">No scheduled items today.</p>';
+  const eventMap=buildCalEventMap();
+  const todayStr=localDateStr();
+  const firstDay=new Date(y,m-1,1).getDay(); // 0=Sun
+  const daysInMonth=new Date(y,m,0).getDate();
+  const prevDays=new Date(y,m-1,0).getDate();
 
-  // ── Manual notes ──
-  const notes=S.plannerNotes;
-  const notesHTML=notes.length
-    ?notes.map(n=>`
-      <div class="planner-note-item ${n.done?'done':''}">
-        <i class="fa-solid ${n.done?'fa-square-check':'fa-square'} planner-note-check"
-           style="color:${n.done?'var(--success)':'var(--text-muted)'};cursor:pointer;flex-shrink:0;"
-           onclick="togglePlannerNote('${n.id}',${!n.done})"></i>
-        <div class="planner-note-text" style="flex:1;min-width:0;">
-          ${n.time?`<span style="font-size:11px;font-weight:600;color:var(--navy-mid);margin-right:6px;">${escHtml(n.time)}</span>`:''}
-          <span>${escHtml(n.content)}</span>
-        </div>
-        <button class="file-item-remove" onclick="deletePlannerNote('${n.id}')">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>`).join('')
-    :'';
-
-  panel.innerHTML=`
-    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-      <input class="form-control" id="planner-note-time" type="text"
-        placeholder="Time (e.g. 10:30 AM)" style="max-width:150px;font-size:13px;"/>
-      <input class="form-control" id="planner-note-input" type="text"
-        placeholder="Add event or note…" style="flex:1;min-width:140px;font-size:13px;"
-        onkeydown="if(event.key==='Enter')addPlannerNote()"/>
-      <button class="btn btn-gold btn-sm" onclick="addPlannerNote()">
-        <i class="fas fa-plus"></i>
-      </button>
-    </div>
-    <div style="margin-bottom:16px;">
-      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);margin-bottom:8px;">AGENDA</div>
-      ${agendaHTML}
-    </div>
-    ${notes.length||true?`
-    <div>
-      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);margin-bottom:8px;">MY EVENTS & NOTES</div>
-      ${notesHTML||'<p class="text-muted text-sm">Nothing added yet — type above and press Enter.</p>'}
-    </div>`:''}`;
+  let html='<div class="cal-grid">';
+  // Leading cells from prev month
+  for(let i=firstDay-1;i>=0;i--){
+    const d=prevDays-i;
+    const ds=`${y}-${String(m-1||12).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    html+=`<div class="cal-cell other-month" onclick="calSelectDay('${ds}')">
+      <div class="cal-date">${d}</div></div>`;
+  }
+  // This month's cells
+  for(let d=1;d<=daysInMonth;d++){
+    const ds=`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday=ds===todayStr;
+    const isSelected=ds===S.plannerDate;
+    const events=eventMap[ds]||[];
+    const notes=notesByDate[ds]||[];
+    const hasOverdue=events.some(e=>e.type==='deadline'&&daysUntil&&daysUntil(ds)<0);
+    const cls=`cal-cell${isToday?' today':''}${isSelected?' selected':''}`;
+    // Show up to 2 pill labels on desktop, dots for all
+    const pills=events.slice(0,2).map(e=>{
+      const pillCls=e.type==='hearing'?'hearing-pill':e.type==='deadline'?'deadline-pill':'task-pill';
+      return `<span class="cal-event-pill ${pillCls}">${escHtml(e.label.slice(0,22))}</span>`;
+    }).join('');
+    const notePills=notes.slice(0,1).map(n=>
+      `<span class="cal-event-pill event-pill">${escHtml(n.content.slice(0,22))}</span>`
+    ).join('');
+    // Dots (always shown including mobile)
+    const dots=[
+      ...events.map(e=>`<span class="cal-dot ${e.type}" style="background:${e.color}"></span>`),
+      ...notes.map(()=>`<span class="cal-dot event"></span>`)
+    ].slice(0,5).join('');
+    html+=`<div class="${cls}" onclick="calSelectDay('${ds}')">
+      <div class="cal-date">${d}</div>
+      <div class="cal-dots">${dots}</div>
+      ${pills}${notePills}
+    </div>`;
+  }
+  // Trailing cells
+  const total=firstDay+daysInMonth;
+  const trail=(7-total%7)%7;
+  for(let d=1;d<=trail;d++){
+    const ds=`${y}-${String(m%12+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    html+=`<div class="cal-cell other-month" onclick="calSelectDay('${ds}')">
+      <div class="cal-date">${d}</div></div>`;
+  }
+  html+='</div>';
+  const grid=document.getElementById('planner-cal-grid');
+  if(grid) grid.innerHTML=html;
 }
 
-// ── Note CRUD ─────────────────────────────────────────────────────────────
-async function addPlannerNote(){
-  const inp=document.getElementById('planner-note-input');
-  const timeInp=document.getElementById('planner-note-time');
-  const content=(inp?.value||'').trim();
+// ── Day detail panel ──────────────────────────────────────────────────────
+async function calSelectDay(ds){
+  // If clicking a day in a different month, navigate there too
+  const dayMonth=ds.slice(0,7);
+  if(dayMonth!==S.plannerMonth){
+    S.plannerMonth=dayMonth;
+    await renderPlannerGrid();
+  }
+  S.plannerDate=ds;
+  // Re-highlight selected cell without full re-render
+  document.querySelectorAll('.cal-cell').forEach(el=>el.classList.remove('selected'));
+  const cells=document.querySelectorAll('#planner-cal-grid .cal-cell:not(.other-month)');
+  const dayNum=parseInt(ds.split('-')[2]);
+  if(cells[dayNum-1]) cells[dayNum-1].classList.add('selected');
+  await renderPlannerDayPanel(ds);
+}
+
+async function renderPlannerDayPanel(ds){
+  const panel=document.getElementById('planner-day-panel');
+  const labelEl=document.getElementById('planner-day-label');
+  const addWrap=document.getElementById('cal-add-wrap');
+  if(!panel) return;
+  const todayStr=localDateStr();
+  const dt=parsePlannerDate(ds);
+  const dayName=dt.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  if(labelEl) labelEl.textContent=dayName;
+  if(addWrap) addWrap.style.display='block';
+
+  const eventMap=buildCalEventMap();
+  const events=eventMap[ds]||[];
+
+  // Fetch manual notes for this day
+  const {data:notes}=await sb.from('planner_notes')
+    .select('*').eq('owner_id',S.user.id).eq('note_date',ds).order('created_at',{ascending:true});
+  S.plannerNotes=notes||[];
+
+  let html='';
+  if(events.length){
+    html+=`<div class="cal-detail-section">Agenda</div>`;
+    html+=events.map(e=>`
+      <div class="cal-detail-item" onclick="event.stopPropagation()">
+        <span class="cal-detail-dot" style="background:${e.color}"></span>
+        <span>${escHtml(e.label)}</span>
+      </div>`).join('');
+  }
+
+  html+=`<div class="cal-detail-section">Notes & Events</div>`;
+  if(S.plannerNotes.length){
+    html+=S.plannerNotes.map(n=>`
+      <div class="planner-note-item ${n.done?'done':''}" style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;">
+        <i class="fa-solid ${n.done?'fa-square-check':'fa-square'}" style="color:${n.done?'var(--success)':'var(--text-muted)'};cursor:pointer;margin-top:2px;" onclick="togglePlannerNote('${n.id}',${!n.done})"></i>
+        <div style="flex:1;font-size:13px;">
+          ${n.time?`<span style="color:var(--navy-mid);font-weight:500;font-size:11.5px;">${escHtml(n.time)} </span>`:''}${escHtml(n.content)}
+        </div>
+        <button class="file-item-remove" onclick="deletePlannerNote('${n.id}')"><i class="fas fa-times"></i></button>
+      </div>`).join('');
+  } else {
+    html+=`<p class="text-muted text-sm" style="margin-top:6px;">No notes for this day.</p>`;
+  }
+
+  panel.innerHTML=html;
+}
+
+// ── Add note from the detail panel ───────────────────────────────────────
+async function calAddNote(){
+  const input=document.getElementById('cal-note-input');
+  const timeInput=document.getElementById('cal-note-time');
+  const content=(input.value||'').trim();
   if(!content)return;
   const {error}=await sb.from('planner_notes').insert({
     owner_id:S.user.id, note_date:S.plannerDate,
-    time:timeInp?.value||null, content
+    time:timeInput.value||null, content
   });
   if(error){showToast('Could not add: '+error.message,'error');return;}
-  inp.value=''; if(timeInp)timeInp.value='';
-  await loadPlannerDay();
-  renderPlannerDayPanel();
-  // Update dot on grid cell without full re-render
-  renderPlannerGrid();
+  input.value=''; timeInput.value='';
+  await renderPlannerDayPanel(S.plannerDate);
+  // Re-render grid to show new dot
+  await renderPlannerGrid();
 }
+
+// ── Planner note helpers (also called from old IDs if any) ────────────────
 async function togglePlannerNote(id,done){
   await sb.from('planner_notes').update({done}).eq('id',id);
-  await loadPlannerDay();
-  renderPlannerDayPanel();
+  await renderPlannerDayPanel(S.plannerDate);
 }
 async function deletePlannerNote(id){
   await sb.from('planner_notes').delete().eq('id',id);
-  await loadPlannerDay();
-  renderPlannerDayPanel();
-  renderPlannerGrid();
+  await renderPlannerDayPanel(S.plannerDate);
+  await renderPlannerGrid();
 }
-
-// Legacy aliases kept so any existing calls still work
-async function onPlannerDateChange(){
-  const v=document.getElementById('planner-date-input')?.value;
-  if(v){ S.plannerDate=v; S.plannerMonth=v.slice(0,7); await renderPlanner(); }
-}
+// Legacy compat stubs (old HTML may call these)
+async function addPlannerNote(){ await calAddNote(); }
+async function loadPlannerNotes(){ await renderPlannerDayPanel(S.plannerDate); }
 </script>
 <script>
 // ════════════════════════════════════════════
@@ -4054,143 +3994,158 @@ function noteCmd(cmd){ document.execCommand(cmd,false,null); document.getElement
 <script>
 // ════════════════════════════════════════════
 //  FINANCES — firm-wide fee tracker
-//  Summary cards at top: total quoted, total received, total outstanding.
-//  Per-client rows colour-coded by payment status. Click to expand
-//  the full dated ledger inline.
+//  Summary cards: Total Quoted / Total Received / Total Outstanding
+//  Per-client rows with progress bar + payment status badge.
+//  Click any row to expand the full dated payment ledger inline.
+//  Also shows "Record Payment" button directly from each row.
 // ════════════════════════════════════════════
+S.finPayments    = S.finPayments    || [];   // all payments visible to user
+S.finExpanded    = S.finExpanded    || {};   // client_id → boolean
 
 async function renderFinances(){
-  const searchEl=document.getElementById('fin-search');
+  const search=(document.getElementById('fin-search')?.value||'').toLowerCase();
   const statusF=document.getElementById('fin-filter-status')?.value||'';
-  const search=(searchEl?.value||'').toLowerCase();
 
-  // Fetch all payments in one call (only rows visible to this user via RLS)
+  // Fetch all payments visible to this user (RLS handles scope)
   const {data:allPayments,error}=await sb.from('payments')
     .select('*').order('payment_date',{ascending:false});
-  if(error){ showToast('Could not load payments: '+error.message,'error'); return; }
+  if(error){
+    showToast('Could not load payments: '+error.message,'error');
+    return;
+  }
+  S.finPayments=allPayments||[];
 
-  // Group payments by client
-  const payMap={}; // client_id → payment[]
-  (allPayments||[]).forEach(p=>{
+  // Group by client_id
+  const payMap={};
+  S.finPayments.forEach(p=>{
     if(!payMap[p.client_id]) payMap[p.client_id]=[];
     payMap[p.client_id].push(p);
   });
 
-  // Compute per-client totals
-  const rows=myClients().map(c=>{
-    const payments=payMap[c.client_id]||[];
-    const totalFee=Number(c.fee||0);
-    const totalPaid=payments.reduce((s,p)=>s+Number(p.amount||0),0);
-    const balance=totalFee-totalPaid;
-    let payStatus='unpaid';
-    if(totalFee>0 && totalPaid>=totalFee) payStatus='paid';
-    else if(totalPaid>0) payStatus='partial';
-    return {c,payments,totalFee,totalPaid,balance,payStatus};
+  // Build client rows
+  const clients=myClients().filter(c=>{
+    if(search && !c.name.toLowerCase().includes(search) && !c.client_id.toLowerCase().includes(search)) return false;
+    if(statusF){
+      const paid=(payMap[c.client_id]||[]).reduce((s,p)=>s+Number(p.amount||0),0);
+      const fee=Number(c.fee||0);
+      const pct=fee>0?paid/fee:0;
+      const badge=fee<=0?'unpaid':pct>=1?'paid':paid>0?'partial':'unpaid';
+      if(badge!==statusF) return false;
+    }
+    return true;
   });
 
-  // Firm-wide summary
-  const totalFeeAll =rows.reduce((s,r)=>s+r.totalFee,0);
-  const totalPaidAll=rows.reduce((s,r)=>s+r.totalPaid,0);
-  const totalOutAll =Math.max(0,totalFeeAll-totalPaidAll);
+  // Summary totals
+  const totalFee=clients.reduce((s,c)=>s+Number(c.fee||0),0);
+  const totalPaid=clients.reduce((s,c)=>{
+    return s+(payMap[c.client_id]||[]).reduce((ps,p)=>ps+Number(p.amount||0),0);
+  },0);
+  const totalOutstanding=Math.max(0,totalFee-totalPaid);
 
-  const summaryEl=document.getElementById('fin-summary-cards');
-  if(summaryEl) summaryEl.innerHTML=`
-    <div class="stat-card gold">
-      <div class="stat-label">Total Quoted</div>
-      <div class="stat-value" style="font-size:20px;">₹${totalFeeAll.toLocaleString('en-IN')}</div>
-      <i class="fas fa-file-invoice-dollar stat-icon"></i>
-    </div>
-    <div class="stat-card green">
-      <div class="stat-label">Total Received</div>
-      <div class="stat-value" style="font-size:20px;">₹${totalPaidAll.toLocaleString('en-IN')}</div>
-      <i class="fas fa-check-circle stat-icon"></i>
-    </div>
-    <div class="stat-card red">
-      <div class="stat-label">Outstanding</div>
-      <div class="stat-value" style="font-size:20px;">₹${totalOutAll.toLocaleString('en-IN')}</div>
-      <i class="fas fa-exclamation-circle stat-icon"></i>
+  // Summary cards
+  const summary=document.getElementById('fin-summary-cards');
+  if(summary) summary.innerHTML=`
+    <div class="fin-summary-grid">
+      <div class="stat-card gold">
+        <div class="stat-label">Total Fees Quoted</div>
+        <div class="stat-value">₹${totalFee.toLocaleString('en-IN')}</div>
+        <div class="stat-sub">${clients.length} client${clients.length!==1?'s':''}</div>
+        <i class="fas fa-file-invoice stat-icon"></i>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-label">Total Collected</div>
+        <div class="stat-value">₹${totalPaid.toLocaleString('en-IN')}</div>
+        <div class="stat-sub">${totalFee>0?Math.round(totalPaid/totalFee*100)+'% of quoted':'—'}</div>
+        <i class="fas fa-check-circle stat-icon"></i>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-label">Outstanding</div>
+        <div class="stat-value">₹${totalOutstanding.toLocaleString('en-IN')}</div>
+        <div class="stat-sub">${clients.filter(c=>{
+          const p=(payMap[c.client_id]||[]).reduce((s,x)=>s+Number(x.amount||0),0);
+          return Number(c.fee||0)>p;
+        }).length} clients with balance due</div>
+        <i class="fas fa-exclamation-circle stat-icon"></i>
+      </div>
     </div>`;
 
-  // Filter rows
-  const filtered=rows.filter(r=>{
-    const ms=!search||r.c.name.toLowerCase().includes(search)||r.c.client_id.toLowerCase().includes(search);
-    const fs=!statusF||r.payStatus===statusF;
-    return ms&&fs;
-  });
-
-  const listEl=document.getElementById('fin-client-list');
-  if(!listEl)return;
-  if(!filtered.length){
-    listEl.innerHTML='<div class="empty-state"><i class="fas fa-rupee-sign"></i><div class="empty-state-title">No clients found</div></div>';
+  // Client rows
+  const cnt=document.getElementById('fin-client-list');
+  if(!cnt) return;
+  if(!clients.length){
+    cnt.innerHTML='<div class="empty-state"><i class="fas fa-money-bill-wave"></i><div class="empty-state-title">No clients found</div></div>';
     return;
   }
 
-  const STATUS_LABELS={paid:'Paid in Full',partial:'Partial',unpaid:'Unpaid'};
-  const STATUS_COLORS={paid:'var(--success)',partial:'#d69e2e',unpaid:'var(--danger)'};
+  cnt.innerHTML=clients.map(c=>{
+    const payments=payMap[c.client_id]||[];
+    const paid=payments.reduce((s,p)=>s+Number(p.amount||0),0);
+    const fee=Number(c.fee||0);
+    const balance=Math.max(0,fee-paid);
+    const pct=fee>0?Math.min(100,Math.round(paid/fee*100)):0;
+    const badge=fee<=0?'unpaid':pct>=100?'paid':paid>0?'partial':'unpaid';
+    const badgeCls={'paid':'fin-badge-paid','partial':'fin-badge-partial','unpaid':'fin-badge-unpaid'}[badge];
+    const badgeTxt={'paid':'Paid in Full','partial':'Partial','unpaid':'No Payment'}[badge];
+    const cat=S.categories.find(x=>x.id===c.case_type);
+    const au=S.users.find(u=>u.id===c.assigned_to);
+    const isExpanded=S.finExpanded[c.client_id];
+    const canRecord=isAdmin()||c.assigned_to===S.user?.id;
 
-  listEl.innerHTML=filtered.map(r=>{
-    const pct=r.totalFee>0?Math.min(100,Math.round(r.totalPaid/r.totalFee*100)):0;
-    const barColor=r.payStatus==='paid'?'var(--success)':r.payStatus==='partial'?'#d69e2e':'var(--danger)';
-    const au=S.users.find(u=>u.id===r.c.assigned_to);
-    const ledgerRows=r.payments.length
-      ?r.payments.map(p=>{
-          const recorder=S.users.find(u=>u.id===p.recorded_by);
-          const canDel=isAdmin()||p.recorded_by===S.user?.id;
-          return `<div class="payment-row">
-            <div class="payment-row-info">
-              <span class="payment-row-amount">+ ₹${Number(p.amount).toLocaleString('en-IN')}</span>
-              <span class="payment-row-meta">${fmtD(p.payment_date)} · ${p.method||'—'}${p.note?' · '+escHtml(p.note):''} · by ${recorder?recorder.full_name:'—'}</span>
-            </div>
-            ${canDel?`<button class="btn btn-outline btn-xs btn-icon" onclick="deleteFinancePayment('${p.id}','${r.c.client_id}')" title="Delete"><i class="fas fa-trash"></i></button>`:''}
-          </div>`;
-        }).join('')
-      :'<p class="text-muted text-sm" style="margin:8px 0;">No payments recorded yet.</p>';
-
-    const canRecord=isAdmin()||r.c.assigned_to===S.user?.id;
-
-    return `<div class="fin-client-row" id="fin-row-${r.c.client_id}">
-      <div class="fin-client-header" onclick="toggleFinRow('${r.c.client_id}')">
-        <div class="avatar-sm av-navy" style="flex-shrink:0;">${initials(r.c.name)}</div>
-        <div style="flex:1;min-width:0;">
-          <div style="font-size:13.5px;font-weight:600;">${r.c.name}
-            <span class="client-id">${r.c.client_id}</span>
-            <span class="badge" style="background:${STATUS_COLORS[r.payStatus]}22;color:${STATUS_COLORS[r.payStatus]};margin-left:6px;font-size:11px;">${STATUS_LABELS[r.payStatus]}</span>
-          </div>
-          <div style="font-size:11.5px;color:var(--text-muted);">
-            ${au?au.full_name:'—'} · ${catBadge(r.c.case_type)}
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:180px;">
-          <div style="font-size:12px;color:var(--text-muted);">
-            ₹${r.totalPaid.toLocaleString('en-IN')} of ₹${r.totalFee?r.totalFee.toLocaleString('en-IN'):'—'}
-            ${r.balance>0?`<span style="color:var(--danger);margin-left:6px;">(₹${r.balance.toLocaleString('en-IN')} due)</span>`:''}
-          </div>
-          <div class="fin-bar-wrap" style="width:160px;">
-            <div class="fin-bar" style="width:${pct}%;background:${barColor};"></div>
-          </div>
-        </div>
-        <i class="fas fa-chevron-down" style="color:var(--text-muted);margin-left:8px;font-size:12px;"></i>
+    let html=`<div class="fin-client-row ${isExpanded?'expanded':''}" onclick="toggleFinRow('${c.client_id}')">
+      <div class="avatar-sm av-navy">${initials(c.name)}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:14px;font-weight:600;">${c.name} <span class="client-id">${c.client_id}</span></div>
+        <div style="font-size:11.5px;color:var(--text-muted);">${cat?cat.label:c.case_type} · ${au?au.full_name:'—'}</div>
       </div>
-      <div class="fin-ledger" id="fin-ledger-${r.c.client_id}">
-        ${canRecord?`<button class="btn btn-gold btn-sm mb-3" onclick="openPaymentModal('${r.c.client_id}');event.stopPropagation();"><i class="fas fa-plus"></i> Record Payment</button>`:''}
-        ${ledgerRows}
+      <div class="fin-progress-wrap" style="max-width:160px;">
+        <div class="fin-progress-label">
+          <span>₹${paid.toLocaleString('en-IN')} paid</span>
+          <span>${pct}%</span>
+        </div>
+        <div class="progress"><div class="progress-bar ${badge==='paid'?'gold':''}" style="width:${pct}%;background:${badge==='paid'?'var(--gold)':badge==='partial'?'#ed8936':'var(--border)'};"></div></div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">
+          ${fee>0?`of ₹${fee.toLocaleString('en-IN')} · Balance ₹${balance.toLocaleString('en-IN')}`:'No fee set'}
+        </div>
       </div>
+      <span class="${badgeCls}">${badgeTxt}</span>
+      <i class="fas fa-chevron-${isExpanded?'up':'down'}" style="color:var(--text-muted);margin-left:8px;flex-shrink:0;"></i>
     </div>`;
+
+    if(isExpanded){
+      html+=`<div class="fin-ledger">`;
+      if(payments.length){
+        html+=payments.map(p=>{
+          const recorder=S.users.find(u=>u.id===p.recorded_by);
+          return `<div class="fin-ledger-row">
+            <i class="fas fa-receipt" style="color:var(--success);width:16px;"></i>
+            <span style="font-weight:600;color:var(--success);">₹${Number(p.amount).toLocaleString('en-IN')}</span>
+            <span style="color:var(--text-muted);">${fmtD(p.payment_date)}</span>
+            <span class="badge badge-active" style="font-size:10px;">${p.method||'—'}</span>
+            ${p.note?`<span style="color:var(--text-secondary);font-size:12px;">${escHtml(p.note)}</span>`:''}
+            <span style="margin-left:auto;font-size:11px;color:var(--text-muted);">by ${recorder?recorder.full_name:'—'}</span>
+          </div>`;
+        }).join('');
+      } else {
+        html+=`<p class="text-muted text-sm" style="padding:4px 0;">No payments recorded yet.</p>`;
+      }
+      if(canRecord){
+        html+=`<div style="margin-top:10px;">
+          <button class="btn btn-gold btn-sm" onclick="event.stopPropagation();openPaymentModal('${c.client_id}')">
+            <i class="fas fa-plus"></i> Record Payment
+          </button>
+        </div>`;
+      }
+      html+=`</div>`;
+    }
+    return html;
   }).join('');
 }
 
 function toggleFinRow(clientId){
-  const ledger=document.getElementById(`fin-ledger-${clientId}`);
-  if(ledger) ledger.classList.toggle('open');
-}
-
-async function deleteFinancePayment(paymentId,clientId){
-  if(!confirm('Delete this payment entry?'))return;
-  const {error}=await sb.from('payments').delete().eq('id',paymentId);
-  if(error){showToast('Delete failed: '+error.message,'error');return;}
-  showToast('Payment removed.','warning');
+  S.finExpanded[clientId]=!S.finExpanded[clientId];
   renderFinances();
 }
+
 </script>
 <script>
 // ════════════════════════════════════════════
