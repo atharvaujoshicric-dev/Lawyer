@@ -4114,8 +4114,8 @@ async function renderFinances(){
     </div>`;
 
     if(isExpanded){
-      html+=`<div class="fin-ledger">`;
-      if(payments.length){
+  html+=`<div class="fin-ledger">`;
+  if(payments.length){
         html+=payments.map(p=>{
           const recorder=S.users.find(u=>u.id===p.recorded_by);
           return `<div class="fin-ledger-row">
@@ -4128,23 +4128,25 @@ async function renderFinances(){
           </div>`;
         }).join('');
       } else {
-        html+=`<p class="text-muted text-sm" style="padding:4px 0;">No payments recorded yet.</p>`;
-      }
-      if(canRecord){
-        html+=`<div style="margin-top:10px;">
-          <button class="btn btn-gold btn-sm" onclick="event.stopPropagation();openPaymentModal('${c.client_id}')">
-            <i class="fas fa-plus"></i> Record Payment
-          </button>
-        </div>`;
-      }
-      html+=`</div>`;
-    }
+    html+=`<p class="text-muted text-sm" style="padding:4px 0;">No payments recorded yet.</p>`;
+  }
+  if(canRecord){
+    html+=`<div style="margin-top:10px;">
+      <button class="btn btn-gold btn-sm" onclick="event.stopPropagation();openPaymentModal('${c.client_id}')">
+        <i class="fas fa-plus"></i> Record Payment
+      </button>
+    </div>`;
+  }
+  html+=`</div>`;
+}
     return html;
   }).join('');
 }
 
 function toggleFinRow(clientId){
-  S.finExpanded[clientId]=!S.finExpanded[clientId];
+  S.finExpanded[clientId] = !S.finExpanded[clientId];
+  
+  // Re-render the finance tracking view to display/hide the ledger
   renderFinances();
 }
 
