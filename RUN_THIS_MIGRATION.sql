@@ -95,3 +95,18 @@ select policyname from pg_policies where tablename = 'profiles';
 select conname, pg_get_constraintdef(oid) from pg_constraint where conname = 'tasks_status_check';
 select column_name from information_schema.columns where table_name = 'clients' and column_name = 'contact_id';
 select table_name from information_schema.tables where table_name in ('payments','planner_notes','onedrive_tokens');
+
+-- ── Enable Supabase Realtime for live message and task push ──────────────
+-- This allows the app to receive instant push notifications without
+-- polling. Run this block even if you've run earlier migrations.
+-- In Supabase, realtime publication is managed via the supabase_realtime
+-- publication on the postgres replication slot.
+
+-- Enable realtime for messages table
+alter publication supabase_realtime add table messages;
+
+-- Enable realtime for tasks table
+alter publication supabase_realtime add table tasks;
+
+-- If you get "relation already exists in publication" errors, those tables
+-- are already enabled — that's fine, the rest of the migration still ran.
