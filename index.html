@@ -230,15 +230,11 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 
 /* ── Finances page ── */
 .finances-summary{display:block;width:100%;margin-bottom:0;}
-.fin-summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;width:100%;}
-.fin-summary-grid .stat-card{width:100%;min-width:0;}
-.fin-client-row{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;overflow:hidden;}
+
 .fin-client-header{display:flex;align-items:center;padding:12px 16px;gap:12px;cursor:pointer;transition:background .1s;}
 .fin-client-header:hover{background:#f7f8ff;}
 .fin-bar-wrap{flex:1;background:var(--border);border-radius:99px;height:6px;min-width:60px;}
 .fin-bar{height:6px;border-radius:99px;background:var(--success);transition:width .3s;}
-.fin-ledger{border-top:1px solid var(--border-light);padding:14px 16px;display:none;}
-.fin-ledger.open{display:block;}
 
 .fee-summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
 .fee-summary-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;text-align:center}
@@ -291,17 +287,25 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .cal-detail-item:last-child{border-bottom:none}
 .cal-detail-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
 /* ── Finances ── */
-.fin-summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;width:100%}
-.fin-client-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border-light);cursor:pointer;transition:background .1s}
-.fin-client-row:hover{background:#f7f8ff}.fin-client-row.expanded{background:#f0f4ff}
+.fin-summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;width:100%;}
+.fin-summary-grid .stat-card{width:100%;min-height:110px;display:flex;flex-direction:column;justify-content:center;}
+.fin-summary-grid .stat-value{font-size:22px;}
+.finances-summary{display:block;width:100%;}
+.fin-summary-grid .stat-card{width:100%;min-width:0;min-height:100px;box-sizing:border-box;}
+#fin-summary-cards{width:100%;display:block;}
+.finances-summary{width:100%;display:block;}
+.fin-client-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border-light);cursor:pointer;transition:background .12s;}
+.fin-client-row:hover{background:#f7f8ff}.fin-client-row.expanded{background:#edf2ff;border-left:3px solid var(--navy);}
 .fin-progress-wrap{flex:1;min-width:80px}
 .fin-progress-label{font-size:11px;color:var(--text-muted);margin-bottom:3px;display:flex;justify-content:space-between}
-.fin-ledger{background:var(--bg);padding:12px 16px 12px 44px;border-bottom:1px solid var(--border-light)}
+.fin-ledger{background:var(--bg);padding:14px 20px 14px 48px;border-bottom:1px solid var(--border-light);border-left:3px solid var(--navy);}
+/* Remove padding on fin-client-list so rows span edge-to-edge */
+#fin-client-list{padding:0 !important;}
 .fin-ledger-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:12.5px;border-bottom:1px solid var(--border-light)}
 .fin-ledger-row:last-child{border-bottom:none}
-.fin-badge-paid{background:var(--success-bg);color:var(--success);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500}
-.fin-badge-partial{background:var(--warning-bg);color:var(--warning);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500}
-.fin-badge-unpaid{background:var(--danger-bg);color:var(--danger);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500}
+.fin-badge-paid{background:var(--success-bg);color:var(--success);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;white-space:nowrap}
+.fin-badge-partial{background:var(--warning-bg);color:var(--warning);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;white-space:nowrap}
+.fin-badge-unpaid{background:var(--danger-bg);color:var(--danger);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;white-space:nowrap}
 @media(max-width:1024px){.cal-layout{grid-template-columns:1fr}.cal-detail-panel{position:static;max-height:none}.fin-summary-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:768px){.cal-cell{min-height:52px;padding:3px 4px}.cal-event-pill{display:none}.fin-summary-grid{grid-template-columns:1fr}}
 .settings-wrap{display:flex;flex-direction:column;gap:18px;max-width:760px}
@@ -488,6 +492,23 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
+<!-- ══ CLIENT PORTAL LOGIN ══ -->
+<div id="portal-screen" style="display:none;position:fixed;inset:0;background:var(--navy);z-index:998;align-items:center;justify-content:center;padding:16px;">
+  <div class="login-card">
+    <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px;">Lex<span style="color:var(--gold);">Desk</span></div>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">Client Portal — Enter your 4-digit PIN to view your case details.</p>
+    <div class="form-group" style="margin-bottom:14px;">
+      <label class="form-label">Your PIN</label>
+      <input class="form-control" id="portal-pin" type="password" maxlength="4" placeholder="4-digit PIN" style="font-size:22px;letter-spacing:8px;text-align:center;" onkeydown="if(event.key==='Enter')portalLogin()"/>
+    </div>
+    <p id="portal-err" style="color:var(--danger);font-size:12px;margin-bottom:10px;display:none;"></p>
+    <button class="btn btn-gold w-full" style="justify-content:center;font-size:15px;padding:12px;" onclick="portalLogin()"><i class="fas fa-unlock"></i> View My Case</button>
+  </div>
+</div>
+
+<!-- ══ CLIENT PORTAL VIEW ══ -->
+<div id="portal-view" style="display:none;min-height:100vh;background:var(--bg);overflow-y:auto;"></div>
+
 <!-- ══ MAIN APP ══ -->
 <div id="app" style="display:none;">
   <button id="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
@@ -624,12 +645,24 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <div id="notes-empty" class="empty-state" style="display:none;"><i class="fas fa-sticky-note"></i><div class="empty-state-title">No notes yet</div><div class="empty-state-desc">Create private notes and share them with your team</div></div>
       </div>
 
-      <!-- ACTIVITY LOG (admin sees client changes; everyone sees changes to their own notes) -->
+      <!-- ACTIVITY LOG -->
       <div class="page-view" id="view-activity">
         <div class="card">
           <div class="card-header"><span class="card-title"><i class="fas fa-history" style="color:var(--gold)"></i> Activity Log</span><button class="btn btn-outline btn-sm" onclick="loadActivityLog()"><i class="fas fa-sync-alt"></i> Refresh</button></div>
           <div class="card-body" id="activity-log-list"><p class="text-muted text-sm">Loading…</p></div>
         </div>
+      </div>
+
+      <!-- DEADLINE RULES -->
+      <div class="page-view" id="view-deadline-rules">
+        <div class="card mb-4">
+          <div class="card-header">
+            <span class="card-title"><i class="fas fa-gavel" style="color:var(--gold)"></i> Court Filing Deadline Rules</span>
+            <button class="btn btn-gold btn-sm" onclick="openDeadlineRuleModal()"><i class="fas fa-plus"></i> New Rule</button>
+          </div>
+          <div class="card-body"><p class="text-sm text-muted">Pre-seeded with common Indian court deadlines (CPC, CrPC, Limitation Act, CERT-In). Edit, disable, or add your own rules.</p></div>
+        </div>
+        <div id="deadline-rules-list"></div>
       </div>
 
       <!-- FINANCES -->
@@ -783,6 +816,23 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
           </div>
 
           <div class="settings-section">
+            <div class="settings-section-head"><i class="fas fa-file-invoice"></i><span>Invoice Settings</span></div>
+            <div class="settings-section-body">
+              <div class="form-grid form-grid-2" style="gap:13px;margin-bottom:14px;">
+                <div class="form-group"><label class="form-label">Firm Name</label><input class="form-control" id="inv-firm-name" type="text" placeholder="Your Law Firm"/></div>
+                <div class="form-group"><label class="form-label">Invoice Prefix</label><input class="form-control" id="inv-prefix" type="text" placeholder="INV" style="max-width:100px;"/></div>
+                <div class="form-group" style="grid-column:1/-1;"><label class="form-label">Firm Address</label><input class="form-control" id="inv-firm-address" type="text" placeholder="Full address for invoices"/></div>
+                <div class="form-group"><label class="form-label">Phone</label><input class="form-control" id="inv-firm-phone" type="tel"/></div>
+                <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="inv-firm-email" type="email"/></div>
+                <div class="form-group"><label class="form-label">Bar Number</label><input class="form-control" id="inv-bar-number" type="text"/></div>
+                <div class="form-group" style="grid-column:1/-1;"><label class="form-label">Invoice Footer Text</label><input class="form-control" id="inv-footer" type="text" placeholder="Thank you for your trust."/></div>
+              </div>
+              <button class="btn btn-primary w-full" style="justify-content:center;" onclick="saveInvoiceSettings()"><i class="fas fa-save"></i> Save Invoice Settings</button>
+            </div>
+          </div>
+
+
+          <div class="settings-section">
             <div class="settings-section-head"><i class="fab fa-microsoft"></i><span>OneDrive Sync</span></div>
             <div class="settings-section-body">
               <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:13px;background:var(--bg);border:1px solid var(--border);" id="onedrive-status-box">
@@ -847,16 +897,20 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <button class="tab-btn" onclick="switchTab('case-details')">Case Details</button>
         <button class="tab-btn" onclick="switchTab('payments')">Payments</button>
         <button class="tab-btn" onclick="switchTab('documents')">Documents</button>
+        <button class="tab-btn" onclick="switchTab('deadlines')">Deadlines</button>
         <button class="tab-btn" onclick="switchTab('history')">History</button>
       </div>
       <div class="tab-panel active" id="tab-overview"></div>
       <div class="tab-panel" id="tab-case-details"></div>
       <div class="tab-panel" id="tab-payments"></div>
       <div class="tab-panel" id="tab-documents"></div>
+      <div class="tab-panel" id="tab-deadlines"></div>
       <div class="tab-panel" id="tab-history"><div class="timeline" id="det-history"></div></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-danger btn-sm" id="det-delete-btn" onclick="deleteCurrentClient()"><i class="fas fa-trash"></i> Delete</button>
+      <button class="btn btn-outline btn-sm" onclick="generateInvoice(S.detailClientId)" title="Generate PDF Invoice"><i class="fas fa-file-invoice"></i> Invoice</button>
+      <button class="btn btn-outline btn-sm" id="det-portal-btn" onclick="generatePortalLink(S.detailClientId)" title="Generate Client Portal Link"><i class="fas fa-link"></i> Portal Link</button>
       <button class="btn btn-outline" onclick="closeModal('modal-detail')">Close</button>
     </div>
   </div>
@@ -881,6 +935,12 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <span class="form-hint" id="f-link-hint"></span>
       </div>
 
+      <div class="section-divider">Conflict of Interest Check</div>
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label">Opposite Party / Company Name</label>
+        <input class="form-control" id="f-conflict-check" type="text" placeholder="Enter opposite party name to check for conflicts…" oninput="renderConflictCheck()"/>
+        <div id="conflict-results" style="margin-top:8px;"></div>
+      </div>
       <div class="section-divider">Client Information</div>
       <div class="form-grid form-grid-2" style="gap:13px;margin-bottom:14px;">
         <div class="form-group"><label class="form-label">Full Name <span class="required">*</span></label><input class="form-control" id="f-name" type="text" placeholder="John Doe"/></div>
@@ -1132,6 +1192,57 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
+<!-- PORTAL LINK MODAL -->
+<div class="modal-backdrop" id="modal-portal-link">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header"><div><div class="modal-title">Client Portal Link</div><div class="modal-sub">Share the link and PIN separately for security</div></div><button class="modal-close" onclick="closeModal('modal-portal-link')">&times;</button></div>
+    <div class="modal-body">
+      <div style="background:var(--warning-bg);border:1px solid #fbd38d;border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:13px;">
+        <i class="fas fa-shield-alt" style="color:#d69e2e;margin-right:6px;"></i>
+        <strong>Important:</strong> Send the link and PIN through <em>separate</em> channels (e.g. link via email, PIN via SMS) for security.
+      </div>
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label">Portal Link (send this to the client)</label>
+        <div style="display:flex;gap:8px;">
+          <input class="form-control" id="portal-link-url" type="text" readonly style="font-size:12px;"/>
+          <button class="btn btn-outline btn-sm" onclick="navigator.clipboard.writeText(document.getElementById('portal-link-url').value).then(()=>showToast('Link copied!','success'))"><i class="fas fa-copy"></i></button>
+        </div>
+      </div>
+      <div style="text-align:center;padding:16px;background:var(--navy);border-radius:10px;color:var(--gold);">
+        <div style="font-size:12px;opacity:.7;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Client PIN (share separately)</div>
+        <div id="portal-link-pin" style="font-size:36px;font-weight:700;letter-spacing:12px;"></div>
+        <div style="font-size:11px;opacity:.5;margin-top:6px;">Valid for 90 days</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-portal-link')">Close</button>
+      <button class="btn btn-gold" onclick="copyPortalLink()"><i class="fas fa-copy"></i> Copy Both</button>
+    </div>
+  </div>
+</div>
+
+<!-- DEADLINE RULE MODAL -->
+<div class="modal-backdrop" id="modal-deadline-rule">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-header"><div><div class="modal-title" id="dr-modal-title">New Deadline Rule</div></div><button class="modal-close" onclick="closeModal('modal-deadline-rule')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-grid form-grid-2" style="gap:13px;">
+        <div class="form-group"><label class="form-label">Rule Name <span class="required">*</span></label><input class="form-control" id="dr-name" type="text" placeholder="e.g. Written Statement"/></div>
+        <div class="form-group"><label class="form-label">Statute / Citation</label><input class="form-control" id="dr-statute" type="text" placeholder="e.g. CPC Order VIII Rule 1"/></div>
+        <div class="form-group"><label class="form-label">Case Category</label><select class="form-control" id="dr-category"></select></div>
+        <div class="form-group"><label class="form-label">Trigger Field ID</label><input class="form-control" id="dr-trigger" type="text" placeholder="e.g. created_at, nextHearing, incidentDate"/></div>
+        <div class="form-group"><label class="form-label">Days</label><input class="form-control" id="dr-days" type="number" min="1" value="30"/></div>
+        <div class="form-group"><label class="form-label">Direction</label><select class="form-control" id="dr-direction"><option value="after">After trigger date</option><option value="before">Before trigger date</option></select></div>
+        <div class="form-group" style="grid-column:1/-1;"><label class="form-label">Description</label><input class="form-control" id="dr-description" type="text" placeholder="Brief explanation of this rule"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-deadline-rule')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveDeadlineRule()"><i class="fas fa-save"></i> Save Rule</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast-container"></div>
 <script>
 // ════════════════════════════════════════════
@@ -1182,7 +1293,11 @@ let S={
   fbActiveCat:null, payingClientId:null, linkedContactId:null,
   notes:[], noteShares:{}, editingNoteId:null, sharingNoteId:null,
   finPayments:[], finExpanded:{},
-  paymentsCache:{}
+  paymentsCache:{},
+  deadlineRules:[], invoiceSettings:null,
+  editingDeadlineRuleId:null,
+  _editingTemplateVars:[],
+  _portalToken:null, portalData:null
 };
 
 const FIELD_TYPES=['text','number','date','tel','select','textarea'];
@@ -1363,6 +1478,8 @@ async function initApp(){
   loadLastSeenState();           // restore last-seen message state from localStorage
   await checkForNewItems();      // initial unread count from DB + badge update
   startPolling();                // 5s fast poll (active view) + 30s background poll
+  await loadDeadlineRules();     // preload for client detail deadlines tab
+  await loadInvoiceSettings();   // preload for invoice generation
 }
 
 
@@ -1393,6 +1510,7 @@ function buildSidebar(){
     html+=`<div class="nav-section-label">Admin</div>
       <button class="nav-item" onclick="navigate('users')"><i class="fas fa-user-shield"></i> Users <span id="pending-badge" class="nav-badge" style="display:none;"></span></button>
       <button class="nav-item" onclick="navigate('formbuilder')"><i class="fas fa-sliders-h"></i> Form Builder</button>
+      <button class="nav-item" onclick="navigate('deadline-rules')"><i class="fas fa-gavel"></i> Deadline Rules</button>
       <button class="nav-item" onclick="navigate('activity')"><i class="fas fa-history"></i> Activity Log</button>`;
   }
   html+=`<button class="nav-item" onclick="navigate('settings')"><i class="fas fa-cog"></i> Settings</button>`;
@@ -1415,7 +1533,8 @@ const NAV_TITLES={
   dashboard:'Dashboard',planner:'Daily Planner',clients:'All Clients',deadlines:'Deadlines & Alerts',
   documents:'Documents',templates:'Draft Templates',chat:'Messages',tasks:'Tasks',
   users:'User Management',formbuilder:'Form Builder',settings:'Settings',
-  notes:'Notes',activity:'Activity Log',finances:'Finances'
+  notes:'Notes',activity:'Activity Log',finances:'Finances',
+  'deadline-rules':'Deadline Rules'
 };
 
 function navigate(view){
@@ -1432,6 +1551,7 @@ function navigate(view){
   if(view==='templates') renderTemplates();
   if(view==='notes'){ loadNotes().then(renderNotes); }
   if(view==='activity') loadActivityLog();
+  if(view==='deadline-rules'){ loadDeadlineRules().then(renderDeadlineRulesPage); }
   if(view==='finances') renderFinances();
   if(view==='formbuilder') renderFormBuilder();
   if(view==='tasks') renderTasks();
@@ -1702,9 +1822,11 @@ async function saveClient(){
   if(S.editingClientId){
     const ex=S.clients.find(c=>c.client_id===S.editingClientId);
     payload.history=[...(ex?.history||[]),{date:now,text:`Updated by ${S.profile.full_name}.`}];
+    // Build field-level diff for audit trail
+    const diffs=ex?buildClientDiff(ex,payload):[];
     const {error}=await sb.from('clients').update(payload).eq('client_id',S.editingClientId);
     if(error){showToast('Save failed: '+error.message,'error');saveBtn.disabled=false;return;}
-    sb.from('activity_log').insert({actor_id:S.user.id,action:'client_updated',entity_type:'client',entity_id:S.editingClientId,detail:{name:payload.name,updated_by:S.profile.full_name}});
+    logClientUpdate(S.editingClientId,diffs);
     showToast('Client updated!','success');
   } else {
     isNew=true;
@@ -2972,6 +3094,7 @@ function loadSettingsUI(){
   if(dobEl) dobEl.value=S.profile.dob||'';
   document.getElementById('s-onedrive-client-id').value=localStorage.getItem('ld_onedrive_client_id')||'';
   updateOneDriveStatusUI();
+  loadInvoiceSettingsUI();  // populate invoice settings fields if data already loaded
   const resetRow=document.getElementById('reset-row');
   if(resetRow) resetRow.style.display=isAdmin()?'flex':'none';
   const migRow=document.getElementById('migration-check-row');
@@ -3121,14 +3244,21 @@ async function savePayment(){
     note:document.getElementById('pay-note').value||null,
     recorded_by:S.user.id
   };
-  const {error}=await sb.from('payments').insert(payload);
+  const {data:inserted, error}=await sb.from('payments').insert(payload).select().single();
   if(error){showToast('Could not record payment: '+error.message,'error');return;}
   closeModal('modal-payment');
   showToast('Payment recorded.','success');
+  // Add to local cache immediately so both views update without another DB call
+  if(inserted){
+    S.finPayments = [inserted, ...(S.finPayments||[])];
+    S.paymentsCache[clientId] = [inserted, ...(S.paymentsCache[clientId]||[])];
+  }
   await renderPaymentsTab(clientId);
-  // If the firm-wide Finances view is open, refresh it too
+  // If the Finances page is open, refresh from cache (instant, no extra DB call)
   if(document.getElementById('view-finances')?.classList.contains('active')){
-    await renderFinances();
+    const search  = (document.getElementById('fin-search')?.value||'').toLowerCase();
+    const statusF = document.getElementById('fin-filter-status')?.value||'';
+    renderFinancesFromCache(search, statusF);
   }
 }
 
@@ -3996,160 +4126,920 @@ function noteCmd(cmd){ document.execCommand(cmd,false,null); document.getElement
 <script>
 // ════════════════════════════════════════════
 //  FINANCES — firm-wide fee tracker
-//  Summary cards: Total Quoted / Total Received / Total Outstanding
-//  Per-client rows with progress bar + payment status badge.
-//  Click any row to expand the full dated payment ledger inline.
-//  Also shows "Record Payment" button directly from each row.
 // ════════════════════════════════════════════
-S.finPayments    = S.finPayments    || [];   // all payments visible to user
-S.finExpanded    = S.finExpanded    || {};   // client_id → boolean
+S.finPayments = S.finPayments || [];
+S.finExpanded = S.finExpanded || {};
 
+// ── Main loader (fetches fresh from DB) ──────────────────────────────────
 async function renderFinances(){
-  const search=(document.getElementById('fin-search')?.value||'').toLowerCase();
-  const statusF=document.getElementById('fin-filter-status')?.value||'';
-
-  // Fetch all payments visible to this user (RLS handles scope)
-  const {data:allPayments,error}=await sb.from('payments')
+  const {data:allPayments, error} = await sb.from('payments')
     .select('*').order('payment_date',{ascending:false});
-  if(error){
-    showToast('Could not load payments: '+error.message,'error');
-    return;
-  }
-  S.finPayments=allPayments||[];
+  if(error){ showToast('Could not load payments: '+error.message,'error'); return; }
+  S.finPayments = allPayments||[];
+  const search  = (document.getElementById('fin-search')?.value||'').toLowerCase();
+  const statusF = document.getElementById('fin-filter-status')?.value||'';
+  renderFinancesFromCache(search, statusF);
+}
 
-  // Group by client_id
-  const payMap={};
+// ── Renderer (uses cached data, instant re-render on expand/collapse) ─────
+function renderFinancesFromCache(search='', statusF=''){
+  // Group payments by client_id
+  const payMap = {};
   S.finPayments.forEach(p=>{
     if(!payMap[p.client_id]) payMap[p.client_id]=[];
     payMap[p.client_id].push(p);
   });
 
-  // Build client rows
-  const clients=myClients().filter(c=>{
-    if(search && !c.name.toLowerCase().includes(search) && !c.client_id.toLowerCase().includes(search)) return false;
+  // Filter clients
+  const clients = myClients().filter(c=>{
+    if(search && !c.name.toLowerCase().includes(search) &&
+                 !c.client_id.toLowerCase().includes(search)) return false;
     if(statusF){
-      const paid=(payMap[c.client_id]||[]).reduce((s,p)=>s+Number(p.amount||0),0);
-      const fee=Number(c.fee||0);
-      const pct=fee>0?paid/fee:0;
-      const badge=fee<=0?'unpaid':pct>=1?'paid':paid>0?'partial':'unpaid';
+      const paid = (payMap[c.client_id]||[]).reduce((s,p)=>s+Number(p.amount||0), 0);
+      const fee  = Number(c.fee||0);
+      const badge= fee<=0?'unpaid': paid>=fee?'paid': paid>0?'partial':'unpaid';
       if(badge!==statusF) return false;
     }
     return true;
   });
 
-  // Summary totals
-  const totalFee=clients.reduce((s,c)=>s+Number(c.fee||0),0);
-  const totalPaid=clients.reduce((s,c)=>{
-    return s+(payMap[c.client_id]||[]).reduce((ps,p)=>ps+Number(p.amount||0),0);
-  },0);
-  const totalOutstanding=Math.max(0,totalFee-totalPaid);
+  // Totals
+  const totalFee  = clients.reduce((s,c)=>s+Number(c.fee||0), 0);
+  const totalPaid = clients.reduce((s,c)=>{
+    return s+(payMap[c.client_id]||[]).reduce((ps,p)=>ps+Number(p.amount||0), 0);
+  }, 0);
+  const totalOut  = Math.max(0, totalFee-totalPaid);
+  const partialCount = clients.filter(c=>{
+    const p=(payMap[c.client_id]||[]).reduce((s,x)=>s+Number(x.amount||0),0);
+    return Number(c.fee||0)>p && Number(c.fee||0)>0;
+  }).length;
 
-  // Summary cards
-  const summary=document.getElementById('fin-summary-cards');
+  // ── Summary cards ────────────────────────────────────────────────────
+  const summary = document.getElementById('fin-summary-cards');
   if(summary) summary.innerHTML=`
     <div class="fin-summary-grid">
-      <div class="stat-card gold">
+      <div class="stat-card gold fin-stat">
         <div class="stat-label">Total Fees Quoted</div>
         <div class="stat-value">₹${totalFee.toLocaleString('en-IN')}</div>
         <div class="stat-sub">${clients.length} client${clients.length!==1?'s':''}</div>
         <i class="fas fa-file-invoice stat-icon"></i>
       </div>
-      <div class="stat-card green">
+      <div class="stat-card green fin-stat">
         <div class="stat-label">Total Collected</div>
         <div class="stat-value">₹${totalPaid.toLocaleString('en-IN')}</div>
         <div class="stat-sub">${totalFee>0?Math.round(totalPaid/totalFee*100)+'% of quoted':'—'}</div>
         <i class="fas fa-check-circle stat-icon"></i>
       </div>
-      <div class="stat-card red">
-        <div class="stat-label">Outstanding</div>
-        <div class="stat-value">₹${totalOutstanding.toLocaleString('en-IN')}</div>
-        <div class="stat-sub">${clients.filter(c=>{
-          const p=(payMap[c.client_id]||[]).reduce((s,x)=>s+Number(x.amount||0),0);
-          return Number(c.fee||0)>p;
-        }).length} clients with balance due</div>
+      <div class="stat-card red fin-stat">
+        <div class="stat-label">Outstanding Balance</div>
+        <div class="stat-value">₹${totalOut.toLocaleString('en-IN')}</div>
+        <div class="stat-sub">${partialCount} client${partialCount!==1?'s':''} with balance due</div>
         <i class="fas fa-exclamation-circle stat-icon"></i>
       </div>
     </div>`;
 
-  // Client rows
-  const cnt=document.getElementById('fin-client-list');
+  // ── Client rows ──────────────────────────────────────────────────────
+  const cnt = document.getElementById('fin-client-list');
   if(!cnt) return;
   if(!clients.length){
-    cnt.innerHTML='<div class="empty-state"><i class="fas fa-money-bill-wave"></i><div class="empty-state-title">No clients found</div></div>';
+    cnt.innerHTML='<div class="empty-state"><i class="fas fa-money-bill-wave"></i><div class="empty-state-title">No clients match your filter</div></div>';
     return;
   }
 
-  cnt.innerHTML=clients.map(c=>{
-    const payments=payMap[c.client_id]||[];
-    const paid=payments.reduce((s,p)=>s+Number(p.amount||0),0);
-    const fee=Number(c.fee||0);
-    const balance=Math.max(0,fee-paid);
-    const pct=fee>0?Math.min(100,Math.round(paid/fee*100)):0;
-    const badge=fee<=0?'unpaid':pct>=100?'paid':paid>0?'partial':'unpaid';
-    const badgeCls={'paid':'fin-badge-paid','partial':'fin-badge-partial','unpaid':'fin-badge-unpaid'}[badge];
-    const badgeTxt={'paid':'Paid in Full','partial':'Partial','unpaid':'No Payment'}[badge];
-    const cat=S.categories.find(x=>x.id===c.case_type);
-    const au=S.users.find(u=>u.id===c.assigned_to);
-    const isExpanded=S.finExpanded[c.client_id];
-    const canRecord=isAdmin()||c.assigned_to===S.user?.id;
+  cnt.innerHTML = clients.map(c=>{
+    const payments = payMap[c.client_id]||[];
+    const paid     = payments.reduce((s,p)=>s+Number(p.amount||0), 0);
+    const fee      = Number(c.fee||0);
+    const balance  = Math.max(0, fee-paid);
+    const pct      = fee>0 ? Math.min(100,Math.round(paid/fee*100)) : 0;
+    const badge    = fee<=0?'unpaid': paid>=fee?'paid': paid>0?'partial':'unpaid';
+    const badgeCls = {paid:'fin-badge-paid',partial:'fin-badge-partial',unpaid:'fin-badge-unpaid'}[badge];
+    const badgeTxt = {paid:'Paid in Full',partial:'Partial Payment',unpaid:'No Payment Yet'}[badge];
+    const cat      = S.categories.find(x=>x.id===c.case_type);
+    const au       = S.users.find(u=>u.id===c.assigned_to);
+    const isExp    = S.finExpanded[c.client_id];
+    const canRecord= isAdmin()||c.assigned_to===S.user?.id;
 
-    let html=`<div class="fin-client-row ${isExpanded?'expanded':''}" onclick="toggleFinRow('${c.client_id}')">
-      <div class="avatar-sm av-navy">${initials(c.name)}</div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:14px;font-weight:600;">${c.name} <span class="client-id">${c.client_id}</span></div>
-        <div style="font-size:11.5px;color:var(--text-muted);">${cat?cat.label:c.case_type} · ${au?au.full_name:'—'}</div>
-      </div>
-      <div class="fin-progress-wrap" style="max-width:160px;">
-        <div class="fin-progress-label">
-          <span>₹${paid.toLocaleString('en-IN')} paid</span>
-          <span>${pct}%</span>
+    // NOTE: client name goes in a data attribute to avoid quote injection in onclick
+    let html = `
+      <div class="fin-client-row ${isExp?'expanded':''}"
+           data-cid="${c.client_id}" onclick="toggleFinRow('${c.client_id}')">
+        <div class="avatar-sm av-navy">${initials(c.name)}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:14px;font-weight:600;">${escHtml(c.name)}
+            <span class="client-id">${c.client_id}</span>
+          </div>
+          <div style="font-size:11.5px;color:var(--text-muted);">
+            ${cat?cat.label:c.case_type} · ${au?au.full_name:'Unassigned'}
+          </div>
         </div>
-        <div class="progress"><div class="progress-bar ${badge==='paid'?'gold':''}" style="width:${pct}%;background:${badge==='paid'?'var(--gold)':badge==='partial'?'#ed8936':'var(--border)'};"></div></div>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">
-          ${fee>0?`of ₹${fee.toLocaleString('en-IN')} · Balance ₹${balance.toLocaleString('en-IN')}`:'No fee set'}
+        <div class="fin-progress-wrap" style="max-width:180px;">
+          <div class="fin-progress-label">
+            <span>₹${paid.toLocaleString('en-IN')} paid</span>
+            <span>${pct}%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar" style="width:${pct}%;background:${
+              badge==='paid'?'var(--gold)':badge==='partial'?'#ed8936':'var(--border)'};"></div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">
+            ${fee>0
+              ?`of ₹${fee.toLocaleString('en-IN')} · Balance ₹${balance.toLocaleString('en-IN')}`
+              :'No fee set'}
+          </div>
         </div>
-      </div>
-      <span class="${badgeCls}">${badgeTxt}</span>
-      <i class="fas fa-chevron-${isExpanded?'up':'down'}" style="color:var(--text-muted);margin-left:8px;flex-shrink:0;"></i>
-    </div>`;
+        <span class="${badgeCls}">${badgeTxt}</span>
+        <i class="fas fa-chevron-${isExp?'up':'down'}"
+           style="color:var(--text-muted);margin-left:8px;flex-shrink:0;"></i>
+      </div>`;
 
-    if(isExpanded){
-  html+=`<div class="fin-ledger">`;
-  if(payments.length){
-        html+=payments.map(p=>{
-          const recorder=S.users.find(u=>u.id===p.recorded_by);
+    if(isExp){
+      html += `<div class="fin-ledger">`;
+      if(payments.length){
+        html += payments.map(p=>{
+          const recorder = S.users.find(u=>u.id===p.recorded_by);
           return `<div class="fin-ledger-row">
-            <i class="fas fa-receipt" style="color:var(--success);width:16px;"></i>
-            <span style="font-weight:600;color:var(--success);">₹${Number(p.amount).toLocaleString('en-IN')}</span>
-            <span style="color:var(--text-muted);">${fmtD(p.payment_date)}</span>
+            <i class="fas fa-receipt" style="color:var(--success);width:16px;flex-shrink:0;"></i>
+            <span style="font-weight:600;color:var(--success);min-width:100px;">
+              ₹${Number(p.amount).toLocaleString('en-IN')}
+            </span>
+            <span style="color:var(--text-muted);min-width:90px;">${fmtD(p.payment_date)}</span>
             <span class="badge badge-active" style="font-size:10px;">${p.method||'—'}</span>
-            ${p.note?`<span style="color:var(--text-secondary);font-size:12px;">${escHtml(p.note)}</span>`:''}
-            <span style="margin-left:auto;font-size:11px;color:var(--text-muted);">by ${recorder?recorder.full_name:'—'}</span>
+            ${p.note?`<span style="color:var(--text-secondary);font-size:12px;flex:1;">${escHtml(p.note)}</span>`:'<span style="flex:1;"></span>'}
+            <span style="font-size:11px;color:var(--text-muted);">
+              by ${recorder?recorder.full_name:'—'}
+            </span>
+            ${canRecord?`<button class="btn btn-outline btn-xs btn-icon" style="margin-left:8px;"
+              onclick="event.stopPropagation();finDeletePayment('${p.id}','${c.client_id}')"
+              title="Delete"><i class="fas fa-trash"></i></button>`:''}
           </div>`;
         }).join('');
       } else {
-    html+=`<p class="text-muted text-sm" style="padding:4px 0;">No payments recorded yet.</p>`;
-  }
-  if(canRecord){
-    html+=`<div style="margin-top:10px;">
-      <button class="btn btn-gold btn-sm" onclick="event.stopPropagation();openPaymentModal('${c.client_id}')">
-        <i class="fas fa-plus"></i> Record Payment
-      </button>
-    </div>`;
-  }
-  html+=`</div>`;
-}
+        html += `<p class="text-muted text-sm" style="padding:6px 0;">No payments recorded yet.</p>`;
+      }
+      if(canRecord){
+        // Use data attribute to avoid quote injection — handler reads it back
+        html += `
+          <div style="margin-top:10px;">
+            <button class="btn btn-gold btn-sm"
+              data-cid="${c.client_id}"
+              onclick="event.stopPropagation();finOpenPayment(this)">
+              <i class="fas fa-plus"></i> Record Payment
+            </button>
+          </div>`;
+      }
+      html += `</div>`;
+    }
     return html;
   }).join('');
 }
 
+// ── Row toggle ───────────────────────────────────────────────────────────
 function toggleFinRow(clientId){
   S.finExpanded[clientId] = !S.finExpanded[clientId];
-  
-  // Re-render the finance tracking view to display/hide the ledger
-  renderFinances();
+  const search  = (document.getElementById('fin-search')?.value||'').toLowerCase();
+  const statusF = document.getElementById('fin-filter-status')?.value||'';
+  renderFinancesFromCache(search, statusF);
 }
 
+// ── Open payment modal — reads client ID from button's data attribute ────
+// Using data attributes avoids any HTML entity / quote injection bugs.
+function finOpenPayment(btn){
+  const clientId = btn.dataset.cid;
+  if(!clientId){ showToast('Could not identify client.','error'); return; }
+  const client   = S.clients.find(c=>c.client_id===clientId);
+  openPaymentModal(clientId);
+  // Update the modal subtitle with the client name
+  const sub = document.getElementById('pay-client-name');
+  if(sub && client) sub.textContent = `${client.name} (${clientId})`;
+}
+
+// ── Delete a payment ────────────────────────────────────────────────────
+async function finDeletePayment(paymentId, clientId){
+  if(!confirm('Delete this payment entry? This cannot be undone.')) return;
+  const {error} = await sb.from('payments').delete().eq('id',paymentId);
+  if(error){ showToast('Delete failed: '+error.message,'error'); return; }
+  S.finPayments = S.finPayments.filter(p=>p.id!==paymentId);
+  showToast('Payment entry removed.','warning');
+  const search  = (document.getElementById('fin-search')?.value||'').toLowerCase();
+  const statusF = document.getElementById('fin-filter-status')?.value||'';
+  renderFinancesFromCache(search, statusF);
+}
+</script>
+<script>
+// ════════════════════════════════════════════
+//  CLIENT PORTAL  (magic link + PIN)
+//  The portal is a separate mode that renders on top of everything
+//  when ?portal=TOKEN is in the URL hash. The client sees their own
+//  case info, upcoming hearings/deadlines, payments, and documents.
+//  No Supabase auth needed — token + PIN gate access.
+// ════════════════════════════════════════════
+S.portalData = null;   // set when portal is active
+
+// ── Check URL hash for portal token on load ─────────────────────────────
+function checkPortalMode(){
+  const hash = window.location.hash;
+  const m = hash.match(/[#&]portal=([a-f0-9-]+)/i);
+  return m ? m[1] : null;
+}
+
+// ── Portal entry point (called from boot before normal auth) ─────────────
+async function tryPortalMode(token){
+  // Show portal login screen
+  document.getElementById('setup-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'none';
+  const ps = document.getElementById('portal-screen');
+  if(ps) ps.style.display = 'flex';
+  // Store token for use after PIN entry
+  S._portalToken = token;
+}
+
+async function portalLogin(){
+  const pin = (document.getElementById('portal-pin').value||'').trim();
+  const errEl = document.getElementById('portal-err');
+  errEl.style.display = 'none';
+  if(!pin || pin.length !== 4){ errEl.textContent='Enter your 4-digit PIN.'; errEl.style.display='block'; return; }
+
+  // Hash the PIN client-side (SHA-256 hex) to compare against DB
+  const pinHash = await sha256hex(pin);
+
+  // Look up token — public read policy allows this without auth
+  const {data:row, error} = await sb.from('portal_tokens')
+    .select('*, clients(*)')
+    .eq('token', S._portalToken)
+    .eq('pin_hash', pinHash)
+    .gt('expires_at', new Date().toISOString())
+    .maybeSingle();
+
+  if(error || !row){
+    errEl.textContent = 'Invalid PIN or link has expired. Please contact your lawyer.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  S.portalData = { token: row, client: row.clients };
+  renderPortal(row.clients);
+}
+
+async function sha256hex(str){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+// ── Render the portal view ────────────────────────────────────────────────
+async function renderPortal(client){
+  document.getElementById('portal-screen').style.display = 'none';
+  const pv = document.getElementById('portal-view');
+  if(!pv) return;
+  pv.style.display = 'flex';
+
+  // Fetch payments for this client (public read ok since token verified)
+  const {data:payments} = await sb.from('payments')
+    .select('*').eq('client_id', client.client_id).order('payment_date',{ascending:false});
+
+  // Fetch documents (only names + sizes, not signed URLs yet)
+  const {data:docs} = await sb.from('documents')
+    .select('id,name,size,uploaded_at,mime_type').eq('client_id', client.client_id)
+    .order('uploaded_at',{ascending:false});
+
+  const paid = (payments||[]).reduce((s,p)=>s+Number(p.amount||0),0);
+  const fee  = Number(client.fee||0);
+  const bal  = Math.max(0,fee-paid);
+
+  pv.innerHTML = `
+    <div style="max-width:700px;width:100%;margin:auto;padding:24px 16px;">
+      <div style="text-align:center;margin-bottom:28px;">
+        <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--navy);">
+          Lex<span style="color:var(--gold);">Desk</span>
+        </div>
+        <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">Client Portal</div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header"><span class="card-title">Your Matter</span></div>
+        <div class="card-body">
+          <div class="detail-meta-grid">
+            <div class="detail-meta-item"><div class="detail-meta-label">Client ID</div><div class="detail-meta-value">${client.client_id}</div></div>
+            <div class="detail-meta-item"><div class="detail-meta-label">Name</div><div class="detail-meta-value">${escHtml(client.name)}</div></div>
+            <div class="detail-meta-item"><div class="detail-meta-label">Status</div><div class="detail-meta-value">${statusBadge(client.status)}</div></div>
+            <div class="detail-meta-item"><div class="detail-meta-label">Case Type</div><div class="detail-meta-value">${client.case_type||'—'}</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header"><span class="card-title">Fee Summary</span></div>
+        <div class="card-body">
+          <div class="fin-summary-grid" style="margin-bottom:0;">
+            <div class="stat-card gold" style="min-height:80px;">
+              <div class="stat-label">Total Fee</div>
+              <div class="stat-value" style="font-size:20px;">${fee?'₹'+fee.toLocaleString('en-IN'):'Not set'}</div>
+            </div>
+            <div class="stat-card green" style="min-height:80px;">
+              <div class="stat-label">Paid</div>
+              <div class="stat-value" style="font-size:20px;">₹${paid.toLocaleString('en-IN')}</div>
+            </div>
+            <div class="stat-card ${bal>0?'red':'green'}" style="min-height:80px;">
+              <div class="stat-label">Balance Due</div>
+              <div class="stat-value" style="font-size:20px;">${fee?'₹'+bal.toLocaleString('en-IN'):'—'}</div>
+            </div>
+          </div>
+          ${(payments||[]).length ? `
+            <div style="margin-top:16px;">
+              <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--text-muted);margin-bottom:8px;">Payment History</div>
+              ${(payments||[]).map(p=>`
+                <div class="fin-ledger-row">
+                  <i class="fas fa-receipt" style="color:var(--success);width:16px;"></i>
+                  <span style="font-weight:600;color:var(--success);">₹${Number(p.amount).toLocaleString('en-IN')}</span>
+                  <span style="color:var(--text-muted);">${fmtD(p.payment_date)}</span>
+                  <span class="badge badge-active" style="font-size:10px;">${p.method||'—'}</span>
+                  ${p.note?`<span style="font-size:12px;color:var(--text-secondary);">${escHtml(p.note)}</span>`:''}
+                </div>`).join('')}
+            </div>` : ''}
+        </div>
+      </div>
+
+      ${(docs||[]).length ? `
+        <div class="card mb-4">
+          <div class="card-header"><span class="card-title">Your Documents</span></div>
+          <div class="card-body">
+            <div class="file-list">
+              ${(docs||[]).map(d=>`
+                <div class="file-item" style="cursor:default;">
+                  <i class="${fileIcon(d.name)}" style="font-size:18px;color:var(--navy-mid);"></i>
+                  <span class="file-item-name">${escHtml(d.name)}</span>
+                  <span class="file-item-size">${formatBytes(d.size)}</span>
+                  <span style="font-size:11px;color:var(--text-muted);">${fmtD(d.uploaded_at)}</span>
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>` : ''}
+
+      <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:24px;">
+        This portal is provided by your lawyer. For queries, please contact your legal team directly.
+        <br>This link expires ${fmtD(S.portalData?.token?.expires_at)}.
+      </p>
+    </div>`;
+}
+
+// ── Admin: generate portal link for a client ─────────────────────────────
+async function generatePortalLink(clientId){
+  // Generate random 4-digit PIN
+  const pin = String(Math.floor(1000+Math.random()*9000));
+  const pinHash = await sha256hex(pin);
+
+  // Deactivate old token if exists
+  await sb.from('portal_tokens').delete().eq('client_id',clientId);
+
+  // Insert new token
+  const {data:row, error} = await sb.from('portal_tokens')
+    .insert({client_id:clientId, pin_hash:pinHash, created_by:S.user.id})
+    .select().single();
+  if(error){ showToast('Failed to generate portal link: '+error.message,'error'); return; }
+
+  const baseUrl = window.location.href.split('#')[0];
+  const link = `${baseUrl}#portal=${row.token}`;
+
+  // Show in a modal
+  document.getElementById('portal-link-url').value = link;
+  document.getElementById('portal-link-pin').textContent = pin;
+  openModal('modal-portal-link');
+}
+
+function copyPortalLink(){
+  const url = document.getElementById('portal-link-url').value;
+  const pin = document.getElementById('portal-link-pin').textContent;
+  navigator.clipboard.writeText(`Portal Link: ${url}\nPIN: ${pin}`).then(()=>showToast('Link and PIN copied!','success'));
+}
+</script>
+<script>
+// ════════════════════════════════════════════
+//  INVOICE GENERATION  (jsPDF, browser-only)
+//  Generates a professional PDF invoice from
+//  the client's fee ledger + firm settings.
+// ════════════════════════════════════════════
+S.invoiceSettings = null;
+
+async function loadInvoiceSettings(){
+  const {data} = await sb.from('invoice_settings').select('*').limit(1).maybeSingle();
+  S.invoiceSettings = data;
+}
+
+async function generateInvoice(clientId){
+  if(!S.invoiceSettings) await loadInvoiceSettings();
+  const client = S.clients.find(c=>c.client_id===clientId);
+  if(!client){ showToast('Client not found.','error'); return; }
+
+  // Fetch payments
+  const {data:payments} = await sb.from('payments')
+    .select('*').eq('client_id',clientId).order('payment_date',{ascending:true});
+
+  const firm = S.invoiceSettings || {};
+  const paid  = (payments||[]).reduce((s,p)=>s+Number(p.amount||0),0);
+  const fee   = Number(client.fee||0);
+  const bal   = Math.max(0,fee-paid);
+  const invNum= `${firm.invoice_prefix||'INV'}-${String(firm.next_number||1).padStart(4,'0')}`;
+
+  // Build invoice HTML and use print dialog as PDF
+  const cat   = S.categories.find(c=>c.id===client.case_type);
+  const au    = S.users.find(u=>u.id===client.assigned_to);
+
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"/>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;color:#1a1a2e;padding:40px;}
+    .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:20px;border-bottom:2px solid #0f1e3c;}
+    .firm-name{font-size:24px;font-weight:700;color:#0f1e3c;}
+    .firm-details{font-size:11px;color:#666;margin-top:4px;line-height:1.6;}
+    .inv-meta{text-align:right;}
+    .inv-title{font-size:20px;font-weight:700;color:#c9a84c;letter-spacing:2px;}
+    .inv-number{font-size:13px;color:#0f1e3c;font-weight:600;margin-top:4px;}
+    .inv-date{font-size:11px;color:#666;margin-top:2px;}
+    .client-box{background:#f7f8fc;border:1px solid #e2e8f0;border-radius:8px;padding:16px 20px;margin-bottom:24px;}
+    .client-box-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#a0aec0;font-weight:600;margin-bottom:8px;}
+    .client-name{font-size:16px;font-weight:700;}
+    .client-meta{font-size:11.5px;color:#4a5568;margin-top:4px;line-height:1.7;}
+    table{width:100%;border-collapse:collapse;margin-bottom:20px;}
+    thead th{background:#0f1e3c;color:#fff;padding:10px 14px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.7px;}
+    tbody tr:nth-child(even){background:#f7f8fc;}
+    tbody td{padding:10px 14px;border-bottom:1px solid #edf2f7;font-size:12.5px;}
+    .total-block{display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin-bottom:24px;}
+    .total-row{display:flex;gap:48px;font-size:13px;}
+    .total-row .label{color:#4a5568;min-width:120px;text-align:right;}
+    .total-row .value{font-weight:600;min-width:100px;text-align:right;}
+    .total-row.outstanding .value{color:#c53030;font-size:15px;}
+    .footer{border-top:1px solid #e2e8f0;padding-top:16px;font-size:11px;color:#718096;text-align:center;margin-top:32px;}
+    @media print{body{padding:20px;}}
+  </style></head><body>
+  <div class="header">
+    <div>
+      <div class="firm-name">${escHtml(firm.firm_name||'Law Firm')}</div>
+      <div class="firm-details">
+        ${firm.firm_address?escHtml(firm.firm_address)+'<br/>':''}
+        ${firm.firm_phone?'Tel: '+escHtml(firm.firm_phone)+'<br/>':''}
+        ${firm.firm_email?escHtml(firm.firm_email)+'<br/>':''}
+        ${firm.bar_number?'Bar No: '+escHtml(firm.bar_number):''}
+      </div>
+    </div>
+    <div class="inv-meta">
+      <div class="inv-title">INVOICE</div>
+      <div class="inv-number">${escHtml(invNum)}</div>
+      <div class="inv-date">Date: ${fmtD(new Date().toISOString())}</div>
+    </div>
+  </div>
+
+  <div class="client-box">
+    <div class="client-box-title">Bill To</div>
+    <div class="client-name">${escHtml(client.name)}</div>
+    <div class="client-meta">
+      Client ID: ${client.client_id}<br/>
+      Matter: ${cat?escHtml(cat.label):client.case_type}<br/>
+      ${client.email?'Email: '+escHtml(client.email)+'<br/>':''}
+      ${client.phone?'Phone: '+escHtml(client.phone):''}
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Description</th><th>Amount (₹)</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Legal Services — ${cat?escHtml(cat.label):client.case_type}<br/>
+          <span style="font-size:11px;color:#718096;">Assigned to: ${au?escHtml(au.full_name):'—'}</span>
+        </td>
+        <td style="font-weight:600;">${fee>0?'₹'+fee.toLocaleString('en-IN'):'—'}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  ${(payments||[]).length ? `
+  <table>
+    <thead>
+      <tr><th>Payment Date</th><th>Method</th><th>Reference</th><th>Amount (₹)</th></tr>
+    </thead>
+    <tbody>
+      ${(payments||[]).map(p=>`
+        <tr>
+          <td>${fmtD(p.payment_date)}</td>
+          <td>${escHtml(p.method||'—')}</td>
+          <td>${p.note?escHtml(p.note):'—'}</td>
+          <td style="font-weight:600;color:#276749;">₹${Number(p.amount).toLocaleString('en-IN')}</td>
+        </tr>`).join('')}
+    </tbody>
+  </table>` : ''}
+
+  <div class="total-block">
+    <div class="total-row"><span class="label">Total Fee:</span><span class="value">₹${fee.toLocaleString('en-IN')}</span></div>
+    <div class="total-row"><span class="label">Total Paid:</span><span class="value" style="color:#276749;">₹${paid.toLocaleString('en-IN')}</span></div>
+    <div class="total-row outstanding"><span class="label" style="font-weight:700;">Balance Due:</span><span class="value">₹${bal.toLocaleString('en-IN')}</span></div>
+  </div>
+
+  <div class="footer">${escHtml(firm.footer_text||'Thank you for your trust.')}</div>
+  </body></html>`;
+
+  // Open in new window and trigger print-to-PDF
+  const win = window.open('','_blank');
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  setTimeout(()=>win.print(), 600);
+
+  // Increment invoice number in DB (fire and forget)
+  if(S.invoiceSettings?.id){
+    sb.from('invoice_settings').update({next_number:(firm.next_number||1)+1}).eq('id',S.invoiceSettings.id);
+    if(S.invoiceSettings) S.invoiceSettings.next_number = (firm.next_number||1)+1;
+  }
+}
+
+// ── Invoice settings save (in Settings page) ─────────────────────────────
+async function saveInvoiceSettings(){
+  const payload = {
+    firm_name:      document.getElementById('inv-firm-name')?.value||'Law Firm',
+    firm_address:   document.getElementById('inv-firm-address')?.value||null,
+    firm_phone:     document.getElementById('inv-firm-phone')?.value||null,
+    firm_email:     document.getElementById('inv-firm-email')?.value||null,
+    bar_number:     document.getElementById('inv-bar-number')?.value||null,
+    footer_text:    document.getElementById('inv-footer')?.value||null,
+    invoice_prefix: document.getElementById('inv-prefix')?.value||'INV',
+    updated_at:     new Date().toISOString()
+  };
+  if(S.invoiceSettings?.id){
+    const {error}=await sb.from('invoice_settings').update(payload).eq('id',S.invoiceSettings.id);
+    if(error){showToast('Save failed: '+error.message,'error');return;}
+  } else {
+    const {data,error}=await sb.from('invoice_settings').insert(payload).select().single();
+    if(error){showToast('Save failed: '+error.message,'error');return;}
+    S.invoiceSettings=data;
+  }
+  showToast('Invoice settings saved.','success');
+}
+
+function loadInvoiceSettingsUI(){
+  if(!S.invoiceSettings) return;
+  const f=S.invoiceSettings;
+  ['firm-name','firm-address','firm-phone','firm-email','bar-number','footer','prefix'].forEach(k=>{
+    const el=document.getElementById(`inv-${k}`);
+    const fk=k.replace(/-([a-z])/g,(_,c)=>c.toUpperCase());
+    if(el) el.value=f[fk]||'';
+  });
+}
+</script>
+<script>
+// ════════════════════════════════════════════
+//  COURT FILING DEADLINE CALCULATOR
+//  Admin-editable rules; auto-computes deadlines
+//  for a client based on their case dates.
+// ════════════════════════════════════════════
+S.deadlineRules = [];
+
+async function loadDeadlineRules(){
+  const {data,error} = await sb.from('deadline_rules')
+    .select('*').order('category_id').order('offset_days');
+  if(!error) S.deadlineRules = data||[];
+}
+
+// ── Compute deadlines for a client ───────────────────────────────────────
+function computeClientDeadlines(client){
+  const data   = client.case_data||{};
+  const schema = S.formSchemas[client.case_type]||[];
+  const results= [];
+
+  // Build a map of field_id → date value from the client's case data
+  const fieldDates = {};
+  schema.filter(f=>f.type==='date'&&data[f.id]).forEach(f=>{ fieldDates[f.id]=data[f.id]; });
+  // Also include created_at as a trigger source
+  if(client.created_at) fieldDates['created_at'] = client.created_at.slice(0,10);
+
+  S.deadlineRules.filter(r=>r.is_active).forEach(rule=>{
+    // Rule applies if category matches client's case type, or rule has no category (global)
+    const catMatch = !rule.category_id || rule.category_id===client.case_type;
+    if(!catMatch) return;
+
+    const triggerDate = fieldDates[rule.trigger_field];
+    if(!triggerDate) return;
+
+    const base = parsePlannerDate(triggerDate);
+    const offset = rule.offset_direction==='before' ? -rule.offset_days : rule.offset_days;
+    const deadline = new Date(base.getTime());
+    deadline.setDate(deadline.getDate()+offset);
+    const ds = localDateStr(deadline);
+    const daysLeft = daysUntil(ds);
+
+    results.push({
+      rule, triggerDate, deadline:ds, daysLeft,
+      triggerLabel: schema.find(f=>f.id===rule.trigger_field)?.label || rule.trigger_field
+    });
+  });
+
+  // Sort: overdue first, then by days left
+  return results.sort((a,b)=>a.daysLeft-b.daysLeft);
+}
+
+// ── Render computed deadlines panel in client detail ─────────────────────
+function renderClientDeadlines(clientId){
+  const cnt = document.getElementById('tab-deadlines');
+  if(!cnt) return;
+  const client = S.clients.find(c=>c.client_id===clientId);
+  if(!client){ cnt.innerHTML='<p class="text-muted text-sm">Client not found.</p>'; return; }
+
+  const deadlines = computeClientDeadlines(client);
+  if(!deadlines.length){
+    cnt.innerHTML=`<p class="text-muted text-sm">No applicable deadline rules for this matter.<br/>
+      ${isAdmin()?'<span style="color:var(--navy-mid);cursor:pointer;text-decoration:underline;" onclick="closeModal(\'modal-detail\');navigate(\'deadline-rules\')">Configure deadline rules →</span>':''}</p>`;
+    return;
+  }
+
+  cnt.innerHTML = deadlines.map(d=>{
+    const cls = d.daysLeft<0?'urgent':d.daysLeft<=30?'soon':'ok';
+    const lbl = d.daysLeft<0?`${Math.abs(d.daysLeft)}d overdue`:d.daysLeft===0?'Today':`${d.daysLeft}d`;
+    return `<div class="deadline-item">
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13.5px;font-weight:500;">${escHtml(d.rule.rule_name)}</div>
+        <div style="font-size:11.5px;color:var(--text-muted);">
+          ${d.rule.statute?escHtml(d.rule.statute)+' · ':''}
+          Triggered by: ${escHtml(d.triggerLabel)} (${fmtD(d.triggerDate)})
+          → Due: ${fmtD(d.deadline)}
+        </div>
+        ${d.rule.description?`<div style="font-size:11.5px;color:var(--text-secondary);margin-top:2px;">${escHtml(d.rule.description)}</div>`:''}
+      </div>
+      <span class="deadline-days ${cls}">${lbl}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── Admin: Deadline Rules management page ────────────────────────────────
+function renderDeadlineRulesPage(){
+  const cnt = document.getElementById('deadline-rules-list');
+  if(!cnt) return;
+  if(!S.deadlineRules.length){
+    cnt.innerHTML='<div class="empty-state"><i class="fas fa-calendar-times"></i><div class="empty-state-title">No rules yet</div></div>';
+    return;
+  }
+  // Group by category
+  const grouped={};
+  S.deadlineRules.forEach(r=>{
+    const key=r.category_id||'__global__';
+    if(!grouped[key]) grouped[key]=[];
+    grouped[key].push(r);
+  });
+  cnt.innerHTML=Object.entries(grouped).map(([catId,rules])=>{
+    const cat = S.categories.find(c=>c.id===catId);
+    const label = cat?cat.label:catId==='__global__'?'All Categories':'Unknown';
+    return `<div style="margin-bottom:20px;">
+      <div class="section-divider">${escHtml(label)}</div>
+      ${rules.map(r=>`
+        <div class="user-list-item" style="${!r.is_active?'opacity:.5':''}">
+          <div class="user-list-item-info">
+            <div class="user-list-item-name">${escHtml(r.rule_name)}
+              ${r.statute?`<span style="font-size:11px;color:var(--text-muted);font-weight:400;"> · ${escHtml(r.statute)}</span>`:''}
+            </div>
+            <div class="user-list-item-meta">
+              ${r.offset_days}d ${r.offset_direction} "${r.trigger_field}"
+              ${r.description?'· '+escHtml(r.description):''}
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-shrink:0;">
+            <button class="btn btn-outline btn-sm"
+              onclick="openDeadlineRuleModal('${r.id}')"><i class="fas fa-edit"></i></button>
+            <button class="btn ${r.is_active?'btn-outline':'btn-success'} btn-sm"
+              onclick="toggleDeadlineRule('${r.id}',${!r.is_active})">
+              ${r.is_active?'Disable':'Enable'}</button>
+            <button class="btn btn-danger btn-sm"
+              onclick="deleteDeadlineRule('${r.id}')"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+function openDeadlineRuleModal(ruleId=null){
+  const r = ruleId ? S.deadlineRules.find(x=>x.id===ruleId) : null;
+  S.editingDeadlineRuleId = ruleId;
+  document.getElementById('dr-modal-title').textContent = r?'Edit Deadline Rule':'New Deadline Rule';
+  // Build category options
+  const catSel = document.getElementById('dr-category');
+  catSel.innerHTML = '<option value="">All Categories</option>'+
+    S.categories.map(c=>`<option value="${c.id}">${c.label}</option>`).join('');
+  if(r){
+    document.getElementById('dr-name').value         = r.rule_name||'';
+    document.getElementById('dr-statute').value      = r.statute||'';
+    document.getElementById('dr-trigger').value      = r.trigger_field||'';
+    document.getElementById('dr-days').value         = r.offset_days||30;
+    document.getElementById('dr-direction').value    = r.offset_direction||'after';
+    document.getElementById('dr-description').value  = r.description||'';
+    catSel.value = r.category_id||'';
+  } else {
+    ['dr-name','dr-statute','dr-trigger','dr-description'].forEach(id=>{
+      const el=document.getElementById(id); if(el) el.value='';
+    });
+    document.getElementById('dr-days').value = 30;
+    document.getElementById('dr-direction').value = 'after';
+  }
+  openModal('modal-deadline-rule');
+}
+
+async function saveDeadlineRule(){
+  const name=(document.getElementById('dr-name').value||'').trim();
+  if(!name){showToast('Rule name is required.','error');return;}
+  const payload={
+    rule_name:      name,
+    statute:        document.getElementById('dr-statute').value||null,
+    category_id:    document.getElementById('dr-category').value||null,
+    trigger_field:  document.getElementById('dr-trigger').value||'created_at',
+    offset_days:    parseInt(document.getElementById('dr-days').value)||30,
+    offset_direction:document.getElementById('dr-direction').value||'after',
+    description:    document.getElementById('dr-description').value||null,
+    updated_at:     new Date().toISOString()
+  };
+  if(S.editingDeadlineRuleId){
+    const {error}=await sb.from('deadline_rules').update(payload).eq('id',S.editingDeadlineRuleId);
+    if(error){showToast('Save failed: '+error.message,'error');return;}
+  } else {
+    payload.created_by=S.user.id;
+    const {error}=await sb.from('deadline_rules').insert(payload);
+    if(error){showToast('Save failed: '+error.message,'error');return;}
+  }
+  closeModal('modal-deadline-rule');
+  await loadDeadlineRules();
+  renderDeadlineRulesPage();
+  showToast('Rule saved.','success');
+}
+
+async function toggleDeadlineRule(id,active){
+  const {error}=await sb.from('deadline_rules').update({is_active:active}).eq('id',id);
+  if(error){showToast('Failed.','error');return;}
+  await loadDeadlineRules(); renderDeadlineRulesPage();
+}
+async function deleteDeadlineRule(id){
+  if(!confirm('Delete this rule?')) return;
+  const {error}=await sb.from('deadline_rules').delete().eq('id',id);
+  if(error){showToast('Delete failed.','error');return;}
+  await loadDeadlineRules(); renderDeadlineRulesPage();
+  showToast('Rule deleted.','warning');
+}
+</script>
+<script>
+// ════════════════════════════════════════════
+//  CONFLICT OF INTEREST CHECKER
+//  Checks if an opposite party name matches
+//  any existing client in the firm.
+// ════════════════════════════════════════════
+function checkConflictOfInterest(oppPartyName){
+  if(!oppPartyName||oppPartyName.length<2) return [];
+  const query=oppPartyName.toLowerCase().trim();
+  return S.clients.filter(c=>{
+    // Check client name
+    if(c.name.toLowerCase().includes(query)) return true;
+    // Check opposite party field in case data
+    const opp=(c.case_data?.oppositeParty||'').toLowerCase();
+    if(opp&&opp.includes(query)) return true;
+    return false;
+  });
+}
+
+function renderConflictCheck(){
+  const val=(document.getElementById('f-conflict-check')?.value||'').trim();
+  const cnt=document.getElementById('conflict-results');
+  if(!cnt) return;
+  if(!val||val.length<2){cnt.innerHTML='';return;}
+  const matches=checkConflictOfInterest(val);
+  if(!matches.length){
+    cnt.innerHTML=`<div style="color:var(--success);font-size:12.5px;display:flex;align-items:center;gap:6px;"><i class="fas fa-check-circle"></i> No conflicts found for "${escHtml(val)}"</div>`;
+    return;
+  }
+  cnt.innerHTML=`<div style="color:var(--danger);font-size:12.5px;margin-bottom:6px;font-weight:600;">
+    <i class="fas fa-exclamation-triangle"></i> Potential conflict — "${escHtml(val)}" matches ${matches.length} existing record${matches.length>1?'s':''}:
+  </div>`+matches.map(c=>`
+    <div style="background:var(--danger-bg);border:1px solid #fed7d7;border-radius:6px;padding:8px 12px;margin-bottom:6px;font-size:12.5px;cursor:pointer;" onclick="viewClient('${c.client_id}')">
+      <strong>${escHtml(c.name)}</strong> · ${c.client_id} · ${c.case_type}
+      ${c.case_data?.oppositeParty?`<br/><span style="color:var(--text-muted);">Opposite party: ${escHtml(c.case_data.oppositeParty)}</span>`:''}
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════════
+//  AUDIT TRAIL — field-level diffs on client updates
+//  Called from saveClient() with old and new payloads.
+// ════════════════════════════════════════════
+function buildClientDiff(oldClient, newPayload){
+  const fields={
+    name:'Name', case_type:'Case Type', status:'Status',
+    phone:'Phone', email:'Email', address:'Address',
+    fee:'Fee', notes:'Notes', assigned_to:'Assigned To'
+  };
+  const diffs=[];
+  Object.entries(fields).forEach(([key,label])=>{
+    const oldVal = key==='assigned_to'
+      ? (S.users.find(u=>u.id===oldClient[key])?.full_name||oldClient[key]||'—')
+      : String(oldClient[key]||'');
+    const newVal = key==='assigned_to'
+      ? (S.users.find(u=>u.id===newPayload[key])?.full_name||newPayload[key]||'—')
+      : String(newPayload[key]||'');
+    if(oldVal!==newVal) diffs.push({field:label,from:oldVal,to:newVal});
+  });
+  return diffs;
+}
+
+async function logClientUpdate(clientId, diffs){
+  if(!diffs.length) return;
+  await sb.from('activity_log').insert({
+    actor_id: S.user.id,
+    action:   'client_updated',
+    entity_type:'client',
+    entity_id:  clientId,
+    detail: {
+      updated_by: S.profile.full_name,
+      changes: diffs
+    }
+  });
+}
+
+// ════════════════════════════════════════════
+//  DOCUMENT TEMPLATES WITH VARIABLE FORMS
+//  Templates can now define custom variables
+//  (beyond {{CLIENT_NAME}} etc.) that show as
+//  form fields when "Use" is clicked.
+// ════════════════════════════════════════════
+
+// Extend openUseTemplate to show variable fields
+function openUseTemplateWithVars(tplId){
+  S.activeTemplateId=tplId;
+  const t=S.templates.find(x=>x.id===tplId);
+  if(!t){ showToast('Template not found.','error'); return; }
+
+  // Client selector
+  const sel=document.getElementById('ut-client');
+  sel.innerHTML=myClients().map(c=>`<option value="${c.client_id}">${c.name} (${c.client_id})</option>`).join('');
+
+  document.getElementById('ut-title').textContent='Use: '+t.name;
+
+  // Render custom variable fields
+  const varCnt=document.getElementById('ut-variable-fields');
+  const vars=t.variables||[];
+  if(vars.length&&varCnt){
+    varCnt.style.display='block';
+    varCnt.innerHTML=`<div class="section-divider">Fill in Variables</div>
+      <div class="form-grid" style="gap:10px;margin-top:8px;">
+        ${vars.map(v=>`
+          <div class="form-group">
+            <label class="form-label">${escHtml(v.label)}</label>
+            ${v.type==='date'
+              ?`<input class="form-control" id="ut-var-${v.id}" type="date"/>`
+              :v.type==='number'
+              ?`<input class="form-control" id="ut-var-${v.id}" type="number"/>`
+              :`<input class="form-control" id="ut-var-${v.id}" type="text" placeholder="${escHtml(v.placeholder||'')}"/>`
+            }
+          </div>`).join('')}
+      </div>`;
+  } else if(varCnt){
+    varCnt.style.display='none';
+  }
+
+  previewTemplateWithVars();
+  openModal('modal-use-template');
+}
+
+function previewTemplateWithVars(){
+  const t=S.templates.find(x=>x.id===S.activeTemplateId);
+  if(!t) return;
+  const clientId=document.getElementById('ut-client').value;
+  let content=fillTemplatePlaceholders(t.content,clientId);
+  // Fill custom variables
+  (t.variables||[]).forEach(v=>{
+    const el=document.getElementById(`ut-var-${v.id}`);
+    if(el) content=content.replace(new RegExp(`\\{\\{${v.id}\\}\\}`,'g'),el.value||`{{${v.id}}}`);
+  });
+  document.getElementById('ut-preview').innerHTML=content;
+}
+
+// Variable editor in template modal
+function addTemplateVariable(){
+  const vars=S._editingTemplateVars||[];
+  vars.push({id:'var_'+Date.now(),label:'Variable Name',type:'text',placeholder:''});
+  S._editingTemplateVars=vars;
+  renderTemplateVarEditor();
+}
+function renderTemplateVarEditor(){
+  const cnt=document.getElementById('tpl-variable-editor');
+  if(!cnt) return;
+  const vars=S._editingTemplateVars||[];
+  if(!vars.length){cnt.innerHTML='<p class="text-muted text-sm">No custom variables. Click "Add Variable" to create one.</p>';return;}
+  cnt.innerHTML=vars.map((v,i)=>`
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap;">
+      <input class="form-control" style="flex:1;min-width:120px;" type="text" value="${escHtml(v.label)}"
+        placeholder="Label" onchange="S._editingTemplateVars[${i}].label=this.value"/>
+      <input class="form-control" style="width:130px;" type="text" value="${escHtml(v.id)}"
+        placeholder="{{placeholder}}" onchange="S._editingTemplateVars[${i}].id=this.value"/>
+      <select class="form-control" style="width:90px;" onchange="S._editingTemplateVars[${i}].type=this.value">
+        <option value="text" ${v.type==='text'?'selected':''}>Text</option>
+        <option value="date" ${v.type==='date'?'selected':''}>Date</option>
+        <option value="number" ${v.type==='number'?'selected':''}>Number</option>
+      </select>
+      <button class="btn btn-danger btn-xs btn-icon" onclick="S._editingTemplateVars.splice(${i},1);renderTemplateVarEditor()">
+        <i class="fas fa-times"></i></button>
+    </div>`).join('');
+}
 </script>
 <script>
 // ════════════════════════════════════════════
@@ -4171,10 +5061,12 @@ function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 function switchTab(tab){
   document.querySelectorAll('.tabs .tab-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  const idx={overview:0,'case-details':1,payments:2,documents:3,history:4}[tab];
+  const idx={overview:0,'case-details':1,payments:2,documents:3,deadlines:4,history:5}[tab];
   const btns=document.querySelectorAll('.tabs .tab-btn');
   if(btns[idx])btns[idx].classList.add('active');
   document.getElementById('tab-'+tab).classList.add('active');
+  // Lazy-load deadlines tab when opened
+  if(tab==='deadlines'&&S.detailClientId) renderClientDeadlines(S.detailClientId);
 }
 function showToast(msg,type='info'){
   const cnt=document.getElementById('toast-container');
@@ -4195,6 +5087,13 @@ document.addEventListener('click',e=>{
 //  BOOT
 // ════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded',async ()=>{
+  // Check for client portal mode first (before normal auth)
+  const portalToken = checkPortalMode();
+  if(portalToken){
+    if(!initSupabase()) return;
+    await tryPortalMode(portalToken);
+    return;
+  }
   captureOneDriveRedirectToken(); // must run before anything else touches the URL hash
   if(!initSupabase())return;
   const {data:{session}}=await sb.auth.getSession();

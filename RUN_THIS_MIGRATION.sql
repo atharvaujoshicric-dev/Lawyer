@@ -332,3 +332,138 @@ where routine_schema = 'public'
 -- ────────────────────────────────────────────
 -- DOB field in profiles
 alter table profiles add column if not exists dob date;
+
+-- ────────────────────────────────────────────
+--  v3.5 additions (7 new features)
+-- ────────────────────────────────────────────
+
+-- ── Client portal tokens (magic link + PIN) ──
+create table if not exists portal_tokens (
+  id          uuid    primary key default gen_random_uuid(),
+  client_id   text    references clients(client_id) on delete cascade,
+  token       text    unique not null default gen_random_uuid()::text,
+  pin_hash    text    not null,     -- sha256 hex of the 4-digit PIN
+  expires_at  timestamptz not null default (now() + interval '90 days'),
+  created_by  uuid    references profiles(id),
+  created_at  timestamptz default now()
+);
+alter table portal_tokens enable row level security;
+-- Admin and assigned lawyer can manage tokens; public (anon) can SELECT
+-- (needed so the portal page can validate the token before auth)
+drop policy if exists "portal_tokens_select" on portal_tokens;
+create policy "portal_tokens_select" on portal_tokens for select using (true);
+drop policy if exists "portal_tokens_insert" on portal_tokens;
+create policy "portal_tokens_insert" on portal_tokens for insert
+  with check (is_approved());
+drop policy if exists "portal_tokens_delete" on portal_tokens;
+create policy "portal_tokens_delete" on portal_tokens for delete
+  using (is_admin() or created_by = auth.uid());
+
+-- ── Invoice / firm settings ──
+create table if not exists invoice_settings (
+  id          uuid    primary key default gen_random_uuid(),
+  firm_name   text    not null default 'Law Firm',
+  firm_address text,
+  firm_phone  text,
+  firm_email  text,
+  bar_number  text,
+  footer_text text    default 'Thank you for your trust.',
+  invoice_prefix text default 'INV',
+  next_number int     default 1,
+  created_by  uuid    references profiles(id),
+  updated_at  timestamptz default now()
+);
+alter table invoice_settings enable row level security;
+drop policy if exists "invoice_settings_select" on invoice_settings;
+create policy "invoice_settings_select" on invoice_settings for select using (is_approved());
+drop policy if exists "invoice_settings_insert" on invoice_settings;
+create policy "invoice_settings_insert" on invoice_settings for insert with check (is_admin());
+drop policy if exists "invoice_settings_update" on invoice_settings;
+create policy "invoice_settings_update" on invoice_settings for update using (is_admin());
+
+-- ── Template variables (extend existing templates table) ──
+alter table templates add column if not exists
+  variables jsonb default '[]'::jsonb;
+-- variables: [{id, label, placeholder, type: text|date|number}]
+
+-- ── Deadline rules (court filing calculator) ──
+create table if not exists deadline_rules (
+  id              uuid    primary key default gen_random_uuid(),
+  category_id     text    references categories(id) on delete set null,
+  rule_name       text    not null,
+  statute         text,                        -- e.g. "CPC Order VIII Rule 1"
+  trigger_field   text,                        -- field id in form_schema, or 'created_at'
+  offset_days     int     not null default 30,
+  offset_direction text   not null default 'after'
+                          check (offset_direction in ('after','before')),
+  description     text,
+  is_active       boolean default true,
+  created_by      uuid    references profiles(id),
+  created_at      timestamptz default now(),
+  updated_at      timestamptz default now()
+);
+alter table deadline_rules enable row level security;
+drop policy if exists "drules_select" on deadline_rules;
+create policy "drules_select" on deadline_rules for select using (is_approved());
+drop policy if exists "drules_insert" on deadline_rules;
+create policy "drules_insert" on deadline_rules for insert with check (is_admin());
+drop policy if exists "drules_update" on deadline_rules;
+create policy "drules_update" on deadline_rules for update using (is_admin());
+drop policy if exists "drules_delete" on deadline_rules;
+create policy "drules_delete" on deadline_rules for delete using (is_admin());
+
+-- ── Seed: common Indian court deadline rules ──
+insert into deadline_rules
+  (rule_name, statute, category_id, trigger_field, offset_days, offset_direction, description)
+values
+  ('Written Statement (Civil)', 'CPC Order VIII Rule 1', 'general', 'created_at', 30, 'after',
+   'Defendant must file written statement within 30 days of service of summons'),
+  ('Written Statement (Extended)', 'CPC Order VIII Rule 1 proviso', 'general', 'created_at', 90, 'after',
+   'Court may extend up to 90 days from date of service'),
+  ('First Appeal', 'CPC Section 96 r/w Order XLI', 'general', 'nextHearing', 90, 'after',
+   '90 days from date of decree for first appeal to High Court'),
+  ('Second Appeal', 'CPC Section 100', 'general', 'nextHearing', 90, 'after',
+   '90 days from date of decree of first appellate court'),
+  ('Revision Petition (CPC)', 'CPC Section 115', 'general', 'nextHearing', 90, 'after',
+   '90 days from date of order for civil revision'),
+  ('Bail Application Hearing', 'CrPC Section 437', 'general', 'created_at', 1, 'after',
+   'Bail application should be heard within 24 hours of arrest/remand'),
+  ('Charge Sheet Filing', 'CrPC Section 167(2)', 'general', 'created_at', 60, 'after',
+   'Police must file charge sheet within 60 days for offences punishable with imprisonment < 10 years'),
+  ('Charge Sheet (Serious)', 'CrPC Section 167(2) proviso', 'general', 'created_at', 90, 'after',
+   'Police must file charge sheet within 90 days for offences punishable with death/life/≥10 years'),
+  ('Criminal Appeal (Sessions)', 'CrPC Section 374', 'general', 'nextHearing', 90, 'after',
+   '90 days from date of conviction for appeal to High Court'),
+  ('Limitation — Contract', 'Limitation Act Article 55', 'general', 'created_at', 1095, 'after',
+   '3 years (1095 days) from date of breach for suit on contract'),
+  ('Limitation — Tort', 'Limitation Act Article 72-74', 'general', 'created_at', 1095, 'after',
+   '3 years from date when injury/cause of action arose'),
+  ('Limitation — Recovery of Land', 'Limitation Act Article 65', 'general', 'created_at', 4380, 'after',
+   '12 years for suit for recovery of immovable property'),
+  ('CERT-In Incident Reporting', 'IT Act Section 70B / CERT-In Rules', 'cyber', 'incidentDate', 6, 'after',
+   '6 hours from detection of cybersecurity incident — report to CERT-In'),
+  ('CERT-In Root Cause Report', 'CERT-In Directions 2022', 'cyber', 'incidentDate', 30, 'after',
+   '30 days from incident for detailed root cause analysis report'),
+  ('PDPB Data Breach Notification', 'DPDP Act Section 8', 'cyber', 'incidentDate', 72, 'after',
+   '72 hours from discovery of personal data breach — notify Data Protection Board'),
+  ('RBI Cyber Fraud Reporting', 'RBI Circular on Cyber Security', 'cyber', 'incidentDate', 1, 'after',
+   '2–6 hours from detection of cyber fraud — report to RBI'),
+  ('Rent Agreement Renewal Notice', 'Transfer of Property Act', 'rental', 'agreementExpiry', 30, 'before',
+   'Give 30 days notice before lease expiry for renewal or vacation'),
+  ('Eviction Notice Period', 'Transfer of Property Act Section 106', 'rental', 'agreementExpiry', 15, 'before',
+   '15 days notice for month-to-month tenancy; longer for annual tenancy')
+on conflict do nothing;
+
+-- ── Seed invoice settings row (one per firm) ──
+insert into invoice_settings (firm_name, invoice_prefix)
+  select 'Law Firm', 'INV'
+  where not exists (select 1 from invoice_settings);
+
+-- ── Updated sanity check ──
+select table_name
+from information_schema.tables
+where table_schema = 'public'
+  and table_name in (
+    'portal_tokens','invoice_settings','deadline_rules'
+  )
+order by table_name;
