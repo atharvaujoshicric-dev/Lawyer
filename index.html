@@ -2191,6 +2191,9 @@ async function savePayment(){
 // ════════════════════════════════════════════
 //  PRESET WORKFLOW CHATBOT (Draggable Widget)
 // ════════════════════════════════════════════
+// ════════════════════════════════════════════
+//  PRESET WORKFLOW CHATBOT (Dynamic System Helper)
+// ════════════════════════════════════════════
 function toggleAIWindow() {
   const widget = document.getElementById('ai-chat-widget');
   widget.style.display = widget.style.display === 'flex' ? 'none' : 'flex';
@@ -2200,23 +2203,44 @@ function askPresetBot() {
   const input = document.getElementById('ai-input-text');
   const txt = input.value.trim(); if(!txt) return;
   const box = document.getElementById('ai-msg-box');
+  
+  // Render user message safely
   box.innerHTML += `<div class="ai-bubble user">${escHtml(txt)}</div>`;
   input.value = '';
 
-  let reply = "I process structured organizational parameters. For tier guidelines, prompt me about structural hierarchies or financial constraints.";
-  if (txt.toLowerCase().includes('hierarchy') || txt.toLowerCase().includes('permissions') || txt.toLowerCase().includes('advocate')) {
-    reply = "Senior Advocates retain full administrative authority. Subordinate legal ranks execute assignment tracking flow but remain blind to database schema adjustments and accounting parameters.";
-  } else if (txt.toLowerCase().includes('finance') || txt.toLowerCase().includes('ledger') || txt.toLowerCase().includes('fee')) {
-    reply = "Under strict practice parameters, structural billing logs, payment tracking systems, and excel books are cryptographically gated to Senior Advocates.";
+  let reply = "I am tracking live system metrics. Try asking me about 'clients', 'my role', 'tasks', or 'ledgers'.";
+  const lower = txt.toLowerCase();
+
+  if (lower.includes('hierarchy') || lower.includes('permission') || lower.includes('role')) {
+    reply = `Your active designation role is <b>${escHtml(S.profile?.role)}</b>. ${
+      isAdmin() 
+        ? "As the Senior Advocate, you have master controls over firm-wide ledgers, role hierarchy assignments, and case rules." 
+        : "Your current tier limits access to specific file directory workflows assigned to you."
+    }`;
+  } else if (lower.includes('finance') || lower.includes('ledger') || lower.includes('fee')) {
+    if (!isAdmin()) {
+      reply = "❌ <b>Access Denied:</b> Financial statements and firm ledgers are securely hidden from your current tier assignment.";
+    } else {
+      let activeFees = S.clients.reduce((s, c) => s + Number(c.fee || 0), 0);
+      reply = `💼 <b>Firm Ledgers Audit:</b> You are tracking a aggregate total of <b>₹${activeFees.toLocaleString('en-IN')}</b> across active case quotes. Only you can view this panel.`;
+    }
+  } else if (lower.includes('client') || lower.includes('cases')) {
+    reply = `📂 The directory is hosting <b>${S.clients.length} total client records</b>. ${
+      isAdmin() ? "You are monitoring all team files." : "You are displaying files assigned exclusively to your lawyer ID."
+    }`;
+  } else if (lower.includes('task')) {
+    const openTasks = S.tasks.filter(t => t.status !== 'done' && t.status !== 'cancelled').length;
+    reply = `📋 System check indicates there are currently <b>${openTasks} uncompleted tasks</b> open across the team roster.`;
   }
 
+  // Smooth typing reply delay
   setTimeout(() => {
     box.innerHTML += `<div class="ai-bubble bot">${reply}</div>`;
     box.scrollTop = box.scrollHeight;
-  }, 350);
+  }, 250);
 }
 
-// Draggable System Rules Wireframe mapping
+// Keep the draggable widget layout handler completely intact
 const bar = document.getElementById('ai-drag-bar');
 const widget = document.getElementById('ai-chat-widget');
 let activeDrag = false, startX = 0, startY = 0;
