@@ -1419,6 +1419,14 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 <script>
+  let sb = null;
+let S = {
+  categories: [], formSchemas: {}, clients: [], users: [], documents: [],
+  templates: [], tasks: [], signupCode: null, pendingUsers: [], allUsers: [],
+  unreadCounts: {}, locallyReadIds: new Set(), messageReadIds: new Set(),
+  messages: [], lastSeenTaskTs: '', activeChatPeer: null, taskComments: {}, paymentsCache: {}
+};
+const FIELD_TYPES = ['text', 'number', 'date', 'tel', 'textarea', 'select'];
 // ════════════════════════════════════════════
 //  ROLE SYSTEM (4-tier hierarchy)
 // ════════════════════════════════════════════
@@ -1483,6 +1491,51 @@ async function loadHierarchyPerms() {
 // ════════════════════════════════════════════
 //  AUTH FUNCTIONS
 // ════════════════════════════════════════════
+function initSupabase() {
+  const url = localStorage.getItem('ld_supabase_url');
+  const key = localStorage.getItem('ld_supabase_key');
+  if (!url || !key) {
+    document.getElementById('setup-screen').style.display = 'flex';
+    document.getElementById('login-screen').style.display = 'none';
+    return false;
+  }
+  try {
+    sb = supabase.createClient(url, key);
+    return true;
+  } catch (e) {
+    showToast('Failed to initialize Supabase client format.', 'error');
+    return false;
+  }
+}
+
+async function saveSupabaseConfig() {
+  const url = (document.getElementById('cfg-url').value || '').trim();
+  const key = (document.getElementById('cfg-key').value || '').trim();
+  if (!url || !key) {
+    showToast('Both Project URL and Anon Key are required.', 'error');
+    return;
+  }
+  localStorage.setItem('ld_supabase_url', url);
+  localStorage.setItem('ld_supabase_key', key);
+  
+  if (initSupabase()) {
+    showToast('Database parameters linked!', 'success');
+    document.getElementById('setup-screen').style.display = 'none';
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      await afterAuth();
+    } else {
+      document.getElementById('login-screen').style.display = 'flex';
+    }
+  }
+}
+
+function disconnectSupabase() {
+  if (!confirm('Disconnect from this database cluster? Configs will be wiped locally.')) return;
+  localStorage.removeItem('ld_supabase_url');
+  localStorage.removeItem('ld_supabase_key');
+  window.location.reload();
+}
 
 async function doSignIn() {
   const email = (document.getElementById('li-email').value || '').trim();
@@ -1675,6 +1728,7 @@ async function loadAllData(){
      S.users=users||[];
      S.pendingUsers=[];
   }
+}
 
 
 async function refreshAll(){
@@ -1786,7 +1840,7 @@ const NAV_TITLES={
   documents:'Documents',templates:'Draft Templates',chat:'Messages',tasks:'Tasks',
   users:'User Management',formbuilder:'Form Builder',settings:'Settings',
   notes:'Notes',activity:'Activity Log',finances:'Finances',
-  'deadline-rules':'Deadline Rules'
+  'deadline-rules':'Deadline Rules',
   'hierarchy-perms':'Role Permissions'
 };
 
@@ -5332,21 +5386,28 @@ document.addEventListener('click',e=>{
 //  BOOT
 // ════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded',async ()=>{
-  javascript
-const wasReset = await handlePasswordResetRedirect();
-if(wasReset) return;
-  // Check for client portal mode first (before normal auth)
+  const wasReset = await handlePasswordResetRedirect();
+  if(wasReset) return;
+  
+  loadChatbotToggleUI();
+  
   const portalToken = checkPortalMode();
   if(portalToken){
     if(!initSupabase()) return;
     await tryPortalMode(portalToken);
     return;
   }
-  captureOneDriveRedirectToken(); // must run before anything else touches the URL hash
-  if(!initSupabase())return;
-  const {data:{session}}=await sb.auth.getSession();
-  if(session){ await afterAuth(); }
-  else { document.getElementById('login-screen').style.display='flex'; }
+  
+  captureOneDriveRedirectToken();
+  if(!initSupabase()) return;
+  
+  const {data:{session}} = await sb.auth.getSession();
+  if(session){ 
+    await afterAuth(); 
+  } else { 
+    document.getElementById('setup-screen').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex'; 
+  }
 
   sb.auth.onAuthStateChange((event)=>{
     if(event==='SIGNED_OUT'){
