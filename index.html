@@ -1728,11 +1728,7 @@ async function loadAllData(){
      S.users=users||[];
      S.pendingUsers=[];
   }
-} else {
-     const {data:users}=await sb.from('profiles').select('*').eq('approved',true).order('created_at');
-     S.users=users||[];
-     S.pendingUsers=[];
-  }
+}
 }
 
 
