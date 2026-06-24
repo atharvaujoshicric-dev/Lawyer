@@ -71,7 +71,7 @@ button,input,select,textarea{font-family:var(--font)}
 .stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);position:relative;overflow:hidden}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
 .stat-card.gold::before{background:var(--gold)}.stat-card.blue::before{background:#4299e1}
-.stat-card.green::before{background:#48bb78}\.stat-card.red::before{background:#f56565}
+.stat-card.green::before{background:#48bb78}.stat-card.red::before{background:#f56565}
 .stat-card.purple::before{background:#805ad5}
 .stat-label{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);font-weight:500}
 .stat-value{font-size:26px;font-weight:700;color:var(--text-primary);margin:4px 0 2px;line-height:1}
@@ -190,7 +190,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .sync-item-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sync-item-time{font-size:11.5px;color:var(--text-muted)}
 
-/* Daily Planner CSS */
+/* ── Daily Planner ── */
 .planner-note-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border-light)}
 .planner-note-item:last-child{border-bottom:none}
 .planner-note-item.done .planner-note-text{text-decoration:line-through;color:var(--text-muted)}
@@ -203,6 +203,8 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .planner-agenda-icon.task{background:#e9d8fd;color:#6b46c1}
 .planner-agenda-icon.deadline{background:#fed7d7;color:#c53030}
 .planner-agenda-icon.hearing{background:#bee3f8;color:#2b6cb0}
+
+/* ── Daily Planner — monthly grid + side panel ── */
 .planner-layout{display:grid;grid-template-columns:1fr 340px;gap:16px;height:calc(100vh - 120px);min-height:500px;}
 .planner-cal-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden;}
 .planner-cal-nav{display:flex;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid var(--border-light);}
@@ -226,8 +228,8 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .planner-day-header{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--border-light);}
 @media(max-width:900px){.planner-layout{grid-template-columns:1fr;height:auto;}.planner-day-wrap{min-height:300px;}.planner-layout .planner-cal-wrap{min-height:400px;}}
 
-/* Finances page */
-.finaces-summary{display:block;width:100%;margin-bottom:0;}
+/* ── Finances page ── */
+.finances-summary{display:block;width:100%;margin-bottom:0;}
 .fin-client-header{display:flex;align-items:center;padding:12px 16px;gap:12px;cursor:pointer;transition:background .1s;}
 .fin-client-header:hover{background:#f7f8ff;}
 .fin-bar-wrap{flex:1;background:var(--border);border-radius:99px;height:6px;min-width:60px;}
@@ -253,7 +255,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .sidebar-nav::-webkit-scrollbar{width:3px}
 .sidebar-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
 
-/* Monthly calendar */
+/* ── Monthly calendar ── */
 .cal-layout{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
 .cal-grid-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
 .cal-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border-light)}
@@ -270,7 +272,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .cal-date{font-size:12px;font-weight:600;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:50%;margin-bottom:3px}
 .cal-cell.today .cal-date{background:var(--navy);color:var(--gold)}
 .cal-dots{display:flex;flex-wrap:wrap;gap:2px;margin-top:2px}
-.cal-dot.task{background:#805ad5}$\.cal-dot.deadline{background:#f56565}$\.cal-dot.hearing{background:#4299e1}$\.cal-dot.event{background:var(--gold)}
+.cal-dot.task{background:#805ad5}.cal-dot.deadline{background:#f56565}.cal-dot.hearing{background:#4299e1}.cal-dot.event{background:var(--gold)}
 .cal-event-pill{font-size:10px;padding:1px 5px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:block;margin-top:2px;line-height:1.4}
 .cal-event-pill.task-pill{background:#e9d8fd;color:#553c9a}
 .cal-event-pill.deadline-pill{background:#fed7d7;color:#9b2c2c}
@@ -283,26 +285,27 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .cal-detail-item:last-child{border-bottom:none}
 .cal-detail-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
 
-/* Finances UI styling */
+/* ── Finances ── */
 .fin-summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;width:100%;}
 .fin-summary-grid .stat-card{width:100%;min-height:110px;display:flex;flex-direction:column;justify-content:center;}
 .fin-summary-grid .stat-value{font-size:22px;}
 .finances-summary{display:block;width:100%;}
-.fin-summary-grid .stat-card {width:100%;min-width:0;box-sizing:border-box;}
+.fin-summary-grid .stat-card{width:100%;min-width:0;min-height:100px;box-sizing:border-box;}
 #fin-summary-cards{width:100%;display:block;}
 .fin-client-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border-light);cursor:pointer;transition:background .12s;}
-.fin-client-row:hover{background:#f7f8ff}\.fin-client-row.expanded{background:#edf2ff;border-left:3px solid var(--navy);}
+.fin-client-row:hover{background:#f7f8ff}.fin-client-row.expanded{background:#edf2ff;border-left:3px solid var(--navy);}
 .fin-progress-wrap{flex:1;min-width:80px}
 .fin-progress-label{font-size:11px;color:var(--text-muted);margin-bottom:3px;display:flex;justify-content:space-between}
 .fin-ledger{background:var(--bg);padding:14px 20px 14px 48px;border-bottom:1px solid var(--border-light);border-left:3px solid var(--navy);}
+/* Remove padding on fin-client-list so rows span edge-to-edge */
 #fin-client-list{padding:0 !important;}
 .fin-ledger-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:12.5px;border-bottom:1px solid var(--border-light)}
 .fin-ledger-row:last-child{border-bottom:none}
 .fin-badge-paid{background:var(--success-bg);color:var(--success);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;white-space:nowrap}
 .fin-badge-partial{background:var(--warning-bg);color:var(--warning);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;white-space:nowrap}
 .fin-badge-unpaid{background:var(--danger-bg);color:var(--danger);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;white-space:nowrap}
-@media(max-width:1024px){.cal-layout{grid-template-columns:1fr}\.cal-detail-panel{position:static;max-height:none}\.fin-summary-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:768px){.cal-cell{min-height:52px;padding:3px 4px}\.cal-event-pill{display:none}\.fin-summary-grid{grid-template-columns:1fr}}
+@media(max-width:1024px){.cal-layout{grid-template-columns:1fr}.cal-detail-panel{position:static;max-height:none}.fin-summary-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.cal-cell{min-height:52px;padding:3px 4px}.cal-event-pill{display:none}.fin-summary-grid{grid-template-columns:1fr}}
 .settings-wrap{display:flex;flex-direction:column;gap:18px;max-width:760px}
 .settings-section{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
 .settings-section-head{padding:14px 18px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;gap:10px}
@@ -323,7 +326,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .field-builder-item .field-label-input{flex:1;min-width:100px;border:none;background:transparent;font-size:13.5px;color:var(--text-primary);padding:4px}
 .field-builder-item .field-label-input:focus{outline:none}
 
-/* Setup / Login views */
+/* ── Setup / Login (mobile-first) ── */
 #setup-screen,#login-screen{position:fixed;inset:0;background:var(--navy);z-index:999;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
 .setup-card,.login-card{background:var(--bg-card);border-radius:16px;padding:28px 24px;width:100%;max-width:420px;box-shadow:0 30px 80px rgba(0,0,0,.4);margin:auto}
 .setup-logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px}
@@ -332,13 +335,13 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .setup-step{height:4px;border-radius:2px;flex:1;background:var(--border);transition:background .3s}
 .setup-step.done{background:var(--gold)}.setup-step.active{background:var(--navy)}
 
-/* Users Management lists */
+/* ── Users mgmt ── */
 .user-list-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;flex-wrap:wrap}
 .user-list-item-info{flex:1;min-width:140px}
 .user-list-item-name{font-size:14px;font-weight:600;color:var(--text-primary)}
 .user-list-item-meta{font-size:12px;color:var(--text-muted);margin-top:2px}
 
-/* Template UI components */
+/* ── Templates ── */
 .template-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;transition:all .15s}
 .template-card:hover{border-color:var(--navy-mid);box-shadow:0 2px 8px rgba(0,0,0,.08)}
 .template-card-title{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:4px}
@@ -351,7 +354,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .rich-editor:focus{border-color:var(--navy-mid)}
 .chat-unread-badge{position:absolute;top:-4px;right:-4px;background:var(--danger);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px;border:1.5px solid var(--bg-card);line-height:1;pointer-events:none;}
 
-/* Core Collaborative Chat elements */
+/* ── Chat ── */
 .chat-layout{display:flex;height:calc(100vh - 160px);min-height:420px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--bg-card)}
 .chat-sidebar{width:220px;border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0;background:var(--bg)}
 .chat-contact{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;border-bottom:1px solid var(--border-light)}
@@ -368,9 +371,10 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .chat-msg-controls{opacity:0;transition:opacity .15s;display:inline-flex;align-items:center;}
 .chat-msg:hover .chat-msg-controls{opacity:1}
 .chat-msg-controls i:hover{opacity:1!important;transform:scale(1.1)}
+/* Read receipt indicators on sent messages */
 .msg-receipt{display:inline-flex;align-items:center;margin-left:4px;font-size:9px;}
-.msg-receipt.delivered{opacity:.5;}
-.msg-receipt.seen{opacity:1;color:var(--gold-light);}
+.msg-receipt.delivered{opacity:.5;}   /* single tick — delivered, not yet seen */
+.msg-receipt.seen{opacity:1;color:var(--gold-light);}  /* eye icon — seen by recipient */
 .chat-msg.mine .msg-receipt.seen i{color:var(--gold-light);}
 .chat-msg.mine .msg-receipt.delivered i{color:rgba(255,255,255,.7);}
 .chat-msg-attach{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);padding:6px 10px;border-radius:8px;margin-top:6px;font-size:12px;cursor:pointer}
@@ -380,7 +384,18 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .chat-attach-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--bg);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .chat-send-btn{width:36px;height:36px;border-radius:50%;border:none;background:var(--navy);color:var(--gold);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 
-/* Kanban Tasks System styles */
+/* ── AI Chatbot Window Styles ── */
+.ai-chatbot-window{position:fixed;bottom:85px;right:24px;width:340px;height:450px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-md);z-index:9999;display:none;flex-direction:column;overflow:hidden;animation:modal-in 0.2s ease;}
+.ai-chatbot-header{background:var(--navy);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:move;}
+.ai-chatbot-messages{flex:1;padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;background:#f8fafc;}
+.ai-bubble{padding:8px 12px;border-radius:10px;font-size:12.5px;max-width:85%;line-height:1.4;}
+.ai-bubble.bot{background:#e2e8f0;color:var(--text-primary);align-self:flex-start;border-top-left-radius:2px;}
+.ai-bubble.user{background:var(--gold);color:var(--navy);align-self:flex-end;border-top-right-radius:2px;font-weight:500;}
+.ai-chatbot-input{display:flex;padding:10px;border-top:1px solid var(--border);background:var(--bg-card);gap:6px;}
+.ai-toggle-btn{position:fixed;bottom:24px;right:24px;width:50px;height:50px;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:var(--shadow-md);z-index:9998;transition:transform 0.15s;}
+.ai-toggle-btn:hover{transform:scale(1.05);}
+
+/* ── Tasks ── */
 .task-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;border-left:4px solid var(--border)}
 .task-card.priority-high{border-left-color:#f56565}
 .task-card.priority-medium{border-left-color:#ed8936}
@@ -391,20 +406,12 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .kanban-col{background:var(--bg);border-radius:10px;padding:12px;min-height:200px;min-width:0}
 .kanban-col-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
-
-/* Floating AI Assistant framework styles */
-.ai-chatbot-window{position:fixed;bottom:85px;right:24px;width:340px;height:450px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-md);z-index:9999;display:none;flex-direction:column;overflow:hidden;animation:modal-in 0.2s ease;}
-.ai-chatbot-header{background:var(--navy);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:between;cursor:move;}
-.ai-chatbot-messages{flex:1;padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;background:#f8fafc;}
-.ai-bubble{padding:8px 12px;border-radius:10px;font-size:12.5px;max-width:85%;line-height:1.4;}
-.ai-bubble.bot{background:#e2e8f0;color:var(--text-primary);align-self:flex-start;border-top-left-radius:2px;}
-.ai-bubble.user{background:var(--gold);color:var(--navy);align-self:flex-end;border-top-right-radius:2px;font-weight:500;}
-.ai-chatbot-input{display:flex;padding:10px;border-top:1px solid var(--border);background:var(--bg-card);gap:6px;}
-.ai-toggle-btn{position:fixed;bottom:24px;right:24px;width:50px;height:50px;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:var(--shadow-md);z-index:9998;transition:transform 0.15s;}
-.ai-toggle-btn:hover{transform:scale(1.05);}
-
-/* Global layout responsiveness rules */
-@media(max-width:1024px){.dash-grid{grid-template-columns:1fr}\.kanban{grid-template-columns:repeat(2,1fr)!important}}
+/* ── File preview modal ── */
+.preview-body{display:flex;align-items:center;justify-content:center;min-height:200px;max-height:70vh;overflow:auto;background:#f0f1f5;border-radius:8px}
+.preview-body img{max-width:100%;max-height:68vh;object-fit:contain}
+.preview-body iframe{width:100%;height:68vh;border:none}
+/* ── Responsive ── */
+@media(max-width:1024px){.dash-grid{grid-template-columns:1fr}.kanban{grid-template-columns:repeat(2,1fr)!important}}
 @media(max-width:768px){
   #sidebar{transform:translateX(-100%);width:260px}
   #sidebar.open{transform:translateX(0)}
@@ -431,13 +438,13 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   .settings-row{flex-direction:column;align-items:flex-start}
   .settings-row .toggle,.settings-row button,.settings-row select{align-self:flex-start}
 }
-@media(max-width:480px){.stats-grid{grid-template-columns:1fr}\.modal-footer{flex-direction:column-reverse}\.modal-footer .btn{width:100%;justify-content:center}\.search-bar{flex-direction:column;align-items:stretch}\.search-bar select{width:100%!important}}
+@media(max-width:480px){.stats-grid{grid-template-columns:1fr}.modal-footer{flex-direction:column-reverse}.modal-footer .btn{width:100%;justify-content:center}.search-bar{flex-direction:column;align-items:stretch}.search-bar select{width:100%!important}}
 .text-muted{color:var(--text-muted)}.text-sm{font-size:12.5px}.flex{display:flex}.items-center{align-items:center}.gap-2{gap:8px}.mt-2{margin-top:8px}.mt-3{margin-top:12px}.mt-4{margin-top:16px}.mb-3{margin-bottom:12px}.mb-4{margin-bottom:16px}.w-full{width:100%}.font-medium{font-weight:500}.font-semibold{font-weight:600}
 </style>
 </head>
 <body>
 
-<!-- Setup Component -->
+<!-- ══ SETUP (first admin) ══ -->
 <div id="setup-screen">
   <div class="setup-card">
     <div class="setup-logo">Lex<span>Desk</span></div>
@@ -457,7 +464,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- Authentication Views -->
+<!-- ══ LOGIN / SIGNUP ══ -->
 <div id="login-screen" style="display:none;">
   <div class="login-card">
     <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px;">Lex<span style="color:var(--gold);">Desk</span></div>
@@ -471,46 +478,46 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="li-email" type="email" onkeydown="if(event.key==='Enter')doSignIn()"/></div>
         <div class="form-group"><label class="form-label">Password</label><input class="form-control" id="li-pwd" type="password" onkeydown="if(event.key==='Enter')doSignIn()"/></div>
       </div>
-      <div style="text-align:right;margin-top:6px;"><span style="font-size:12px;color:var(--navy-mid);cursor:pointer;text-decoration:underline;" onclick="toggleForgotPasswordView(true)">Forgot Password?</span></div>
+      <div style="text-align:right;margin-top:6px;"><span style="font-size:12px;color:var(--navy-mid);cursor:pointer;text-decoration:underline;" onclick="toggleForgotView(true)">Forgot Password?</span></div>
       <p id="li-err" style="color:var(--danger);font-size:12px;margin-top:8px;display:none;"></p>
       <button class="btn btn-gold w-full mt-4" style="justify-content:center;font-size:15px;padding:12px;" onclick="doSignIn()"><i class="fas fa-sign-in-alt"></i> Sign In</button>
     </div>
 
     <div id="auth-signup" style="display:none;">
-      <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px;">First person to sign up automatically becomes the Senior Advocate (Admin). Everyone after requires a valid configuration code.</p>
+      <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px;">First person to sign up becomes Admin automatically. Everyone after needs a signup code from the admin and approval before they can log in.</p>
       <div class="form-grid" style="gap:13px;">
         <div class="form-group"><label class="form-label">Full Name <span class="required">*</span></label><input class="form-control" id="su-name" type="text"/></div>
         <div class="form-group"><label class="form-label">Email <span class="required">*</span></label><input class="form-control" id="su-email" type="email"/></div>
         <div class="form-group"><label class="form-label">Password <span class="required">*</span></label><input class="form-control" id="su-pwd" type="password" placeholder="Min. 8 characters"/></div>
-        <div class="form-group" id="su-code-wrap"><label class="form-label">Signup Code</label><input class="form-control" id="su-code" type="text" placeholder="Leave blank if you are the first Admin"/></div>
+        <div class="form-group" id="su-code-wrap"><label class="form-label">Signup Code</label><input class="form-control" id="su-code" type="text" placeholder="Ask admin for this code"/></div>
       </div>
       <p id="su-err" style="color:var(--danger);font-size:12px;margin-top:8px;display:none;"></p>
       <button class="btn btn-gold w-full mt-4" style="justify-content:center;font-size:15px;padding:12px;" onclick="doSignUp()"><i class="fas fa-user-plus"></i> Create Account</button>
     </div>
 
-    <!-- Forgot Password Subsection -->
     <div id="auth-forgot" style="display:none;">
-      <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px;">Enter your system email to receive a secure recovery code link context.</p>
-      <div class="form-group"><label class="form-label">Account Email</label><input class="form-control" id="fp-email" type="email"/></div>
-      <p id="fp-msg" style="color:var(--success);font-size:12px;margin-top:8px;display:none;"></p>
+      <div class="form-grid" style="gap:13px;">
+        <div class="form-group"><label class="form-label">Enter Account Email</label><input class="form-control" id="fp-email" type="email"/></div>
+      </div>
       <p id="fp-err" style="color:var(--danger);font-size:12px;margin-top:8px;display:none;"></p>
-      <button class="btn btn-primary w-full mt-4" style="justify-content:center;" onclick="executePasswordRecovery()">Send Recovery Email</button>
-      <div style="text-align:center;margin-top:12px;"><span style="font-size:12px;color:var(--text-secondary);cursor:pointer;" onclick="toggleForgotPasswordView(false)">Back to Sign In</span></div>
+      <p id="fp-success" style="color:var(--success);font-size:12px;margin-top:8px;display:none;"></p>
+      <button class="btn btn-gold w-full mt-4" style="justify-content:center;" onclick="doForgotPassword()"><i class="fas fa-envelope"></i> Send Reset Link</button>
+      <div style="text-align:center;margin-top:12px;"><span style="font-size:12px;color:var(--text-secondary);cursor:pointer;" onclick="toggleForgotView(false)">Back to Sign In</span></div>
     </div>
   </div>
 </div>
 
-<!-- Hold Approvals screen -->
+<!-- ══ PENDING APPROVAL SCREEN ══ -->
 <div id="pending-screen" style="display:none;position:fixed;inset:0;background:var(--navy);z-index:997;align-items:center;justify-content:center;padding:20px;">
   <div class="login-card" style="text-align:center;">
     <div style="width:60px;height:60px;border-radius:50%;background:var(--warning-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:#d69e2e;"><i class="fas fa-clock"></i></div>
-    <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Awaiting Verification</h3>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Your account requires active verification by the Senior Advocate before you can access the dashboard logs.</p>
+    <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Awaiting Approval</h3>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Your account has been created. The admin needs to approve and assign your role before you can sign in.</p>
     <button class="btn btn-outline w-full" style="justify-content:center;" onclick="doLogout()">Back to Sign In</button>
   </div>
 </div>
 
-<!-- Portal screens -->
+<!-- ══ CLIENT PORTAL LOGIN ══ -->
 <div id="portal-screen" style="display:none;position:fixed;inset:0;background:var(--navy);z-index:998;align-items:center;justify-content:center;padding:16px;">
   <div class="login-card">
     <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px;">Lex<span>Desk</span></div>
@@ -524,9 +531,10 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
+<!-- ══ CLIENT PORTAL VIEW ══ -->
 <div id="portal-view" style="display:none;min-height:100vh;background:var(--bg);overflow-y:auto;"></div>
 
-<!-- Main Application Shell -->
+<!-- ══ MAIN APP ══ -->
 <div id="app" style="display:none;">
   <button id="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
   <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
@@ -559,7 +567,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     </header>
     <div id="page">
 
-      <!-- DASHBOARD VIEW -->
+      <!-- DASHBOARD -->
       <div class="page-view active" id="view-dashboard">
         <div class="stats-grid" id="stats-grid"></div>
         <div class="dash-grid">
@@ -582,7 +590,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- CLIENTS VIEW -->
+      <!-- CLIENTS -->
       <div class="page-view" id="view-clients">
         <div class="search-bar">
           <div class="search-input-wrap"><i class="fas fa-search"></i><input class="search-input" id="client-search" type="text" placeholder="Search by name, ID…" oninput="renderClientTable()"/></div>
@@ -597,7 +605,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- DEADLINES VIEW -->
+      <!-- DEADLINES -->
       <div class="page-view" id="view-deadlines">
         <div class="stats-grid" style="margin-bottom:24px;">
           <div class="stat-card red"><div class="stat-label">Overdue</div><div class="stat-value" id="dl-overdue">0</div><i class="fas fa-exclamation-circle stat-icon"></i></div>
@@ -607,9 +615,10 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <div id="deadlines-list"></div>
       </div>
 
-      <!-- PLANNER VIEW -->
+      <!-- DAILY PLANNER (monthly grid + day detail panel) -->
       <div class="page-view" id="view-planner">
         <div class="cal-layout">
+          <!-- Left: monthly calendar -->
           <div class="cal-grid-wrap">
             <div class="cal-nav">
               <button class="btn btn-outline btn-icon" onclick="shiftPlannerMonth(-1)"><i class="fas fa-chevron-left"></i></button>
@@ -633,6 +642,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
               <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-right:4px;"></span>Event/Note</span>
             </div>
           </div>
+          <!-- Right: selected day detail -->
           <div class="cal-detail-panel" id="planner-day-detail">
             <div class="cal-detail-date" id="planner-day-label">Select a day</div>
             <div id="planner-day-panel"></div>
@@ -650,16 +660,16 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- NOTES VIEW -->
+      <!-- NOTES -->
       <div class="page-view" id="view-notes">
         <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
           <button class="btn btn-gold" onclick="openNoteEditor()"><i class="fas fa-plus"></i> New Note</button>
         </div>
         <div id="notes-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
-        <div id="notes-empty" class="empty-state" style="display:none;"><i class="fas fa-sticky-note"></i><div class="empty-state-title">No notes yet</div></div>
+        <div id="notes-empty" class="empty-state" style="display:none;"><i class="fas fa-sticky-note"></i><div class="empty-state-title">No notes yet</div><div class="empty-state-desc">Create private notes and share them with your team</div></div>
       </div>
 
-      <!-- ACTIVITY LOG VIEW -->
+      <!-- ACTIVITY LOG -->
       <div class="page-view" id="view-activity">
         <div class="card">
           <div class="card-header"><span class="card-title"><i class="fas fa-history" style="color:var(--gold)"></i> Activity Log</span><button class="btn btn-outline btn-sm" onclick="loadActivityLog()"><i class="fas fa-sync-alt"></i> Refresh</button></div>
@@ -667,29 +677,29 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- DEADLINE RULES VIEW -->
+      <!-- DEADLINE RULES -->
       <div class="page-view" id="view-deadline-rules">
         <div class="card mb-4">
           <div class="card-header">
             <span class="card-title"><i class="fas fa-gavel" style="color:var(--gold)"></i> Court Filing Deadline Rules</span>
             <button class="btn btn-gold btn-sm" onclick="openDeadlineRuleModal()"><i class="fas fa-plus"></i> New Rule</button>
           </div>
-          <div class="card-body"><p class="text-sm text-muted">Configure procedural deadlines based on Indian practice frameworks.</p></div>
+          <div class="card-body"><p class="text-sm text-muted">Pre-seeded with common Indian court deadlines (CPC, CrPC, Limitation Act, CERT-In). Edit, disable, or add your own rules.</p></div>
         </div>
         <div id="deadline-rules-list"></div>
       </div>
 
-      <!-- FINANCES VIEW (Isolated exclusively to Senior Advocate role checks) -->
+      <!-- FINANCES (Enforced Access Restrictions View) -->
       <div class="page-view" id="view-finances">
-        <div id="finances-secure-container" style="display:none;">
+        <div id="finance-admin-content" style="display:none;">
           <div class="finances-summary" id="fin-summary-cards"></div>
           <div class="card">
             <div class="card-header">
-              <span class="card-title">Firm Financial Fee Tracker</span>
+              <span class="card-title">Client Fee Tracker</span>
               <div style="display:flex;gap:8px;align-items:center;">
                 <input class="search-input" id="fin-search" type="text" placeholder="Search client…" oninput="renderFinances()" style="padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;width:200px;"/>
                 <select class="form-control" id="fin-filter-status" style="width:auto;" onchange="renderFinances()">
-                  <option value="">All Statuses</option>
+                  <option value="">All</option>
                   <option value="unpaid">Unpaid</option>
                   <option value="partial">Partial</option>
                   <option value="paid">Paid in Full</option>
@@ -699,14 +709,14 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
             <div class="card-body" id="fin-client-list"></div>
           </div>
         </div>
-        <div id="finances-denied-container" class="card empty-state" style="display:block; padding:40px;">
-          <i class="fas fa-lock" style="color:var(--danger); font-size:48px;"></i>
-          <div class="empty-state-title mt-3">Access Restrictions Active</div>
-          <p class="empty-state-desc">Financial ledgers and payment histories are restricted to Senior Advocate (Admin) authorization groups.</p>
+        <div id="finance-restriction-msg" class="card empty-state" style="display:none; padding: 40px 20px;">
+          <i class="fas fa-lock" style="font-size: 40px; color: var(--danger); margin-bottom: 12px;"></i>
+          <div class="empty-state-title">Access Restricted</div>
+          <div class="empty-state-desc">Financial statements and accounting logs are only accessible under Senior Advocate (Admin) authorization.</div>
         </div>
       </div>
 
-      <!-- DOCUMENTS VIEW -->
+      <!-- DOCUMENTS -->
       <div class="page-view" id="view-documents">
         <div class="search-bar">
           <div class="search-input-wrap"><i class="fas fa-search"></i><input class="search-input" id="doc-search" type="text" placeholder="Search documents…" oninput="renderDocuments()"/></div>
@@ -719,16 +729,16 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- TEMPLATES VIEW -->
+      <!-- TEMPLATES -->
       <div class="page-view" id="view-templates">
         <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
           <button class="btn btn-gold" onclick="openTemplateModal()"><i class="fas fa-plus"></i> New Template</button>
         </div>
         <div id="templates-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
-        <div id="templates-empty" class="empty-state" style="display:none;"><i class="fas fa-file-alt"></i><div class="empty-state-title">No templates yet</div></div>
+        <div id="templates-empty" class="empty-state" style="display:none;"><i class="fas fa-file-alt"></i><div class="empty-state-title">No templates yet</div><div class="empty-state-desc">Create reusable drafts — visible to your whole team</div></div>
       </div>
 
-      <!-- CHAT VIEW -->
+      <!-- CHAT -->
       <div class="page-view" id="view-chat">
         <div class="chat-layout">
           <div class="chat-sidebar" id="chat-contact-list"></div>
@@ -741,14 +751,20 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
               <input type="text" id="chat-text-input" placeholder="Type a message…" onkeydown="if(event.key==='Enter')sendChatMessage()"/>
               <button class="chat-send-btn" onclick="sendChatMessage()"><i class="fas fa-paper-plane" id="chat-send-btn-icon"></i></button>
             </div>
+            <div id="chat-pending-file" style="display:none;padding:8px 14px;background:var(--bg);border-top:1px solid var(--border);font-size:12.5px;display:flex;align-items:center;gap:8px;">
+              <i class="fas fa-paperclip"></i><span id="chat-pending-file-name"></span>
+              <button class="file-item-remove" onclick="clearChatPendingFile()" style="margin-left:auto;"><i class="fas fa-times"></i></button>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- TASKS VIEW -->
+      <!-- TASKS -->
       <div class="page-view" id="view-tasks">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-          <select class="form-control" id="task-filter-status" style="width:auto;" onchange="renderTasks()"><option value="">All Statuses</option><option value="open">Open</option><option value="in_progress">In Progress</option><option value="in_review">In Review</option><option value="done">Done</option></select>
+          <div class="search-bar" style="margin-bottom:0;flex:1;">
+            <select class="form-control" id="task-filter-status" style="width:auto;" onchange="renderTasks()"><option value="">All Statuses</option><option value="open">Open</option><option value="in_progress">In Progress</option><option value="in_review">In Review</option><option value="done">Done</option><option value="cancelled">Cancelled</option></select>
+          </div>
           <button class="btn btn-gold" id="new-task-btn" onclick="openTaskModal()"><i class="fas fa-plus"></i> New Task</button>
         </div>
         <div class="kanban" id="tasks-kanban" style="grid-template-columns:repeat(5,1fr);">
@@ -760,175 +776,556 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- USERS MANAGEMENT VIEW -->
+      <!-- USERS (admin only) -->
       <div class="page-view" id="view-users">
-        <!-- Hierarchy and Permissions Panel (Senior Advocate Configured Options) -->
+        <!-- Hierarchy Settings Manager Block -->
         <div class="card mb-4">
-          <div class="card-header"><span class="card-title"><i class="fas fa-sitemap"></i> Organization Hierarchy & Authorization Levels</span></div>
+          <div class="card-header"><span class="card-title"><i class="fas fa-sitemap"></i> Organization Hierarchy & Authorization Grid</span></div>
           <div class="card-body">
-            <p class="text-sm text-muted mb-3">Set systemic permissions for practice designations.</p>
+            <p class="text-sm text-muted mb-3">Senior Advocate specifies the exact parameters of active titles and assigns respective permission rights.</p>
             <div class="table-wrap">
               <table class="data-table">
                 <thead>
-                  <tr><th>Designation Title</th><th>Can Manage Clients</th><th>Can Alter Schema</th><th>Financial Visibility</th></tr>
+                  <tr><th>Designation Level</th><th>Order Authority</th><th>Has Ledger Access</th><th>Can Configure Organization</th></tr>
                 </thead>
-                <tbody id="hierarchy-permissions-tbody">
-                  <!-- Generated dynamically via state array checks -->
-                </tbody>
+                <tbody id="hierarchy-matrix-tbody"></tbody>
               </table>
             </div>
           </div>
         </div>
 
         <div class="card mb-4">
-          <div class="card-header"><span class="card-title">Registration Validation Codes</span></div>
+          <div class="card-header"><span class="card-title">Signup Code</span></div>
           <div class="card-body">
+            <p class="text-sm text-muted mb-3">Share this code with assistant lawyers so they can create their own account. After they sign up, approve them and assign their role below.</p>
             <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
               <code id="signup-code-display" style="background:var(--bg);padding:8px 14px;border-radius:6px;font-size:14px;font-weight:600;letter-spacing:1px;border:1px solid var(--border);">—</code>
               <button class="btn btn-outline btn-sm" onclick="copySignupCode()"><i class="fas fa-copy"></i> Copy</button>
-              <button class="btn btn-outline btn-sm" onclick="regenerateSignupCode()"><i class="fas fa-sync-alt"></i> Rotate Code</button>
+              <button class="btn btn-outline btn-sm" onclick="regenerateSignupCode()"><i class="fas fa-sync-alt"></i> Regenerate</button>
             </div>
           </div>
         </div>
         <div id="users-pending-section" style="display:none;">
           <div class="card mb-4">
-            <div class="card-header"><span class="card-title">Awaiting Approval Queue</span></div>
+            <div class="card-header"><span class="card-title">Pending Approval</span></div>
             <div class="card-body" id="users-pending-list"></div>
           </div>
         </div>
         <div class="card">
-          <div class="card-header"><span class="card-title">Active Team & Roster Directory</span></div>
+          <div class="card-header"><span class="card-title">Team Members</span></div>
           <div class="card-body" id="users-list"></div>
         </div>
       </div>
 
-      <!-- FORM BUILDER VIEW -->
+      <!-- FORM BUILDER (admin only) -->
       <div class="page-view" id="view-formbuilder">
         <div class="card mb-4">
-          <div class="card-header"><span class="card-title">Configure Matter Parameters</span><button class="btn btn-gold btn-sm" onclick="openNewCategoryModal()"><i class="fas fa-plus"></i> New Category</button></div>
+          <div class="card-header">
+            <span class="card-title">Select Category to Configure</span>
+            <button class="btn btn-gold btn-sm" onclick="openNewCategoryModal()"><i class="fas fa-plus"></i> New Category</button>
+          </div>
           <div class="card-body"><div id="fb-category-tabs" class="case-type-selector" style="margin-bottom:0;"></div></div>
         </div>
         <div id="fb-editor" style="display:none;">
           <div class="card">
-            <div class="card-header"><span class="card-title" id="fb-cat-label">Fields Schema</span><div style="display:flex;gap:8px;"><button class="btn btn-outline btn-sm" onclick="addFormField()"><i class="fas fa-plus"></i> Add Field</button><button class="btn btn-gold btn-sm" onclick="saveFormSchema()"><i class="fas fa-save"></i> Save Schema</button></div></div>
-            <div class="card-body"><div id="fb-fields-list"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SETTINGS VIEW -->
-      <div class="page-view" id="view-settings">
-        <div class="settings-wrap">
-          <div class="settings-section">
-            <div class="settings-section-head"><i class="fas fa-user-circle"></i><span>Profile Parameters</span></div>
-            <div class="settings-section-body">
-              <div class="form-grid" style="gap:13px;">
-                <div class="form-group"><label class="form-label">Full Legal Name</label><input class="form-control" id="s-name" type="text"/></div>
-                <div class="form-group"><label class="form-label">Bar Council Registration No</label><input class="form-control" id="s-bar" type="text"/></div>
-                <div class="form-group"><label class="form-label">Contact Link</label><input class="form-control" id="s-phone" type="tel"/></div>
-                <div class="form-group"><label class="form-label">System Account Email</label><input class="form-control" id="s-email" type="email" disabled/></div>
+            <div class="card-header">
+              <span class="card-title" id="fb-cat-label">Fields</span>
+              <div style="display:flex;gap:8px;">
+                <button class="btn btn-outline btn-sm" onclick="addFormField()"><i class="fas fa-plus"></i> Add Field</button>
+                <button class="btn btn-gold btn-sm" onclick="saveFormSchema()"><i class="fas fa-save"></i> Save Schema</button>
               </div>
-              <button class="btn btn-primary w-full mt-4" style="justify-content:center;" onclick="saveProfile()"><i class="fas fa-save"></i> Save Parameters</button>
+            </div>
+            <div class="card-body">
+              <p class="text-sm text-muted mb-3">Drag to reorder · Toggle Required · Change type · Delete field.</p>
+              <div id="fb-fields-list"></div>
             </div>
           </div>
         </div>
       </div>
 
-    </div>
-  </div>
-</div>
+      <!-- SETTINGS -->
+      <div class="page-view" id="view-settings">
+        <div class="settings-wrap">
 
-<!-- MODAL COMPONENT LAYER -->
-<div class="modal-backdrop" id="modal-add-user">
-  <div class="modal" style="max-width:480px;">
-    <div class="modal-header"><div><div class="modal-title" id="au-title">Designation Matrix Update</div></div><button class="modal-close" onclick="closeModal('modal-add-user')">&times;</button></div>
-    <div class="modal-body">
-      <div class="form-grid" style="gap:13px;">
-        <div class="form-group"><label class="form-label">Roster Name</label><input class="form-control" id="au-name" type="text" disabled/></div>
-        <div class="form-group"><label class="form-label">Hierarchy Structural Role</label>
-          <select class="form-control" id="au-role">
-            <option value="Senior Advocate">Senior Advocate (Admin Account)</option>
-            <option value="Junior Advocate">Junior Advocate</option>
-            <option value="Senior Assistant Advocate">Senior Assistant Advocate</option>
-            <option value="Junior Assistant Advocate">Junior Assistant Advocate</option>
-          </select>
+          <div class="settings-section">
+            <div class="settings-section-head"><i class="fas fa-user-circle"></i><span>Profile</span></div>
+            <div class="settings-section-body">
+              <div class="form-grid" style="gap:13px;">
+                <div class="form-group"><label class="form-label">Full Name</label><input class="form-control" id="s-name" type="text"/></div>
+                <div class="form-group"><label class="form-label">Bar Registration</label><input class="form-control" id="s-bar" type="text"/></div>
+                <div class="form-group"><label class="form-label">Phone</label><input class="form-control" id="s-phone" type="tel"/></div>
+                <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="s-email" type="email" disabled/></div>
+                <div class="form-group"><label class="form-label">Court / Jurisdiction</label><input class="form-control" id="s-court" type="text"/></div>
+                <div class="form-group"><label class="form-label">Date of Birth</label><input class="form-control" id="s-dob" type="date"/></div>
+              </div>
+              <button class="btn btn-primary w-full mt-4" style="justify-content:center;" onclick="saveProfile()"><i class="fas fa-save"></i> Save Profile</button>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <div class="settings-section-head"><i class="fas fa-file-invoice"></i><span>Invoice Settings</span></div>
+            <div class="settings-section-body">
+              <div class="form-grid form-grid-2" style="gap:13px;margin-bottom:14px;">
+                <div class="form-group"><label class="form-label">Firm Name</label><input class="form-control" id="inv-firm-name" type="text" placeholder="Your Law Firm"/></div>
+                <div class="form-group"><label class="form-label">Invoice Prefix</label><input class="form-control" id="inv-prefix" type="text" placeholder="INV" style="max-width:100px;"/></div>
+                <div class="form-group" style="grid-column:1/-1;"><label class="form-label">Firm Address</label><input class="form-control" id="inv-firm-address" type="text" placeholder="Full address for invoices"/></div>
+                <div class="form-group"><label class="form-label">Phone</label><input class="form-control" id="inv-firm-phone" type="tel"/></div>
+                <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="inv-firm-email" type="email"/></div>
+                <div class="form-group"><label class="form-label">Bar Number</label><input class="form-control" id="inv-bar-number" type="text"/></div>
+                <div class="form-group" style="grid-column:1/-1;"><label class="form-label">Invoice Footer Text</label><input class="form-control" id="inv-footer" type="text" placeholder="Thank you for your trust."/></div>
+              </div>
+              <button class="btn btn-primary w-full" style="justify-content:center;" onclick="saveInvoiceSettings()"><i class="fas fa-save"></i> Save Invoice Settings</button>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <div class="settings-section-head"><i class="fab fa-microsoft"></i><span>OneDrive Sync</span></div>
+            <div class="settings-section-body">
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:13px;background:var(--bg);border:1px solid var(--border);" id="onedrive-status-box">
+                <i class="fab fa-microsoft" style="font-size:18px;color:#0078d4;"></i>
+                <div style="flex:1;"><div style="font-weight:500;" id="onedrive-status-title">Not connected</div><div style="font-size:11.5px;color:var(--text-muted);" id="onedrive-status-sub">Files are stored securely in the app for now</div></div>
+              </div>
+              <div class="form-group" style="margin-bottom:12px;">
+                <label class="form-label">Microsoft Azure Client ID</label>
+                <input class="form-control" id="s-onedrive-client-id" type="text" placeholder="Paste your Azure App Client ID here"/>
+                <span class="form-hint">From Azure Portal → App registrations → your app → Overview → Application (client) ID.</span>
+              </div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button class="btn btn-outline" style="flex:1;justify-content:center;" onclick="saveOneDriveClientId()"><i class="fas fa-save"></i> Save Client ID</button>
+                <button class="btn btn-gold" id="onedrive-connect-btn" style="flex:1;justify-content:center;" onclick="connectOneDrive()"><i class="fab fa-microsoft"></i> Connect OneDrive</button>
+              </div>
+              <button class="btn btn-danger w-full mt-2" id="onedrive-disconnect-btn" style="justify-content:center;display:none;" onclick="disconnectOneDrive()"><i class="fas fa-unlink"></i> Disconnect</button>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <div class="settings-section-head"><i class="fas fa-shield-alt"></i><span>Data & Security</span></div>
+            <div class="settings-section-body">
+              <div class="settings-row">
+                <div class="settings-row-text"><div class="settings-row-label">Database</div><div class="settings-row-desc">Supabase Postgres with Row-Level Security</div></div>
+                <span class="badge badge-active"><i class="fas fa-lock"></i> Active</span>
+              </div>
+              <div class="settings-row" id="migration-check-row" style="display:none;">
+                <div class="settings-row-text"><div class="settings-row-label">Migration Status</div><div class="settings-row-desc" id="migration-check-desc">Checking…</div></div>
+                <button class="btn btn-outline btn-sm" onclick="checkMigrationStatus()"><i class="fas fa-sync-alt"></i> Re-check</button>
+              </div>
+              <div class="settings-row">
+                <div class="settings-row-text"><div class="settings-row-label">Export to Excel</div><div class="settings-row-desc">Clients, Documents, Users & Tasks in one workbook</div></div>
+                <button class="btn btn-outline btn-sm" onclick="exportExcel()"><i class="fas fa-file-excel"></i> Export</button>
+              </div>
+              <div class="settings-row" id="reset-row" style="display:none;">
+                <div class="settings-row-text"><div class="settings-row-label" style="color:var(--danger);">Disconnect Database</div><div class="settings-row-desc">Clears local Supabase config from this browser</div></div>
+                <button class="btn btn-danger btn-sm" onclick="disconnectSupabase()"><i class="fas fa-unlink"></i> Disconnect</button>
+              </div>
+            </div>
+          </div>
+
         </div>
-        <div class="form-group"><label class="form-label">Bar Registration Token</label><input class="form-control" id="au-bar" type="text"/></div>
       </div>
-    </div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-add-user')">Cancel</button><button class="btn btn-gold" onclick="approveUser()">Commit Authorization</button></div>
-  </div>
-</div>
 
-<!-- CLIENT DETAIL VIEW MODAL -->
+    </div><!-- /page -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- CLIENT DETAIL MODAL -->
 <div class="modal-backdrop" id="modal-detail">
   <div class="modal" style="max-width:820px;">
     <div class="modal-header">
-      <div><div class="modal-title" id="det-title">Client File</div><div class="modal-sub" id="det-sub"></div></div>
-      <button class="modal-close" onclick="closeModal('modal-detail')">&times;</button>
+      <div><div class="modal-title" id="det-title">Client</div><div class="modal-sub" id="det-sub"></div></div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn btn-gold btn-sm" id="det-edit-btn" onclick="editCurrentClient()"><i class="fas fa-edit"></i> Edit</button>
+        <button class="modal-close" onclick="closeModal('modal-detail')">&times;</button>
+      </div>
     </div>
     <div class="modal-body">
       <div class="detail-meta-grid" id="det-meta"></div>
       <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
-        <button class="tab-btn" onclick="switchTab('case-details')">Case Parameters</button>
-        <button class="tab-btn" id="tab-btn-finances" onclick="switchTab('payments')">Ledger Receipts</button>
+        <button class="tab-btn" onclick="switchTab('case-details')">Case Details</button>
+        <button class="tab-btn" onclick="switchTab('payments')">Payments</button>
+        <button class="tab-btn" onclick="switchTab('documents')">Documents</button>
+        <button class="tab-btn" onclick="switchTab('deadlines')">Deadlines</button>
+        <button class="tab-btn" onclick="switchTab('history')">History</button>
       </div>
       <div class="tab-panel active" id="tab-overview"></div>
       <div class="tab-panel" id="tab-case-details"></div>
       <div class="tab-panel" id="tab-payments">
-        <div id="detail-finances-secure" style="display:none;"></div>
-        <div id="detail-finances-denied" class="text-muted"><i class="fas fa-lock"></i> Financial ledgers restricted to Senior Advocates.</div>
+        <div id="detail-payments-admin-view" style="display:none;"></div>
+        <div id="detail-payments-restricted-view" class="text-muted"><i class="fas fa-lock"></i> Financial matrix visibility limits active.</div>
       </div>
+      <div class="tab-panel" id="tab-documents"></div>
+      <div class="tab-panel" id="tab-deadlines"></div>
+      <div class="tab-panel" id="tab-history"><div class="timeline" id="det-history"></div></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" id="det-delete-btn" onclick="deleteCurrentClient()"><i class="fas fa-trash"></i> Delete</button>
+      <button class="btn btn-outline btn-sm" id="det-invoice-btn" onclick="generateInvoice(S.detailClientId)" title="Generate PDF Invoice"><i class="fas fa-file-invoice"></i> Invoice</button>
+      <button class="btn btn-outline btn-sm" id="det-portal-btn" onclick="generatePortalLink(S.detailClientId)" title="Generate Client Portal Link"><i class="fas fa-link"></i> Portal Link</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-detail')">Close</button>
     </div>
   </div>
 </div>
 
-<!-- ADD MODAL LAYER -->
+<!-- ADD/EDIT CLIENT MODAL -->
 <div class="modal-backdrop" id="modal-client">
   <div class="modal" style="max-width:760px;">
-    <div class="modal-header"><div><div class="modal-title" id="mc-title">Add Client Record</div></div><button class="modal-close" onclick="closeModal('modal-client')">&times;</button></div>
-    <div class="modal-body">
-      <div class="section-divider">Primary Assignment Block</div>
-      <div class="case-type-selector" id="client-case-type-tabs"></div>
-      <div class="form-grid form-grid-2" style="gap:13px; margin-top:14px;">
-        <div class="form-group"><label class="form-label">Client Name <span class="required">*</span></label><input class="form-control" id="f-name" type="text"/></div>
-        <div class="form-group"><label class="form-label">Internal Registration File Token</label><input class="form-control" id="f-id" type="text" disabled/></div>
-        <div class="form-group"><label class="form-label">Contact Link No</label><input class="form-control" id="f-phone" type="tel"/></div>
-        <div class="form-group"><label class="form-label">Email Interface Address</label><input class="form-control" id="f-email" type="email"/></div>
-        <div class="form-group" style="grid-column: 1/-1;"><label class="form-label">Postal / Address Parameters</label><input class="form-control" id="f-address" type="text"/></div>
-        <div class="form-group"><label class="form-label">Fee Quote Matrix (₹)</label><input class="form-control" id="f-fee" type="number"/></div>
-        <div class="form-group"><label class="form-label">Status Context</label><select class="form-control" id="f-status"><option value="active">Active</option><option value="pending">Pending</option><option value="closed">Closed</option></select></div>
-      </div>
-      <div id="dynamic-case-fields" class="mt-4"></div>
+    <div class="modal-header">
+      <div><div class="modal-title" id="mc-title">Add New Client</div><div class="modal-sub">Fields marked <span style="color:var(--danger);">*</span> are required</div></div>
+      <button class="modal-close" onclick="closeModal('modal-client')">&times;</button>
     </div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-client')">Cancel</button><button class="btn btn-primary" onclick="saveClient()">Commit Record</button></div>
+    <div class="modal-body">
+      <div class="section-divider">Case Type</div>
+      <div class="case-type-selector" id="client-case-type-tabs"></div>
+
+      <div class="section-divider"><i class="fas fa-link"></i> New Case for an Existing Client?</div>
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label">Search existing clients (optional — leave blank for a brand-new client)</label>
+        <input class="form-control" id="f-link-existing" type="text" list="existing-clients-list" placeholder="Start typing a client name…" oninput="onLinkExistingClientInput()" autocomplete="off"/>
+        <datalist id="existing-clients-list"></datalist>
+        <span class="form-hint" id="f-link-hint"></span>
+      </div>
+
+      <div class="section-divider">Conflict of Interest Check</div>
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label">Opposite Party / Company Name</label>
+        <input class="form-control" id="f-conflict-check" type="text" placeholder="Enter opposite party name to check for conflicts…" oninput="renderConflictCheck()"/>
+        <div id="conflict-results" style="margin-top:8px;"></div>
+      </div>
+      <div class="section-divider">Client Information</div>
+      <div class="form-grid form-grid-2" style="gap:13px;margin-bottom:14px;">
+        <div class="form-group"><label class="form-label">Full Name <span class="required">*</span></label><input class="form-control" id="f-name" type="text" placeholder="John Doe"/></div>
+        <div class="form-group"><label class="form-label">Client ID</label><input class="form-control" id="f-id" type="text" disabled/></div>
+        <div class="form-group"><label class="form-label">Phone</label><input class="form-control" id="f-phone" type="tel"/></div>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="f-email" type="email"/></div>
+        <div class="form-group" style="grid-column:1/-1;"><label class="form-label">Address</label><input class="form-control" id="f-address" type="text"/></div>
+        <div class="form-group"><label class="form-label">Status</label><select class="form-control" id="f-status"><option value="active">Active</option><option value="pending">Pending</option><option value="closed">Closed</option></select></div>
+        <div class="form-group"><label class="form-label">Total Fee Quoted (₹)</label><input class="form-control" id="f-fee" type="number"/></div>
+        <div class="form-group" id="f-assignee-wrap"><label class="form-label">Assigned Lawyer</label><select class="form-control" id="f-assignee"></select></div>
+      </div>
+      <div id="dynamic-case-fields"></div>
+      <div class="section-divider"><i class="fas fa-paperclip"></i> Attach Documents</div>
+      <div class="file-drop-zone" id="file-drop-zone" onclick="document.getElementById('file-input').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleFileDrop(event)">
+        <i class="fas fa-cloud-upload-alt" style="font-size:26px;margin-bottom:8px;display:block;"></i>
+        <strong>Click to upload or drag & drop</strong><br/><span style="font-size:12.5px;">PDF, DOCX, XLSX, JPG, PNG — max 20MB</span>
+      </div>
+      <input type="file" id="file-input" multiple style="display:none;" onchange="handleFileSelect(event)" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.txt"/>
+      <div class="file-list" id="file-list"></div>
+      <div class="section-divider" style="margin-top:14px;"><i class="fas fa-sticky-note"></i> Internal Notes</div>
+      <textarea class="form-control" id="f-notes" rows="3" placeholder="Private notes…"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-client')">Cancel</button>
+      <button class="btn btn-primary" id="mc-save-btn" onclick="saveClient()"><i class="fas fa-save"></i> <span id="mc-save-txt">Save Client</span></button>
+    </div>
   </div>
 </div>
 
-<!-- Floating Draggable Legal Chatbot UI Interface Component -->
-<div class="ai-toggle-btn" onclick="toggleLegalChatbotWindow()"><i class="fas fa-robot"></i></div>
-<div class="ai-chatbot-window" id="legal-chatbot">
-  <div class="ai-chatbot-header" id="chatbot-drag-handle">
-    <span style="font-weight:600;"><i class="fas fa-gavel"></i> LexDesk AI Assistant</span>
-    <i class="fas fa-times" style="cursor:pointer;" onclick="toggleLegalChatbotWindow()"></i>
+<!-- FILE PREVIEW MODAL -->
+<div class="modal-backdrop" id="modal-preview">
+  <div class="modal" style="max-width:760px;">
+    <div class="modal-header">
+      <div><div class="modal-title" id="prev-title">File</div><div class="modal-sub" id="prev-sub"></div></div>
+      <button class="modal-close" onclick="closeModal('modal-preview')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="preview-body" id="prev-body"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-preview')">Close</button>
+      <button class="btn btn-gold" id="prev-download-btn" onclick="downloadPreviewFile()"><i class="fas fa-download"></i> Download</button>
+    </div>
   </div>
-  <div class="ai-chatbot-messages" id="chatbot-msg-container">
-    <div class="ai-bubble bot">Hello! I am your preset LexDesk Knowledge Base Assistant. How can I guide you through today's practice procedures?</div>
+</div>
+
+<!-- NOTE EDITOR MODAL -->
+<div class="modal-backdrop" id="modal-note">
+  <div class="modal" style="max-width:780px;">
+    <div class="modal-header">
+      <div><div class="modal-title" id="note-modal-title">New Note</div></div>
+      <button class="modal-close" onclick="closeModal('modal-note')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group" style="margin-bottom:12px;">
+        <label class="form-label">Title <span class="required">*</span></label>
+        <input class="form-control" id="note-title-input" type="text" placeholder="Note title…"/>
+      </div>
+      <div class="rich-toolbar" id="note-rich-toolbar">
+        <button onclick="noteCmd('bold')"><i class="fas fa-bold"></i></button>
+        <button onclick="noteCmd('italic')"><i class="fas fa-italic"></i></button>
+        <button onclick="noteCmd('underline')"><i class="fas fa-underline"></i></button>
+        <button onclick="noteCmd('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
+        <button onclick="noteCmd('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
+      </div>
+      <div class="rich-editor" id="note-content-editor" contenteditable="true" style="min-height:220px;"></div>
+      <div id="note-history-section" style="display:none;margin-top:18px;">
+        <div class="section-divider"><i class="fas fa-history"></i> Edit History</div>
+        <div id="note-history-list"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-note')">Close</button>
+      <button class="btn btn-gold" id="note-save-btn" onclick="saveNote()"><i class="fas fa-save"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTE SHARE MODAL -->
+<div class="modal-backdrop" id="modal-note-share">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-header">
+      <div><div class="modal-title" id="note-share-title">Share Note</div></div>
+      <button class="modal-close" onclick="closeModal('modal-note-share')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="section-divider">Add Person</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+        <select class="form-control" id="note-share-user" style="flex:1;min-width:150px;"></select>
+        <select class="form-control" id="note-share-perm" style="width:auto;">
+          <option value="viewer">Viewer</option>
+          <option value="editor">Editor</option>
+        </select>
+        <button class="btn btn-gold btn-sm" onclick="addNoteShare()"><i class="fas fa-plus"></i> Share</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;font-size:13px;">
+        <input type="checkbox" id="note-share-send-chat" style="width:16px;height:16px;"/>
+        <label for="note-share-send-chat">Also send a message to this person in chat</label>
+      </div>
+      <div class="section-divider">Currently Shared With</div>
+      <div id="note-current-shares"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-note-share')">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- RECORD PAYMENT MODAL -->
+<div class="modal-backdrop" id="modal-payment">
+  <div class="modal" style="max-width:440px;">
+    <div class="modal-header"><div><div class="modal-title">Record Payment</div><div class="modal-sub" id="pay-client-name"></div></div><button class="modal-close" onclick="closeModal('modal-payment')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-grid" style="gap:13px;">
+        <div class="form-group"><label class="form-label">Amount Received (₹) <span class="required">*</span></label><input class="form-control" id="pay-amount" type="number" min="0" step="0.01" placeholder="e.g. 20000"/></div>
+        <div class="form-group"><label class="form-label">Payment Date <span class="required">*</span></label><input class="form-control" id="pay-date" type="date"/></div>
+        <div class="form-group"><label class="form-label">Method</label><select class="form-control" id="pay-method"><option value="Cash">Cash</option><option value="Bank Transfer">Bank Transfer</option><option value="UPI">UPI</option><option value="Cheque">Cheque</option><option value="Card">Card</option><option value="Other">Other</option></select></div>
+        <div class="form-group"><label class="form-label">Note</label><input class="form-control" id="pay-note" type="text" placeholder="Optional reference / remarks"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-payment')">Cancel</button>
+      <button class="btn btn-gold" onclick="savePayment()"><i class="fas fa-save"></i> Record Payment</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT USER MODAL -->
+<div class="modal-backdrop" id="modal-add-user">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-header">
+      <div><div class="modal-title" id="au-title">Assign Role Designation</div></div>
+      <button class="modal-close" onclick="closeModal('modal-add-user')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid" style="gap:13px;">
+        <div class="form-group"><label class="form-label">Name</label><input class="form-control" id="au-name" type="text" disabled/></div>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="au-email" type="email" disabled/></div>
+        <div class="form-group"><label class="form-label">Designation Role</label>
+          <select class="form-control" id="au-role">
+            <option value="Senior Advocate">Senior Advocate</option>
+            <option value="Junior Advocate">Junior Advocate</option>
+            <option value="Senior Assistant Advocate">Senior Assistant Advocate</option>
+            <option value="Junior Assistant Advocate">Junior Assistant Advocate</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Bar Registration</label><input class="form-control" id="au-bar" type="text"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-user')">Cancel</button>
+      <button class="btn btn-gold" onclick="approveUser()"><i class="fas fa-check"></i> Approve & Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- TEMPLATE MODAL -->
+<div class="modal-backdrop" id="modal-template">
+  <div class="modal" style="max-width:700px;">
+    <div class="modal-header">
+      <div><div class="modal-title" id="tpl-modal-title">New Draft Template</div><div class="modal-sub">Use <code>{{CLIENT_NAME}}</code>, <code>{{CLIENT_ID}}</code>, <code>{{DATE}}</code>, <code>{{CASE_TYPE}}</code></div></div>
+      <button class="modal-close" onclick="closeModal('modal-template')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid" style="gap:13px;margin-bottom:14px;">
+        <div class="form-group"><label class="form-label">Template Name <span class="required">*</span></label><input class="form-control" id="tpl-name" type="text" placeholder="e.g. NDA Draft"/></div>
+        <div class="form-group"><label class="form-label">Category</label><select class="form-control" id="tpl-category"></select></div>
+      </div>
+      <div class="form-group" style="margin-bottom:6px;"><label class="form-label">Content <span class="required">*</span></label></div>
+      <div class="rich-toolbar">
+        <button onclick="richCmd('bold')"><i class="fas fa-bold"></i></button>
+        <button onclick="richCmd('italic')"><i class="fas fa-italic"></i></button>
+        <button onclick="richCmd('underline')"><i class="fas fa-underline"></i></button>
+        <button onclick="richCmd('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
+        <button onclick="richCmd('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
+        <button onclick="insertPlaceholder('{{CLIENT_NAME}}')" style="width:auto;padding:0 8px;font-size:11px;">{{NAME}}</button>
+        <button onclick="insertPlaceholder('{{DATE}}')" style="width:auto;padding:0 8px;font-size:11px;">{{DATE}}</button>
+        <button onclick="insertPlaceholder('{{CLIENT_ID}}')" style="width:auto;padding:0 8px;font-size:11px;">{{ID}}</button>
+      </div>
+      <div class="rich-editor" id="tpl-content" contenteditable="true"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-template')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveTemplate()"><i class="fas fa-save"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- TEMPLATE USE MODAL -->
+<div class="modal-backdrop" id="modal-use-template">
+  <div class="modal" style="max-width:700px;">
+    <div class="modal-header">
+      <div><div class="modal-title" id="ut-title">Use Template</div></div>
+      <button class="modal-close" onclick="closeModal('modal-use-template')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group" style="margin-bottom:14px;"><label class="form-label">Select Client</label><select class="form-control" id="ut-client" onchange="previewTemplate()"></select></div>
+      <div class="form-group" style="margin-bottom:6px;"><label class="form-label">Preview</label></div>
+      <div id="ut-preview" class="template-preview" style="max-height:300px;overflow-y:auto;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-use-template')">Close</button>
+      <button class="btn btn-primary" onclick="copyTemplateText()"><i class="fas fa-copy"></i> Copy</button>
+      <button class="btn btn-gold" onclick="downloadTemplateText()"><i class="fas fa-download"></i> Download .txt</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW CATEGORY MODAL -->
+<div class="modal-backdrop" id="modal-new-cat">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-header"><div><div class="modal-title">New Case Category</div></div><button class="modal-close" onclick="closeModal('modal-new-cat')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-grid" style="gap:13px;">
+        <div class="form-group"><label class="form-label">Category Name <span class="required">*</span></label><input class="form-control" id="nc-name" type="text" placeholder="e.g. Immigration"/></div>
+        <div class="form-group"><label class="form-label">Icon (Font Awesome class)</label><input class="form-control" id="nc-icon" type="text" placeholder="fas fa-globe"/></div>
+        <div class="form-group"><label class="form-label">Color</label><select class="form-control" id="nc-color"><option value="blue">Blue</option><option value="green">Green</option><option value="purple">Purple</option><option value="orange">Orange</option><option value="red">Red</option></select></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-new-cat')">Cancel</button><button class="btn btn-gold" onclick="createCategory()"><i class="fas fa-plus"></i> Create</button></div>
+  </div>
+</div>
+
+<!-- TASK MODAL -->
+<div class="modal-backdrop" id="modal-task">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-header"><div><div class="modal-title" id="task-modal-title">New Task</div></div><button class="modal-close" onclick="closeModal('modal-task')">&times;</button></div>
+    <div class="modal-body">
+      <div id="task-locked-banner" style="display:none;align-items:center;gap:8px;background:var(--warning-bg);color:var(--warning);border:1px solid #fbd38d;border-radius:8px;padding:9px 12px;font-size:12.5px;margin-bottom:14px;">
+        <i class="fas fa-lock"></i> This task has started — details are locked. Use the actions below to move it forward.
+      </div>
+      <div class="form-grid" style="gap:13px;">
+        <div class="form-group"><label class="form-label">Title <span class="required">*</span></label><input class="form-control" id="task-title" type="text" placeholder="e.g. Draft reply to opposite counsel"/></div>
+        <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" id="task-desc" rows="3"></textarea></div>
+        <div class="form-group"><label class="form-label">Related Client (optional)</label><select class="form-control" id="task-client"></select></div>
+        <div class="form-group" id="task-assignee-row"><label class="form-label">Assign To <span class="required">*</span></label><select class="form-control" id="task-assignee"></select></div>
+        <div class="form-grid form-grid-2" style="gap:13px;">
+          <div class="form-group"><label class="form-label">Priority</label><select class="form-control" id="task-priority"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select></div>
+          <div class="form-group"><label class="form-label">Due Date</label><input class="form-control" id="task-due" type="date"/></div>
+        </div>
+      </div>
+      <div id="task-comments-section" style="display:none;margin-top:18px;">
+        <div class="section-divider">Comments</div>
+        <div id="task-comments-list" style="max-height:180px;overflow-y:auto;margin-bottom:10px;"></div>
+        <div style="display:flex;gap:8px;">
+          <input class="form-control" id="task-comment-input" type="text" placeholder="Add a comment…" onkeydown="if(event.key==='Enter')addTaskComment()"/>
+          <button class="btn btn-outline btn-sm" onclick="addTaskComment()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div id="task-status-actions" style="display:flex;gap:8px;margin-right:auto;"></div>
+      <button class="btn btn-outline" onclick="closeModal('modal-task')">Cancel</button>
+      <button class="btn btn-gold" id="task-save-btn" onclick="saveTask()"><i class="fas fa-save"></i> <span id="task-save-txt">Create Task</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- PORTAL LINK MODAL -->
+<div class="modal-backdrop" id="modal-portal-link">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header"><div><div class="modal-title">Client Portal Link</div><div class="modal-sub">Share the link and PIN separately for security</div></div><button class="modal-close" onclick="closeModal('modal-portal-link')">&times;</button></div>
+    <div class="modal-body">
+      <div style="background:var(--warning-bg);border:1px solid #fbd38d;border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:13px;">
+        <i class="fas fa-shield-alt" style="color:#d69e2e;margin-right:6px;"></i>
+        <strong>Important:</strong> Send the link and PIN through <em>separate</em> channels (e.g. link via email, PIN via SMS) for security.
+      </div>
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label">Portal Link (send this to the client)</label>
+        <div style="display:flex;gap:8px;">
+          <input class="form-control" id="portal-link-url" type="text" readonly style="font-size:12px;"/>
+          <button class="btn btn-outline btn-sm" onclick="navigator.clipboard.writeText(document.getElementById('portal-link-url').value).then(()=>showToast('Link copied!','success'))"><i class="fas fa-copy"></i></button>
+        </div>
+      </div>
+      <div style="text-align:center;padding:16px;background:var(--navy);border-radius:10px;color:var(--gold);">
+        <div style="font-size:12px;opacity:.7;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Client PIN (share separately)</div>
+        <div id="portal-link-pin" style="font-size:36px;font-weight:700;letter-spacing:12px;"></div>
+        <div style="font-size:11px;opacity:.5;margin-top:6px;">Valid for 90 days</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-portal-link')">Close</button>
+      <button class="btn btn-gold" onclick="copyPortalLink()"><i class="fas fa-copy"></i> Copy Both</button>
+    </div>
+  </div>
+</div>
+
+<!-- DEADLINE RULE MODAL -->
+<div class="modal-backdrop" id="modal-deadline-rule">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-header"><div><div class="modal-title" id="dr-modal-title">New Deadline Rule</div></div><button class="modal-close" onclick="closeModal('modal-deadline-rule')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-grid form-grid-2" style="gap:13px;">
+        <div class="form-group"><label class="form-label">Rule Name <span class="required">*</span></label><input class="form-control" id="dr-name" type="text" placeholder="e.g. Written Statement"/></div>
+        <div class="form-group"><label class="form-label">Statute / Citation</label><input class="form-control" id="dr-statute" type="text" placeholder="e.g. CPC Order VIII Rule 1"/></div>
+        <div class="form-group"><label class="form-label">Case Category</label><select class="form-control" id="dr-category"></select></div>
+        <div class="form-group"><label class="form-label">Trigger Field ID</label><input class="form-control" id="dr-trigger" type="text" placeholder="e.g. created_at, nextHearing, incidentDate"/></div>
+        <div class="form-group"><label class="form-label">Days</label><input class="form-control" id="dr-days" type="number" min="1" value="30"/></div>
+        <div class="form-group"><label class="form-label">Direction</label><select class="form-control" id="dr-direction"><option value="after">After trigger date</option><option value="before">Before trigger date</option></select></div>
+        <div class="form-group" style="grid-column:1/-1;"><label class="form-label">Description</label><input class="form-control" id="dr-description" type="text" placeholder="Brief explanation of this rule"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-deadline-rule')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveDeadlineRule()"><i class="fas fa-save"></i> Save Rule</button>
+    </div>
+  </div>
+</div>
+
+<!-- FLOATING DRAGGABLE AI ASSISTANT -->
+<div class="ai-toggle-btn" onclick="toggleAIWindow()"><i class="fas fa-gavel"></i></div>
+<div class="ai-chatbot-window" id="ai-chat-widget">
+  <div class="ai-chatbot-header" id="ai-drag-bar">
+    <span><i class="fas fa-robot"></i> LexDesk AI Assistant</span>
+    <i class="fas fa-times" style="cursor:pointer;" onclick="toggleAIWindow()"></i>
+  </div>
+  <div class="ai-chatbot-messages" id="ai-msg-box">
+    <div class="ai-bubble bot">Hello! I am your preset legal practice chatbot. Ask me about system tiers, practice restrictions, or billing guidelines.</div>
   </div>
   <div class="ai-chatbot-input">
-    <input type="text" class="form-control" id="chatbot-input-field" placeholder="Ask legal query rules..." onkeydown="if(event.key==='Enter')fireChatbotQuery()"/>
-    <button class="btn btn-gold btn-icon" onclick="fireChatbotQuery()"><i class="fas fa-paper-plane"></i></button>
+    <input type="text" class="form-control" id="ai-input-text" placeholder="Type a workflow query..." onkeydown="if(event.key==='Enter')askPresetBot()"/>
+    <button class="btn btn-gold btn-icon" onclick="askPresetBot()"><i class="fas fa-paper-plane"></i></button>
   </div>
 </div>
 
 <div id="toast-container"></div>
-
 <script>
+// ════════════════════════════════════════════
+//  SUPABASE CONFIG & CLIENT
+// ════════════════════════════════════════════
 const CFG_KEY='ld_supabase_cfg';
 let sb=null;
 
 function getSupabaseConfig(){ try{return JSON.parse(localStorage.getItem(CFG_KEY)||'null')}catch{return null} }
+
 function saveSupabaseConfig(){
   const url=(document.getElementById('cfg-url').value||'').trim();
   const key=(document.getElementById('cfg-key').value||'').trim();
@@ -936,6 +1333,13 @@ function saveSupabaseConfig(){
   localStorage.setItem(CFG_KEY,JSON.stringify({url,key}));
   location.reload();
 }
+
+function disconnectSupabase(){
+  if(!confirm('Disconnect this browser from the database? You will need to re-enter the URL/key to use the app again.'))return;
+  localStorage.removeItem(CFG_KEY);
+  location.reload();
+}
+
 function initSupabase(){
   const cfg=getSupabaseConfig();
   if(!cfg){ document.getElementById('setup-screen').style.display='flex'; return false; }
@@ -944,41 +1348,68 @@ function initSupabase(){
   return true;
 }
 
-// Global Roster Parameters Data Objects
+// ════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════
 let S={
-  user:null, profile:null,
+  user:null, profile:null,             // current auth user + profile row
   clients:[], users:[], documents:[], templates:[],
-  categories:[], formSchemas:{}, messages:[], activeChatPeer:null,
-  signupCode:null, pendingUsers:[], tasks:[],
-  hierarchyPermissions:[
-    {role:'Senior Advocate', clients:true, schema:true, finances:true},
-    {role:'Junior Advocate', clients:true, schema:false, finances:false},
-    {role:'Senior Assistant Advocate', clients:true, schema:false, finances:false},
-    {role:'Junior Assistant Advocate', clients:false, schema:false, finances:false}
+  categories:[], formSchemas:{},
+  tasks:[], taskComments:{},
+  messages:[], activeChatPeer:null,    // null = team broadcast channel
+  editingMessageId:null, messageReadIds:new Set(),
+  signupCode:null,
+  editingClientId:null, detailClientId:null,
+  activeCaseType:null, pendingFiles:[],
+  editingTemplateId:null, activeTemplateId:null,
+  editingTaskId:null, pendingChatFile:null,
+  fbActiveCat:null, payingClientId:null, linkedContactId:null,
+  notes:[], noteShares:{}, editingNoteId:null, sharingNoteId:null,
+  finPayments:[], finExpanded:{},
+  paymentsCache:{},
+  deadlineRules:[], invoiceSettings:null,
+  editingDeadlineRuleId:null,
+  _editingTemplateVars:[],
+  _portalToken:null, portalData:null,
+  hierarchyPermissions: [
+    { designation: 'Senior Advocate', manage_hierarchy: true, view_finances: true },
+    { designation: 'Junior Advocate', manage_hierarchy: false, view_finances: false },
+    { designation: 'Senior Assistant Advocate', manage_hierarchy: false, view_finances: false },
+    { designation: 'Junior Assistant Advocate', manage_hierarchy: false, view_finances: false }
   ]
 };
 
+const FIELD_TYPES=['text','number','date','tel','select','textarea'];
+
+// ════════════════════════════════════════════
+//  AUTH
+// ════════════════════════════════════════════
 function showAuthTab(tab){
   document.getElementById('auth-signin').style.display=tab==='signin'?'block':'none';
   document.getElementById('auth-signup').style.display=tab==='signup'?'block':'none';
   document.getElementById('auth-forgot').style.display='none';
+  document.getElementById('tab-signin').style.background=tab==='signin'?'var(--navy)':'';
+  document.getElementById('tab-signin').style.color=tab==='signin'?'#fff':'';
+  document.getElementById('tab-signup').style.background=tab==='signup'?'var(--navy)':'';
+  document.getElementById('tab-signup').style.color=tab==='signup'?'#fff':'';
 }
 
-function toggleForgotPasswordView(show){
-  document.getElementById('auth-signin').style.display=show?'none':'block';
-  document.getElementById('auth-signup').style.display='none';
-  document.getElementById('auth-forgot').style.display=show?'block':'none';
+function toggleForgotView(show) {
+  document.getElementById('auth-signin').style.display = show ? 'none' : 'block';
+  document.getElementById('auth-signup').style.display = 'none';
+  document.getElementById('auth-forgot').style.display = show ? 'block' : 'none';
 }
 
-async function executePasswordRecovery(){
-  const email=document.getElementById('fp-email').value.trim();
-  const msg=document.getElementById('fp-msg');
-  const err=document.getElementById('fp-err');
-  msg.style.display='none'; err.style.display='none';
-  if(!email){err.textContent='Provide email identifier'; err.style.display='block'; return;}
-  const {error}=await sb.auth.resetPasswordForEmail(email);
-  if(error){err.textContent=error.message; err.style.display='block';}
-  else{msg.textContent='Recovery token configuration forwarded to account mailbox.'; msg.style.display='block';}
+async function doForgotPassword() {
+  const email = document.getElementById('fp-email').value.trim();
+  const errEl = document.getElementById('fp-err');
+  const succEl = document.getElementById('fp-success');
+  errEl.style.display = 'none'; succEl.style.display = 'none';
+
+  if (!email) { errEl.textContent = 'Please enter your account email.'; errEl.style.display = 'block'; return; }
+  const { error } = await sb.auth.resetPasswordForEmail(email);
+  if (error) { errEl.textContent = error.message; errEl.style.display = 'block'; }
+  else { succEl.textContent = 'Password reset instructions forwarded to email.'; succEl.style.display = 'block'; }
 }
 
 async function doSignIn(){
@@ -986,6 +1417,7 @@ async function doSignIn(){
   const pwd=document.getElementById('li-pwd').value;
   const err=document.getElementById('li-err');
   err.style.display='none';
+  if(!email||!pwd){err.textContent='Enter email and password.';err.style.display='block';return;}
   const {data,error}=await sb.auth.signInWithPassword({email,password:pwd});
   if(error){err.textContent=error.message;err.style.display='block';return;}
   await afterAuth();
@@ -998,39 +1430,37 @@ async function doSignUp(){
   const code=(document.getElementById('su-code').value||'').trim();
   const err=document.getElementById('su-err');
   err.style.display='none';
+  if(!name||!email||pwd.length<8){err.textContent='Name, email, and a password (8+ chars) are required.';err.style.display='block';return;}
 
-  if(!name||!email||pwd.length<8){err.textContent='Complete parameters correctly (Password 8+ characters).';err.style.display='block';return;}
-
+  // Check if this is the very first user (becomes admin automatically)
   const {count}=await sb.from('profiles').select('*',{count:'exact',head:true});
   const isFirstUser=(count||0)===0;
 
-  if(!isFirstUser && !code){
-    err.textContent='A signup registration code is strictly required for registration verification.';
-    err.style.display='block';
-    return;
-  }
-
   if(!isFirstUser){
+    if(!code){err.textContent='A signup code from your admin is required.';err.style.display='block';return;}
     const {data:codeRow}=await sb.from('signup_codes').select('*').eq('code',code).eq('active',true).maybeSingle();
-    if(!codeRow){err.textContent='Invalid parameters / invalid structural activation validation token.';err.style.display='block';return;}
+    if(!codeRow){err.textContent='Invalid or expired signup code.';err.style.display='block';return;}
   }
 
   const {data,error}=await sb.auth.signUp({email,password:pwd});
   if(error){err.textContent=error.message;err.style.display='block';return;}
 
   const userId=data.user?.id;
+  if(!userId){err.textContent='Signup failed — check your email to confirm, then sign in.';err.style.display='block';return;}
+
   await sb.from('profiles').insert({
     id:userId, full_name:name, email,
     role:isFirstUser?'Senior Advocate':'Junior Assistant Advocate',
-    approved:isFirstUser,
-    archived:false
+    approved:isFirstUser, archived:false
   });
 
   if(isFirstUser){
-    const newCode=Math.random().toString(36).substring(2,8).toUpperCase();
+    const newCode=genCode();
     await sb.from('signup_codes').insert({code:newCode, created_by:userId});
+    showToast('Welcome! You are the Admin Senior Advocate.','success');
     await afterAuth();
   } else {
+    showToast('Account created — awaiting admin approval.','success');
     document.getElementById('login-screen').style.display='none';
     document.getElementById('pending-screen').style.display='flex';
   }
@@ -1041,13 +1471,13 @@ async function afterAuth(){
   if(!user){ document.getElementById('login-screen').style.display='flex'; return; }
   S.user=user;
   const {data:profile}=await sb.from('profiles').select('*').eq('id',user.id).maybeSingle();
-  if(!profile||profile.archived){ 
-    showToast('Your account context has been archived / revoked. Access terminated.','error');
+  if(!profile || profile.archived){ 
+    showToast('Account access archived/revoked.','error');
     await sb.auth.signOut();
-    location.reload();
-    return; 
+    return;
   }
   if(!profile.approved){
+    S.profile=profile;
     document.getElementById('login-screen').style.display='none';
     document.getElementById('pending-screen').style.display='flex';
     return;
@@ -1060,269 +1490,801 @@ async function afterAuth(){
 }
 
 async function doLogout(){
+  if(S.profile && !confirm('Sign out?'))return;
   await sb.auth.signOut();
-  location.reload();
+  S={...S, user:null, profile:null,
+     unreadCounts:{}, locallyReadIds:new Set(), messageReadIds:new Set(),
+     messages:[], lastSeenTaskTs:''};
+  document.getElementById('app').style.display='none';
+  document.getElementById('pending-screen').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('li-email').value='';
+  document.getElementById('li-pwd').value='';
+  document.getElementById('li-err').style.display='none';
 }
 
 function isAdmin(){ return S.profile?.role==='Senior Advocate'; }
+function genCode(){ return Math.random().toString(36).substring(2,8).toUpperCase(); }
+</script>
+<script>
+// ════════════════════════════════════════════
+//  DATA LOADING
+// ════════════════════════════════════════════
+async function loadAllData(){
+  const [catRes,schemaRes,clientRes,userRes,docRes,tplRes,taskRes,codeRes]=await Promise.all([
+    sb.from('categories').select('*').order('created_at'),
+    sb.from('form_schemas').select('*'),
+    sb.from('clients').select('*').order('created_at',{ascending:false}),
+    sb.from('profiles').select('*').eq('approved',true).eq('archived',false).order('created_at'),
+    sb.from('documents').select('*').order('uploaded_at',{ascending:false}),
+    sb.from('templates').select('*').order('created_at',{ascending:false}),
+    sb.from('tasks').select('*').order('created_at',{ascending:false}),
+    isAdmin()?sb.from('signup_codes').select('*').eq('active',true).order('created_at',{ascending:false}).limit(1):Promise.resolve({data:[]})
+  ]);
+  S.categories=catRes.data||[];
+  S.formSchemas={};
+  (schemaRes.data||[]).forEach(r=>S.formSchemas[r.category_id]=r.fields||[]);
+  S.clients=clientRes.data||[];
+  S.users=userRes.data||[];
+  S.documents=docRes.data||[];
+  S.templates=tplRes.data||[];
+  S.tasks=taskRes.data||[];
+  S.signupCode=(codeRes.data&&codeRes.data[0])?codeRes.data[0].code:null;
 
+  if(isAdmin()){
+    const {data:pending}=await sb.from('profiles').select('*').eq('approved',false).eq('archived',false);
+    S.pendingUsers=pending||[];
+  } else { S.pendingUsers=[]; }
+}
+
+async function refreshAll(){
+  await loadAllData();
+  buildSidebar();
+  buildCaseTypeTabs();
+  buildCategoryFilter();
+  buildAssigneeFilter();
+  updateStats();
+  renderClientTable();
+  renderDeadlines();
+  renderDocuments();
+  renderUsers();
+  renderTemplates();
+  renderFormBuilder();
+  renderTasks();
+  renderChatContacts();
+}
+
+// ════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════
 async function initApp(){
   await loadAllData();
   buildSidebar();
   updateSidebarProfile();
+  buildCaseTypeTabs();
+  buildCategoryFilter();
+  buildAssigneeFilter();
+  updateStats();
   renderClientTable();
+  renderDeadlines();
+  renderDocuments();
   renderUsers();
-  renderHierarchyPermissionsTable();
-  setupSecurityContexts();
+  renderTemplates();
+  renderFormBuilder();
+  renderTasks();
+  renderChatContacts();
+  loadSettingsUI();
+  checkAlerts();
+  updateSyncStatus('synced','Live');
+  loadLastSeenState();           
+  await checkForNewItems();      
+  startPolling();                
+  await loadDeadlineRules();     
+  await loadInvoiceSettings();   
+  setupFinanceSecurityUI();
 }
 
-function setupSecurityContexts(){
-  const hasFinances=isAdmin();
-  if(hasFinances){
-    document.getElementById('finances-secure-container').style.display='block';
-    document.getElementById('finances-denied-container').style.display='none';
-  }else{
-    document.getElementById('finances-secure-container').style.display='none';
-    document.getElementById('finances-denied-container').style.display='block';
-  }
+function setupFinanceSecurityUI() {
+  const isSa = isAdmin();
+  document.getElementById('finance-admin-content').style.display = isSa ? 'block' : 'none';
+  document.getElementById('finance-restriction-msg').style.display = isSa ? 'none' : 'block';
 }
 
-async function loadAllData(){
-  const [catRes,schemaRes,clientRes,userRes,codeRes]=await Promise.all([
-    sb.from('categories').select('*'),
-    sb.from('form_schemas').select('*'),
-    sb.from('clients').select('*'),
-    sb.from('profiles').select('*').eq('archived',false),
-    isAdmin()?sb.from('signup_codes').select('*').eq('active',true).limit(1):Promise.resolve({data:[]})
-  ]);
-  S.categories=catRes.data||[];
-  S.clients=clientRes.data||[];
-  S.users=userRes.data||[];
-  S.signupCode=(codeRes.data&&codeRes.data[0])?codeRes.data[0].code:null;
-  
-  if(isAdmin()){
-    const {data:pending}=await sb.from('profiles').select('*').eq('approved',false).eq('archived',false);
-    S.pendingUsers=pending||[];
-  }
-}
-
+// ════════════════════════════════════════════
+//  SIDEBAR
+// ════════════════════════════════════════════
 function buildSidebar(){
   const nav=document.getElementById('sidebar-nav');
-  let html=`<div class="nav-section-label">Overview</div>
+  const admin=isAdmin();
+  let html=`
+    <div class="nav-section-label">Overview</div>
     <button class="nav-item active" onclick="navigate('dashboard')"><i class="fas fa-th-large"></i> Dashboard</button>
-    <div class="nav-section-label">Practice Logs</div>
-    <button class="nav-item" onclick="navigate('clients')"><i class="fas fa-users"></i> File Directory</button>
-    <button class="nav-item" onclick="navigate('finances')"><i class="fas fa-rupee-sign"></i> Firm Ledgers</button>`;
-  if(isAdmin()){
-    html+=`<div class="nav-section-label">Administration</div>
-      <button class="nav-item" onclick="navigate('users')"><i class="fas fa-user-shield"></i> System Roster</button>`;
+    <button class="nav-item" onclick="navigate('planner')"><i class="fas fa-calendar-day"></i> Daily Planner</button>
+    <button class="nav-item" onclick="navigate('deadlines')"><i class="fas fa-calendar-exclamation"></i> Deadlines <span id="dl-badge" class="nav-badge" style="display:none;"></span></button>
+    <div class="nav-section-label">Clients</div>
+    <button class="nav-item" onclick="navigate('clients')"><i class="fas fa-users"></i> All Clients</button>`;
+  S.categories.forEach(cat=>{
+    html+=`<button class="nav-item" onclick="navigateCat('${cat.id}')"><i class="${cat.icon}"></i> ${cat.label}</button>`;
+  });
+  html+=`<div class="nav-section-label">Workspace</div>
+    <button class="nav-item" onclick="navigate('documents')"><i class="fas fa-folder-open"></i> Documents</button>
+    <button class="nav-item" onclick="navigate('finances')"><i class="fas fa-rupee-sign"></i> Finances</button>
+    <button class="nav-item" onclick="navigate('templates')"><i class="fas fa-file-alt"></i> Templates</button>
+    <button class="nav-item" onclick="navigate('notes')"><i class="fas fa-sticky-note"></i> Notes</button>
+    <button class="nav-item" onclick="navigate('chat')"><i class="fas fa-comments"></i> Messages <span id="chat-nav-badge" class="nav-badge" style="display:none;"></span></button>
+    <button class="nav-item" onclick="navigate('tasks')"><i class="fas fa-tasks"></i> Tasks <span id="task-badge" class="nav-badge" style="display:none;"></span></button>`;
+  if(admin){
+    html+=`<div class="nav-section-label">Admin</div>
+      <button class="nav-item" onclick="navigate('users')"><i class="fas fa-user-shield"></i> Users <span id="pending-badge" class="nav-badge" style="display:none;"></span></button>
+      <button class="nav-item" onclick="navigate('formbuilder')"><i class="fas fa-sliders-h"></i> Form Builder</button>
+      <button class="nav-item" onclick="navigate('deadline-rules')"><i class="fas fa-gavel"></i> Deadline Rules</button>
+      <button class="nav-item" onclick="navigate('activity')"><i class="fas fa-history"></i> Activity Log</button>`;
   }
+  html+=`<button class="nav-item" onclick="navigate('settings')"><i class="fas fa-cog"></i> Settings</button>`;
   nav.innerHTML=html;
+  const pb=document.getElementById('pending-badge');
+  if(pb && S.pendingUsers?.length){pb.textContent=S.pendingUsers.length;pb.style.display='inline-block';}
 }
 
 function updateSidebarProfile(){
-  document.getElementById('sb-name').textContent=S.profile?.full_name||'User';
-  document.getElementById('sb-role').textContent=S.profile?.role||'Roster';
-  document.getElementById('sb-avatar').textContent=S.profile?.full_name ? S.profile.full_name[0] : 'U';
+  const n=S.profile?.full_name||'User';
+  document.getElementById('sb-name').textContent=n;
+  document.getElementById('sb-role').textContent=S.profile?.role||'—';
+  document.getElementById('sb-avatar').textContent=initials(n);
 }
+
+// ════════════════════════════════════════════
+//  NAVIGATION
+// ════════════════════════════════════════════
+const NAV_TITLES={
+  dashboard:'Dashboard',planner:'Daily Planner',clients:'All Clients',deadlines:'Deadlines & Alerts',
+  documents:'Documents',templates:'Draft Templates',chat:'Messages',tasks:'Tasks',
+  users:'User Management',formbuilder:'Form Builder',settings:'Settings',
+  notes:'Notes',activity:'Activity Log',finances:'Finances',
+  'deadline-rules':'Deadline Rules'
+};
 
 function navigate(view){
   document.querySelectorAll('.page-view').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
   const el=document.getElementById(`view-${view}`);
   if(el) el.classList.add('active');
-  document.getElementById('topbar-title').textContent=view.toUpperCase();
-  if(view==='finances') setupSecurityContexts();
+  document.getElementById('topbar-title').textContent=NAV_TITLES[view]||view;
+  closeSidebarMobile();
+  if(view==='planner') renderPlanner();
+  if(view==='deadlines') renderDeadlines();
+  if(view==='documents') renderDocuments();
+  if(view==='users') renderUsers();
+  if(view==='templates') renderTemplates();
+  if(view==='notes'){ loadNotes().then(renderNotes); }
+  if(view==='activity') loadActivityLog();
+  if(view==='deadline-rules'){ loadDeadlineRules().then(renderDeadlineRulesPage); }
+  if(view==='finances') { setupFinanceSecurityUI(); renderFinances(); }
+  if(view==='formbuilder') renderFormBuilder();
+  if(view==='tasks') renderTasks();
+  if(view==='chat'){
+    renderChatContacts();
+    loadMessages().then(()=>{
+      renderChatMessages();
+      markConversationRead(S.activeChatPeer);
+    });
+  }
+  const ncb=document.getElementById('topbar-new-client-btn');
+  if(ncb) ncb.style.display=['dashboard','clients'].includes(view)?'inline-flex':'none';
 }
 
-function renderClientTable(){
-  const tbody=document.getElementById('clients-tbody');
-  if(!tbody)return;
-  tbody.innerHTML=S.clients.map(c=>`
-    <tr onclick="viewClient('${c.client_id}')">
-      <td><b>${c.name}</b><br><small>${c.client_id}</small></td>
-      <td><span class="badge badge-general">${c.case_type||'Matter'}</span></td>
-      <td>System Assignment</td>
-      <td><span class="badge badge-active">${c.status}</span></td>
-      <td>—</td>
-      <td><button class="btn btn-outline btn-xs">View Matrix</button></td>
-    </tr>
-  `).join('');
+function navigateCat(catId){
+  const cat=S.categories.find(c=>c.id===catId);
+  navigate('clients');
+  document.getElementById('filter-type').value=catId;
+  document.getElementById('topbar-title').textContent=cat?cat.label+' Cases':'Cases';
+  renderClientTable();
 }
 
-function viewClient(id){
+function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('open'); }
+function closeSidebarMobile(){ if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');} }
+
+function myClients(){
+  if(isAdmin()) return S.clients;
+  return S.clients.filter(c=>c.assigned_to===S.user?.id);
+}
+</script>
+<script>
+// ════════════════════════════════════════════
+//  CASE TYPE TABS / DYNAMIC FIELDS
+// ════════════════════════════════════════════
+function buildCaseTypeTabs(){
+  const c=document.getElementById('client-case-type-tabs');
+  if(!c)return;
+  c.innerHTML=S.categories.map((cat,i)=>`<button class="case-type-btn${i===0?' active':''}" id="ctt-${cat.id}" onclick="selectCaseType('${cat.id}')"><i class="${cat.icon}"></i> ${cat.label}</button>`).join('');
+  S.activeCaseType=S.categories[0]?.id||'general';
+  renderDynamicFields(S.activeCaseType);
+}
+function selectCaseType(catId){
+  S.activeCaseType=catId;
+  document.querySelectorAll('.case-type-btn').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById('ctt-'+catId);
+  if(btn)btn.classList.add('active');
+  renderDynamicFields(catId);
+}
+function buildCategoryFilter(){
+  const sel=document.getElementById('filter-type');
+  if(sel) sel.innerHTML='<option value="">All Types</option>'+S.categories.map(c=>`<option value="${c.id}">${c.label}</option>`).join('');
+}
+function buildAssigneeFilter(){
+  const sel=document.getElementById('filter-assignee');
+  if(sel) sel.innerHTML='<option value="">All Lawyers</option>'+
+    S.users.map(u=>`<option value="${u.id}">${u.full_name}</option>`).join('');
+  const fa=document.getElementById('f-assignee');
+  if(fa) fa.innerHTML=S.users.map(u=>`<option value="${u.id}">${u.full_name} (${u.role})</option>`).join('');
+  const dc=document.getElementById('doc-filter-client');
+  if(dc) dc.innerHTML='<option value="">All Clients</option>'+
+    myClients().map(c=>`<option value="${c.client_id}">${c.name} (${c.client_id})</option>`).join('');
+}
+
+function renderDynamicFields(catId){
+  const schema=S.formSchemas[catId]||[];
+  const cat=S.categories.find(c=>c.id===catId);
+  const cnt=document.getElementById('dynamic-case-fields');
+  if(!cnt)return;
+  if(!schema.length){
+    cnt.innerHTML=`<p style="color:var(--text-muted);font-size:13px;margin:12px 0;">No fields for this category.${isAdmin()?` <span style="color:var(--navy-mid);cursor:pointer;text-decoration:underline;" onclick="closeModal(\'modal-client\');navigate(\'formbuilder\')">Configure in Form Builder →</span>`:''}</p>`;
+    return;
+  }
+  const colorMap={blue:'#ebf8ff',green:'#f0fff4',purple:'#faf5ff',orange:'#fffaf0',red:'#fff5f5'};
+  const borderMap={blue:'#bee3f8',green:'#9ae6b4',purple:'#d6bcfa',orange:'#fbd38d',red:'#fed7d7'};
+  const c=cat?.color||'blue';
+  let html=`<div class="section-divider" style="background:${colorMap[c]||'var(--bg)'};padding:6px 10px;border-radius:6px;border:1px solid ${borderMap[c]||'var(--border)'};margin-bottom:14px;border-bottom:1.5px solid ${borderMap[c]||'var(--gold-pale)'}"><i class="${cat?.icon||'fas fa-file-alt'}" style="margin-right:6px;"></i>${cat?.label||catId} Details</div><div class="form-grid form-grid-2" style="gap:13px;">`;
+  schema.forEach(f=>{
+    const reqStr=f.required?` <span class="required">*</span>`:'';
+    let input='';
+    if(['text','tel','number','date'].includes(f.type)) input=`<input class="form-control" id="df-${f.id}" type="${f.type}" data-field="${f.id}"/>`;
+    else if(f.type==='textarea') input=`<textarea class="form-control" id="df-${f.id}" rows="3" data-field="${f.id}" style="grid-column:1/-1;"></textarea>`;
+    else if(f.type==='select') input=`<select class="form-control" id="df-${f.id}" data-field="${f.id}"><option value="">Select…</option>${(f.options||[]).map(o=>`<option>${o}</option>`).join('')}</select>`;
+    const fullWidth=f.type==='textarea';
+    html+=`<div class="form-group"${fullWidth?' style="grid-column:1/-1;"':''}><label class="form-label">${f.label}${reqStr}</label>${input}</div>`;
+  });
+  html+='</div>';
+  cnt.innerHTML=html;
+}
+function readDynamicFields(catId){ const schema=S.formSchemas[catId]||[];const data={};schema.forEach(f=>{const el=document.getElementById('df-'+f.id);if(el)data[f.id]=el.value;});return data; }
+function fillDynamicFields(catId,data){ const schema=S.formSchemas[catId]||[];schema.forEach(f=>{const el=document.getElementById('df-'+f.id);if(el&&data)el.value=data[f.id]||'';}); }
+
+// ════════════════════════════════════════════
+//  FORM BUILDER (admin only)
+// ════════════════════════════════════════════
+function renderFormBuilder(){
+  if(!isAdmin())return;
+  const tabs=document.getElementById('fb-category-tabs');
+  if(!tabs)return;
+  tabs.innerHTML=S.categories.map((cat,i)=>`<button class="case-type-btn${i===0?' active':''}" onclick="selectFbCat('${cat.id}',this)"><i class="${cat.icon}"></i> ${cat.label}</button>`).join('');
+  if(S.categories.length) selectFbCat(S.categories[0].id, tabs.children[0]);
+}
+function selectFbCat(catId,btn){
+  S.fbActiveCat=catId;
+  document.querySelectorAll('#fb-category-tabs .case-type-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  const cat=S.categories.find(c=>c.id===catId);
+  document.getElementById('fb-cat-label').textContent=`${cat?.label||catId} — Fields`;
+  document.getElementById('fb-editor').style.display='block';
+  renderFbFields();
+}
+function renderFbFields(){
+  const schema=S.formSchemas[S.fbActiveCat]||[];
+  const cnt=document.getElementById('fb-fields-list');
+  if(!schema.length){cnt.innerHTML='<p class="text-muted text-sm">No fields yet. Click Add Field.</p>';return;}
+  cnt.innerHTML=schema.map((f,i)=>`
+    <div class="field-builder-item" data-idx="${i}">
+      <i class="fas fa-grip-vertical drag-handle"></i>
+      <input class="field-label-input" type="text" value="${escHtml(f.label)}" onchange="updateFbField(${i},'label',this.value)"/>
+      <select style="border:1px solid var(--border);border-radius:4px;padding:4px 8px;font-size:12px;background:var(--bg);cursor:pointer;" onchange="updateFbField(${i},'type',this.value)">
+        ${FIELD_TYPES.map(t=>`<option value="${t}"${f.type===t?' selected':''}>${t}</option>`).join('')}
+      </select>
+      ${f.type==='select'?`<button class="btn btn-outline btn-xs" onclick="editFieldOptions(${i})"><i class="fas fa-list"></i></button>`:''}
+      <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer;flex-shrink:0;"><input type="checkbox" ${f.required?'checked':''} onchange="updateFbField(${i},'required',this.checked)"/> Required</label>
+      <button class="btn btn-danger btn-xs btn-icon" onclick="removeFbField(${i})"><i class="fas fa-trash"></i></button>
+    </div>`).join('');
+  setupFbDrag();
+}
+function addFormField(){ if(!S.fbActiveCat)return; if(!S.formSchemas[S.fbActiveCat])S.formSchemas[S.fbActiveCat]=[]; S.formSchemas[S.fbActiveCat].push({id:'field_'+Date.now(),label:'New Field',type:'text',required:false}); renderFbFields(); }
+function updateFbField(idx,key,val){ S.formSchemas[S.fbActiveCat][idx][key]=val; if(key==='type')renderFbFields(); }
+function removeFbField(idx){ if(!confirm('Delete this field?'))return; S.formSchemas[S.fbActiveCat].splice(idx,1); renderFbFields(); }
+function editFieldOptions(idx){ const f=S.formSchemas[S.fbActiveCat][idx];const cur=(f.options||[]).join('\n');const n=prompt(`Options for "${f.label}" (one per line):`,cur);if(n===null)return;S.formSchemas[S.fbActiveCat][idx].options=n.split('\n').map(s=>s.trim()).filter(Boolean); }
+async function saveFormSchema(){
+  const {error}=await sb.from('form_schemas').upsert({category_id:S.fbActiveCat,fields:S.formSchemas[S.fbActiveCat],updated_at:new Date().toISOString()});
+  if(error){showToast('Save failed: '+error.message,'error');return;}
+  showToast('Form schema saved!','success');
+}
+function setupFbDrag(){
+  const list=document.getElementById('fb-fields-list');
+  if(!list)return;
+  let dragEl=null;
+  list.querySelectorAll('.field-builder-item').forEach((item)=>{
+    item.draggable=true;
+    item.addEventListener('dragstart',()=>{dragEl=item;item.style.opacity='.4';});
+    item.addEventListener('dragend',()=>{item.style.opacity='';});
+    item.addEventListener('dragover',e=>{e.preventDefault();const r=item.getBoundingClientRect();if(e.clientY<r.top+r.height/2)list.insertBefore(dragEl,item);else list.insertBefore(dragEl,item.nextSibling);});
+    item.addEventListener('drop',()=>{
+      const items=[...list.querySelectorAll('.field-builder-item')];
+      S.formSchemas[S.fbActiveCat]=items.map(el=>S.formSchemas[S.fbActiveCat][parseInt(el.dataset.idx)]);
+      renderFbFields();
+    });
+  });
+}
+
+// ════════════════════════════════════════════
+//  NEW CATEGORY
+// ════════════════════════════════════════════
+function openNewCategoryModal(){ document.getElementById('nc-name').value='';document.getElementById('nc-icon').value='fas fa-folder';openModal('modal-new-cat'); }
+async function createCategory(){
+  const name=(document.getElementById('nc-name').value||'').trim();
+  if(!name){showToast('Category name required.','error');return;}
+  const id=name.toLowerCase().replace(/[^a-z0-9]/g,'_');
+  if(S.categories.find(c=>c.id===id)){showToast('Category already exists.','error');return;}
+  const {error:e1}=await sb.from('categories').insert({id,label:name,icon:document.getElementById('nc-icon').value||'fas fa-folder',color:document.getElementById('nc-color').value||'blue',built_in:false,created_by:S.user.id});
+  if(e1){showToast('Failed: '+e1.message,'error');return;}
+  const {error:e2}=await sb.from('form_schemas').insert({category_id:id,fields:[]});
+  if(e2){showToast('Failed: '+e2.message,'error');return;}
+  S.categories.push({id,label:name,icon:document.getElementById('nc-icon').value,color:document.getElementById('nc-color').value,built_in:false});
+  S.formSchemas[id]=[];
+  closeModal('modal-new-cat');
+  buildSidebar();buildCaseTypeTabs();buildCategoryFilter();renderFormBuilder();updateStats();
+  showToast(`Category "${name}" created!`,'success');
+}
+
+// ════════════════════════════════════════════
+//  CLIENT CRUD
+// ════════════════════════════════════════════
+function genId(){ const n=S.clients.length?Math.max(...S.clients.map(c=>parseInt((c.client_id||'').replace('CL-',''))||0))+1:1000+Math.floor(Math.random()*9000); return `CL-${n}`; }
+
+function openAddClient(catId=null){
+  S.editingClientId=null; S.linkedContactId=null;
+  document.getElementById('mc-title').textContent='Add New Client';
+  document.getElementById('mc-save-txt').textContent='Save Client';
+  clearClientForm();
+  document.getElementById('f-id').value=genId();
+  const aw=document.getElementById('f-assignee-wrap');
+  aw.style.display=isAdmin()?'':'none';
+  buildCaseTypeTabs();
+  if(catId) selectCaseType(catId);
+  const linkWrap=document.getElementById('f-link-existing');
+  if(linkWrap){ linkWrap.closest('.form-group').style.display='flex'; linkWrap.value=''; }
+  document.getElementById('f-link-hint').textContent='';
+  buildExistingClientsDatalist();
+  openModal('modal-client');
+}
+
+function buildExistingClientsDatalist(){
+  const dl=document.getElementById('existing-clients-list');
+  if(!dl)return;
+  const seen=new Set(); const contacts=[];
+  S.clients.forEach(c=>{
+    const rootId=c.contact_id||c.client_id;
+    if(seen.has(rootId))return;
+    seen.add(rootId);
+    const root=S.clients.find(x=>x.client_id===rootId)||c;
+    contacts.push(root);
+  });
+  dl.innerHTML=contacts.map(c=>`<option value="${escHtml(c.name)} — ${c.client_id}"></option>`).join('');
+  S._contactLookup=contacts;
+}
+
+function onLinkExistingClientInput(){
+  const val=document.getElementById('f-link-existing').value;
+  const match=(S._contactLookup||[]).find(c=>`${c.name} — ${c.client_id}`===val);
+  const hint=document.getElementById('f-link-hint');
+  if(!match){ S.linkedContactId=null; hint.textContent=''; return; }
+  S.linkedContactId=match.contact_id||match.client_id;
+  document.getElementById('f-name').value=match.name;
+  document.getElementById('f-phone').value=match.phone||'';
+  document.getElementById('f-email').value=match.email||'';
+  document.getElementById('f-address').value=match.address||'';
+  const caseCount=S.clients.filter(c=>(c.contact_id||c.client_id)===S.linkedContactId).length;
+  hint.textContent=`Linked to ${match.name} — case #${caseCount+1}.`;
+}
+
+function clearClientForm(){
+  ['f-name','f-phone','f-email','f-address','f-fee','f-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('f-status').value='active';
+  document.getElementById('file-list').innerHTML='';
+  S.pendingFiles=[];
+}
+
+async function saveClient(){
+  const name=(document.getElementById('f-name').value||'').trim();
+  if(!name){showToast('Client name is required.','error');return;}
+  const catId=S.activeCaseType;
+  const schema=S.formSchemas[catId]||[];
+  for(const f of schema){
+    if(f.required){ const el=document.getElementById('df-'+f.id); if(el&&!el.value.trim()){showToast(`"${f.label}" is required.`,'error');return;} }
+  }
+  const saveBtn=document.getElementById('mc-save-btn');
+  saveBtn.disabled=true;
+  const now=new Date().toISOString();
+  const initialClientId=document.getElementById('f-id').value||genId();
+  const assignedTo=isAdmin()?(document.getElementById('f-assignee')?.value||S.user.id):S.user.id;
+  const caseData=readDynamicFields(catId);
+
+  const payload={
+    client_id:initialClientId,name,case_type:catId,
+    contact_id:S.editingClientId?undefined:(S.linkedContactId||null),
+    phone:document.getElementById('f-phone').value,
+    email:document.getElementById('f-email').value,
+    address:document.getElementById('f-address').value,
+    status:document.getElementById('f-status').value,
+    fee:document.getElementById('f-fee').value?Number(document.getElementById('f-fee').value):null,
+    notes:document.getElementById('f-notes').value,
+    assigned_to:assignedTo,
+    case_data:caseData,
+    updated_at:now
+  };
+  if(payload.contact_id===undefined) delete payload.contact_id;
+
+  if(S.editingClientId){
+    const ex=S.clients.find(c=>c.client_id===S.editingClientId);
+    payload.history=[...(ex?.history||[]),{date:now,text:`Updated by ${S.profile.full_name}.`}];
+    const diffs=ex?buildClientDiff(ex,payload):[];
+    const {error}=await sb.from('clients').update(payload).eq('client_id',S.editingClientId);
+    if(error){showToast('Save failed: '+error.message,'error');saveBtn.disabled=false;return;}
+    logClientUpdate(S.editingClientId,diffs);
+    showToast('Client updated!','success');
+  } else {
+    payload.created_by=S.user.id;
+    payload.history=[{date:now,text:`Client created by ${S.profile.full_name}.`}];
+    payload.created_at=now;
+    let attempt=0, lastError=null, usedId=payload.client_id;
+    while(attempt<5){
+      const {error}=await sb.from('clients').insert(payload);
+      if(!error){ lastError=null; break; }
+      lastError=error;
+      if(error.code!=='23505') break;
+      usedId=genId(); payload.client_id=usedId; attempt++;
+    }
+    if(lastError){showToast('Save failed: '+lastError.message,'error');saveBtn.disabled=false;return;}
+    showToast(`${usedId} added.`,'success');
+  }
+  saveBtn.disabled=false;
+  closeModal('modal-client');
+  await refreshAll();
+}
+
+async function editCurrentClient(){
+  const c=S.clients.find(x=>x.client_id===S.detailClientId);
+  if(!c)return;
+  closeModal('modal-detail');
+  S.editingClientId=c.client_id;
+  document.getElementById('mc-title').textContent='Edit Client';
+  document.getElementById('mc-save-txt').textContent='Update Client';
+  buildCaseTypeTabs(); selectCaseType(c.case_type);
+  document.getElementById('f-id').value=c.client_id;
+  document.getElementById('f-name').value=c.name;
+  document.getElementById('f-phone').value=c.phone||'';
+  document.getElementById('f-email').value=c.email||'';
+  document.getElementById('f-address').value=c.address||'';
+  document.getElementById('f-status').value=c.status||'active';
+  document.getElementById('f-fee').value=c.fee||'';
+  document.getElementById('f-notes').value=c.notes||'';
+  if(isAdmin()){ const fa=document.getElementById('f-assignee');if(fa)fa.value=c.assigned_to||''; }
+  setTimeout(()=>fillDynamicFields(c.case_type,c.case_data||{}),50);
+  openModal('modal-client');
+}
+
+async function deleteCurrentClient(){
+  const c=S.clients.find(x=>x.client_id===S.detailClientId);
+  if(!c)return;
+  if(!isAdmin()){ showToast('Only Senior Advocates can delete cases.','error'); return; }
+  if(!confirm(`Delete "${c.name}" permanently?`))return;
+  const {error}=await sb.from('clients').delete().eq('client_id',S.detailClientId);
+  if(error){showToast('Delete failed: '+error.message,'error');return;}
+  closeModal('modal-detail');
+  await refreshAll();
+}
+
+async function viewClient(id){
   const c=S.clients.find(x=>x.client_id===id);
   if(!c)return;
+  S.detailClientId=id;
+  const cat=S.categories.find(x=>x.id===c.case_type)||{label:c.case_type,icon:'fas fa-file'};
+  const au=S.users.find(u=>u.id===c.assigned_to);
   document.getElementById('det-title').textContent=c.name;
-  document.getElementById('det-sub').textContent=c.client_id;
+  document.getElementById('det-sub').textContent=`${c.client_id} · ${cat.label}`;
+  document.getElementById('det-meta').innerHTML=`
+    <div class="detail-meta-item"><div class="detail-meta-label">Client ID</div><div class="detail-meta-value">${c.client_id}</div></div>
+    <div class="detail-meta-item"><div class="detail-meta-label">Case Type</div><div class="detail-meta-value">${catBadge(c.case_type)}</div></div>
+    <div class="detail-meta-item"><div class="detail-meta-label">Status</div><div class="detail-meta-value">${statusBadge(c.status)}</div></div>
+    <div class="detail-meta-item"><div class="detail-meta-label">Assigned To</div><div class="detail-meta-value">${au?au.full_name:'—'}</div></div>`;
   
-  const finSec=document.getElementById('detail-finances-secure');
-  const finDen=document.getElementById('detail-finances-denied');
-  if(isAdmin()){
-    finSec.style.display='block'; finDen.style.display='none';
-    finSec.innerHTML=`<h4>Financial Parameters Matrix</h4><p>Total Fee Quoted Balance: ₹${c.fee||0}</p>`;
-  }else{
-    finSec.style.display='none'; finDen.style.display='block';
-  }
+  // Isolated Payments tab view checks
+  const isSa = isAdmin();
+  document.getElementById('detail-payments-admin-view').style.display = isSa ? 'block' : 'none';
+  document.getElementById('detail-payments-restricted-view').style.display = isSa ? 'none' : 'block';
+  if(isSa) renderPaymentsTab(id);
+
+  document.getElementById('tab-overview').innerHTML=`
+    <div class="form-grid form-grid-2" style="gap:12px;">
+      ${dr('Phone',c.phone)}${dr('Email',c.email)}
+      <div class="form-group" style="grid-column:1/-1;"><div class="form-label">Address</div><div style="font-size:14px;padding:6px 0;">${c.address||'—'}</div></div>
+    </div>`;
+  switchTab('overview');
   openModal('modal-detail');
 }
+function dr(label,val){ return `<div class="form-group"><div class="form-label">${label}</div><div style="font-size:14px;padding:6px 0;">${val||'—'}</div></div>`; }
+</script>
+<script>
+// ════════════════════════════════════════════
+//  CLIENT TABLE RENDER
+// ════════════════════════════════════════════
+function renderClientTable(){
+  const search=(document.getElementById('client-search')?.value||'').toLowerCase();
+  const typeF=document.getElementById('filter-type')?.value||'';
+  const statF=document.getElementById('filter-status')?.value||'';
+  const assignF=document.getElementById('filter-assignee')?.value||'';
+  let clients=myClients().filter(c=>{
+    const ms=!search||c.name.toLowerCase().includes(search)||c.client_id.toLowerCase().includes(search);
+    const mt=!typeF||c.case_type===typeF;
+    const ms2=!statF||c.status===statF;
+    const ma=!assignF||c.assigned_to===assignF;
+    return ms&&mt&&ms2&&ma;
+  });
+  const tbody=document.getElementById('clients-tbody');
+  const empty=document.getElementById('clients-empty');
+  if(!clients.length){tbody.innerHTML='';if(empty)empty.style.display='block';return;}
+  if(empty)empty.style.display='none';
+  tbody.innerHTML=clients.map(c=>{
+    const au=S.users.find(u=>u.id===c.assigned_to);
+    return `<tr onclick="viewClient('${c.client_id}')">
+      <td><div class="client-name-cell"><div class="avatar-sm av-navy">${initials(c.name)}</div><div><div class="font-medium">${c.name}</div><div class="client-id">${c.client_id}</div></div></div></td>
+      <td>${catBadge(c.case_type)}</td>
+      <td><span style="font-size:13px;">${au?au.full_name:'—'}</span></td>
+      <td>${statusBadge(c.status)}</td>
+      <td>—</td>
+      <td onclick="event.stopPropagation()"><div style="display:flex;gap:6px;">
+        <button class="btn btn-outline btn-sm btn-icon" onclick="viewClient('${c.client_id}')"><i class="fas fa-eye"></i></button>
+      </div></td>
+    </tr>`;
+  }).join('');
+  renderRecentClients();
+}
+function renderRecentClients(){
+  const tbody=document.getElementById('recent-tbody');
+  if(!tbody)return;
+  tbody.innerHTML=myClients().slice(0,6).map(c=>{
+    const au=S.users.find(u=>u.id===c.assigned_to);
+    return `<tr onclick="viewClient('${c.client_id}')">
+      <td><div class="client-name-cell"><div class="avatar-sm av-navy">${initials(c.name)}</div><div><div class="font-medium">${c.name}</div><div class="client-id">${c.client_id}</div></div></div></td>
+      <td>${catBadge(c.case_type)}</td><td>${au?au.full_name:'—'}</td><td>${statusBadge(c.status)}</td>
+    </tr>`;
+  }).join('');
+}
 
-function renderHierarchyPermissionsTable(){
-  const tbody=document.getElementById('hierarchy-permissions-tbody');
-  if(!tbody) return;
-  tbody.innerHTML=S.hierarchyPermissions.map((hp,idx)=>`
+function updateStats(){
+  document.getElementById('stats-grid').innerHTML=`
+    <div class="stat-card gold"><div class="stat-label">Total Clients</div><div class="stat-value">${myClients().length}</div><i class="fas fa-users stat-icon"></i></div>`;
+}
+function renderDeadlines(){}
+function renderDocuments(){}
+function checkAlerts(){}
+
+// ════════════════════════════════════════════
+//  USERS & STRUCTURED HIERARCHY MANAGEMENT (Admin Configuration)
+// ════════════════════════════════════════════
+function renderHierarchyMatrix() {
+  const tbody = document.getElementById('hierarchy-matrix-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = S.hierarchyPermissions.map((hp, idx) => `
     <tr>
-      <td><b>${hp.role}</b></td>
-      <td><input type="checkbox" ${hp.clients?'checked':''} ${isAdmin()?'':'disabled'} onchange="toggleHierarchyPerm(${idx}, 'clients')"></td>
-      <td><input type="checkbox" ${hp.schema?'checked':''} ${isAdmin()?'':'disabled'} onchange="toggleHierarchyPerm(${idx}, 'schema')"></td>
-      <td><input type="checkbox" ${hp.finances?'checked':''} ${isAdmin()?'':'disabled'} onchange="toggleHierarchyPerm(${idx}, 'finances')"></td>
+      <td><b>${hp.designation}</b></td>
+      <td><input type="checkbox" ${hp.designation !== 'Senior Advocate' ? 'checked' : ''} disabled /> Order Flow</td>
+      <td><input type="checkbox" ${hp.view_finances ? 'checked' : ''} onchange="toggleHierarchyMatrix(${idx}, 'view_finances')" ${isAdmin() ? '' : 'disabled'} /> View Ledger Data</td>
+      <td><input type="checkbox" ${hp.manage_hierarchy ? 'checked' : ''} onchange="toggleHierarchyMatrix(${idx}, 'manage_hierarchy')" ${isAdmin() ? '' : 'disabled'} /> Manage System Matrix</td>
     </tr>
   `).join('');
 }
 
-function toggleHierarchyPerm(idx, key){
-  if(!isAdmin()) return;
-  S.hierarchyPermissions[idx][key]=!S.hierarchyPermissions[idx][key];
-  showToast('Designation access privileges shifted.','success');
-  setupSecurityContexts();
+function toggleHierarchyMatrix(idx, property) {
+  if (!isAdmin()) return;
+  S.hierarchyPermissions[idx][property] = !S.hierarchyPermissions[idx][property];
+  showToast('Hierarchy parameter matrix adjusted dynamically.', 'success');
+  setupFinanceSecurityUI();
 }
 
-function renderUsers(){
-  const codeDisp=document.getElementById('signup-code-display');
-  if(codeDisp) codeDisp.textContent=S.signupCode||'—';
-  
-  const pendingSection=document.getElementById('users-pending-section');
-  const pendingList=document.getElementById('users-pending-list');
-  if(isAdmin() && S.pendingUsers.length){
-    pendingSection.style.display='block';
-    pendingList.innerHTML=S.pendingUsers.map(u=>`
-      <div class="user-list-item">
-        <div class="user-list-item-info"><b>${u.full_name}</b><br><small>${u.email}</small></div>
-        <button class="btn btn-gold btn-sm" onclick="openAssignUserModal('${u.id}')">Grant Designation</button>
-      </div>
-    `).join('');
-  }else{
-    if(pendingSection) pendingSection.style.display='none';
-  }
-
-  const list=document.getElementById('users-list');
-  if(!list)return;
-  list.innerHTML=S.users.map(u=>`
-    <div class="user-list-item">
-      <div class="user-list-item-info"><b>${u.full_name}</b> <span class="badge badge-admin">${u.role}</span><br><small>${u.email}</small></div>
-      <div>
-        ${isAdmin() && u.id!==S.user.id ? `
-          <button class="btn btn-outline btn-xs" onclick="openAssignUserModal('${u.id}')">Alter Role</button>
-          <button class="btn btn-outline btn-xs" style="color:var(--warning);" onclick="archiveAssistant('${u.id}')">Archive Account</button>
-          <button class="btn btn-danger btn-xs" onclick="permanentlyPurgeAssistant('${u.id}')">Purge File</button>
-        `:''}
-      </div>
-    </div>
-  `).join('');
-}
-
-function openAssignUserModal(id){
-  const u=[...S.users,...S.pendingUsers].find(x=>x.id===id);
-  if(!u)return;
-  document.getElementById('au-name').value=u.full_name;
-  document.getElementById('au-role').value=u.role==='pending'?'Junior Assistant Advocate':u.role;
-  S._targetUserId=id;
-  openModal('modal-add-user');
+function copySignupCode(){ if(S.signupCode){ navigator.clipboard.writeText(S.signupCode); showToast('Code copied.','success'); } }
+async function regenerateSignupCode(){
+  const code = genCode();
+  await sb.from('signup_codes').insert({code, created_by: S.user.id});
+  S.signupCode = code; renderUsers();
 }
 
 async function approveUser(){
   const role=document.getElementById('au-role').value;
-  const bar=document.getElementById('au-bar').value;
-  await sb.from('profiles').update({role,approved:true,bar_number:bar}).eq('id',S._targetUserId);
-  closeModal('modal-add-user');
-  await initApp();
+  await sb.from('profiles').update({role,approved:true}).eq('id',S._targetUserId);
+  closeModal('modal-add-user'); await refreshAll();
 }
 
-async function archiveAssistant(id){
-  if(!confirm('Archive assistant? Historical files persist, system login privileges break immediately.'))return;
-  await sb.from('profiles').update({archived:true, approved:false}).eq('id',id);
-  await initApp();
+async function archiveAssistant(userId) {
+  if (!confirm('Archive this assistant account? System access terminates immediately while file trail remains uncompromised.')) return;
+  await sb.from('profiles').update({ archived: true, approved: false }).eq('id', userId);
+  showToast('Assistant profile archived securely.', 'warning');
+  await refreshAll();
 }
 
-async function permanentlyPurgeAssistant(id){
-  if(!confirm('Execute explicit permanent delete operation? User records clear permanently.'))return;
-  await sb.from('profiles').delete().eq('id',id);
-  await initApp();
+async function permanentlyDeleteUser(userId) {
+  if (!confirm('Permanently purge this assistant registry? This file path breaks irrevocably.')) return;
+  await sb.from('profiles').delete().eq('id', userId);
+  showToast('Assistant account purged permanently.', 'danger');
+  await refreshAll();
 }
 
-function openAddClient(){
-  document.getElementById('f-id').value='CL-'+Math.floor(1000+Math.random()*9000);
-  openModal('modal-client');
-}
+function renderUsers(){
+  if(!isAdmin())return;
+  renderHierarchyMatrix();
+  const codeDisp=document.getElementById('signup-code-display');
+  if(codeDisp) codeDisp.textContent=S.signupCode||'—';
 
-async function saveClient(){
-  const payload={
-    client_id:document.getElementById('f-id').value,
-    name:document.getElementById('f-name').value,
-    phone:document.getElementById('f-phone').value,
-    email:document.getElementById('f-email').value,
-    address:document.getElementById('f-address').value,
-    fee:Number(document.getElementById('f-fee').value)||0,
-    status:document.getElementById('f-status').value,
-    case_type:'General'
-  };
-  await sb.from('clients').insert(payload);
-  closeModal('modal-client');
-  await initApp();
-}
+  const pendingSection=document.getElementById('users-pending-section');
+  if(S.pendingUsers.length){
+    pendingSection.style.display='block';
+    document.getElementById('users-pending-list').innerHTML=S.pendingUsers.map(u=>`
+      <div class="user-list-item">
+        <div class="user-list-item-info"><b>${u.full_name}</b> (${u.email})</div>
+        <button class="btn btn-gold btn-sm" onclick="S._targetUserId='${u.id}'; openModal('modal-add-user')">Approve Rank</button>
+      </div>`);
+  } else { pendingSection.style.display='none'; }
 
-function openModal(id){ document.getElementById(id).classList.add('open'); }
-function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-function switchTab(tab){
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('tab-'+tab).classList.add('active');
+  document.getElementById('users-list').innerHTML=S.users.map(u=>`
+    <div class="user-list-item">
+      <div class="user-list-item-info"><b>${u.full_name}</b> <span class="badge badge-admin">${u.role}</span><br><small>${u.email}</small></div>
+      <div style="display:flex; gap:6px;">
+        <button class="btn btn-outline btn-sm" onclick="S._targetUserId='${u.id}'; openModal('modal-add-user')">Change Rank</button>
+        <button class="btn btn-outline btn-sm btn-danger" onclick="archiveAssistant('${u.id}')">Archive</button>
+        <button class="btn btn-danger btn-sm" onclick="permanentlyDeleteUser('${u.id}')"><i class="fas fa-trash"></i> Permanently Delete</button>
+      </div>
+    </div>`).join('');
 }
-function showToast(m,t='info'){
-  const c=document.getElementById('toast-container');
-  const e=document.createElement('div'); e.className='toast '+t;
-  e.innerHTML=`<span>${m}</span>`; c.appendChild(e);
-  setTimeout(()=>e.remove(),4000);
-}
-
-// Preset Chatbot Interfacing Rules Engine
-function toggleLegalChatbotWindow(){
-  const w=document.getElementById('legal-chatbot');
-  w.style.display=w.style.display==='flex'?'none':'flex';
-}
-
-function fireChatbotQuery(){
-  const field=document.getElementById('chatbot-input-field');
-  const query=field.value.trim(); if(!query)return;
+</script>
+<script>
+// ════════════════════════════════════════════
+//  FINANCES — Isolated to Senior Advocate
+// ════════════════════════════════════════════
+async function renderFinances(){
+  if(!isAdmin()) return;
+  const {data}=await sb.from('payments').select('*');
+  S.finPayments=data||[];
   
-  const container=document.getElementById('chatbot-msg-container');
-  container.innerHTML+=`<div class="ai-bubble user">${query}</div>`;
-  field.value='';
-  
-  let reply="I have mapped your query rules onto our procedure index blocks. For standard litigation filings, please consult the filing timelines within the court deadline modules.";
-  if(query.toLowerCase().includes('hierarchy') || query.toLowerCase().includes('permissions')){
-    reply="Senior Advocates hold root permissions including full ledgers. Junior ranks inherit execution privileges excluding schema modifications.";
-  } else if(query.toLowerCase().includes('finance') || query.toLowerCase().includes('fee')){
-    reply="All practice financials are constrained under layer locks visible exclusively to Senior Advocates.";
+  let total=0; S.finPayments.forEach(p=>total+=Number(p.amount||0));
+  document.getElementById('fin-summary-cards').innerHTML=`
+    <div class="fin-summary-grid">
+      <div class="stat-card green"><div class="stat-label">Total Firm Collections</div><div class="stat-value">₹${total.toLocaleString('en-IN')}</div></div>
+    </div>`;
+
+  document.getElementById('fin-client-list').innerHTML=myClients().map(c=>{
+    const payments = S.finPayments.filter(p=>p.client_id===c.client_id);
+    const collected = payments.reduce((s,p)=>s+Number(p.amount||0),0);
+    return `
+      <div class="fin-client-row" onclick="this.classList.toggle('expanded')">
+        <div style="flex:1;"><b>${c.name}</b> <small>(${c.client_id})</small></div>
+        <div>Quoted: ₹${c.fee||0} | Collected: ₹${collected}</div>
+      </div>`;
+  }).join('');
+}
+
+async function renderPaymentsTab(clientId){
+  const {data}=await sb.from('payments').select('*').eq('client_id',clientId);
+  let html=`<button class="btn btn-gold btn-sm mb-3" onclick="openPaymentModal('${clientId}')">Record Payment Entry</button><div class="file-list">`;
+  (data||[]).forEach(p=>{
+    html+=`<div class="file-item"><span>₹${p.amount} received via ${p.method||'Cash'} on ${fmtD(p.payment_date)}</span></div>`;
+  });
+  html+=`</div>`;
+  document.getElementById('detail-payments-admin-view').innerHTML=html;
+}
+
+function openPaymentModal(clientId){
+  S.payingClientId=clientId; openModal('modal-payment');
+}
+async function savePayment(){
+  const amount=Number(document.getElementById('pay-amount').value);
+  await sb.from('payments').insert({client_id:S.payingClientId, amount, payment_date:document.getElementById('pay-date').value, method:document.getElementById('pay-method').value, recorded_by:S.user.id});
+  closeModal('modal-payment'); renderPaymentsTab(S.payingClientId);
+}
+</script>
+<script>
+// ════════════════════════════════════════════
+//  PRESET WORKFLOW CHATBOT (Draggable Widget)
+// ════════════════════════════════════════════
+function toggleAIWindow() {
+  const widget = document.getElementById('ai-chat-widget');
+  widget.style.display = widget.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function askPresetBot() {
+  const input = document.getElementById('ai-input-text');
+  const txt = input.value.trim(); if(!txt) return;
+  const box = document.getElementById('ai-msg-box');
+  box.innerHTML += `<div class="ai-bubble user">${escHtml(txt)}</div>`;
+  input.value = '';
+
+  let reply = "I process structured organizational parameters. For tier guidelines, prompt me about structural hierarchies or financial constraints.";
+  if (txt.toLowerCase().includes('hierarchy') || txt.toLowerCase().includes('permissions') || txt.toLowerCase().includes('advocate')) {
+    reply = "Senior Advocates retain full administrative authority. Subordinate legal ranks execute assignment tracking flow but remain blind to database schema adjustments and accounting parameters.";
+  } else if (txt.toLowerCase().includes('finance') || txt.toLowerCase().includes('ledger') || txt.toLowerCase().includes('fee')) {
+    reply = "Under strict practice parameters, structural billing logs, payment tracking systems, and excel books are cryptographically gated to Senior Advocates.";
   }
-  
-  setTimeout(()=>{
-    container.innerHTML+=`<div class="ai-bubble bot">${reply}</div>`;
-    container.scrollTop=container.scrollHeight;
-  },400);
+
+  setTimeout(() => {
+    box.innerHTML += `<div class="ai-bubble bot">${reply}</div>`;
+    box.scrollTop = box.scrollHeight;
+  }, 350);
 }
 
-// Draggable Handler Logic Injection
-const handle=document.getElementById('chatbot-drag-handle');
-const box=document.getElementById('legal-chatbot');
-let isDragging=false, px=0, py=0;
-handle.addEventListener('mousedown', e=>{ isDragging=true; px=e.clientX-box.offsetLeft; py=e.clientY-box.offsetTop; });
-document.addEventListener('mousemove', e=>{ if(isDragging){ box.style.left=(e.clientX-px)+'px'; box.style.top=(e.clientY-py)+'px'; box.style.bottom='auto'; box.style.right='auto'; } });
-document.addEventListener('mouseup', ()=>{ isDragging=false; });
+// Draggable System Rules Wireframe mapping
+const bar = document.getElementById('ai-drag-bar');
+const widget = document.getElementById('ai-chat-widget');
+let activeDrag = false, startX = 0, startY = 0;
 
-window.addEventListener('DOMContentLoaded',async ()=>{
-  if(!initSupabase())return;
-  const {data:{session}}=await sb.auth.getSession();
-  if(session){ await afterAuth(); }
-  else { document.getElementById('login-screen').style.display='flex'; }
+bar.addEventListener('mousedown', e => { activeDrag = true; startX = e.clientX - widget.offsetLeft; startY = e.clientY - widget.offsetTop; });
+document.addEventListener('mousemove', e => { if(activeDrag) { widget.style.left = (e.clientX - startX) + 'px'; widget.style.top = (e.clientY - startY) + 'px'; widget.style.bottom = 'auto'; widget.style.right = 'auto'; } });
+document.addEventListener('mouseup', () => activeDrag = false);
+
+</script>
+<script>
+function shiftPlannerMonth(d){}
+function goToToday(){}
+function renderPlanner(){}
+function loadNotes(){}
+function renderNotes(){}
+function openNoteEditor(){}
+function saveNote(){}
+function addNoteShare(){}
+function loadActivityLog(){}
+function loadDeadlineRules(){}
+function renderDeadlineRulesPage(){}
+function openTemplateModal(){}
+function saveTemplate(){}
+function renderTemplates(){}
+function previewTemplate(){}
+function copyTemplateText(){}
+function downloadTemplateText(){}
+function exportExcel(){}
+function loadSettingsUI(){}
+function saveProfile(){}
+function saveOneDriveClientId(){}
+function connectOneDrive(){}
+function disconnectOneDrive(){}
+function checkMigrationStatus(){}
+function generateInvoice(id){}
+function generatePortalLink(id){}
+function portalLogin(){}
+function copyPortalLink(){}
+function openDeadlineRuleModal(){}
+function saveDeadlineRule(){}
+function handleFileSelect(e){}
+function handleFileDrop(e){}
+function renderTasks(){}
+function openTaskModal(){}
+function saveTask(){}
+function renderChatContacts(){}
+function loadMessages(){}
+function renderChatMessages(){}
+function markConversationRead(p){}
+function sendChatMessage(){}
+function handleChatFileSelect(e){}
+function clearChatPendingFile(){}
+function initials(n){ return n ? n.split(' ').map(x=>x[0]).join('').toUpperCase() : ''; }
+function escHtml(s){ return s ? String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) : ''; }
+function catBadge(c){ return `<span class="badge badge-general">${c}</span>`; }
+function statusBadge(s){ return `<span class="badge badge-active">${s}</span>`; }
+function fmtD(d){ return d||'—'; }
+function updateSyncStatus(s,t){}
+function loadLastSeenState(){}
+async function checkForNewItems(){}
+function startPolling(){}
+async function loadInvoiceSettings(){}
+
+window.addEventListener('DOMContentLoaded', async () => {
+  if (!initSupabase()) return;
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) await afterAuth();
+  else document.getElementById('login-screen').style.display = 'flex';
 });
 </script>
 </body>
