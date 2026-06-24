@@ -44,7 +44,7 @@ button,input,select,textarea{font-family:var(--font)}
 .nav-item i{width:18px;font-size:15px;text-align:center;flex-shrink:0}
 .nav-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px}
 .sidebar-footer{padding:12px;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0}
-.user-card{display:flex;align-items:center;gap:10px;padding:8px}
+.user-card{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px}
 .user-avatar{width:34px;height:34px;border-radius:50%;background:var(--navy-mid);border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:13px;font-weight:600;flex-shrink:0}
 .user-name{font-size:13px;font-weight:500;color:rgba(255,255,255,.85);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .user-role{font-size:11px;color:rgba(255,255,255,.4)}
@@ -96,6 +96,7 @@ button,input,select,textarea{font-family:var(--font)}
 .form-grid{display:grid;gap:14px}
 .form-grid-2{grid-template-columns:1fr 1fr}.form-grid-3{grid-template-columns:1fr 1fr 1fr}
 .form-group{display:flex;flex-direction:column;gap:5px;min-width:0}
+.form-grid-item-span{grid-column:1/-1}
 .form-label{font-size:12.5px;font-weight:500;color:var(--text-secondary)}
 .form-label .required{color:var(--danger);margin-left:2px}
 .form-control{padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;color:var(--text-primary);background:var(--bg-card);transition:border-color .15s,box-shadow .15s;width:100%}
@@ -247,6 +248,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .payment-row-meta{font-size:11.5px;color:var(--text-muted)}
 @media(max-width:480px){.fee-summary-grid{grid-template-columns:1fr}}
 
+/* ── Sidebar custom scrollbar ── */
 #sidebar{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}
 #sidebar::-webkit-scrollbar{width:4px}
 #sidebar::-webkit-scrollbar-track{background:transparent}
@@ -272,7 +274,8 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .cal-date{font-size:12px;font-weight:600;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:50%;margin-bottom:3px}
 .cal-cell.today .cal-date{background:var(--navy);color:var(--gold)}
 .cal-dots{display:flex;flex-wrap:wrap;gap:2px;margin-top:2px}
-.cal-dot.task{background:#805ad5}.cal-dot.deadline{background:#f56565}.cal-dot.hearing{background:#4299e1}.cal-dot.event{background:var(--gold)}
+.cal-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.cal-dot.task{background:#805ad5}.cal-dot.deadline{background:#f56565}.cal-dot.hearing覆{background:#4299e1}.cal-dot.event{background:var(--gold)}
 .cal-event-pill{font-size:10px;padding:1px 5px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:block;margin-top:2px;line-height:1.4}
 .cal-event-pill.task-pill{background:#e9d8fd;color:#553c9a}
 .cal-event-pill.deadline-pill{background:#fed7d7;color:#9b2c2c}
@@ -286,20 +289,20 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .cal-detail-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
 
 /* ── Finances ── */
-.fin-summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;width:100%;}
+.fin-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:24px;width:100%;}
 .fin-summary-grid .stat-card{width:100%;min-height:110px;display:flex;flex-direction:column;justify-content:center;}
 .fin-summary-grid .stat-value{font-size:22px;}
 .finances-summary{display:block;width:100%;}
 .fin-summary-grid .stat-card{width:100%;min-width:0;min-height:100px;box-sizing:border-box;}
 #fin-summary-cards{width:100%;display:block;}
+.finances-summary{width:100%;display:block;}
 .fin-client-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border-light);cursor:pointer;transition:background .12s;}
 .fin-client-row:hover{background:#f7f8ff}.fin-client-row.expanded{background:#edf2ff;border-left:3px solid var(--navy);}
 .fin-progress-wrap{flex:1;min-width:80px}
 .fin-progress-label{font-size:11px;color:var(--text-muted);margin-bottom:3px;display:flex;justify-content:space-between}
 .fin-ledger{background:var(--bg);padding:14px 20px 14px 48px;border-bottom:1px solid var(--border-light);border-left:3px solid var(--navy);}
-/* Remove padding on fin-client-list so rows span edge-to-edge */
 #fin-client-list{padding:0 !important;}
-.fin-ledger-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:12.5px;border-bottom:1px solid var(--border-light)}
+.fin-ledger-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:12.5px;border-bottom:1px solid var(--border-light);flex-wrap:wrap;}
 .fin-ledger-row:last-child{border-bottom:none}
 .fin-badge-paid{background:var(--success-bg);color:var(--success);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;white-space:nowrap}
 .fin-badge-partial{background:var(--warning-bg);color:var(--warning);font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;white-space:nowrap}
@@ -326,7 +329,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .field-builder-item .field-label-input{flex:1;min-width:100px;border:none;background:transparent;font-size:13.5px;color:var(--text-primary);padding:4px}
 .field-builder-item .field-label-input:focus{outline:none}
 
-/* ── Setup / Login (mobile-first) ── */
+/* ── Setup / Login ── */
 #setup-screen,#login-screen{position:fixed;inset:0;background:var(--navy);z-index:999;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
 .setup-card,.login-card{background:var(--bg-card);border-radius:16px;padding:28px 24px;width:100%;max-width:420px;box-shadow:0 30px 80px rgba(0,0,0,.4);margin:auto}
 .setup-logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px}
@@ -334,6 +337,17 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .setup-steps{display:flex;gap:8px;margin-bottom:22px}
 .setup-step{height:4px;border-radius:2px;flex:1;background:var(--border);transition:background .3s}
 .setup-step.done{background:var(--gold)}.setup-step.active{background:var(--navy)}
+
+/* ── Floating Preset Assistant ── */
+.ai-toggle-btn{position:fixed;bottom:24px;right:24px;width:50px;height:50px;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:var(--shadow-md);z-index:9998;transition:transform 0.15s;}
+.ai-toggle-btn:hover{transform:scale(1.05);}
+.ai-chatbot-window{position:fixed;bottom:85px;right:24px;width:340px;height:450px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-md);z-index:9999;display:none;flex-direction:column;overflow:hidden;animation:modal-in 0.2s ease;}
+.ai-chatbot-header{background:var(--navy);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:between;cursor:move;}
+.ai-chatbot-messages{flex:1;padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;background:#f8fafc;}
+.ai-bubble{padding:8px 12px;border-radius:10px;font-size:12.5px;max-width:85%;line-height:1.4;}
+.ai-bubble.bot{background:#e2e8f0;color:var(--text-primary);align-self:flex-start;border-top-left-radius:2px;}
+.ai-bubble.user{background:var(--gold);color:var(--navy);align-self:flex-end;border-top-right-radius:2px;font-weight:500;}
+.ai-chatbot-input{display:flex;padding:10px;border-top:1px solid var(--border);background:var(--bg-card);gap:6px;}
 
 /* ── Users mgmt ── */
 .user-list-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;flex-wrap:wrap}
@@ -371,10 +385,9 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .chat-msg-controls{opacity:0;transition:opacity .15s;display:inline-flex;align-items:center;}
 .chat-msg:hover .chat-msg-controls{opacity:1}
 .chat-msg-controls i:hover{opacity:1!important;transform:scale(1.1)}
-/* Read receipt indicators on sent messages */
 .msg-receipt{display:inline-flex;align-items:center;margin-left:4px;font-size:9px;}
-.msg-receipt.delivered{opacity:.5;}   /* single tick — delivered, not yet seen */
-.msg-receipt.seen{opacity:1;color:var(--gold-light);}  /* eye icon — seen by recipient */
+.msg-receipt.delivered{opacity:.5;}
+.msg-receipt.seen{opacity:1;color:var(--gold-light);}
 .chat-msg.mine .msg-receipt.seen i{color:var(--gold-light);}
 .chat-msg.mine .msg-receipt.delivered i{color:rgba(255,255,255,.7);}
 .chat-msg-attach{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);padding:6px 10px;border-radius:8px;margin-top:6px;font-size:12px;cursor:pointer}
@@ -383,17 +396,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .chat-input-bar input[type=text]{flex:1;border:1px solid var(--border);border-radius:20px;padding:9px 16px;font-size:13.5px;outline:none}
 .chat-attach-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--bg);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .chat-send-btn{width:36px;height:36px;border-radius:50%;border:none;background:var(--navy);color:var(--gold);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-
-/* ── AI Chatbot Window Styles ── */
-.ai-chatbot-window{position:fixed;bottom:85px;right:24px;width:340px;height:450px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-md);z-index:9999;display:none;flex-direction:column;overflow:hidden;animation:modal-in 0.2s ease;}
-.ai-chatbot-header{background:var(--navy);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:move;}
-.ai-chatbot-messages{flex:1;padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;background:#f8fafc;}
-.ai-bubble{padding:8px 12px;border-radius:10px;font-size:12.5px;max-width:85%;line-height:1.4;}
-.ai-bubble.bot{background:#e2e8f0;color:var(--text-primary);align-self:flex-start;border-top-left-radius:2px;}
-.ai-bubble.user{background:var(--gold);color:var(--navy);align-self:flex-end;border-top-right-radius:2px;font-weight:500;}
-.ai-chatbot-input{display:flex;padding:10px;border-top:1px solid var(--border);background:var(--bg-card);gap:6px;}
-.ai-toggle-btn{position:fixed;bottom:24px;right:24px;width:50px;height:50px;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:var(--shadow-md);z-index:9998;transition:transform 0.15s;}
-.ai-toggle-btn:hover{transform:scale(1.05);}
 
 /* ── Tasks ── */
 .task-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;border-left:4px solid var(--border)}
@@ -406,10 +408,12 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .kanban-col{background:var(--bg);border-radius:10px;padding:12px;min-height:200px;min-width:0}
 .kanban-col-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+
 /* ── File preview modal ── */
 .preview-body{display:flex;align-items:center;justify-content:center;min-height:200px;max-height:70vh;overflow:auto;background:#f0f1f5;border-radius:8px}
 .preview-body img{max-width:100%;max-height:68vh;object-fit:contain}
 .preview-body iframe{width:100%;height:68vh;border:none}
+
 /* ── Responsive ── */
 @media(max-width:1024px){.dash-grid{grid-template-columns:1fr}.kanban{grid-template-columns:repeat(2,1fr)!important}}
 @media(max-width:768px){
@@ -444,7 +448,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 </head>
 <body>
 
-<!-- ══ SETUP (first admin) ══ -->
 <div id="setup-screen">
   <div class="setup-card">
     <div class="setup-logo">Lex<span>Desk</span></div>
@@ -464,7 +467,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- ══ LOGIN / SIGNUP ══ -->
 <div id="login-screen" style="display:none;">
   <div class="login-card">
     <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px;">Lex<span style="color:var(--gold);">Desk</span></div>
@@ -478,7 +480,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="li-email" type="email" onkeydown="if(event.key==='Enter')doSignIn()"/></div>
         <div class="form-group"><label class="form-label">Password</label><input class="form-control" id="li-pwd" type="password" onkeydown="if(event.key==='Enter')doSignIn()"/></div>
       </div>
-      <div style="text-align:right;margin-top:6px;"><span style="font-size:12px;color:var(--navy-mid);cursor:pointer;text-decoration:underline;" onclick="toggleForgotView(true)">Forgot Password?</span></div>
+      <div style="text-align:right;margin-top:6px;"><span style="font-size:12px;color:var(--navy-mid);cursor:pointer;text-decoration:underline;" onclick="toggleForgotPasswordView(true)">Forgot Password?</span></div>
       <p id="li-err" style="color:var(--danger);font-size:12px;margin-top:8px;display:none;"></p>
       <button class="btn btn-gold w-full mt-4" style="justify-content:center;font-size:15px;padding:12px;" onclick="doSignIn()"><i class="fas fa-sign-in-alt"></i> Sign In</button>
     </div>
@@ -489,25 +491,23 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <div class="form-group"><label class="form-label">Full Name <span class="required">*</span></label><input class="form-control" id="su-name" type="text"/></div>
         <div class="form-group"><label class="form-label">Email <span class="required">*</span></label><input class="form-control" id="su-email" type="email"/></div>
         <div class="form-group"><label class="form-label">Password <span class="required">*</span></label><input class="form-control" id="su-pwd" type="password" placeholder="Min. 8 characters"/></div>
-        <div class="form-group" id="su-code-wrap"><label class="form-label">Signup Code</label><input class="form-control" id="su-code" type="text" placeholder="Ask admin for this code"/></div>
+        <div class="form-group" id="su-code-wrap"><label class="form-label">Signup Code</label><input class="form-control" id="su-code" type="text" placeholder="Leave blank if first user"/></div>
       </div>
       <p id="su-err" style="color:var(--danger);font-size:12px;margin-top:8px;display:none;"></p>
       <button class="btn btn-gold w-full mt-4" style="justify-content:center;font-size:15px;padding:12px;" onclick="doSignUp()"><i class="fas fa-user-plus"></i> Create Account</button>
     </div>
 
     <div id="auth-forgot" style="display:none;">
-      <div class="form-grid" style="gap:13px;">
-        <div class="form-group"><label class="form-label">Enter Account Email</label><input class="form-control" id="fp-email" type="email"/></div>
-      </div>
+      <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px;">Enter your system identifier email to receive an explicit reset path context.</p>
+      <div class="form-group"><label class="form-label">Account Email</label><input class="form-control" id="fp-email" type="email"/></div>
+      <p id="fp-msg" style="color:var(--success);font-size:12px;margin-top:8px;display:none;"></p>
       <p id="fp-err" style="color:var(--danger);font-size:12px;margin-top:8px;display:none;"></p>
-      <p id="fp-success" style="color:var(--success);font-size:12px;margin-top:8px;display:none;"></p>
-      <button class="btn btn-gold w-full mt-4" style="justify-content:center;" onclick="doForgotPassword()"><i class="fas fa-envelope"></i> Send Reset Link</button>
-      <div style="text-align:center;margin-top:12px;"><span style="font-size:12px;color:var(--text-secondary);cursor:pointer;" onclick="toggleForgotView(false)">Back to Sign In</span></div>
+      <button class="btn btn-primary w-full mt-4" style="justify-content:center;" onclick="executePasswordRecovery()">Send Recovery Email</button>
+      <div style="text-align:center;margin-top:12px;"><span style="font-size:12px;color:var(--text-secondary);cursor:pointer;" onclick="toggleForgotPasswordView(false)">Back to Sign In</span></div>
     </div>
   </div>
 </div>
 
-<!-- ══ PENDING APPROVAL SCREEN ══ -->
 <div id="pending-screen" style="display:none;position:fixed;inset:0;background:var(--navy);z-index:997;align-items:center;justify-content:center;padding:20px;">
   <div class="login-card" style="text-align:center;">
     <div style="width:60px;height:60px;border-radius:50%;background:var(--warning-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:#d69e2e;"><i class="fas fa-clock"></i></div>
@@ -517,10 +517,9 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- ══ CLIENT PORTAL LOGIN ══ -->
 <div id="portal-screen" style="display:none;position:fixed;inset:0;background:var(--navy);z-index:998;align-items:center;justify-content:center;padding:16px;">
   <div class="login-card">
-    <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px;">Lex<span>Desk</span></div>
+    <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px;">Lex<span style="color:var(--gold);">Desk</span></div>
     <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">Client Portal — Enter your 4-digit PIN to view your case details.</p>
     <div class="form-group" style="margin-bottom:14px;">
       <label class="form-label">Your PIN</label>
@@ -531,10 +530,8 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- ══ CLIENT PORTAL VIEW ══ -->
 <div id="portal-view" style="display:none;min-height:100vh;background:var(--bg);overflow-y:auto;"></div>
 
-<!-- ══ MAIN APP ══ -->
 <div id="app" style="display:none;">
   <button id="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
   <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
@@ -567,7 +564,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     </header>
     <div id="page">
 
-      <!-- DASHBOARD -->
       <div class="page-view active" id="view-dashboard">
         <div class="stats-grid" id="stats-grid"></div>
         <div class="dash-grid">
@@ -590,7 +586,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- CLIENTS -->
       <div class="page-view" id="view-clients">
         <div class="search-bar">
           <div class="search-input-wrap"><i class="fas fa-search"></i><input class="search-input" id="client-search" type="text" placeholder="Search by name, ID…" oninput="renderClientTable()"/></div>
@@ -605,7 +600,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- DEADLINES -->
       <div class="page-view" id="view-deadlines">
         <div class="stats-grid" style="margin-bottom:24px;">
           <div class="stat-card red"><div class="stat-label">Overdue</div><div class="stat-value" id="dl-overdue">0</div><i class="fas fa-exclamation-circle stat-icon"></i></div>
@@ -614,11 +608,9 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
         <div id="deadlines-list"></div>
       </div>
-
-      <!-- DAILY PLANNER (monthly grid + day detail panel) -->
+      
       <div class="page-view" id="view-planner">
         <div class="cal-layout">
-          <!-- Left: monthly calendar -->
           <div class="cal-grid-wrap">
             <div class="cal-nav">
               <button class="btn btn-outline btn-icon" onclick="shiftPlannerMonth(-1)"><i class="fas fa-chevron-left"></i></button>
@@ -642,7 +634,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
               <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-right:4px;"></span>Event/Note</span>
             </div>
           </div>
-          <!-- Right: selected day detail -->
           <div class="cal-detail-panel" id="planner-day-detail">
             <div class="cal-detail-date" id="planner-day-label">Select a day</div>
             <div id="planner-day-panel"></div>
@@ -660,7 +651,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- NOTES -->
       <div class="page-view" id="view-notes">
         <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
           <button class="btn btn-gold" onclick="openNoteEditor()"><i class="fas fa-plus"></i> New Note</button>
@@ -669,7 +659,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <div id="notes-empty" class="empty-state" style="display:none;"><i class="fas fa-sticky-note"></i><div class="empty-state-title">No notes yet</div><div class="empty-state-desc">Create private notes and share them with your team</div></div>
       </div>
 
-      <!-- ACTIVITY LOG -->
       <div class="page-view" id="view-activity">
         <div class="card">
           <div class="card-header"><span class="card-title"><i class="fas fa-history" style="color:var(--gold)"></i> Activity Log</span><button class="btn btn-outline btn-sm" onclick="loadActivityLog()"><i class="fas fa-sync-alt"></i> Refresh</button></div>
@@ -677,7 +666,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- DEADLINE RULES -->
       <div class="page-view" id="view-deadline-rules">
         <div class="card mb-4">
           <div class="card-header">
@@ -689,9 +677,8 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <div id="deadline-rules-list"></div>
       </div>
 
-      <!-- FINANCES (Enforced Access Restrictions View) -->
       <div class="page-view" id="view-finances">
-        <div id="finance-admin-content" style="display:none;">
+        <div id="finances-secure-panel" style="display:none;">
           <div class="finances-summary" id="fin-summary-cards"></div>
           <div class="card">
             <div class="card-header">
@@ -709,14 +696,13 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
             <div class="card-body" id="fin-client-list"></div>
           </div>
         </div>
-        <div id="finance-restriction-msg" class="card empty-state" style="display:none; padding: 40px 20px;">
-          <i class="fas fa-lock" style="font-size: 40px; color: var(--danger); margin-bottom: 12px;"></i>
-          <div class="empty-state-title">Access Restricted</div>
-          <div class="empty-state-desc">Financial statements and accounting logs are only accessible under Senior Advocate (Admin) authorization.</div>
+        <div id="finances-denied-panel" class="card empty-state" style="display:block; padding:40px 20px;">
+          <i class="fas fa-lock" style="font-size:42px; color:var(--danger); margin-bottom:12px;"></i>
+          <div class="empty-state-title">Access Restrictions Active</div>
+          <p class="empty-state-desc">Financial analytics, collection summaries, and running fee books are restricted to Senior Advocate (Admin) accounts.</p>
         </div>
       </div>
 
-      <!-- DOCUMENTS -->
       <div class="page-view" id="view-documents">
         <div class="search-bar">
           <div class="search-input-wrap"><i class="fas fa-search"></i><input class="search-input" id="doc-search" type="text" placeholder="Search documents…" oninput="renderDocuments()"/></div>
@@ -729,7 +715,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- TEMPLATES -->
       <div class="page-view" id="view-templates">
         <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
           <button class="btn btn-gold" onclick="openTemplateModal()"><i class="fas fa-plus"></i> New Template</button>
@@ -738,7 +723,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <div id="templates-empty" class="empty-state" style="display:none;"><i class="fas fa-file-alt"></i><div class="empty-state-title">No templates yet</div><div class="empty-state-desc">Create reusable drafts — visible to your whole team</div></div>
       </div>
 
-      <!-- CHAT -->
       <div class="page-view" id="view-chat">
         <div class="chat-layout">
           <div class="chat-sidebar" id="chat-contact-list"></div>
@@ -759,7 +743,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- TASKS -->
       <div class="page-view" id="view-tasks">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
           <div class="search-bar" style="margin-bottom:0;flex:1;">
@@ -776,19 +759,18 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- USERS (admin only) -->
       <div class="page-view" id="view-users">
-        <!-- Hierarchy Settings Manager Block -->
         <div class="card mb-4">
-          <div class="card-header"><span class="card-title"><i class="fas fa-sitemap"></i> Organization Hierarchy & Authorization Grid</span></div>
+          <div class="card-header"><span class="card-title"><i class="fas fa-sitemap"></i> Organization Hierarchy & Permissions Manager</span></div>
           <div class="card-body">
-            <p class="text-sm text-muted mb-3">Senior Advocate specifies the exact parameters of active titles and assigns respective permission rights.</p>
+            <p class="text-sm text-muted mb-3">Define the firm structure permissions layout. Senior Advocates can adjust visibility maps across organization levels.</p>
             <div class="table-wrap">
               <table class="data-table">
                 <thead>
-                  <tr><th>Designation Level</th><th>Order Authority</th><th>Has Ledger Access</th><th>Can Configure Organization</th></tr>
+                  <tr><th>Designation Role</th><th>Workflow Assignment</th><th>Financial Ledgers</th><th>Schema Management</th></tr>
                 </thead>
-                <tbody id="hierarchy-matrix-tbody"></tbody>
+                <tbody id="hierarchy-matrix-tbody">
+                  </tbody>
               </table>
             </div>
           </div>
@@ -817,7 +799,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- FORM BUILDER (admin only) -->
       <div class="page-view" id="view-formbuilder">
         <div class="card mb-4">
           <div class="card-header">
@@ -843,10 +824,8 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         </div>
       </div>
 
-      <!-- SETTINGS -->
       <div class="page-view" id="view-settings">
         <div class="settings-wrap">
-
           <div class="settings-section">
             <div class="settings-section-head"><i class="fas fa-user-circle"></i><span>Profile</span></div>
             <div class="settings-section-body">
@@ -868,11 +847,11 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
               <div class="form-grid form-grid-2" style="gap:13px;margin-bottom:14px;">
                 <div class="form-group"><label class="form-label">Firm Name</label><input class="form-control" id="inv-firm-name" type="text" placeholder="Your Law Firm"/></div>
                 <div class="form-group"><label class="form-label">Invoice Prefix</label><input class="form-control" id="inv-prefix" type="text" placeholder="INV" style="max-width:100px;"/></div>
-                <div class="form-group" style="grid-column:1/-1;"><label class="form-label">Firm Address</label><input class="form-control" id="inv-firm-address" type="text" placeholder="Full address for invoices"/></div>
+                <div class="form-group class=form-grid-item-span"><label class="form-label">Firm Address</label><input class="form-control" id="inv-firm-address" type="text" placeholder="Full address for invoices"/></div>
                 <div class="form-group"><label class="form-label">Phone</label><input class="form-control" id="inv-firm-phone" type="tel"/></div>
                 <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="inv-firm-email" type="email"/></div>
                 <div class="form-group"><label class="form-label">Bar Number</label><input class="form-control" id="inv-bar-number" type="text"/></div>
-                <div class="form-group" style="grid-column:1/-1;"><label class="form-label">Invoice Footer Text</label><input class="form-control" id="inv-footer" type="text" placeholder="Thank you for your trust."/></div>
+                <div class="form-group class=form-grid-item-span"><label class="form-label">Invoice Footer Text</label><input class="form-control" id="inv-footer" type="text" placeholder="Thank you for your trust."/></div>
               </div>
               <button class="btn btn-primary w-full" style="justify-content:center;" onclick="saveInvoiceSettings()"><i class="fas fa-save"></i> Save Invoice Settings</button>
             </div>
@@ -919,16 +898,10 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
               </div>
             </div>
           </div>
-
         </div>
       </div>
 
-    </div><!-- /page -->
-  </div><!-- /main -->
-</div><!-- /app -->
-
-<!-- CLIENT DETAIL MODAL -->
-<div class="modal-backdrop" id="modal-detail">
+    </div></div></div><div class="modal-backdrop" id="modal-detail">
   <div class="modal" style="max-width:820px;">
     <div class="modal-header">
       <div><div class="modal-title" id="det-title">Client</div><div class="modal-sub" id="det-sub"></div></div>
@@ -950,8 +923,8 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
       <div class="tab-panel active" id="tab-overview"></div>
       <div class="tab-panel" id="tab-case-details"></div>
       <div class="tab-panel" id="tab-payments">
-        <div id="detail-payments-admin-view" style="display:none;"></div>
-        <div id="detail-payments-restricted-view" class="text-muted"><i class="fas fa-lock"></i> Financial matrix visibility limits active.</div>
+        <div id="detail-payments-secure-view" style="display:none;"></div>
+        <div id="detail-payments-denied-view" class="text-muted"><i class="fas fa-lock"></i> Financial ledger receipts are isolated to Senior Advocate clearance groups.</div>
       </div>
       <div class="tab-panel" id="tab-documents"></div>
       <div class="tab-panel" id="tab-deadlines"></div>
@@ -959,14 +932,13 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     </div>
     <div class="modal-footer">
       <button class="btn btn-danger btn-sm" id="det-delete-btn" onclick="deleteCurrentClient()"><i class="fas fa-trash"></i> Delete</button>
-      <button class="btn btn-outline btn-sm" id="det-invoice-btn" onclick="generateInvoice(S.detailClientId)" title="Generate PDF Invoice"><i class="fas fa-file-invoice"></i> Invoice</button>
+      <button class="btn btn-outline btn-sm" onclick="generateInvoice(S.detailClientId)" title="Generate PDF Invoice"><i class="fas fa-file-invoice"></i> Invoice</button>
       <button class="btn btn-outline btn-sm" id="det-portal-btn" onclick="generatePortalLink(S.detailClientId)" title="Generate Client Portal Link"><i class="fas fa-link"></i> Portal Link</button>
       <button class="btn btn-outline" onclick="closeModal('modal-detail')">Close</button>
     </div>
   </div>
 </div>
 
-<!-- ADD/EDIT CLIENT MODAL -->
 <div class="modal-backdrop" id="modal-client">
   <div class="modal" style="max-width:760px;">
     <div class="modal-header">
@@ -997,7 +969,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <div class="form-group"><label class="form-label">Client ID</label><input class="form-control" id="f-id" type="text" disabled/></div>
         <div class="form-group"><label class="form-label">Phone</label><input class="form-control" id="f-phone" type="tel"/></div>
         <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="f-email" type="email"/></div>
-        <div class="form-group" style="grid-column:1/-1;"><label class="form-label">Address</label><input class="form-control" id="f-address" type="text"/></div>
+        <div class="form-group class=form-grid-item-span"><label class="form-label">Address</label><input class="form-control" id="f-address" type="text"/></div>
         <div class="form-group"><label class="form-label">Status</label><select class="form-control" id="f-status"><option value="active">Active</option><option value="pending">Pending</option><option value="closed">Closed</option></select></div>
         <div class="form-group"><label class="form-label">Total Fee Quoted (₹)</label><input class="form-control" id="f-fee" type="number"/></div>
         <div class="form-group" id="f-assignee-wrap"><label class="form-label">Assigned Lawyer</label><select class="form-control" id="f-assignee"></select></div>
@@ -1020,7 +992,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- FILE PREVIEW MODAL -->
 <div class="modal-backdrop" id="modal-preview">
   <div class="modal" style="max-width:760px;">
     <div class="modal-header">
@@ -1037,7 +1008,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- NOTE EDITOR MODAL -->
 <div class="modal-backdrop" id="modal-note">
   <div class="modal" style="max-width:780px;">
     <div class="modal-header">
@@ -1069,7 +1039,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- NOTE SHARE MODAL -->
 <div class="modal-backdrop" id="modal-note-share">
   <div class="modal" style="max-width:480px;">
     <div class="modal-header">
@@ -1099,7 +1068,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- RECORD PAYMENT MODAL -->
 <div class="modal-backdrop" id="modal-payment">
   <div class="modal" style="max-width:440px;">
     <div class="modal-header"><div><div class="modal-title">Record Payment</div><div class="modal-sub" id="pay-client-name"></div></div><button class="modal-close" onclick="closeModal('modal-payment')">&times;</button></div>
@@ -1118,18 +1086,17 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- ADD/EDIT USER MODAL -->
 <div class="modal-backdrop" id="modal-add-user">
   <div class="modal" style="max-width:480px;">
     <div class="modal-header">
-      <div><div class="modal-title" id="au-title">Assign Role Designation</div></div>
+      <div><div class="modal-title" id="au-title">Assign Organization Designation</div></div>
       <button class="modal-close" onclick="closeModal('modal-add-user')">&times;</button>
     </div>
     <div class="modal-body">
       <div class="form-grid" style="gap:13px;">
         <div class="form-group"><label class="form-label">Name</label><input class="form-control" id="au-name" type="text" disabled/></div>
         <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="au-email" type="email" disabled/></div>
-        <div class="form-group"><label class="form-label">Designation Role</label>
+        <div class="form-group"><label class="form-label">Structural Hierarchy Role</label>
           <select class="form-control" id="au-role">
             <option value="Senior Advocate">Senior Advocate</option>
             <option value="Junior Advocate">Junior Advocate</option>
@@ -1147,7 +1114,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- TEMPLATE MODAL -->
 <div class="modal-backdrop" id="modal-template">
   <div class="modal" style="max-width:700px;">
     <div class="modal-header">
@@ -1179,7 +1145,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- TEMPLATE USE MODAL -->
 <div class="modal-backdrop" id="modal-use-template">
   <div class="modal" style="max-width:700px;">
     <div class="modal-header">
@@ -1199,7 +1164,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- NEW CATEGORY MODAL -->
 <div class="modal-backdrop" id="modal-new-cat">
   <div class="modal" style="max-width:480px;">
     <div class="modal-header"><div><div class="modal-title">New Case Category</div></div><button class="modal-close" onclick="closeModal('modal-new-cat')">&times;</button></div>
@@ -1214,7 +1178,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- TASK MODAL -->
 <div class="modal-backdrop" id="modal-task">
   <div class="modal" style="max-width:560px;">
     <div class="modal-header"><div><div class="modal-title" id="task-modal-title">New Task</div></div><button class="modal-close" onclick="closeModal('modal-task')">&times;</button></div>
@@ -1249,7 +1212,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- PORTAL LINK MODAL -->
 <div class="modal-backdrop" id="modal-portal-link">
   <div class="modal" style="max-width:520px;">
     <div class="modal-header"><div><div class="modal-title">Client Portal Link</div><div class="modal-sub">Share the link and PIN separately for security</div></div><button class="modal-close" onclick="closeModal('modal-portal-link')">&times;</button></div>
@@ -1278,7 +1240,6 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- DEADLINE RULE MODAL -->
 <div class="modal-backdrop" id="modal-deadline-rule">
   <div class="modal" style="max-width:560px;">
     <div class="modal-header"><div><div class="modal-title" id="dr-modal-title">New Deadline Rule</div></div><button class="modal-close" onclick="closeModal('modal-deadline-rule')">&times;</button></div>
@@ -1290,7 +1251,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <div class="form-group"><label class="form-label">Trigger Field ID</label><input class="form-control" id="dr-trigger" type="text" placeholder="e.g. created_at, nextHearing, incidentDate"/></div>
         <div class="form-group"><label class="form-label">Days</label><input class="form-control" id="dr-days" type="number" min="1" value="30"/></div>
         <div class="form-group"><label class="form-label">Direction</label><select class="form-control" id="dr-direction"><option value="after">After trigger date</option><option value="before">Before trigger date</option></select></div>
-        <div class="form-group" style="grid-column:1/-1;"><label class="form-label">Description</label><input class="form-control" id="dr-description" type="text" placeholder="Brief explanation of this rule"/></div>
+        <div class="form-group class=form-grid-item-span"><label class="form-label">Description</label><input class="form-control" id="dr-description" type="text" placeholder="Brief explanation of this rule"/></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -1300,18 +1261,17 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
   </div>
 </div>
 
-<!-- FLOATING DRAGGABLE AI ASSISTANT -->
-<div class="ai-toggle-btn" onclick="toggleAIWindow()"><i class="fas fa-gavel"></i></div>
+<div class="ai-toggle-btn" onclick="toggleAIWindow()"><i class="fas fa-robot"></i></div>
 <div class="ai-chatbot-window" id="ai-chat-widget">
   <div class="ai-chatbot-header" id="ai-drag-bar">
-    <span><i class="fas fa-robot"></i> LexDesk AI Assistant</span>
+    <span><i class="fas fa-gavel"></i> LexDesk Workspace Assistant</span>
     <i class="fas fa-times" style="cursor:pointer;" onclick="toggleAIWindow()"></i>
   </div>
   <div class="ai-chatbot-messages" id="ai-msg-box">
-    <div class="ai-bubble bot">Hello! I am your preset legal practice chatbot. Ask me about system tiers, practice restrictions, or billing guidelines.</div>
+    <div class="ai-bubble bot">Hello! I am your live practice context mapping helper. Ask me about clients, open tasks, roles, or running firm collection totals.</div>
   </div>
   <div class="ai-chatbot-input">
-    <input type="text" class="form-control" id="ai-input-text" placeholder="Type a workflow query..." onkeydown="if(event.key==='Enter')askPresetBot()"/>
+    <input type="text" class="form-control" id="ai-input-text" placeholder="Ask about practice metrics..." onkeydown="if(event.key==='Enter')askPresetBot()"/>
     <button class="btn btn-gold btn-icon" onclick="askPresetBot()"><i class="fas fa-paper-plane"></i></button>
   </div>
 </div>
@@ -1372,10 +1332,10 @@ let S={
   _editingTemplateVars:[],
   _portalToken:null, portalData:null,
   hierarchyPermissions: [
-    { designation: 'Senior Advocate', manage_hierarchy: true, view_finances: true },
-    { designation: 'Junior Advocate', manage_hierarchy: false, view_finances: false },
-    { designation: 'Senior Assistant Advocate', manage_hierarchy: false, view_finances: false },
-    { designation: 'Junior Assistant Advocate', manage_hierarchy: false, view_finances: false }
+    { role: 'Senior Advocate', manage_users: true, view_ledgers: true },
+    { role: 'Junior Advocate', manage_users: false, view_ledgers: false },
+    { role: 'Senior Assistant Advocate', manage_users: false, view_ledgers: false },
+    { role: 'Junior Assistant Advocate', manage_users: false, view_ledgers: false }
   ]
 };
 
@@ -1394,22 +1354,21 @@ function showAuthTab(tab){
   document.getElementById('tab-signup').style.color=tab==='signup'?'#fff':'';
 }
 
-function toggleForgotView(show) {
+function toggleForgotPasswordView(show) {
   document.getElementById('auth-signin').style.display = show ? 'none' : 'block';
   document.getElementById('auth-signup').style.display = 'none';
   document.getElementById('auth-forgot').style.display = show ? 'block' : 'none';
 }
 
-async function doForgotPassword() {
+async function executePasswordRecovery(){
   const email = document.getElementById('fp-email').value.trim();
-  const errEl = document.getElementById('fp-err');
-  const succEl = document.getElementById('fp-success');
-  errEl.style.display = 'none'; succEl.style.display = 'none';
-
-  if (!email) { errEl.textContent = 'Please enter your account email.'; errEl.style.display = 'block'; return; }
+  const msg = document.getElementById('fp-msg');
+  const err = document.getElementById('fp-err');
+  msg.style.display = 'none'; err.style.display = 'none';
+  if(!email){ err.textContent = 'Please enter your account email.'; err.style.display = 'block'; return; }
   const { error } = await sb.auth.resetPasswordForEmail(email);
-  if (error) { errEl.textContent = error.message; errEl.style.display = 'block'; }
-  else { succEl.textContent = 'Password reset instructions forwarded to email.'; succEl.style.display = 'block'; }
+  if (error) { err.textContent = error.message; err.style.display = 'block'; }
+  else { msg.textContent = 'Recovery configuration instructions forwarded to mailbox link.'; msg.style.display = 'block'; }
 }
 
 async function doSignIn(){
@@ -1432,7 +1391,6 @@ async function doSignUp(){
   err.style.display='none';
   if(!name||!email||pwd.length<8){err.textContent='Name, email, and a password (8+ chars) are required.';err.style.display='block';return;}
 
-  // Check if this is the very first user (becomes admin automatically)
   const {count}=await sb.from('profiles').select('*',{count:'exact',head:true});
   const isFirstUser=(count||0)===0;
 
@@ -1472,9 +1430,9 @@ async function afterAuth(){
   S.user=user;
   const {data:profile}=await sb.from('profiles').select('*').eq('id',user.id).maybeSingle();
   if(!profile || profile.archived){ 
-    showToast('Account access archived/revoked.','error');
+    showToast('Account context has been archived/suspended. Access revoked.','error');
     await sb.auth.signOut();
-    return;
+    return; 
   }
   if(!profile.approved){
     S.profile=profile;
@@ -1581,13 +1539,13 @@ async function initApp(){
   startPolling();                
   await loadDeadlineRules();     
   await loadInvoiceSettings();   
-  setupFinanceSecurityUI();
+  setupFinancePermissionsView();
 }
 
-function setupFinanceSecurityUI() {
-  const isSa = isAdmin();
-  document.getElementById('finance-admin-content').style.display = isSa ? 'block' : 'none';
-  document.getElementById('finance-restriction-msg').style.display = isSa ? 'none' : 'block';
+function setupFinancePermissionsView() {
+  const secure = isAdmin();
+  document.getElementById('finances-secure-panel').style.display = secure ? 'block' : 'none';
+  document.getElementById('finances-denied-panel').style.display = secure ? 'none' : 'block';
 }
 
 // ════════════════════════════════════════════
@@ -1629,7 +1587,7 @@ function buildSidebar(){
 function updateSidebarProfile(){
   const n=S.profile?.full_name||'User';
   document.getElementById('sb-name').textContent=n;
-  document.getElementById('sb-role').textContent=S.profile?.role||'—';
+  document.getElementById('sb-role').textContent=S.profile?.role||'Roster';
   document.getElementById('sb-avatar').textContent=initials(n);
 }
 
@@ -1659,7 +1617,7 @@ function navigate(view){
   if(view==='notes'){ loadNotes().then(renderNotes); }
   if(view==='activity') loadActivityLog();
   if(view==='deadline-rules'){ loadDeadlineRules().then(renderDeadlineRulesPage); }
-  if(view==='finances') { setupFinanceSecurityUI(); renderFinances(); }
+  if(view==='finances') { renderFinances(); setupFinancePermissionsView(); }
   if(view==='formbuilder') renderFormBuilder();
   if(view==='tasks') renderTasks();
   if(view==='chat'){
@@ -1994,16 +1952,15 @@ async function viewClient(id){
     <div class="detail-meta-item"><div class="detail-meta-label">Status</div><div class="detail-meta-value">${statusBadge(c.status)}</div></div>
     <div class="detail-meta-item"><div class="detail-meta-label">Assigned To</div><div class="detail-meta-value">${au?au.full_name:'—'}</div></div>`;
   
-  // Isolated Payments tab view checks
-  const isSa = isAdmin();
-  document.getElementById('detail-payments-admin-view').style.display = isSa ? 'block' : 'none';
-  document.getElementById('detail-payments-restricted-view').style.display = isSa ? 'none' : 'block';
-  if(isSa) renderPaymentsTab(id);
+  const hasLedger = isAdmin();
+  document.getElementById('detail-payments-secure-view').style.display = hasLedger ? 'block' : 'none';
+  document.getElementById('detail-payments-denied-view').style.display = hasLedger ? 'none' : 'block';
+  if(hasLedger) renderPaymentsTab(id);
 
   document.getElementById('tab-overview').innerHTML=`
     <div class="form-grid form-grid-2" style="gap:12px;">
       ${dr('Phone',c.phone)}${dr('Email',c.email)}
-      <div class="form-group" style="grid-column:1/-1;"><div class="form-label">Address</div><div style="font-size:14px;padding:6px 0;">${c.address||'—'}</div></div>
+      <div class="form-group class=form-grid-item-span"><div class="form-label">Address</div><div style="font-size:14px;padding:6px 0;">${c.address||'—'}</div></div>
     </div>`;
   switchTab('overview');
   openModal('modal-detail');
@@ -2059,33 +2016,33 @@ function renderRecentClients(){
 
 function updateStats(){
   document.getElementById('stats-grid').innerHTML=`
-    <div class="stat-card gold"><div class="stat-label">Total Clients</div><div class="stat-value">${myClients().length}</div><i class="fas fa-users stat-icon"></i></div>`;
+    <div class="stat-card gold"><div class="stat-label">Total Matters Directory</div><div class="stat-value">${myClients().length}</div><i class="fas fa-users stat-icon"></i></div>`;
 }
 function renderDeadlines(){}
 function renderDocuments(){}
 function checkAlerts(){}
 
 // ════════════════════════════════════════════
-//  USERS & STRUCTURED HIERARCHY MANAGEMENT (Admin Configuration)
+//  USERS & STRUCTURED HIERARCHY MATRIX
 // ════════════════════════════════════════════
 function renderHierarchyMatrix() {
   const tbody = document.getElementById('hierarchy-matrix-tbody');
   if (!tbody) return;
   tbody.innerHTML = S.hierarchyPermissions.map((hp, idx) => `
     <tr>
-      <td><b>${hp.designation}</b></td>
-      <td><input type="checkbox" ${hp.designation !== 'Senior Advocate' ? 'checked' : ''} disabled /> Order Flow</td>
-      <td><input type="checkbox" ${hp.view_finances ? 'checked' : ''} onchange="toggleHierarchyMatrix(${idx}, 'view_finances')" ${isAdmin() ? '' : 'disabled'} /> View Ledger Data</td>
-      <td><input type="checkbox" ${hp.manage_hierarchy ? 'checked' : ''} onchange="toggleHierarchyMatrix(${idx}, 'manage_hierarchy')" ${isAdmin() ? '' : 'disabled'} /> Manage System Matrix</td>
+      <td><b>${hp.role}</b></td>
+      <td><input type="checkbox" checked disabled /> Case Matrix Flow</td>
+      <td><input type="checkbox" ${hp.view_ledgers ? 'checked' : ''} onchange="toggleHierarchyMatrixPerm(${idx}, 'view_ledgers')" ${isAdmin() ? '' : 'disabled'} /> Financial Accounting Visibility</td>
+      <td><input type="checkbox" ${hp.manage_users ? 'checked' : ''} onchange="toggleHierarchyMatrixPerm(${idx}, 'manage_users')" ${isAdmin() ? '' : 'disabled'} /> Adjust Organizational Hierarchy</td>
     </tr>
   `).join('');
 }
 
-function toggleHierarchyMatrix(idx, property) {
+function toggleHierarchyMatrixPerm(idx, property) {
   if (!isAdmin()) return;
   S.hierarchyPermissions[idx][property] = !S.hierarchyPermissions[idx][property];
-  showToast('Hierarchy parameter matrix adjusted dynamically.', 'success');
-  setupFinanceSecurityUI();
+  showToast('Hierarchy role access matrix parameters modified dynamically.', 'success');
+  setupFinancePermissionsView();
 }
 
 function copySignupCode(){ if(S.signupCode){ navigator.clipboard.writeText(S.signupCode); showToast('Code copied.','success'); } }
@@ -2102,16 +2059,16 @@ async function approveUser(){
 }
 
 async function archiveAssistant(userId) {
-  if (!confirm('Archive this assistant account? System access terminates immediately while file trail remains uncompromised.')) return;
+  if (!confirm('Archive this lawyer account entry? Access privileges break while transaction records remain solid.')) return;
   await sb.from('profiles').update({ archived: true, approved: false }).eq('id', userId);
-  showToast('Assistant profile archived securely.', 'warning');
+  showToast('Lawyer account profile archived securely.', 'warning');
   await refreshAll();
 }
 
 async function permanentlyDeleteUser(userId) {
-  if (!confirm('Permanently purge this assistant registry? This file path breaks irrevocably.')) return;
+  if (!confirm('Execute permanent deletion step? Structural data clears irrevocably.')) return;
   await sb.from('profiles').delete().eq('id', userId);
-  showToast('Assistant account purged permanently.', 'danger');
+  showToast('Roster record cleared permanently.', 'danger');
   await refreshAll();
 }
 
@@ -2127,7 +2084,7 @@ function renderUsers(){
     document.getElementById('users-pending-list').innerHTML=S.pendingUsers.map(u=>`
       <div class="user-list-item">
         <div class="user-list-item-info"><b>${u.full_name}</b> (${u.email})</div>
-        <button class="btn btn-gold btn-sm" onclick="S._targetUserId='${u.id}'; openModal('modal-add-user')">Approve Rank</button>
+        <button class="btn btn-gold btn-sm" onclick="S._targetUserId='${u.id}'; openModal('modal-add-user')">Grand Authorization</button>
       </div>`);
   } else { pendingSection.style.display='none'; }
 
@@ -2135,47 +2092,47 @@ function renderUsers(){
     <div class="user-list-item">
       <div class="user-list-item-info"><b>${u.full_name}</b> <span class="badge badge-admin">${u.role}</span><br><small>${u.email}</small></div>
       <div style="display:flex; gap:6px;">
-        <button class="btn btn-outline btn-sm" onclick="S._targetUserId='${u.id}'; openModal('modal-add-user')">Change Rank</button>
-        <button class="btn btn-outline btn-sm btn-danger" onclick="archiveAssistant('${u.id}')">Archive</button>
-        <button class="btn btn-danger btn-sm" onclick="permanentlyDeleteUser('${u.id}')"><i class="fas fa-trash"></i> Permanently Delete</button>
+        <button class="btn btn-outline btn-sm" onclick="S._targetUserId='${u.id}'; openModal('modal-add-user')">Alter Role</button>
+        <button class="btn btn-outline btn-sm btn-danger" onclick="archiveAssistant('${u.id}')">Archive Account</button>
+        <button class="btn btn-danger btn-sm" onclick="permanentlyDeleteUser('${u.id}')"><i class="fas fa-trash"></i> Purge File</button>
       </div>
     </div>`).join('');
 }
 </script>
 <script>
 // ════════════════════════════════════════════
-//  FINANCES — Isolated to Senior Advocate
+//  FINANCES — Ledger Controls Isolated
 // ════════════════════════════════════════════
 async function renderFinances(){
   if(!isAdmin()) return;
   const {data}=await sb.from('payments').select('*');
   S.finPayments=data||[];
   
-  let total=0; S.finPayments.forEach(p=>total+=Number(p.amount||0));
+  let collectionsTotal=0; S.finPayments.forEach(p=>collectionsTotal+=Number(p.amount||0));
   document.getElementById('fin-summary-cards').innerHTML=`
     <div class="fin-summary-grid">
-      <div class="stat-card green"><div class="stat-label">Total Firm Collections</div><div class="stat-value">₹${total.toLocaleString('en-IN')}</div></div>
+      <div class="stat-card green"><div class="stat-label">Total Firm Collections</div><div class="stat-value">E₹${collectionsTotal.toLocaleString('en-IN')}</div></div>
     </div>`;
 
   document.getElementById('fin-client-list').innerHTML=myClients().map(c=>{
     const payments = S.finPayments.filter(p=>p.client_id===c.client_id);
     const collected = payments.reduce((s,p)=>s+Number(p.amount||0),0);
     return `
-      <div class="fin-client-row" onclick="this.classList.toggle('expanded')">
+      <div class="fin-client-row">
         <div style="flex:1;"><b>${c.name}</b> <small>(${c.client_id})</small></div>
-        <div>Quoted: ₹${c.fee||0} | Collected: ₹${collected}</div>
+        <div>Total Quoted Matrix: ₹${c.fee||0} | Collections Received: ₹${collected}</div>
       </div>`;
   }).join('');
 }
 
 async function renderPaymentsTab(clientId){
   const {data}=await sb.from('payments').select('*').eq('client_id',clientId);
-  let html=`<button class="btn btn-gold btn-sm mb-3" onclick="openPaymentModal('${clientId}')">Record Payment Entry</button><div class="file-list">`;
+  let html=`<button class="btn btn-gold btn-sm mb-3" onclick="openPaymentModal('${clientId}')">Log Ledger Matrix Entry</button><div class="file-list">`;
   (data||[]).forEach(p=>{
-    html+=`<div class="file-item"><span>₹${p.amount} received via ${p.method||'Cash'} on ${fmtD(p.payment_date)}</span></div>`;
+    html+=`<div class="file-item"><span>₹${p.amount} verified on channel ${p.method||'Cash'} via date context ${fmtD(p.payment_date)}</span></div>`;
   });
   html+=`</div>`;
-  document.getElementById('detail-payments-admin-view').innerHTML=html;
+  document.getElementById('detail-payments-secure-view').innerHTML=html;
 }
 
 function openPaymentModal(clientId){
@@ -2189,10 +2146,7 @@ async function savePayment(){
 </script>
 <script>
 // ════════════════════════════════════════════
-//  PRESET WORKFLOW CHATBOT (Draggable Widget)
-// ════════════════════════════════════════════
-// ════════════════════════════════════════════
-//  PRESET WORKFLOW CHATBOT (Dynamic System Helper)
+//  PRESET SYSTEM HELPER CHATBOT
 // ════════════════════════════════════════════
 function toggleAIWindow() {
   const widget = document.getElementById('ai-chat-widget');
@@ -2204,49 +2158,47 @@ function askPresetBot() {
   const txt = input.value.trim(); if(!txt) return;
   const box = document.getElementById('ai-msg-box');
   
-  // Render user message safely
   box.innerHTML += `<div class="ai-bubble user">${escHtml(txt)}</div>`;
   input.value = '';
 
-  let reply = "I am tracking live system metrics. Try asking me about 'clients', 'my role', 'tasks', or 'ledgers'.";
-  const lower = txt.toLowerCase();
+  let reply = "I am monitoring live legal telemetry parameters. Ask me about 'clients', 'my role', 'tasks', or 'ledgers'.";
+  const queryLower = txt.toLowerCase();
 
-  if (lower.includes('hierarchy') || lower.includes('permission') || lower.includes('role')) {
-    reply = `Your active designation role is <b>${escHtml(S.profile?.role)}</b>. ${
+  if (queryLower.includes('hierarchy') || queryLower.includes('permission') || queryLower.includes('role')) {
+    reply = `Your profile authorization rank is <b>${escHtml(S.profile?.role)}</b>. ${
       isAdmin() 
-        ? "As the Senior Advocate, you have master controls over firm-wide ledgers, role hierarchy assignments, and case rules." 
-        : "Your current tier limits access to specific file directory workflows assigned to you."
+        ? "As Senior Advocate, you hold dynamic administrative access to modify ranks, view accounting sheets, and define custom matter parameter fields." 
+        : "Subordinate structural clearance limits accounting view tabs."
     }`;
-  } else if (lower.includes('finance') || lower.includes('ledger') || lower.includes('fee')) {
+  } else if (queryLower.includes('finance') || queryLower.includes('ledger') || queryLower.includes('fee')) {
     if (!isAdmin()) {
       reply = "❌ <b>Access Denied:</b> Financial statements and firm ledgers are securely hidden from your current tier assignment.";
     } else {
       let activeFees = S.clients.reduce((s, c) => s + Number(c.fee || 0), 0);
-      reply = `💼 <b>Firm Ledgers Audit:</b> You are tracking a aggregate total of <b>₹${activeFees.toLocaleString('en-IN')}</b> across active case quotes. Only you can view this panel.`;
+      reply = `💼 <b>Firm Ledgers Audit:</b> You are tracking an aggregate total of <b>₹${activeFees.toLocaleString('en-IN')}</b> across active case quotes. Only you can view this panel.`;
     }
-  } else if (lower.includes('client') || lower.includes('cases')) {
+  } else if (queryLower.includes('client') || queryLower.includes('cases')) {
     reply = `📂 The directory is hosting <b>${S.clients.length} total client records</b>. ${
       isAdmin() ? "You are monitoring all team files." : "You are displaying files assigned exclusively to your lawyer ID."
     }`;
-  } else if (lower.includes('task')) {
+  } else if (queryLower.includes('task')) {
     const openTasks = S.tasks.filter(t => t.status !== 'done' && t.status !== 'cancelled').length;
     reply = `📋 System check indicates there are currently <b>${openTasks} uncompleted tasks</b> open across the team roster.`;
   }
 
-  // Smooth typing reply delay
   setTimeout(() => {
     box.innerHTML += `<div class="ai-bubble bot">${reply}</div>`;
     box.scrollTop = box.scrollHeight;
   }, 250);
 }
 
-// Keep the draggable widget layout handler completely intact
-const bar = document.getElementById('ai-drag-bar');
-const widget = document.getElementById('ai-chat-widget');
+// Draggable Logic Wiring Layer Maps
+const dragBar = document.getElementById('ai-drag-bar');
+const chatWidget = document.getElementById('ai-chat-widget');
 let activeDrag = false, startX = 0, startY = 0;
 
-bar.addEventListener('mousedown', e => { activeDrag = true; startX = e.clientX - widget.offsetLeft; startY = e.clientY - widget.offsetTop; });
-document.addEventListener('mousemove', e => { if(activeDrag) { widget.style.left = (e.clientX - startX) + 'px'; widget.style.top = (e.clientY - startY) + 'px'; widget.style.bottom = 'auto'; widget.style.right = 'auto'; } });
+dragBar.addEventListener('mousedown', e => { activeDrag = true; startX = e.clientX - chatWidget.offsetLeft; startY = e.clientY - chatWidget.offsetTop; });
+document.addEventListener('mousemove', e => { if(activeDrag) { chatWidget.style.left = (e.clientX - startX) + 'px'; chatWidget.style.top = (e.clientY - startY) + 'px'; chatWidget.style.bottom = 'auto'; chatWidget.style.right = 'auto'; } });
 document.addEventListener('mouseup', () => activeDrag = false);
 
 </script>
