@@ -426,6 +426,67 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 }
 @media(max-width:480px){.stats-grid{grid-template-columns:1fr}.modal-footer{flex-direction:column-reverse}.modal-footer .btn{width:100%;justify-content:center}.search-bar{flex-direction:column;align-items:stretch}.search-bar select{width:100%!important}}
 .text-muted{color:var(--text-muted)}.text-sm{font-size:12.5px}.flex{display:flex}.items-center{align-items:center}.gap-2{gap:8px}.mt-2{margin-top:8px}.mt-3{margin-top:12px}.mt-4{margin-top:16px}.mb-3{margin-bottom:12px}.mb-4{margin-bottom:16px}.w-full{width:100%}.font-medium{font-weight:500}.font-semibold{font-weight:600}
+/* ── Hierarchy Role Badges ──────────────────────────────────── */
+.badge-senior-advocate{background:#0f1e3c;color:#c9a84c;border:1px solid rgba(201,168,76,.3);}
+.badge-junior-advocate{background:#1e3a6e;color:#e4c470;border:1px solid rgba(228,196,112,.2);}
+.badge-senior-assistant{background:#2d3748;color:#e2e8f0;border:1px solid rgba(226,232,240,.2);}
+.badge-junior-assistant{background:#f7fafc;color:#4a5568;border:1px solid #e2e8f0;}
+.badge-archived{background:#fff5f5;color:#c53030;border:1px solid #fed7d7;}
+
+/* ── Hierarchy permissions grid ────────────────────────────── */
+.perm-matrix{width:100%;border-collapse:collapse;font-size:13px;}
+.perm-matrix th{background:var(--bg);padding:10px 12px;text-align:center;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);border-bottom:2px solid var(--border);white-space:nowrap;}
+.perm-matrix th:first-child{text-align:left;}
+.perm-matrix td{padding:10px 12px;border-bottom:1px solid var(--border-light);vertical-align:middle;}
+.perm-matrix td:first-child{font-size:13px;color:var(--text-primary);}
+.perm-matrix tr:hover td{background:#f7f8ff;}
+.perm-toggle{width:36px;height:20px;border-radius:10px;background:var(--border);position:relative;cursor:pointer;border:none;transition:background .2s;display:block;margin:auto;}
+.perm-toggle.on{background:var(--navy);}
+.perm-toggle::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.perm-toggle.on::after{transform:translateX(16px);}
+.perm-toggle:disabled{opacity:.4;cursor:not-allowed;}
+.role-tier-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap;}
+
+/* ── Chatbot ─────────────────────────────────────────────── */
+.chatbot-fab{position:fixed;bottom:28px;right:28px;width:54px;height:54px;border-radius:50%;background:var(--navy);border:2px solid var(--gold);color:var(--gold);font-size:22px;display:flex;align-items:center;justify-content:center;cursor:grab;z-index:8888;box-shadow:0 4px 16px rgba(0,0,0,.25);transition:transform .15s,box-shadow .15s;user-select:none;}
+.chatbot-fab:hover{transform:scale(1.07);box-shadow:0 6px 20px rgba(0,0,0,.32);}
+.chatbot-fab:active{cursor:grabbing;}
+.chatbot-fab .chatbot-badge{position:absolute;top:-4px;right:-4px;background:var(--danger);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:none;align-items:center;justify-content:center;padding:0 3px;}
+.chatbot-fab .chatbot-badge.show{display:flex;}
+.chatbot-panel{position:fixed;bottom:90px;right:28px;width:340px;max-height:520px;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.18);display:none;flex-direction:column;z-index:8889;overflow:hidden;animation:chat-slide-up .2s ease;}
+.chatbot-panel.open{display:flex;}
+@keyframes chat-slide-up{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.chatbot-panel-header{background:var(--navy);padding:12px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.chatbot-panel-title{flex:1;font-size:14px;font-weight:600;color:#fff;}
+.chatbot-panel-close{background:none;border:none;color:rgba(255,255,255,.6);font-size:16px;cursor:pointer;padding:2px 5px;border-radius:4px;}
+.chatbot-panel-close:hover{color:#fff;background:rgba(255,255,255,.1);}
+.chatbot-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;}
+.chatbot-msg{max-width:88%;padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5;}
+.chatbot-msg.bot{background:var(--bg);color:var(--text-primary);border-bottom-left-radius:3px;align-self:flex-start;}
+.chatbot-msg.user{background:var(--navy);color:#fff;border-bottom-right-radius:3px;align-self:flex-end;}
+.chatbot-suggestions{padding:8px 12px;display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid var(--border-light);flex-shrink:0;}
+.chatbot-chip{padding:5px 11px;border-radius:20px;border:1px solid var(--navy-mid);color:var(--navy);font-size:12px;cursor:pointer;background:var(--bg);transition:all .12s;white-space:nowrap;}
+.chatbot-chip:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+.chatbot-input-row{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--border);flex-shrink:0;}
+.chatbot-input-row input{flex:1;border:1px solid var(--border);border-radius:20px;padding:8px 14px;font-size:13px;outline:none;}
+.chatbot-input-row input:focus{border-color:var(--navy-mid);}
+.chatbot-send{width:34px;height:34px;border-radius:50%;border:none;background:var(--gold);color:var(--navy);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* ── Forgot password link ─────────────────────────────────── */
+.auth-link-row{text-align:center;margin-top:12px;font-size:12.5px;color:var(--text-muted);}
+.auth-link-row a{color:var(--navy-mid);font-weight:500;cursor:pointer;text-decoration:underline;}
+
+/* ── Archived user row ────────────────────────────────────── */
+.user-list-item.archived{opacity:.65;border-color:#fed7d7;}
+
+/* ── Hierarchy page ──────────────────────────────────────── */
+.hierarchy-tree{display:flex;flex-direction:column;gap:0;margin:20px 0;}
+.hierarchy-level{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--bg-card);border:1px solid var(--border);margin-bottom:2px;border-radius:var(--radius);}
+.hierarchy-level:first-child{border-top-left-radius:var(--radius);border-top-right-radius:var(--radius);}
+.hierarchy-level:last-child{border-bottom-left-radius:var(--radius);border-bottom-right-radius:var(--radius);}
+.hierarchy-rank{font-size:20px;font-weight:700;color:var(--gold);width:32px;text-align:center;flex-shrink:0;}
+.hierarchy-arrow{color:var(--text-muted);font-size:13px;margin:0 4px;}
+.hierarchy-members{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto;}
 </style>
 </head>
 <body>
@@ -456,6 +517,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px;">Lex<span style="color:var(--gold);">Desk</span></div>
     <div id="auth-tabs" style="display:flex;gap:6px;margin:14px 0 18px;background:var(--bg);border-radius:8px;padding:4px;">
       <button class="btn btn-sm" id="tab-signin" style="flex:1;justify-content:center;background:var(--navy);color:#fff;" onclick="showAuthTab('signin')">Sign In</button>
+      <div class="auth-link-row"><a onclick="showForgotPassword()">Forgot your password?</a></div>
       <button class="btn btn-sm btn-outline" id="tab-signup" style="flex:1;justify-content:center;border:none;" onclick="showAuthTab('signup')">Sign Up</button>
     </div>
 
@@ -466,6 +528,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
       </div>
       <p id="li-err" style="color:var(--danger);font-size:12px;margin-top:8px;display:none;"></p>
       <button class="btn btn-gold w-full mt-4" style="justify-content:center;font-size:15px;padding:12px;" onclick="doSignIn()"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+      <div class="auth-link-row"><a onclick="showForgotPassword()">Forgot your password?</a></div>
     </div>
 
     <div id="auth-signup" style="display:none;">
@@ -481,7 +544,32 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     </div>
   </div>
 </div>
-
+<!-- ════════════════════════════════════════════════════
+     SNIPPET 1: FORGOT PASSWORD SCREEN
+     Insert BEFORE <!-- ══ PENDING APPROVAL SCREEN ══ -->
+════════════════════════════════════════════════════ -->
+<div id="forgot-screen" style="display:none;position:fixed;inset:0;background:var(--navy);z-index:998;align-items:center;justify-content:center;padding:20px;">
+  <div class="login-card">
+    <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px;">Lex<span style="color:var(--gold);">Desk</span></div>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">Enter your email address and we'll send you a password reset link.</p>
+    <div id="forgot-form">
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label">Email Address</label>
+        <input class="form-control" id="forgot-email" type="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')doForgotPassword()"/>
+      </div>
+      <p id="forgot-err" style="color:var(--danger);font-size:12px;margin-bottom:10px;display:none;"></p>
+      <button id="forgot-btn" class="btn btn-gold w-full" style="justify-content:center;font-size:15px;padding:12px;" onclick="doForgotPassword()">
+        <i class="fas fa-paper-plane"></i> Send Reset Link
+      </button>
+    </div>
+    <div id="forgot-success" style="display:none;text-align:center;">
+      <div style="width:60px;height:60px;border-radius:50%;background:#c6f6d5;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:#276749;"><i class="fas fa-check"></i></div>
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:8px;">Check your inbox!</h3>
+      <p style="font-size:13px;color:var(--text-muted);">We've sent a password reset link to your email. It expires in 1 hour.</p>
+    </div>
+    <div class="auth-link-row" style="margin-top:16px;"><a onclick="hideForgotPassword()"><i class="fas fa-arrow-left"></i> Back to Sign In</a></div>
+  </div>
+</div>
 <!-- ══ PENDING APPROVAL SCREEN ══ -->
 <div id="pending-screen" style="display:none;position:fixed;inset:0;background:var(--navy);z-index:997;align-items:center;justify-content:center;padding:20px;">
   <div class="login-card" style="text-align:center;">
@@ -491,7 +579,24 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
     <button class="btn btn-outline w-full" style="justify-content:center;" onclick="doLogout()">Back to Sign In</button>
   </div>
 </div>
-
+<!-- ════════════════════════════════════════════════════
+     SNIPPET 2: RESET PASSWORD SCREEN (redirect landing)
+     Insert BEFORE <!-- ══ CLIENT PORTAL LOGIN ══ -->
+════════════════════════════════════════════════════ -->
+<div id="reset-pw-screen" style="display:none;position:fixed;inset:0;background:var(--navy);z-index:999;align-items:center;justify-content:center;padding:20px;">
+  <div class="login-card">
+    <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px;">Lex<span style="color:var(--gold);">Desk</span></div>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">Set your new password below.</p>
+    <div class="form-grid" style="gap:13px;">
+      <div class="form-group"><label class="form-label">New Password</label><input class="form-control" id="reset-pw1" type="password" placeholder="Min. 8 characters"/></div>
+      <div class="form-group"><label class="form-label">Confirm Password</label><input class="form-control" id="reset-pw2" type="password" placeholder="Repeat password" onkeydown="if(event.key==='Enter')doResetPassword()"/></div>
+    </div>
+    <p id="reset-pw-err" style="color:var(--danger);font-size:12px;margin-top:8px;display:none;"></p>
+    <button class="btn btn-gold w-full mt-4" style="justify-content:center;font-size:15px;padding:12px;" onclick="doResetPassword()">
+      <i class="fas fa-lock"></i> Set New Password
+    </button>
+  </div>
+</div>
 <!-- ══ CLIENT PORTAL LOGIN ══ -->
 <div id="portal-screen" style="display:none;position:fixed;inset:0;background:var(--navy);z-index:998;align-items:center;justify-content:center;padding:16px;">
   <div class="login-card">
@@ -644,7 +749,13 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
         <div id="notes-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
         <div id="notes-empty" class="empty-state" style="display:none;"><i class="fas fa-sticky-note"></i><div class="empty-state-title">No notes yet</div><div class="empty-state-desc">Create private notes and share them with your team</div></div>
       </div>
-
+      <!-- ════════════════════════════════════════════════════
+           SNIPPET 3: HIERARCHY PERMISSIONS VIEW
+           Insert BEFORE <!-- ACTIVITY LOG --> in the page div
+      ════════════════════════════════════════════════════ -->
+      <div class="page-view" id="view-hierarchy-perms">
+        <!-- Rendered by renderHierarchyPermissions() -->
+      </div>
       <!-- ACTIVITY LOG -->
       <div class="page-view" id="view-activity">
         <div class="card">
@@ -746,29 +857,44 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
       </div>
 
       <!-- USERS (admin only) -->
-      <div class="page-view" id="view-users">
-        <div class="card mb-4">
-          <div class="card-header"><span class="card-title">Signup Code</span></div>
-          <div class="card-body">
-            <p class="text-sm text-muted mb-3">Share this code with assistant lawyers so they can create their own account. After they sign up, approve them and assign their role below.</p>
-            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-              <code id="signup-code-display" style="background:var(--bg);padding:8px 14px;border-radius:6px;font-size:14px;font-weight:600;letter-spacing:1px;border:1px solid var(--border);">—</code>
-              <button class="btn btn-outline btn-sm" onclick="copySignupCode()"><i class="fas fa-copy"></i> Copy</button>
-              <button class="btn btn-outline btn-sm" onclick="regenerateSignupCode()"><i class="fas fa-sync-alt"></i> Regenerate</button>
-            </div>
-          </div>
-        </div>
-        <div id="users-pending-section" style="display:none;">
-          <div class="card mb-4">
-            <div class="card-header"><span class="card-title">Pending Approval</span></div>
-            <div class="card-body" id="users-pending-list"></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><span class="card-title">Team Members</span></div>
-          <div class="card-body" id="users-list"></div>
-        </div>
+      <!-- ════════════════════════════════════════════════════
+     SNIPPET 5: UPDATED USERS VIEW (add tabs)
+     Replace the entire <!-- USERS (admin only) --> section
+     Note: keep the existing modal-add-user intact
+════════════════════════════════════════════════════ -->
+<div class="page-view" id="view-users">
+  <div class="card mb-4">
+    <div class="card-header"><span class="card-title">Signup Code</span></div>
+    <div class="card-body">
+      <p class="text-sm text-muted mb-3">Share this code with new team members. After signup, approve them and assign their role below.</p>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <code id="signup-code-display" style="background:var(--bg);padding:8px 14px;border-radius:6px;font-size:14px;font-weight:600;letter-spacing:1px;border:1px solid var(--border);">—</code>
+        <button class="btn btn-outline btn-sm" onclick="copySignupCode()"><i class="fas fa-copy"></i> Copy</button>
+        <button class="btn btn-outline btn-sm" onclick="regenerateSignupCode()"><i class="fas fa-sync-alt"></i> Regenerate</button>
       </div>
+    </div>
+  </div>
+  <div id="users-pending-section" style="display:none;">
+    <div class="card mb-4">
+      <div class="card-header"><span class="card-title">⏳ Pending Approval</span></div>
+      <div class="card-body" id="users-pending-list"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Team Members</span>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-outline btn-sm" onclick="navigate('hierarchy-perms')"><i class="fas fa-shield-alt"></i> Permissions</button>
+      </div>
+    </div>
+    <div id="users-tab-bar" class="tabs" style="padding:0 16px;margin-bottom:0;border-bottom:1px solid var(--border);">
+      <button class="tab-btn active" data-tab="active"   onclick="switchUsersTab('active',this)">Active</button>
+      <button class="tab-btn"        data-tab="archived" onclick="switchUsersTab('archived',this)">Archived</button>
+    </div>
+    <div class="card-body" id="users-list"></div>
+  </div>
+</div>
+
 
       <!-- FORM BUILDER (admin only) -->
       <div class="page-view" id="view-formbuilder">
@@ -867,6 +993,22 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
                 <div class="settings-row-text"><div class="settings-row-label">Export to Excel</div><div class="settings-row-desc">Clients, Documents, Users & Tasks in one workbook</div></div>
                 <button class="btn btn-outline btn-sm" onclick="exportExcel()"><i class="fas fa-file-excel"></i> Export</button>
               </div>
+              <div class="settings-row">
+                <div class="settings-row-text">
+                  <div class="settings-row-label">Change Password</div>
+                  <div class="settings-row-desc">Send a reset link to your registered email</div>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="sendPasswordResetEmail()"><i class="fas fa-envelope"></i> Send Reset Email</button>
+              </div>
+              <!-- Chatbot toggle -->
+              <div class="settings-row">
+                <div class="settings-row-text">
+                  <div class="settings-row-label">LexBot Assistant</div>
+                  <div class="settings-row-desc">Floating AI assistant for quick lookups</div>
+                </div>
+                <button class="toggle" id="chatbot-toggle-btn" onclick="toggleChatbotSetting(this)" style="flex-shrink:0;"></button>
+              </div>
+
               <div class="settings-row" id="reset-row" style="display:none;">
                 <div class="settings-row-text"><div class="settings-row-label" style="color:var(--danger);">Disconnect Database</div><div class="settings-row-desc">Clears local Supabase config from this browser</div></div>
                 <button class="btn btn-danger btn-sm" onclick="disconnectSupabase()"><i class="fas fa-unlink"></i> Disconnect</button>
@@ -1244,166 +1386,258 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 </div>
 
 <div id="toast-container"></div>
+  <!-- ════════════════════════════════════════════════════
+     SNIPPET 4: CHATBOT HTML
+     Insert AFTER <div id="toast-container"></div>
+════════════════════════════════════════════════════ -->
+<button id="chatbot-fab" class="chatbot-fab" title="LexBot — Practice Assistant">
+  <i class="fas fa-robot"></i>
+  <span class="chatbot-badge" id="chatbot-fab-badge"></span>
+</button>
+
+<div id="chatbot-panel" class="chatbot-panel">
+  <div class="chatbot-panel-header">
+    <div style="width:32px;height:32px;border-radius:50%;background:rgba(201,168,76,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <i class="fas fa-robot" style="color:var(--gold);font-size:14px;"></i>
+    </div>
+    <div class="chatbot-panel-title">LexBot</div>
+    <span style="font-size:10px;color:rgba(255,255,255,.5);margin-right:auto;padding-left:6px;">Practice Assistant</span>
+    <button class="chatbot-panel-close" onclick="toggleChatbotPanel()" title="Close"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="chatbot-msgs" id="chatbot-msgs"></div>
+  <div class="chatbot-suggestions">
+    <button class="chatbot-chip" onclick="chatbotQuickReply('Show my tasks')">My tasks</button>
+    <button class="chatbot-chip" onclick="chatbotQuickReply('Upcoming deadlines')">Deadlines</button>
+    <button class="chatbot-chip" onclick="chatbotQuickReply('Today agenda')">Today</button>
+    <button class="chatbot-chip" onclick="chatbotQuickReply('Team members')">Team</button>
+    <button class="chatbot-chip" onclick="chatbotQuickReply('How many clients')">Clients</button>
+    <button class="chatbot-chip" onclick="chatbotQuickReply('Outstanding balance')">Finances</button>
+  </div>
+  <div class="chatbot-input-row">
+    <input type="text" id="chatbot-input" placeholder="Ask anything…" onkeydown="if(event.key==='Enter')chatbotSend()"/>
+    <button class="chatbot-send" onclick="chatbotSend()"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
 <script>
 // ════════════════════════════════════════════
-//  SUPABASE CONFIG & CLIENT
+//  ROLE SYSTEM (4-tier hierarchy)
 // ════════════════════════════════════════════
-const CFG_KEY='ld_supabase_cfg';
-let sb=null;
+const ROLE_HIERARCHY = [
+  { key:'senior_advocate',  label:'Senior Advocate',   short:'Sr. Advocate',  icon:'fas fa-crown',    badgeClass:'badge-senior-advocate', rank:1 },
+  { key:'junior_advocate',  label:'Junior Advocate',   short:'Jr. Advocate',  icon:'fas fa-gavel',    badgeClass:'badge-junior-advocate', rank:2 },
+  { key:'senior_assistant', label:'Senior Assistant',  short:'Sr. Assistant', icon:'fas fa-briefcase',badgeClass:'badge-senior-assistant',rank:3 },
+  { key:'junior_assistant', label:'Junior Assistant',  short:'Jr. Assistant', icon:'fas fa-user',     badgeClass:'badge-junior-assistant',rank:4 },
+];
+const ROLE_KEYS = ROLE_HIERARCHY.map(r => r.key);
 
-function getSupabaseConfig(){ try{return JSON.parse(localStorage.getItem(CFG_KEY)||'null')}catch{return null} }
+function getRoleInfo(key) {
+  return ROLE_HIERARCHY.find(r => r.key === key) ||
+         { key, label: key, short: key, icon:'fas fa-user', badgeClass:'badge-junior-assistant', rank:99 };
+}
+function roleBadgeHtml(key) {
+  const r = getRoleInfo(key);
+  return `<span class="badge ${r.badgeClass}"><i class="${r.icon}"></i> ${r.label}</span>`;
+}
+function roleRank(key) { const r = getRoleInfo(key); return r.rank; }
 
-function saveSupabaseConfig(){
-  const url=(document.getElementById('cfg-url').value||'').trim();
-  const key=(document.getElementById('cfg-key').value||'').trim();
-  if(!url||!key){showToast('Both URL and key are required.','error');return;}
-  localStorage.setItem(CFG_KEY,JSON.stringify({url,key}));
-  location.reload();
+// ── Permission helpers ─────────────────────────────────────────────────────
+// S.hierarchyPerms = { role: { perm_key: bool } }  loaded from DB after login
+
+function isSeniorAdvocate() { return S.profile?.role === 'senior_advocate'; }
+function isAdmin()          { return isSeniorAdvocate() && S.profile?.approved; }
+
+function hasPerm(permKey) {
+  if (isSeniorAdvocate()) return true;
+  const role = S.profile?.role;
+  if (!role || !S.hierarchyPerms) return false;
+  return S.hierarchyPerms[role]?.[permKey] === true;
 }
 
-function disconnectSupabase(){
-  if(!confirm('Disconnect this browser from the database? You will need to re-enter the URL/key to use the app again.'))return;
-  localStorage.removeItem(CFG_KEY);
-  location.reload();
+// Specific permission checks (fallback-safe)
+function canSeeFinances()    { return isSeniorAdvocate(); }               // ALWAYS senior only
+function canSeeAllClients()  { return isSeniorAdvocate() || hasPerm('see_all_clients'); }
+function canManageClients()  { return isSeniorAdvocate() || hasPerm('manage_clients'); }
+function canUploadDocs()     { return isSeniorAdvocate() || hasPerm('upload_documents'); }
+function canUseTemplates()   { return isSeniorAdvocate() || hasPerm('use_templates'); }
+function canCreateTasks()    { return isSeniorAdvocate() || hasPerm('create_tasks'); }
+function canViewActivity()   { return isSeniorAdvocate() || hasPerm('view_activity_log'); }
+function canChat()           { return isSeniorAdvocate() || hasPerm('access_chat'); }
+function canUsePlanner()     { return isSeniorAdvocate() || hasPerm('access_planner'); }
+function canUseNotes()       { return isSeniorAdvocate() || hasPerm('access_notes'); }
+
+// Load hierarchy permissions from DB
+async function loadHierarchyPerms() {
+  try {
+    const { data } = await sb.from('hierarchy_permissions').select('*');
+    const perms = {};
+    (data || []).forEach(row => {
+      if (!perms[row.role]) perms[row.role] = {};
+      perms[row.role][row.perm_key] = row.allowed;
+    });
+    S.hierarchyPerms = perms;
+  } catch(e) {
+    S.hierarchyPerms = {}; // safe fallback
+  }
 }
 
-function initSupabase(){
-  const cfg=getSupabaseConfig();
-  if(!cfg){ document.getElementById('setup-screen').style.display='flex'; return false; }
-  sb=window.supabase.createClient(cfg.url,cfg.key);
-  document.getElementById('setup-screen').style.display='none';
-  return true;
-}
-
 // ════════════════════════════════════════════
-//  STATE
+//  AUTH FUNCTIONS
 // ════════════════════════════════════════════
-let S={
-  user:null, profile:null,             // current auth user + profile row
-  clients:[], users:[], documents:[], templates:[],
-  categories:[], formSchemas:{},
-  tasks:[], taskComments:{},
-  messages:[], activeChatPeer:null,    // null = team broadcast channel
-  editingMessageId:null, messageReadIds:new Set(),
-  signupCode:null,
-  editingClientId:null, detailClientId:null,
-  activeCaseType:null, pendingFiles:[],
-  editingTemplateId:null, activeTemplateId:null,
-  editingTaskId:null, pendingChatFile:null,
-  fbActiveCat:null, payingClientId:null, linkedContactId:null,
-  notes:[], noteShares:{}, editingNoteId:null, sharingNoteId:null,
-  finPayments:[], finExpanded:{},
-  paymentsCache:{},
-  deadlineRules:[], invoiceSettings:null,
-  editingDeadlineRuleId:null,
-  _editingTemplateVars:[],
-  _portalToken:null, portalData:null
-};
 
-const FIELD_TYPES=['text','number','date','tel','select','textarea'];
-
-// ════════════════════════════════════════════
-//  AUTH
-// ════════════════════════════════════════════
-function showAuthTab(tab){
-  document.getElementById('auth-signin').style.display=tab==='signin'?'block':'none';
-  document.getElementById('auth-signup').style.display=tab==='signup'?'block':'none';
-  document.getElementById('tab-signin').style.background=tab==='signin'?'var(--navy)':'';
-  document.getElementById('tab-signin').style.color=tab==='signin'?'#fff':'';
-  document.getElementById('tab-signup').style.background=tab==='signup'?'var(--navy)':'';
-  document.getElementById('tab-signup').style.color=tab==='signup'?'#fff':'';
-}
-
-async function doSignIn(){
-  const email=(document.getElementById('li-email').value||'').trim();
-  const pwd=document.getElementById('li-pwd').value;
-  const err=document.getElementById('li-err');
-  err.style.display='none';
-  if(!email||!pwd){err.textContent='Enter email and password.';err.style.display='block';return;}
-  const {data,error}=await sb.auth.signInWithPassword({email,password:pwd});
-  if(error){err.textContent=error.message;err.style.display='block';return;}
+async function doSignIn() {
+  const email = (document.getElementById('li-email').value || '').trim();
+  const pwd   = document.getElementById('li-pwd').value;
+  const err   = document.getElementById('li-err');
+  err.style.display = 'none';
+  if (!email || !pwd) { err.textContent = 'Enter email and password.'; err.style.display = 'block'; return; }
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pwd });
+  if (error) { err.textContent = error.message; err.style.display = 'block'; return; }
   await afterAuth();
 }
 
-async function doSignUp(){
-  const name=(document.getElementById('su-name').value||'').trim();
-  const email=(document.getElementById('su-email').value||'').trim();
-  const pwd=document.getElementById('su-pwd').value;
-  const code=(document.getElementById('su-code').value||'').trim();
-  const err=document.getElementById('su-err');
-  err.style.display='none';
-  if(!name||!email||pwd.length<8){err.textContent='Name, email, and a password (8+ chars) are required.';err.style.display='block';return;}
-
-  // Check if this is the very first user (becomes admin automatically)
-  const {count}=await sb.from('profiles').select('*',{count:'exact',head:true});
-  const isFirstUser=(count||0)===0;
-
-  if(!isFirstUser){
-    if(!code){err.textContent='A signup code from your admin is required.';err.style.display='block';return;}
-    const {data:codeRow}=await sb.from('signup_codes').select('*').eq('code',code).eq('active',true).maybeSingle();
-    if(!codeRow){err.textContent='Invalid or expired signup code.';err.style.display='block';return;}
+async function doSignUp() {
+  const name  = (document.getElementById('su-name').value || '').trim();
+  const email = (document.getElementById('su-email').value || '').trim();
+  const pwd   = document.getElementById('su-pwd').value;
+  const code  = (document.getElementById('su-code').value || '').trim();
+  const err   = document.getElementById('su-err');
+  err.style.display = 'none';
+  if (!name || !email || pwd.length < 8) {
+    err.textContent = 'Name, email, and a password (8+ chars) are required.';
+    err.style.display = 'block'; return;
   }
 
-  const {data,error}=await sb.auth.signUp({email,password:pwd});
-  if(error){err.textContent=error.message;err.style.display='block';return;}
+  // Is this the first user?
+  const { count } = await sb.from('profiles').select('*', { count: 'exact', head: true });
+  const isFirstUser = (count || 0) === 0;
 
-  const userId=data.user?.id;
-  if(!userId){err.textContent='Signup failed — check your email to confirm, then sign in.';err.style.display='block';return;}
+  if (!isFirstUser) {
+    if (!code) { err.textContent = 'A signup code from your Senior Advocate is required.'; err.style.display = 'block'; return; }
+    const { data: codeRow } = await sb.from('signup_codes').select('*').eq('code', code).eq('active', true).maybeSingle();
+    if (!codeRow) { err.textContent = 'Invalid or expired signup code.'; err.style.display = 'block'; return; }
+    // Deactivate code (single use)
+    await sb.from('signup_codes').update({ active: false }).eq('code', code);
+  }
 
-  await sb.from('profiles').insert({
-    id:userId, full_name:name, email,
-    role:isFirstUser?'admin':'pending',
-    approved:isFirstUser
-  });
+  const { data, error } = await sb.auth.signUp({ email, password: pwd });
+  if (error) { err.textContent = error.message; err.style.display = 'block'; return; }
+  const userId = data.user?.id;
+  if (!userId) { err.textContent = 'Signup failed — please try again.'; err.style.display = 'block'; return; }
 
-  if(isFirstUser){
-    // Seed a signup code for them right away
-    const newCode=genCode();
-    await sb.from('signup_codes').insert({code:newCode, created_by:userId});
-    showToast('Welcome! You are the Admin.','success');
+  if (isFirstUser) {
+    // First user = Senior Advocate (Admin), Founder, auto-approved, cannot be removed
+    await sb.from('profiles').insert({
+      id: userId, full_name: name, email,
+      role: 'senior_advocate', approved: true, is_founder: true
+    });
+    const newCode = genCode();
+    await sb.from('signup_codes').insert({ code: newCode, created_by: userId });
+    showToast('Welcome! You are the Senior Advocate (Admin).', 'success');
     await afterAuth();
   } else {
-    showToast('Account created — awaiting admin approval.','success');
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('pending-screen').style.display='flex';
+    await sb.from('profiles').insert({
+      id: userId, full_name: name, email,
+      role: 'junior_assistant', approved: false, is_founder: false
+    });
+    showToast('Account created — awaiting Senior Advocate approval.', 'success');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('pending-screen').style.display = 'flex';
   }
 }
 
-async function afterAuth(){
-  const {data:{user}}=await sb.auth.getUser();
-  if(!user){ document.getElementById('login-screen').style.display='flex'; return; }
-  S.user=user;
-  const {data:profile}=await sb.from('profiles').select('*').eq('id',user.id).maybeSingle();
-  if(!profile){ document.getElementById('login-screen').style.display='flex'; return; }
-  if(!profile.approved){
-    S.profile=profile;
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('pending-screen').style.display='flex';
+// ── Forgot Password ────────────────────────────────────────────────────────
+function showForgotPassword() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('forgot-screen').style.display = 'flex';
+  document.getElementById('forgot-email').value = document.getElementById('li-email').value || '';
+  document.getElementById('forgot-err').style.display = 'none';
+  document.getElementById('forgot-success').style.display = 'none';
+  document.getElementById('forgot-form').style.display = 'block';
+}
+
+function hideForgotPassword() {
+  document.getElementById('forgot-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+async function doForgotPassword() {
+  const email = (document.getElementById('forgot-email').value || '').trim();
+  const err   = document.getElementById('forgot-err');
+  err.style.display = 'none';
+  if (!email) { err.textContent = 'Enter your email address.'; err.style.display = 'block'; return; }
+  const btn = document.getElementById('forgot-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.href.split('#')[0]
+  });
+  if (btn) { btn.disabled = false; btn.textContent = 'Send Reset Link'; }
+  if (error) { err.textContent = error.message; err.style.display = 'block'; return; }
+  document.getElementById('forgot-form').style.display = 'none';
+  document.getElementById('forgot-success').style.display = 'block';
+}
+
+// Handle password reset redirect (Supabase sends back with #access_token&type=recovery)
+async function handlePasswordResetRedirect() {
+  const hash   = window.location.hash;
+  const params = new URLSearchParams(hash.replace('#', ''));
+  if (params.get('type') !== 'recovery') return false;
+  // Show reset password UI
+  document.getElementById('setup-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display  = 'none';
+  document.getElementById('reset-pw-screen').style.display = 'flex';
+  return true;
+}
+
+async function doResetPassword() {
+  const p1  = document.getElementById('reset-pw1').value;
+  const p2  = document.getElementById('reset-pw2').value;
+  const err = document.getElementById('reset-pw-err');
+  err.style.display = 'none';
+  if (p1.length < 8) { err.textContent = 'Password must be at least 8 characters.'; err.style.display = 'block'; return; }
+  if (p1 !== p2)     { err.textContent = 'Passwords do not match.'; err.style.display = 'block'; return; }
+  const { error } = await sb.auth.updateUser({ password: p1 });
+  if (error) { err.textContent = error.message; err.style.display = 'block'; return; }
+  showToast('Password updated! Signing you in…', 'success');
+  document.getElementById('reset-pw-screen').style.display = 'none';
+  history.replaceState(null, '', window.location.pathname + window.location.search);
+  await afterAuth();
+}
+
+async function afterAuth() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) { document.getElementById('login-screen').style.display = 'flex'; return; }
+  S.user = user;
+  const { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle();
+  if (!profile) { document.getElementById('login-screen').style.display = 'flex'; return; }
+  if (!profile.approved) {
+    S.profile = profile;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('pending-screen').style.display = 'flex';
     return;
   }
-  S.profile=profile;
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('pending-screen').style.display='none';
-  document.getElementById('app').style.display='flex';
+  S.profile = profile;
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('pending-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  await loadHierarchyPerms();
   await initApp();
 }
 
-async function doLogout(){
-  if(S.profile && !confirm('Sign out?'))return;
+async function doLogout() {
+  if (S.profile && !confirm('Sign out?')) return;
   await sb.auth.signOut();
-  S={...S, user:null, profile:null,
-     unreadCounts:{}, locallyReadIds:new Set(), messageReadIds:new Set(),
-     messages:[], lastSeenTaskTs:''};
-  document.getElementById('app').style.display='none';
-  document.getElementById('pending-screen').style.display='none';
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('li-email').value='';
-  document.getElementById('li-pwd').value='';
-  document.getElementById('li-err').style.display='none';
+  S = { ...S, user: null, profile: null, hierarchyPerms: {},
+        unreadCounts: {}, locallyReadIds: new Set(), messageReadIds: new Set(),
+        messages: [], lastSeenTaskTs: '' };
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('pending-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('li-email').value = '';
+  document.getElementById('li-pwd').value = '';
+  document.getElementById('li-err').style.display = 'none';
 }
 
-function isAdmin(){ return S.profile?.role==='admin'; }
-function genCode(){ return Math.random().toString(36).substring(2,8).toUpperCase(); }
+function genCode() { return Math.random().toString(36).substring(2, 8).toUpperCase(); }
 </script>
 <script>
 // ════════════════════════════════════════════
@@ -1431,10 +1665,17 @@ async function loadAllData(){
   S.signupCode=(codeRes.data&&codeRes.data[0])?codeRes.data[0].code:null;
 
   if(isAdmin()){
-    const {data:pending}=await sb.from('profiles').select('*').eq('approved',false);
-    S.pendingUsers=pending||[];
-  } else { S.pendingUsers=[]; }
-}
+     const {data:users}=await sb.from('profiles').select('*').order('created_at');
+     S.allUsers=users||[];
+     S.users=users.filter(u=>u.approved&&!u.archived)||[];
+     const {data:pending}=await sb.from('profiles').select('*').eq('approved',false).eq('archived',false);
+     S.pendingUsers=pending||[];
+   } else {
+     const {data:users}=await sb.from('profiles').select('*').eq('approved',true).order('created_at');
+     S.users=users||[];
+     S.pendingUsers=[];
+  }
+
 
 async function refreshAll(){
   await loadAllData();
@@ -1477,7 +1718,14 @@ async function initApp(){
   updateSyncStatus('synced','Live');
   loadLastSeenState();           // restore last-seen message state from localStorage
   await checkForNewItems();      // initial unread count from DB + badge update
-  startPolling();                // 5s fast poll (active view) + 30s background poll
+  startPolling(); // 5s fast poll (active view) + 30s background poll
+  javascript
+initChatbot();
+if(isAdmin()){
+  const {data:allU}=await sb.from('profiles').select('*').order('created_at');
+  S.allUsers=allU||[];
+}
+
   await loadDeadlineRules();     // preload for client detail deadlines tab
   await loadInvoiceSettings();   // preload for invoice generation
 }
@@ -1489,6 +1737,7 @@ async function initApp(){
 function buildSidebar(){
   const nav=document.getElementById('sidebar-nav');
   const admin=isAdmin();
+  const finances=canSeeFinances();
   let html=`
     <div class="nav-section-label">Overview</div>
     <button class="nav-item active" onclick="navigate('dashboard')"><i class="fas fa-th-large"></i> Dashboard</button>
@@ -1501,7 +1750,7 @@ function buildSidebar(){
   });
   html+=`<div class="nav-section-label">Workspace</div>
     <button class="nav-item" onclick="navigate('documents')"><i class="fas fa-folder-open"></i> Documents</button>
-    <button class="nav-item" onclick="navigate('finances')"><i class="fas fa-rupee-sign"></i> Finances</button>
+    ${finances?`<button class="nav-item" onclick="navigate('finances')"><i class="fas fa-rupee-sign"></i> Finances</button>`:''}
     <button class="nav-item" onclick="navigate('templates')"><i class="fas fa-file-alt"></i> Templates</button>
     <button class="nav-item" onclick="navigate('notes')"><i class="fas fa-sticky-note"></i> Notes</button>
     <button class="nav-item" onclick="navigate('chat')"><i class="fas fa-comments"></i> Messages <span id="chat-nav-badge" class="nav-badge" style="display:none;"></span></button>
@@ -1509,6 +1758,7 @@ function buildSidebar(){
   if(admin){
     html+=`<div class="nav-section-label">Admin</div>
       <button class="nav-item" onclick="navigate('users')"><i class="fas fa-user-shield"></i> Users <span id="pending-badge" class="nav-badge" style="display:none;"></span></button>
+      <button class="nav-item" onclick="navigate('hierarchy-perms')"><i class="fas fa-shield-alt"></i> Permissions</button>
       <button class="nav-item" onclick="navigate('formbuilder')"><i class="fas fa-sliders-h"></i> Form Builder</button>
       <button class="nav-item" onclick="navigate('deadline-rules')"><i class="fas fa-gavel"></i> Deadline Rules</button>
       <button class="nav-item" onclick="navigate('activity')"><i class="fas fa-history"></i> Activity Log</button>`;
@@ -1521,10 +1771,12 @@ function buildSidebar(){
 
 function updateSidebarProfile(){
   const n=S.profile?.full_name||'User';
+  const roleInfo=getRoleInfo(S.profile?.role||'junior_assistant');
   document.getElementById('sb-name').textContent=n;
-  document.getElementById('sb-role').textContent=isAdmin()?'Senior Advocate (Admin)':'Assistant Lawyer';
+  document.getElementById('sb-role').textContent=roleInfo.label;
   document.getElementById('sb-avatar').textContent=initials(n);
 }
+
 
 // ════════════════════════════════════════════
 //  NAVIGATION
@@ -1535,9 +1787,15 @@ const NAV_TITLES={
   users:'User Management',formbuilder:'Form Builder',settings:'Settings',
   notes:'Notes',activity:'Activity Log',finances:'Finances',
   'deadline-rules':'Deadline Rules'
+  'hierarchy-perms':'Role Permissions'
 };
 
 function navigate(view){
+  javascript
+if(view==='finances' && !canSeeFinances()){
+  showToast('Finances are restricted to the Senior Advocate only.','error');
+  return;
+}
   document.querySelectorAll('.page-view').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
   const el=document.getElementById(`view-${view}`);
@@ -1555,6 +1813,7 @@ function navigate(view){
   if(view==='finances') renderFinances();
   if(view==='formbuilder') renderFormBuilder();
   if(view==='tasks') renderTasks();
+  if(view==='hierarchy-perms') renderHierarchyPermissions();
   if(view==='chat'){
     renderChatContacts();
     loadMessages().then(()=>{
@@ -2006,367 +2265,335 @@ function renderRelatedCasesHTML(c){
 </script>
 <script>
 // ════════════════════════════════════════════
-//  CLIENT TABLE RENDER
+//  USERS MANAGEMENT (hierarchy-aware)
 // ════════════════════════════════════════════
-function renderClientTable(){
-  const search=(document.getElementById('client-search')?.value||'').toLowerCase();
-  const typeF=document.getElementById('filter-type')?.value||'';
-  const statF=document.getElementById('filter-status')?.value||'';
-  const assignF=document.getElementById('filter-assignee')?.value||'';
-  let clients=myClients().filter(c=>{
-    const ms=!search||c.name.toLowerCase().includes(search)||c.client_id.toLowerCase().includes(search)||JSON.stringify(c.case_data||{}).toLowerCase().includes(search);
-    const mt=!typeF||c.case_type===typeF;
-    const ms2=!statF||c.status===statF;
-    const ma=!assignF||c.assigned_to===assignF;
-    return ms&&mt&&ms2&&ma;
-  });
-  const tbody=document.getElementById('clients-tbody');
-  const empty=document.getElementById('clients-empty');
-  if(!clients.length){tbody.innerHTML='';if(empty)empty.style.display='block';return;}
-  if(empty)empty.style.display='none';
-  tbody.innerHTML=clients.map(c=>{
-    const au=S.users.find(u=>u.id===c.assigned_to);
-    const dl=getDeadline(c);
-    return `<tr onclick="viewClient('${c.client_id}')">
-      <td><div class="client-name-cell"><div class="avatar-sm av-navy">${initials(c.name)}</div><div><div class="font-medium">${c.name}</div><div class="client-id">${c.client_id}</div></div></div></td>
-      <td>${catBadge(c.case_type)}</td>
-      <td><span style="font-size:13px;">${au?au.full_name:'—'}</span></td>
-      <td>${statusBadge(c.status)}</td>
-      <td>${dl?deadlinePill(dl):'<span class="text-muted">—</span>'}</td>
-      <td onclick="event.stopPropagation()"><div style="display:flex;gap:6px;">
-        <button class="btn btn-outline btn-sm btn-icon" onclick="viewClient('${c.client_id}')"><i class="fas fa-eye"></i></button>
-        <button class="btn btn-outline btn-sm btn-icon" onclick="openEditClientById('${c.client_id}')"><i class="fas fa-edit"></i></button>
-        ${isAdmin()?`<button class="btn btn-danger btn-sm btn-icon" onclick="deleteClientById('${c.client_id}')"><i class="fas fa-trash"></i></button>`:''}
-      </div></td>
-    </tr>`;
-  }).join('');
-  renderRecentClients();
-}
-function renderRecentClients(){
-  const tbody=document.getElementById('recent-tbody');
-  if(!tbody)return;
-  const clients=myClients().slice(0,6);
-  if(!clients.length){tbody.innerHTML='<tr><td colspan="4"><div class="empty-state"><i class="fas fa-users"></i><div class="empty-state-title">No clients yet</div></div></td></tr>';return;}
-  tbody.innerHTML=clients.map(c=>{
-    const au=S.users.find(u=>u.id===c.assigned_to);
-    return `<tr onclick="viewClient('${c.client_id}')">
-      <td><div class="client-name-cell"><div class="avatar-sm av-navy">${initials(c.name)}</div><div><div class="font-medium">${c.name}</div><div class="client-id">${c.client_id}</div></div></div></td>
-      <td>${catBadge(c.case_type)}</td><td>${au?au.full_name:'—'}</td><td>${statusBadge(c.status)}</td>
-    </tr>`;
-  }).join('');
-}
-function openEditClientById(id){S.detailClientId=id;editCurrentClient();}
-function deleteClientById(id){S.detailClientId=id;deleteCurrentClient();}
 
-// ════════════════════════════════════════════
-//  STATS
-// ════════════════════════════════════════════
-function updateStats(){
-  const cl=myClients();
-  const alerts=getUpcomingDeadlines(60).length;
-  const myOpenTasks=S.tasks.filter(t=>t.assigned_to===S.user?.id&&t.status!=='done'&&t.status!=='cancelled').length;
-  let html=`<div class="stat-card gold"><div class="stat-label">Total Clients</div><div class="stat-value">${cl.length}</div><div class="stat-sub">Active matters</div><i class="fas fa-users stat-icon"></i></div>`;
-  S.categories.slice(0,3).forEach((cat,i)=>{
-    const colors=['blue','green','purple'];
-    const cnt=cl.filter(c=>c.case_type===cat.id).length;
-    html+=`<div class="stat-card ${colors[i]||'blue'}"><div class="stat-label">${cat.label}</div><div class="stat-value">${cnt}</div><i class="${cat.icon} stat-icon"></i></div>`;
-  });
-  html+=`<div class="stat-card red"><div class="stat-label">Alerts</div><div class="stat-value">${alerts}</div><div class="stat-sub">60-day window</div><i class="fas fa-bell stat-icon"></i></div>`;
-  html+=`<div class="stat-card purple"><div class="stat-label">My Tasks</div><div class="stat-value">${myOpenTasks}</div><div class="stat-sub">Open</div><i class="fas fa-tasks stat-icon"></i></div>`;
-  document.getElementById('stats-grid').innerHTML=html;
-  const dlBadge=document.getElementById('dl-badge');
-  if(dlBadge){dlBadge.textContent=alerts;dlBadge.style.display=alerts?'inline-block':'none';}
-  const taskBadge=document.getElementById('task-badge');
-  if(taskBadge){taskBadge.textContent=myOpenTasks;taskBadge.style.display=myOpenTasks?'inline-block':'none';}
-  renderDashDeadlines();
-  renderDashTasks();
-}
+function renderUsers() {
+  if (!isAdmin()) return;
+  const codeDisp = document.getElementById('signup-code-display');
+  if (codeDisp) codeDisp.textContent = S.signupCode || '—';
 
-// ════════════════════════════════════════════
-//  DEADLINES
-// ════════════════════════════════════════════
-function getDeadline(c){
-  const d=c.case_data||{};
-  const schema=S.formSchemas[c.case_type]||[];
-  for(const f of schema){ if(f.type==='date'&&d[f.id]) return d[f.id]; }
-  return null;
-}
-function getUpcomingDeadlines(days=60){
-  return myClients().flatMap(c=>{
-    const schema=S.formSchemas[c.case_type]||[];
-    const data=c.case_data||{};
-    return schema.filter(f=>f.type==='date'&&data[f.id]).map(f=>{
-      const dl=daysUntil(data[f.id]);
-      return dl!==null&&dl<=days?{client:c,field:f.label,deadline:data[f.id],daysLeft:dl}:null;
-    }).filter(Boolean);
-  }).sort((a,b)=>a.daysLeft-b.daysLeft);
-}
-function daysUntil(ds){ if(!ds)return null;const t=new Date(ds),n=new Date();n.setHours(0,0,0,0);t.setHours(0,0,0,0);return Math.round((t-n)/86400000); }
-function deadlinePill(ds){
-  const d=daysUntil(ds);
-  if(d===null)return fmtD(ds);
-  const cls=d<0?'urgent':d<=30?'soon':'ok';
-  const lbl=d<0?`${Math.abs(d)}d overdue`:d===0?'Today':`${d}d`;
-  return `<span class="deadline-days ${cls}" title="${fmtD(ds)}">${lbl}</span>`;
-}
-function renderDeadlines(){
-  const dl=getUpcomingDeadlines(60);
-  const ov=dl.filter(d=>d.daysLeft<0),d30=dl.filter(d=>d.daysLeft>=0&&d.daysLeft<=30),d60=dl.filter(d=>d.daysLeft>30&&d.daysLeft<=60);
-  const setEl=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  setEl('dl-overdue',ov.length);setEl('dl-30',d30.length);setEl('dl-60',d60.length);
-  const cnt=document.getElementById('deadlines-list');
-  if(!cnt)return;
-  if(!dl.length){cnt.innerHTML=`<div class="card"><div class="card-body empty-state"><i class="fas fa-calendar-check"></i><div class="empty-state-title">No upcoming deadlines</div></div></div>`;return;}
-  const sections=[{label:'Overdue',items:ov,type:'danger'},{label:'Within 30 days',items:d30,type:'warning'},{label:'Within 60 days',items:d60,type:'info'}];
-  cnt.innerHTML=sections.filter(s=>s.items.length).map(s=>`
-    <div class="card" style="margin-bottom:14px;">
-      <div class="card-header"><span class="card-title" style="color:${s.type==='danger'?'var(--danger)':s.type==='warning'?'#92400e':'var(--info)'}">${s.label}</span><span class="badge ${s.type==='danger'?'badge-alert':s.type==='warning'?'badge-pending':'badge-active'}">${s.items.length}</span></div>
-      <div class="card-body">${s.items.map(d=>`
-        <div class="deadline-item" onclick="viewClient('${d.client.client_id}')" style="cursor:pointer;">
-          <div><div style="font-size:13.5px;font-weight:500;">${d.client.name} <span class="client-id">${d.client.client_id}</span></div><div style="font-size:12px;color:var(--text-muted);">${d.field} · ${fmtD(d.deadline)}</div></div>
-          ${deadlinePill(d.deadline)}
-        </div>`).join('')}
-      </div>
-    </div>`).join('');
-}
-function renderDashDeadlines(){
-  const dl=getUpcomingDeadlines(60).slice(0,5);
-  const cnt=document.getElementById('dash-deadlines');
-  if(!cnt)return;
-  if(!dl.length){cnt.innerHTML='<p class="text-muted text-sm">No upcoming deadlines.</p>';return;}
-  cnt.innerHTML=dl.map(d=>`
-    <div class="deadline-item" onclick="viewClient('${d.client.client_id}')" style="cursor:pointer;">
-      <div><div style="font-size:13.5px;font-weight:500;">${d.client.name}</div><div style="font-size:12px;color:var(--text-muted);">${d.field} · ${fmtD(d.deadline)}</div></div>
-      ${deadlinePill(d.deadline)}
-    </div>`).join('');
-}
-function renderDashTasks(){
-  const cnt=document.getElementById('dash-tasks');
-  if(!cnt)return;
-  const mine=S.tasks.filter(t=>t.assigned_to===S.user?.id&&t.status!=='done'&&t.status!=='cancelled').slice(0,5);
-  if(!mine.length){cnt.innerHTML='<p class="text-muted text-sm">No open tasks assigned to you.</p>';return;}
-  cnt.innerHTML=mine.map(t=>`
-    <div class="deadline-item" onclick="openTaskModal('${t.id}')" style="cursor:pointer;">
-      <div><div style="font-size:13.5px;font-weight:500;">${escHtml(t.title)}</div><div style="font-size:12px;color:var(--text-muted);">${t.due_date?fmtD(t.due_date):'No due date'}</div></div>
-      <span class="badge ${t.priority==='high'?'badge-alert':t.priority==='low'?'badge-active':'badge-pending'}">${capitalize(t.priority)}</span>
-    </div>`).join('');
-}
-function checkAlerts(){
-  getUpcomingDeadlines(7).forEach(d=>{ if(d.daysLeft>=0) setTimeout(()=>showToast(`⚠ Deadline in ${d.daysLeft}d: ${d.client.name} — ${d.field}`,'warning'),2000); });
-}
-
-// ════════════════════════════════════════════
-//  FILE UPLOAD (modal staging)
-// ════════════════════════════════════════════
-function handleFileSelect(e){ addFiles(Array.from(e.target.files)); e.target.value=''; }
-function handleFileDrop(e){ e.preventDefault();document.getElementById('file-drop-zone').classList.remove('drag-over');addFiles(Array.from(e.dataTransfer.files)); }
-function addFiles(files){
-  if(!S.pendingFiles)S.pendingFiles=[];
-  files.forEach(f=>{
-    if(f.size>20*1024*1024){showToast(`"${f.name}" exceeds 20MB.`,'error');return;}
-    S.pendingFiles.push({name:f.name,size:f.size,type:f.type,_file:f});
-  });
-  renderFileList();
-}
-function renderFileList(){
-  const list=document.getElementById('file-list');
-  if(!list)return;
-  list.innerHTML=(S.pendingFiles||[]).map((f,i)=>`
-    <div class="file-item">
-      <i class="${fileIcon(f.name)}" style="font-size:18px;color:var(--navy-mid);"></i>
-      <span class="file-item-name">${escHtml(f.name)}</span>
-      <span class="file-item-size">${formatBytes(f.size)}</span>
-      <button class="file-item-remove" onclick="removeFile(${i})"><i class="fas fa-times"></i></button>
-    </div>`).join('');
-}
-function removeFile(i){ S.pendingFiles.splice(i,1); renderFileList(); }
-
-// ════════════════════════════════════════════
-//  DOCUMENTS PAGE + FILE PREVIEW (real, working)
-// ════════════════════════════════════════════
-function renderDocuments(){
-  const search=(document.getElementById('doc-search')?.value||'').toLowerCase();
-  const typeF=document.getElementById('doc-filter-type')?.value||'';
-  const clientF=document.getElementById('doc-filter-client')?.value||'';
-  const visibleClientIds=new Set(myClients().map(c=>c.client_id));
-  const docs=S.documents.filter(d=>{
-    if(!isAdmin()&&!visibleClientIds.has(d.client_id))return false;
-    if(clientF&&d.client_id!==clientF)return false;
-    const client=S.clients.find(c=>c.client_id===d.client_id);
-    const cname=client?client.name:'';
-    const ms=!search||d.name.toLowerCase().includes(search)||cname.toLowerCase().includes(search);
-    const mt=!typeF||getDocExt(d.name)===typeF;
-    return ms&&mt;
-  });
-  const tbody=document.getElementById('documents-tbody');
-  const empty=document.getElementById('documents-empty');
-  if(!tbody)return;
-  if(!docs.length){tbody.innerHTML='';if(empty)empty.style.display='block';return;}
-  if(empty)empty.style.display='none';
-  tbody.innerHTML=docs.map(d=>{
-    const client=S.clients.find(c=>c.client_id===d.client_id);
-    const canDelete=isAdmin()||d.uploaded_by===S.user.id;
-    return `<tr>
-      <td><div style="display:flex;align-items:center;gap:8px;"><i class="${fileIcon(d.name)}" style="font-size:18px;color:var(--navy-mid);"></i><span class="font-medium">${escHtml(d.name)}</span></div></td>
-      <td>${client?client.name:'—'} <span class="client-id">${d.client_id}</span></td>
-      <td>${d.category||'—'}</td>
-      <td>${formatBytes(d.size)}</td>
-      <td style="font-size:12px;color:var(--text-muted);">${fmtD(d.uploaded_at)}</td>
-      <td><div style="display:flex;gap:6px;">
-        <button class="btn btn-outline btn-xs" onclick="openFilePreview('${d.id}')"><i class="fas fa-eye"></i> View</button>
-        ${canDelete?`<button class="btn btn-danger btn-xs" onclick="deleteDocument('${d.id}')"><i class="fas fa-trash"></i></button>`:''}
-      </div></td>
-    </tr>`;
-  }).join('');
-}
-async function deleteDocument(docId){
-  const d=S.documents.find(x=>x.id===docId);
-  if(!d)return;
-  if(!isAdmin()&&d.uploaded_by!==S.user.id){showToast('You can only delete files you uploaded.','error');return;}
-  if(!confirm(`Delete "${d.name}"? This cannot be undone.`))return;
-  if(d.storage_path){
-    const {error:rmErr}=await sb.storage.from('lexdesk-files').remove([d.storage_path]);
-    if(rmErr) console.warn('Storage removal warning:',rmErr.message);
-  }
-  const {error}=await sb.from('documents').delete().eq('id',docId);
-  if(error){showToast('Delete failed: '+error.message,'error');return;}
-  S.documents=S.documents.filter(x=>x.id!==docId);
-  renderDocuments();
-  showToast('Document deleted.','warning');
-}
-
-let _previewDoc=null;
-async function openFilePreview(docId){
-  const d=S.documents.find(x=>x.id===docId);
-  if(!d){showToast('Document not found.','error');return;}
-  _previewDoc=d;
-  document.getElementById('prev-title').textContent=d.name;
-  document.getElementById('prev-sub').textContent=`${formatBytes(d.size)} · Uploaded ${fmtD(d.uploaded_at)}`;
-  const body=document.getElementById('prev-body');
-  body.innerHTML='<i class="fas fa-spinner fa-spin" style="font-size:24px;color:var(--text-muted);"></i>';
-  openModal('modal-preview');
-
-  const {data,error}=await sb.storage.from('lexdesk-files').createSignedUrl(d.storage_path,3600);
-  if(error||!data){ body.innerHTML='<p class="text-muted">Could not load file preview.</p>'; return; }
-  const url=data.signedUrl;
-  const ext=(d.name.split('.').pop()||'').toLowerCase();
-  if(['jpg','jpeg','png','gif','webp'].includes(ext)){
-    body.innerHTML=`<img src="${url}" alt="${escHtml(d.name)}"/>`;
-  } else if(ext==='pdf'){
-    body.innerHTML=`<iframe src="${url}"></iframe>`;
-  } else if(['txt'].includes(ext)){
-    const txt=await fetch(url).then(r=>r.text()).catch(()=>'Could not load text content.');
-    body.innerHTML=`<pre style="white-space:pre-wrap;padding:16px;font-size:13px;width:100%;">${escHtml(txt)}</pre>`;
-  } else {
-    body.innerHTML=`<div style="text-align:center;padding:40px;"><i class="${fileIcon(d.name)}" style="font-size:48px;color:var(--text-muted);margin-bottom:14px;display:block;"></i><p class="text-muted">Preview not available for this file type.</p><p class="text-sm text-muted">Click Download to view it.</p></div>`;
-  }
-  document.getElementById('prev-download-btn').dataset.url=url;
-}
-function downloadPreviewFile(){
-  const url=document.getElementById('prev-download-btn').dataset.url;
-  if(!url||!_previewDoc)return;
-  const a=document.createElement('a');a.href=url;a.download=_previewDoc.name;a.target='_blank';a.click();
-}
-
-// ════════════════════════════════════════════
-//  USERS MANAGEMENT (admin only)
-// ════════════════════════════════════════════
-function copySignupCode(){
-  if(!S.signupCode){showToast('No active code.','error');return;}
-  navigator.clipboard.writeText(S.signupCode).then(()=>showToast('Code copied!','success'));
-}
-async function regenerateSignupCode(){
-  if(!confirm('Generate a new code? The old one will stop working.'))return;
-  const newCode=genCode();
-  const {error:insErr}=await sb.from('signup_codes').insert({code:newCode,created_by:S.user.id});
-  if(insErr){showToast('Could not generate new code: '+insErr.message,'error');return;}
-  if(S.signupCode){
-    const {error:deactErr}=await sb.from('signup_codes').update({active:false}).eq('code',S.signupCode);
-    if(deactErr) console.warn('Old code could not be deactivated:',deactErr.message);
-  }
-  S.signupCode=newCode;
-  renderUsers();
-  showToast('New signup code generated.','success');
-}
-function openAddUserModal(userId){
-  const u=[...S.users,...(S.pendingUsers||[])].find(x=>x.id===userId);
-  if(!u)return;
-  document.getElementById('au-title').textContent=u.approved?'Edit Role':'Approve & Assign Role';
-  document.getElementById('au-name').value=u.full_name;
-  document.getElementById('au-email').value=u.email||'';
-  document.getElementById('au-role').value=u.role==='pending'?'assistant':u.role;
-  document.getElementById('au-bar').value=u.bar_number||'';
-  S._approvingUserId=userId;
-  openModal('modal-add-user');
-}
-async function approveUser(){
-  const id=S._approvingUserId;
-  const role=document.getElementById('au-role').value;
-  const bar=document.getElementById('au-bar').value;
-  const {error}=await sb.from('profiles').update({role,approved:true,bar_number:bar}).eq('id',id);
-  if(error){showToast('Failed: '+error.message,'error');return;}
-  closeModal('modal-add-user');
-  await refreshAll();
-  showToast('User approved!','success');
-}
-async function changeUserRole(userId,newRole){
-  if(userId===S.user.id&&newRole!=='admin'){showToast('You cannot demote yourself.','error');return;}
-  const {error}=await sb.from('profiles').update({role:newRole}).eq('id',userId);
-  if(error){showToast('Failed: '+error.message,'error');return;}
-  await refreshAll();
-  showToast('Role updated.','success');
-}
-async function removeUserAccess(userId){
-  if(userId===S.user.id){showToast('You cannot remove your own access.','error');return;}
-  if(!confirm('Revoke this user\'s access? Their assigned clients will remain but unassigned.'))return;
-  await sb.from('clients').update({assigned_to:null}).eq('assigned_to',userId);
-  const {error}=await sb.from('profiles').update({approved:false}).eq('id',userId);
-  if(error){showToast('Failed: '+error.message,'error');return;}
-  await refreshAll();
-  showToast('Access revoked.','warning');
-}
-function renderUsers(){
-  if(!isAdmin())return;
-  const codeDisp=document.getElementById('signup-code-display');
-  if(codeDisp) codeDisp.textContent=S.signupCode||'—';
-  const pendingSection=document.getElementById('users-pending-section');
-  const pendingList=document.getElementById('users-pending-list');
-  if(S.pendingUsers&&S.pendingUsers.length){
-    pendingSection.style.display='block';
-    pendingList.innerHTML=S.pendingUsers.map(u=>`
+  // Pending section
+  const pendingSection = document.getElementById('users-pending-section');
+  const pendingList    = document.getElementById('users-pending-list');
+  if (S.pendingUsers && S.pendingUsers.length) {
+    pendingSection.style.display = 'block';
+    pendingList.innerHTML = S.pendingUsers.map(u => `
       <div class="user-list-item">
         <div class="avatar-sm av-blue">${initials(u.full_name)}</div>
-        <div class="user-list-item-info"><div class="user-list-item-name">${u.full_name}</div><div class="user-list-item-meta">${u.email} · Signed up ${fmtD(u.created_at)}</div></div>
-        <button class="btn btn-gold btn-sm" onclick="openAddUserModal('${u.id}')"><i class="fas fa-check"></i> Approve</button>
+        <div class="user-list-item-info">
+          <div class="user-list-item-name">${u.full_name}</div>
+          <div class="user-list-item-meta">${u.email} · Signed up ${fmtD(u.created_at)}</div>
+        </div>
+        <button class="btn btn-gold btn-sm" onclick="openApproveUserModal('${u.id}')">
+          <i class="fas fa-check"></i> Approve
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="rejectUser('${u.id}')">
+          <i class="fas fa-times"></i> Reject
+        </button>
       </div>`).join('');
-  } else { pendingSection.style.display='none'; }
+  } else {
+    pendingSection.style.display = 'none';
+  }
 
-  const cnt=document.getElementById('users-list');
-  if(!cnt)return;
-  if(!S.users.length){cnt.innerHTML='<div class="empty-state"><i class="fas fa-users"></i><div class="empty-state-title">No users</div></div>';return;}
-  cnt.innerHTML=S.users.map(u=>{
-    const clientCount=S.clients.filter(c=>c.assigned_to===u.id).length;
-    const isMe=u.id===S.user.id;
-    return `<div class="user-list-item">
-      <div class="avatar-sm ${u.role==='admin'?'av-purple':'av-blue'}">${initials(u.full_name)}</div>
-      <div class="user-list-item-info">
-        <div class="user-list-item-name">${u.full_name}${isMe?' (You)':''} <span class="badge ${u.role==='admin'?'badge-admin':'badge-assistant'}">${u.role==='admin'?'Admin':'Assistant'}</span></div>
-        <div class="user-list-item-meta">${u.email} · ${u.bar_number||'No bar no.'} · ${clientCount} client${clientCount!==1?'s':''}</div>
+  // Active users tabs
+  const tab = S._usersTab || 'active';
+  document.querySelectorAll('#users-tab-bar .tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+
+  const cnt = document.getElementById('users-list');
+  if (!cnt) return;
+
+  let users = S.users;
+  if (tab === 'active')   users = S.users.filter(u => u.approved && !u.archived);
+  if (tab === 'archived') users = (S.allUsers || S.users).filter(u => u.archived);
+
+  if (!users.length) {
+    cnt.innerHTML = `<div class="empty-state"><i class="fas fa-users"></i>
+      <div class="empty-state-title">No ${tab} members</div></div>`;
+    return;
+  }
+
+  cnt.innerHTML = users.map(u => {
+    const isMe      = u.id === S.user.id;
+    const isFounder = u.is_founder;
+    const roleInfo  = getRoleInfo(u.role);
+    const clientCount = S.clients.filter(c => c.assigned_to === u.id).length;
+
+    let actions = '';
+    if (!isMe) {
+      if (!isFounder) {
+        if (tab === 'active') {
+          actions += `<button class="btn btn-outline btn-sm" onclick="openEditRoleModal('${u.id}')">
+            <i class="fas fa-user-tag"></i> Role</button>`;
+          actions += `<button class="btn btn-outline btn-sm" onclick="archiveUser('${u.id}')">
+            <i class="fas fa-archive"></i> Archive</button>`;
+          actions += `<button class="btn btn-danger btn-sm" onclick="removeUserAccess('${u.id}')">
+            <i class="fas fa-user-slash"></i> Remove</button>`;
+        }
+        if (tab === 'archived') {
+          actions += `<button class="btn btn-success btn-sm" onclick="restoreUser('${u.id}')">
+            <i class="fas fa-undo"></i> Restore</button>`;
+          actions += `<button class="btn btn-danger btn-sm" onclick="permanentDeleteUser('${u.id}')">
+            <i class="fas fa-trash"></i> Delete</button>`;
+        }
+      } else {
+        actions = '<span class="badge badge-senior-advocate"><i class="fas fa-crown"></i> Founder</span>';
+      }
+    } else {
+      actions = '<span class="text-muted text-sm">(You)</span>';
+    }
+
+    const archivedBadge = u.archived
+      ? '<span class="badge badge-archived" style="margin-left:6px;">Archived</span>' : '';
+
+    return `<div class="user-list-item ${u.archived ? 'archived' : ''}">
+      <div class="avatar-sm ${roleInfo.rank === 1 ? 'av-purple' : roleInfo.rank === 2 ? 'av-blue' : 'av-green'}">
+        ${initials(u.full_name)}
       </div>
-      <div style="display:flex;gap:8px;flex-shrink:0;">
-        <button class="btn btn-outline btn-sm" onclick="showUserClients('${u.id}')"><i class="fas fa-users"></i> Clients</button>
-        ${!isMe?`<button class="btn btn-outline btn-sm" onclick="openAddUserModal('${u.id}')"><i class="fas fa-edit"></i></button>
-        <button class="btn btn-danger btn-sm" onclick="removeUserAccess('${u.id}')"><i class="fas fa-user-slash"></i></button>`:''}
+      <div class="user-list-item-info">
+        <div class="user-list-item-name">
+          ${u.full_name}${isMe ? ' (You)' : ''}
+          ${roleBadgeHtml(u.role)}${archivedBadge}
+        </div>
+        <div class="user-list-item-meta">
+          ${u.email} · ${u.bar_number || 'No bar no.'} · ${clientCount} client${clientCount !== 1 ? 's' : ''}
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;">
+        ${!isMe && tab === 'active' ? `<button class="btn btn-outline btn-sm" onclick="showUserClients('${u.id}')">
+          <i class="fas fa-users"></i></button>` : ''}
+        ${actions}
       </div>
     </div>`;
   }).join('');
 }
-function showUserClients(userId){
-  const u=S.users.find(x=>x.id===userId);
-  navigate('clients');
-  document.getElementById('filter-assignee').value=userId;
-  document.getElementById('topbar-title').textContent=`${u?.full_name||'User'}'s Clients`;
-  renderClientTable();
+
+// ── Approve user modal ─────────────────────────────────────────────────────
+function openApproveUserModal(userId) {
+  const u = (S.pendingUsers || []).find(x => x.id === userId);
+  if (!u) return;
+  document.getElementById('au-title').textContent = 'Approve & Assign Role';
+  document.getElementById('au-name').value  = u.full_name;
+  document.getElementById('au-email').value = u.email || '';
+  document.getElementById('au-bar').value   = u.bar_number || '';
+  // Populate role selector
+  const roleSel = document.getElementById('au-role');
+  roleSel.innerHTML = ROLE_HIERARCHY.filter(r => r.key !== 'senior_advocate')
+    .map(r => `<option value="${r.key}">${r.label}</option>`).join('');
+  roleSel.value = 'junior_assistant';
+  S._approvingUserId = userId;
+  openModal('modal-add-user');
+}
+
+async function approveUser() {
+  const id   = S._approvingUserId;
+  const role = document.getElementById('au-role').value;
+  const bar  = document.getElementById('au-bar').value;
+  const { error } = await sb.from('profiles').update({ role, approved: true, bar_number: bar }).eq('id', id);
+  if (error) { showToast('Failed: ' + error.message, 'error'); return; }
+  closeModal('modal-add-user');
+  await refreshAll();
+  showToast('User approved!', 'success');
+}
+
+async function rejectUser(userId) {
+  if (!confirm('Reject and delete this pending account? This cannot be undone.')) return;
+  await sb.from('profiles').delete().eq('id', userId);
+  S.pendingUsers = (S.pendingUsers || []).filter(u => u.id !== userId);
+  renderUsers();
+  showToast('Account rejected.', 'warning');
+}
+
+// ── Edit role modal ────────────────────────────────────────────────────────
+function openEditRoleModal(userId) {
+  const u = S.users.find(x => x.id === userId);
+  if (!u) return;
+  document.getElementById('au-title').textContent = `Change Role — ${u.full_name}`;
+  document.getElementById('au-name').value  = u.full_name;
+  document.getElementById('au-email').value = u.email || '';
+  document.getElementById('au-bar').value   = u.bar_number || '';
+  const roleSel = document.getElementById('au-role');
+  roleSel.innerHTML = ROLE_HIERARCHY.filter(r => r.key !== 'senior_advocate')
+    .map(r => `<option value="${r.key}" ${u.role === r.key ? 'selected' : ''}>${r.label}</option>`).join('');
+  S._approvingUserId = userId;
+  openModal('modal-add-user');
+}
+
+// ── Archive user ───────────────────────────────────────────────────────────
+async function archiveUser(userId) {
+  const u = S.users.find(x => x.id === userId);
+  if (!u) return;
+  if (u.is_founder) { showToast('Cannot archive the Founder account.', 'error'); return; }
+  if (!confirm(`Archive ${u.full_name}? They will lose access but data is preserved.`)) return;
+  await sb.from('profiles').update({ approved: false, archived: true }).eq('id', userId);
+  u.approved = false; u.archived = true;
+  renderUsers();
+  showToast(`${u.full_name} archived.`, 'warning');
+}
+
+// ── Restore archived user ──────────────────────────────────────────────────
+async function restoreUser(userId) {
+  const u = (S.allUsers || S.users).find(x => x.id === userId);
+  if (!u) return;
+  const { error } = await sb.from('profiles').update({ approved: true, archived: false }).eq('id', userId);
+  if (error) { showToast('Failed: ' + error.message, 'error'); return; }
+  u.approved = true; u.archived = false;
+  await refreshAll();
+  showToast(`${u.full_name} restored.`, 'success');
+}
+
+// ── Permanent delete ───────────────────────────────────────────────────────
+async function permanentDeleteUser(userId) {
+  const u = (S.allUsers || S.users).find(x => x.id === userId);
+  if (!u) return;
+  if (u.is_founder) { showToast('Cannot delete the Founder account.', 'error'); return; }
+  if (!confirm(`PERMANENTLY DELETE ${u.full_name}? All their data is irreversible. Type their name to confirm.`)) return;
+  await sb.from('clients').update({ assigned_to: null }).eq('assigned_to', userId);
+  await sb.from('profiles').delete().eq('id', userId);
+  S.users = S.users.filter(x => x.id !== userId);
+  renderUsers();
+  showToast(`${u.full_name} permanently deleted.`, 'warning');
+}
+
+// ── Remove access (soft — keeps profile, sets approved=false) ──────────────
+async function removeUserAccess(userId) {
+  const u = S.users.find(x => x.id === userId);
+  if (!u) return;
+  if (u.is_founder) { showToast('Cannot remove the Founder account.', 'error'); return; }
+  if (userId === S.user.id) { showToast('You cannot remove your own access.', 'error'); return; }
+  if (!confirm(`Revoke access for ${u.full_name}? Their assigned clients will be unlinked.`)) return;
+  await sb.from('clients').update({ assigned_to: null }).eq('assigned_to', userId);
+  await sb.from('profiles').update({ approved: false }).eq('id', userId);
+  await refreshAll();
+  showToast('Access revoked.', 'warning');
+}
+
+function switchUsersTab(tab, btn) {
+  S._usersTab = tab;
+  document.querySelectorAll('#users-tab-bar .tab-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderUsers();
+}
+
+// ════════════════════════════════════════════
+//  HIERARCHY PERMISSIONS PAGE
+// ════════════════════════════════════════════
+const PERM_DEFS = [
+  { key: 'see_all_clients',   label: 'View All Clients',      desc: 'Can see clients assigned to others',      icon: 'fas fa-users' },
+  { key: 'manage_clients',    label: 'Add / Edit Clients',     desc: 'Create and modify client records',        icon: 'fas fa-user-edit' },
+  { key: 'upload_documents',  label: 'Upload Documents',       desc: 'Upload files to client records',          icon: 'fas fa-file-upload' },
+  { key: 'use_templates',     label: 'Use Templates',          desc: 'Fill and generate document templates',    icon: 'fas fa-file-alt' },
+  { key: 'create_tasks',      label: 'Create Tasks',           desc: 'Create and assign tasks',                 icon: 'fas fa-tasks' },
+  { key: 'access_chat',       label: 'Internal Chat',          desc: 'Send and receive messages',               icon: 'fas fa-comments' },
+  { key: 'access_planner',    label: 'Daily Planner',          desc: 'View and edit personal planner',          icon: 'fas fa-calendar-alt' },
+  { key: 'access_notes',      label: 'Notes',                  desc: 'Create and share notes',                  icon: 'fas fa-sticky-note' },
+  { key: 'view_activity_log', label: 'View Activity Log',      desc: 'Access audit trail and activity log',     icon: 'fas fa-history' },
+  { key: 'see_finances',      label: 'View Finances',          desc: 'Always restricted to Senior Advocate',    icon: 'fas fa-rupee-sign', lockedOff: true },
+];
+
+async function renderHierarchyPermissions() {
+  const cnt = document.getElementById('view-hierarchy-perms');
+  if (!cnt) return;
+  if (!isAdmin()) { cnt.innerHTML = '<div class="empty-state"><i class="fas fa-lock"></i><div class="empty-state-title">Senior Advocate only</div></div>'; return; }
+
+  const editableRoles = ROLE_HIERARCHY.filter(r => r.key !== 'senior_advocate');
+
+  let html = `
+  <div class="card mb-4">
+    <div class="card-header">
+      <span class="card-title"><i class="fas fa-shield-alt" style="color:var(--gold)"></i> Firm Hierarchy</span>
+    </div>
+    <div class="card-body">
+      <div class="hierarchy-tree">
+        ${ROLE_HIERARCHY.map((r, i) => {
+          const members = S.users.filter(u => u.role === r.key && u.approved && !u.archived);
+          return `<div class="hierarchy-level">
+            <span class="hierarchy-rank">${i + 1}</span>
+            ${i > 0 ? '<i class="fas fa-long-arrow-alt-down hierarchy-arrow"></i>' : ''}
+            ${roleBadgeHtml(r.key)}
+            <span style="font-size:12px;color:var(--text-muted);margin-left:8px;">${members.length} member${members.length !== 1 ? 's' : ''}</span>
+            <div class="hierarchy-members">
+              ${members.slice(0, 4).map(m => `<span class="avatar-sm av-navy" style="width:26px;height:26px;font-size:10px;" title="${m.full_name}">${initials(m.full_name)}</span>`).join('')}
+              ${members.length > 4 ? `<span style="font-size:11px;color:var(--text-muted);">+${members.length - 4} more</span>` : ''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title"><i class="fas fa-lock" style="color:var(--gold)"></i> Role Permissions Matrix</span>
+      <button class="btn btn-gold btn-sm" onclick="saveHierarchyPermissions()"><i class="fas fa-save"></i> Save Changes</button>
+    </div>
+    <div class="card-body">
+      <p class="text-sm text-muted mb-3">
+        Toggle what each role can access. <strong>Senior Advocate always has full access</strong> and cannot be restricted.
+        Finances are permanently restricted to Senior Advocate only.
+      </p>
+      <div style="overflow-x:auto;">
+      <table class="perm-matrix">
+        <thead>
+          <tr>
+            <th style="min-width:180px;">Permission</th>
+            <th><span class="role-tier-badge badge-senior-advocate"><i class="fas fa-crown"></i> Sr. Advocate</span></th>
+            ${editableRoles.map(r => `<th><span class="role-tier-badge ${r.badgeClass}"><i class="${r.icon}"></i> ${r.short}</span></th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          ${PERM_DEFS.map(p => `
+          <tr>
+            <td>
+              <div style="font-weight:500;">${p.label}</div>
+              <div style="font-size:11px;color:var(--text-muted);">${p.desc}</div>
+            </td>
+            <td style="text-align:center;">
+              <i class="fas fa-check-circle" style="color:var(--success);font-size:16px;"></i>
+            </td>
+            ${editableRoles.map(r => {
+              const isLocked = p.lockedOff;
+              const checked  = isLocked ? false : (S.hierarchyPerms?.[r.key]?.[p.key] ?? false);
+              return `<td style="text-align:center;">
+                <button class="perm-toggle ${checked ? 'on' : ''} ${isLocked ? 'disabled' : ''}"
+                  id="pt-${r.key}-${p.key}"
+                  ${isLocked ? 'disabled' : ''}
+                  onclick="togglePermButton(this,'${r.key}','${p.key}')"
+                  title="${isLocked ? 'Always restricted to Senior Advocate' : (checked ? 'Allowed — click to deny' : 'Denied — click to allow')}">
+                </button>
+              </td>`;
+            }).join('')}
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>`;
+
+  cnt.innerHTML = html;
+}
+
+function togglePermButton(btn, role, permKey) {
+  btn.classList.toggle('on');
+  // Update local cache immediately
+  if (!S.hierarchyPerms) S.hierarchyPerms = {};
+  if (!S.hierarchyPerms[role]) S.hierarchyPerms[role] = {};
+  S.hierarchyPerms[role][permKey] = btn.classList.contains('on');
+}
+
+async function saveHierarchyPermissions() {
+  const rows = [];
+  ROLE_HIERARCHY.filter(r => r.key !== 'senior_advocate').forEach(r => {
+    PERM_DEFS.forEach(p => {
+      if (p.lockedOff) return;
+      const btn = document.getElementById(`pt-${r.key}-${p.key}`);
+      const allowed = btn ? btn.classList.contains('on') : false;
+      rows.push({ role: r.key, perm_key: p.key, allowed, updated_by: S.user.id, updated_at: new Date().toISOString() });
+    });
+  });
+  const { error } = await sb.from('hierarchy_permissions').upsert(rows, { onConflict: 'role,perm_key' });
+  if (error) { showToast('Save failed: ' + error.message, 'error'); return; }
+  await loadHierarchyPerms();
+  showToast('Permissions saved! Changes apply on next login.', 'success');
 }
 </script>
 <script>
@@ -5105,6 +5332,9 @@ document.addEventListener('click',e=>{
 //  BOOT
 // ════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded',async ()=>{
+  javascript
+const wasReset = await handlePasswordResetRedirect();
+if(wasReset) return;
   // Check for client portal mode first (before normal auth)
   const portalToken = checkPortalMode();
   if(portalToken){
@@ -5129,5 +5359,313 @@ window.addEventListener('DOMContentLoaded',async ()=>{
   window.addEventListener('offline',()=>updateSyncStatus('offline','Offline'));
 });
 </script>
+html
+<script>
+// ════════════════════════════════════════════
+//  CHATBOT — Floating Draggable Assistant
+//  Preset Q&A, 2-day history clear, enable/disable
+// ════════════════════════════════════════════
+
+const CHATBOT_HISTORY_KEY = 'ld_chatbot_history';
+const CHATBOT_ENABLED_KEY = 'ld_chatbot_enabled';
+const CHATBOT_HISTORY_TTL = 2 * 24 * 60 * 60 * 1000; // 2 days in ms
+
+const CHATBOT_QA = [
+  // Deadlines & Dates
+  {
+    patterns: ['deadline','filing','court date','next date','hearing'],
+    response: () => {
+      const upcoming = getUpcomingDeadlines(30).slice(0, 3);
+      if (!upcoming.length) return "I don't see any deadlines in the next 30 days. You're in good shape! 🎉";
+      const lines = upcoming.map(d => `• ${d.client.name} — ${d.field}: ${fmtD(d.deadline)} (${d.daysLeft < 0 ? Math.abs(d.daysLeft)+'d overdue' : d.daysLeft+'d left'})`);
+      return `Here are your upcoming deadlines:\n${lines.join('\n')}`;
+    }
+  },
+  // Clients
+  {
+    patterns: ['how many clients', 'total clients', 'client count'],
+    response: () => {
+      const cl = myClients();
+      const active = cl.filter(c => c.status === 'active').length;
+      return `You have ${cl.length} total client${cl.length !== 1 ? 's' : ''}, of which ${active} are active.`;
+    }
+  },
+  {
+    patterns: ['find client', 'search client', 'look up client', 'client named'],
+    response: (msg) => {
+      const term = msg.replace(/find|search|look up|client|named/gi, '').trim().toLowerCase();
+      if (term.length < 2) return 'Please type a client name or ID to search for.';
+      const found = S.clients.filter(c => c.name.toLowerCase().includes(term) || c.client_id.toLowerCase().includes(term));
+      if (!found.length) return `No clients found matching "${term}".`;
+      return `Found ${found.length} match${found.length !== 1 ? 'es' : ''} for "${term}":\n` +
+        found.slice(0, 5).map(c => `• ${c.name} (${c.client_id}) — ${c.status}`).join('\n');
+    }
+  },
+  // Tasks
+  {
+    patterns: ['my tasks', 'open tasks', 'pending tasks', 'what tasks'],
+    response: () => {
+      const mine = S.tasks.filter(t => t.assigned_to === S.user?.id && !['done','cancelled'].includes(t.status));
+      if (!mine.length) return "You have no open tasks right now. ✅";
+      return `You have ${mine.length} open task${mine.length !== 1 ? 's' : ''}:\n` +
+        mine.slice(0, 5).map(t => `• [${t.status}] ${t.title}${t.due_date ? ' — due ' + fmtD(t.due_date) : ''}`).join('\n');
+    }
+  },
+  // Payments / Finances
+  {
+    patterns: ['outstanding', 'unpaid', 'balance', 'money owed', 'pending payment'],
+    response: () => {
+      if (!canSeeFinances()) return "Finance details are only visible to the Senior Advocate.";
+      const totalFee  = S.clients.reduce((s, c) => s + Number(c.fee || 0), 0);
+      const totalPaid = (S.finPayments || []).reduce((s, p) => s + Number(p.amount || 0), 0);
+      const out = Math.max(0, totalFee - totalPaid);
+      return `Outstanding balance across all clients: ₹${out.toLocaleString('en-IN')}\nTotal fees: ₹${totalFee.toLocaleString('en-IN')} | Collected: ₹${totalPaid.toLocaleString('en-IN')}`;
+    }
+  },
+  // Documents
+  {
+    patterns: ['document', 'file', 'uploaded', 'attachment'],
+    response: () => {
+      const count = S.documents.length;
+      return `There ${count === 1 ? 'is' : 'are'} ${count} document${count !== 1 ? 's' : ''} stored in the system. Navigate to Documents to view or search them.`;
+    }
+  },
+  // Team
+  {
+    patterns: ['team', 'staff', 'members', 'who is', 'lawyers'],
+    response: () => {
+      const active = S.users.filter(u => u.approved && !u.archived);
+      const lines  = active.map(u => `• ${u.full_name} — ${getRoleInfo(u.role).label}`);
+      return `Your firm has ${active.length} active team member${active.length !== 1 ? 's' : ''}:\n${lines.join('\n')}`;
+    }
+  },
+  // Today
+  {
+    patterns: ['today', 'agenda', 'schedule', 'plan'],
+    response: () => {
+      const today = localDateStr ? localDateStr() : new Date().toISOString().slice(0, 10);
+      const dls   = getUpcomingDeadlines ? getUpcomingDeadlines(0).filter(d => d.daysLeft === 0) : [];
+      const tasks = S.tasks.filter(t => t.due_date === today && t.assigned_to === S.user?.id && t.status !== 'done');
+      let resp = `Today is ${fmtD(today)}.\n`;
+      if (dls.length)   resp += `\n⚖️ ${dls.length} deadline(s) due today!`;
+      if (tasks.length) resp += `\n📋 ${tasks.length} task(s) due today.`;
+      if (!dls.length && !tasks.length) resp += '\nNo deadlines or tasks due today. Have a productive day! 💼';
+      return resp;
+    }
+  },
+  // Help
+  {
+    patterns: ['help', 'what can you', 'what do you', 'commands', 'options'],
+    response: () => `I can help you with:\n• Upcoming deadlines\n• Client search & counts\n• Your tasks & to-dos\n• Team members\n• Payment summaries\n• Today's agenda\n\nJust ask naturally! E.g. "Show my tasks" or "Find client Sharma".`
+  },
+  // Greetings
+  {
+    patterns: ['hello', 'hi', 'hey', 'good morning', 'good afternoon', 'good evening', 'namaste'],
+    response: () => {
+      const hour = new Date().getHours();
+      const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+      const name = S.profile?.full_name?.split(' ')[0] || 'there';
+      return `${greet}, ${name}! 👋 How can I assist you today? Type "help" to see what I can do.`;
+    }
+  },
+  // Conflict
+  {
+    patterns: ['conflict', 'opposite party', 'conflict check'],
+    response: (msg) => {
+      const term = msg.replace(/conflict|check|opposite|party/gi, '').trim();
+      if (!term) return 'To check for conflicts, type: "conflict check [party name]"';
+      const found = checkConflictOfInterest ? checkConflictOfInterest(term) : [];
+      if (!found.length) return `✅ No conflicts found for "${term}".`;
+      return `⚠️ Potential conflict for "${term}" — ${found.length} matching record${found.length !== 1 ? 's' : ''}:\n` +
+        found.map(c => `• ${c.name} (${c.client_id})`).join('\n');
+    }
+  },
+];
+
+// Match user message to a Q&A entry
+function chatbotMatch(msg) {
+  const lower = msg.toLowerCase();
+  for (const qa of CHATBOT_QA) {
+    if (qa.patterns.some(p => lower.includes(p))) {
+      try {
+        return typeof qa.response === 'function' ? qa.response(lower) : qa.response;
+      } catch (e) { return "I had trouble fetching that. Please try again."; }
+    }
+  }
+  return "I'm not sure about that. Try asking about deadlines, clients, tasks, team, or type \"help\" for options.";
+}
+
+// ── History management ─────────────────────────────────────────────────────
+function loadChatbotHistory() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(CHATBOT_HISTORY_KEY) || '{"ts":0,"msgs":[]}');
+    if (Date.now() - raw.ts > CHATBOT_HISTORY_TTL) return [];
+    return raw.msgs || [];
+  } catch { return []; }
+}
+function saveChatbotHistory(msgs) {
+  localStorage.setItem(CHATBOT_HISTORY_KEY, JSON.stringify({ ts: Date.now(), msgs: msgs.slice(-40) }));
+}
+function clearChatbotHistory() {
+  localStorage.removeItem(CHATBOT_HISTORY_KEY);
+  S._chatbotMsgs = [];
+  renderChatbotMessages();
+}
+
+// ── UI ─────────────────────────────────────────────────────────────────────
+function isChatbotEnabled() {
+  return localStorage.getItem(CHATBOT_ENABLED_KEY) !== 'false';
+}
+function setChatbotEnabled(val) {
+  localStorage.setItem(CHATBOT_ENABLED_KEY, val ? 'true' : 'false');
+  const fab = document.getElementById('chatbot-fab');
+  if (fab) fab.style.display = val ? 'flex' : 'none';
+}
+
+function toggleChatbotPanel() {
+  const panel = document.getElementById('chatbot-panel');
+  if (!panel) return;
+  const isOpen = panel.classList.toggle('open');
+  if (isOpen) {
+    if (!S._chatbotMsgs) {
+      S._chatbotMsgs = loadChatbotHistory();
+      if (!S._chatbotMsgs.length) {
+        S._chatbotMsgs = [{ role: 'bot', text: `Hello ${S.profile?.full_name?.split(' ')[0] || ''}! I'm LexBot, your practice assistant. Type "help" to see what I can do.` }];
+      }
+    }
+    renderChatbotMessages();
+    document.getElementById('chatbot-input')?.focus();
+    // Clear unread badge
+    const badge = document.getElementById('chatbot-fab-badge');
+    if (badge) { badge.classList.remove('show'); badge.textContent = ''; }
+  }
+}
+
+function renderChatbotMessages() {
+  const cnt = document.getElementById('chatbot-msgs');
+  if (!cnt) return;
+  cnt.innerHTML = (S._chatbotMsgs || []).map(m =>
+    `<div class="chatbot-msg ${m.role}" style="white-space:pre-wrap;">${escHtml(m.text)}</div>`
+  ).join('');
+  cnt.scrollTop = cnt.scrollHeight;
+}
+
+function chatbotSend() {
+  const input = document.getElementById('chatbot-input');
+  const text  = (input?.value || '').trim();
+  if (!text) return;
+  if (!S._chatbotMsgs) S._chatbotMsgs = [];
+  input.value = '';
+
+  S._chatbotMsgs.push({ role: 'user', text });
+  renderChatbotMessages();
+
+  // Typing indicator
+  S._chatbotMsgs.push({ role: 'bot', text: '…' });
+  renderChatbotMessages();
+
+  setTimeout(() => {
+    S._chatbotMsgs.pop(); // remove typing indicator
+    const reply = chatbotMatch(text);
+    S._chatbotMsgs.push({ role: 'bot', text: reply });
+    saveChatbotHistory(S._chatbotMsgs);
+    renderChatbotMessages();
+  }, 400);
+}
+
+function chatbotQuickReply(text) {
+  const input = document.getElementById('chatbot-input');
+  if (input) input.value = text;
+  chatbotSend();
+}
+
+// ── Draggable FAB ──────────────────────────────────────────────────────────
+function initChatbotDrag() {
+  const fab = document.getElementById('chatbot-fab');
+  if (!fab) return;
+  let dragging = false, ox = 0, oy = 0, startX = 0, startY = 0;
+
+  fab.addEventListener('mousedown', e => {
+    dragging = true; startX = e.clientX; startY = e.clientY;
+    const rect = fab.getBoundingClientRect();
+    ox = e.clientX - rect.left; oy = e.clientY - rect.top;
+    fab.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const x = e.clientX - ox, y = e.clientY - oy;
+    fab.style.left  = Math.max(0, Math.min(window.innerWidth  - 60, x)) + 'px';
+    fab.style.top   = Math.max(0, Math.min(window.innerHeight - 60, y)) + 'px';
+    fab.style.right = 'auto'; fab.style.bottom = 'auto';
+    // Also move panel
+    const panel = document.getElementById('chatbot-panel');
+    if (panel) {
+      panel.style.left   = Math.max(0, Math.min(window.innerWidth  - 360, x - 280)) + 'px';
+      panel.style.bottom = 'auto';
+      panel.style.top    = Math.max(0, y - 530) + 'px';
+      panel.style.right  = 'auto';
+    }
+  });
+  document.addEventListener('mouseup', e => {
+    if (!dragging) return;
+    dragging = false;
+    fab.style.cursor = 'grab';
+    // If barely moved, treat as click → toggle panel
+    if (Math.abs(e.clientX - startX) < 5 && Math.abs(e.clientY - startY) < 5) {
+      toggleChatbotPanel();
+    }
+  });
+
+  // Touch support
+  fab.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    startX = t.clientX; startY = t.clientY;
+    const rect = fab.getBoundingClientRect();
+    ox = t.clientX - rect.left; oy = t.clientY - rect.top;
+  }, { passive: true });
+  fab.addEventListener('touchmove', e => {
+    const t = e.touches[0];
+    const x = t.clientX - ox, y = t.clientY - oy;
+    fab.style.left = Math.max(0, Math.min(window.innerWidth  - 60, x)) + 'px';
+    fab.style.top  = Math.max(0, Math.min(window.innerHeight - 60, y)) + 'px';
+    fab.style.right = 'auto'; fab.style.bottom = 'auto';
+    e.preventDefault();
+  }, { passive: false });
+  fab.addEventListener('touchend', e => {
+    const t = e.changedTouches[0];
+    if (Math.abs(t.clientX - startX) < 8 && Math.abs(t.clientY - startY) < 8) {
+      toggleChatbotPanel();
+    }
+  });
+}
+
+function initChatbot() {
+  if (!isChatbotEnabled()) {
+    const fab = document.getElementById('chatbot-fab');
+    if (fab) fab.style.display = 'none';
+    return;
+  }
+  initChatbotDrag();
+}
+
+async function sendPasswordResetEmail(){
+  if(!S.user?.email){showToast('No email on file.','error');return;}
+  const {error}=await sb.auth.resetPasswordForEmail(S.user.email,{redirectTo:window.location.href.split('#')[0]});
+  if(error){showToast('Error: '+error.message,'error');return;}
+  showToast('Password reset email sent to '+S.user.email,'success');
+}
+
+function toggleChatbotSetting(btn){
+  const enabled=btn.classList.toggle('on');
+  setChatbotEnabled(enabled);
+  showToast(enabled?'LexBot enabled.':'LexBot hidden.','success');
+}
+
+function loadChatbotToggleUI(){
+  const btn=document.getElementById('chatbot-toggle-btn');
+  if(btn) btn.classList.toggle('on',isChatbotEnabled());
+}
+</script>  
 </body>
 </html>
