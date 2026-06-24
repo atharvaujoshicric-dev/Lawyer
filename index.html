@@ -751,7 +751,7 @@ table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
       </div>
       <!-- ════════════════════════════════════════════════════
            SNIPPET 3: HIERARCHY PERMISSIONS VIEW
-           Insert BEFORE <!-- ACTIVITY LOG --> in the page div
+           Insert BEFORE <!-- ACTIVITY LOG in the page div
       ════════════════════════════════════════════════════ -->
       <div class="page-view" id="view-hierarchy-perms">
         <!-- Rendered by renderHierarchyPermissions() -->
@@ -1728,6 +1728,11 @@ async function loadAllData(){
      S.users=users||[];
      S.pendingUsers=[];
   }
+} else {
+     const {data:users}=await sb.from('profiles').select('*').eq('approved',true).order('created_at');
+     S.users=users||[];
+     S.pendingUsers=[];
+  }
 }
 
 
@@ -1841,7 +1846,7 @@ const NAV_TITLES={
   users:'User Management',formbuilder:'Form Builder',settings:'Settings',
   notes:'Notes',activity:'Activity Log',finances:'Finances',
   'deadline-rules':'Deadline Rules',
-  'hierarchy-perms':'Role Permissions'
+  'hierarchy-perms':'Role Permissions',
 };
 
 function navigate(view){
